@@ -166,6 +166,110 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2017-04-22-排序算法02：选择排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/22/2017-04-22-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">排序算法02：选择排序</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/22/2017-04-22-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" class="archive-article-date">
+  	<time datetime="2017-04-22T09:22:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;首先，从[0,len]中找到数组中最小的元素，让它与第一个元素交换。接着从[1,len]中找出最小的元素，让它与第二个元素交换。循环往复，最终使得数组从小到大排序。</p>
+<p>可视化效果：<a href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html" target="_blank">这里</a></p>
+<h2 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/22.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Selection</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.arr = arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 选择排序算法实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> min = i;</span><br><span class="line">            <span class="comment">//找出最小元素</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> j=i+<span class="number">1</span>;j&lt;len;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">this</span>.less(j,min))&#123;</span><br><span class="line">                    min = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//把最小元素放到最前面</span></span><br><span class="line">            <span class="built_in">this</span>.exchange(i,min);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断m是否小于n</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.less = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可根据不同的数据类型设置比对规则，比如json。这里适用于数字与字符串。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.arr[m]&lt;<span class="built_in">this</span>.arr[n];</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.exchange = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = <span class="built_in">this</span>.arr[m];</span><br><span class="line">        <span class="built_in">this</span>.arr[m] = <span class="built_in">this</span>.arr[n];</span><br><span class="line">        <span class="built_in">this</span>.arr[n] = swap;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 打印排序后的数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.arr);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是否已排序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.isSorted = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.less(i,i<span class="number">-1</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.Selection = Selection;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> selection = <span class="keyword">new</span> Selection(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序前：&quot;</span>+selection.isSorted());</span><br><span class="line">    selection.sort();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序后：&quot;</span>+selection.isSorted());</span><br><span class="line">    selection.show();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Selection</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 插入排序实现逻辑</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = arr.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> min = i;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; len; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (less(arr[j], arr[min])) min = j;</span><br><span class="line">            &#125;</span><br><span class="line">            exchange(arr, i, min);</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 比较m是否小于n</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(<span class="keyword">int</span> m,<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m &lt; n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 交换m与n的位置</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> a</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exchange</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> swap = a[m];</span><br><span class="line">        a[m] = a[n];</span><br><span class="line">        a[n] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span>[] a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.out.print(a[i]+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">    Selection.sort(arr);</span><br><span class="line">    Selection.show(arr);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>运行时间和输入无关。</p>
+<blockquote>
+<p>为了找出最小元素而扫描一遍数组并不能为下一遍扫描提供信息。长度一致，一个有序的数组或值全部相当的数组和一个无序的数组排序所需的时间一致。</p>
+</blockquote>
+</li>
+<li><p>数据移动是最少的。</p>
+<blockquote>
+<p>一个长度为N的数组只需要N次交换即可完成排序。</p>
+</blockquote>
+</li>
+<li><p>不稳定。</p>
+<blockquote>
+<p>无法保证排序前与排序后<strong>重复元素</strong>的相对顺序一致。举例：序列[5,8,5,2,9]，第一遍选择第1个元素5会和2交换，那么原序列中两个5的相对前后顺序就被破坏了，所以选择排序不是一个稳定的排序算法。</p>
+</blockquote>
+</li>
+<li><p>原地排序。</p>
+</li>
+<li><p>时间复杂度为：平方级别。</p>
+</li>
+<li><p>空间复杂度为：常数级别。</p>
+</li>
+</ul>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9501%EF%BC%9A%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">排序算法01：冒泡排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">排序算法03：插入排序</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/22/2017-04-22-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-04-22-排序算法01：冒泡排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -977,100 +1081,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-2017-02-10-产品研发记录05：产品研发人员需要具有的特质" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/10/2017-02-10-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/">产品研发记录05：产品研发人员应当具备的特质</a>
-    </h1>
-  
-
-        
-        <a href="/2017/02/10/2017-02-10-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/" class="archive-article-date">
-  	<time datetime="2017-02-10T13:47:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-
-<p>&emsp;&emsp;目前负责一款基础开发框架产品的研发，该产品的受众群体为所有的项目开发人员。该基础开发框架产品的核心价值在与提升开发效率、统一技术路线、沉淀技术积累。</p>
-<p>&emsp;&emsp;领导一直在说要补充人员到基础开发框架产品组里面，可惜一直找不到合适的人员补充进来。</p>
-<p>&emsp;&emsp;对于什么样的人员才<strong>“合适”</strong>，我的理解如下：</p>
-<h2 id="一定的技术深度与广度"><a href="#一定的技术深度与广度" class="headerlink" title="一定的技术深度与广度"></a>一定的技术深度与广度</h2><p>&emsp;&emsp;对于技术深度，保证了代码的高质量。这里的质量包含了代码的逻辑清晰，结构优雅，性能强劲。至少能保证不让挑剔的开发人员吐槽产品研发人员的代码问题。</p>
-<p>&emsp;&emsp;对于技术广度，保证在产品的新功能开发时能够选择最优的技术方案。如果广度不够，那么在做功能开发时，往往会以最熟悉的方式仅仅完成功能需求而已，而很难考虑到怎么样做才是最好的。</p>
-<h2 id="丰富的项目开发经验"><a href="#丰富的项目开发经验" class="headerlink" title="丰富的项目开发经验"></a>丰富的项目开发经验</h2><p>&emsp;&emsp;对于用于提升项目开发效率与质量的基础开发框架，本来就是为了实际业务项目而生。如果没有实际的项目开发经验，就很难设身处地的考虑问题，很难去思考如何去设计基础开发框架来解决项目开发中的问题。另外，对于项目开发人员提出来的问题，很难换位去体会开发人员在产品使用中的痛苦，从而更好优化基础开发框架产品。</p>
-<p>&emsp;&emsp;另外，丰富的项目开发经验有助于总结提炼出项目开发中的通用部分，抽取到产品当中来，以统一的解决方案来解决相同的问题。</p>
-<p>&emsp;&emsp;对于产品功能而言，应当尽量避免鸡肋的功能，不能解决项目开发痛点的功能。</p>
-<h2 id="好奇心"><a href="#好奇心" class="headerlink" title="好奇心"></a>好奇心</h2><p>&emsp;&emsp;好奇心有助于技术人员去探寻问题的本质，从而从根本上解决问题。最烦躁遇到问题不深究其中的原因，而是从表面上打补丁，一个又一个，跟电线杆上的牛皮癣一样让人十分不舒服。</p>
-<p>&emsp;&emsp;好奇心还有助于技术人员去接收学习新的技能与知识点。</p>
-<p>&emsp;&emsp;我希望团队中的每个人都是能够不断成长的，成长带来工作效率的提升，接着带来更多的物质回报，从而形成正向循环。</p>
-<h2 id="追求卓越"><a href="#追求卓越" class="headerlink" title="追求卓越"></a>追求卓越</h2><p>&emsp;&emsp;始终觉得产品研发人员应当是一拨追求卓越的人。</p>
-<p>&emsp;&emsp;只有具备一颗追求卓越的心，才能像工匠一样不断的打磨产品，让产品更加优秀，让产品像一件工艺品、艺术品。</p>
-<p>&emsp;&emsp;一款好的产品就像一个好的技术人员一样，不应该长期保持平庸状态。</p>
-<p>上一篇：<a href="http://muchstudy.com/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">产品研发记录04：关于开源组件选择与技术方案选择的总结</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/产品研发//" class="article-tag-list-link color5">产品研发</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/02/10/2017-02-10-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/6/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/8/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/6/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/8/">Next &amp;raquo;</a>
     </nav>
   
 
