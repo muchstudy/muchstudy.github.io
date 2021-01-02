@@ -166,6 +166,101 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-12-06-设计模式系列之五工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/06/2016-12-06-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">设计模式系列之五工厂模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/06/2016-12-06-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2016-12-06T15:14:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><h3 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h3><p>&emsp;&emsp;简单工厂应该是最简单的工厂方法了，也是最常见的。下面，通过代码就知道为什么这么说了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimplePizzaFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Pizza <span class="title">createPizza</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">		Pizza pizza = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (type.equals(<span class="string">&quot;cheese&quot;</span>)) &#123;</span><br><span class="line">			pizza = <span class="keyword">new</span> CheesePizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">&quot;pepperoni&quot;</span>)) &#123;</span><br><span class="line">			pizza = <span class="keyword">new</span> PepperoniPizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">&quot;clam&quot;</span>)) &#123;</span><br><span class="line">			pizza = <span class="keyword">new</span> ClamPizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">&quot;veggie&quot;</span>)) &#123;</span><br><span class="line">			pizza = <span class="keyword">new</span> VeggiePizza();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> pizza;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PizzaStore</span> </span>&#123;</span><br><span class="line">	SimplePizzaFactory factory;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">PizzaStore</span><span class="params">(SimplePizzaFactory factory)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.factory = factory;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Pizza <span class="title">orderPizza</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">		Pizza pizza;</span><br><span class="line">		<span class="comment">//通过简单工厂创建不同类型的披萨</span></span><br><span class="line">		pizza = factory.createPizza(type);</span><br><span class="line"></span><br><span class="line">		pizza.prepare();</span><br><span class="line">		pizza.bake();</span><br><span class="line">		pizza.cut();</span><br><span class="line">		pizza.box();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> pizza;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;通过简单工厂方法，有效的把<code>new Object()</code>解耦了出来。在实际的业务中，不用再去关心如何去创建对象。特别是对象的创建与初始化很复杂，且有很多地方都需要用到该对象时，就不用每个地方都去显示的new一下，要修改初始化条件时，也只需要修改工厂方法即可。</p>
+<h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>定义：</p>
+<blockquote>
+<p><strong>工厂方法模式：</strong>定义了一个创建对象的接口，但由子类决定要实例化的类是哪一个。工厂方法让类把实例化推迟到子类。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">PizzaStore</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//具体如何创建披萨交由子类去实现（注意对比这里跟简单工厂的区别）</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> Pizza <span class="title">createPizza</span><span class="params">(String item)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Pizza <span class="title">orderPizza</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">		Pizza pizza = createPizza(type);</span><br><span class="line">		System.out.println(<span class="string">&quot;--- Making a &quot;</span> + pizza.getName() + <span class="string">&quot; ---&quot;</span>);</span><br><span class="line">		pizza.prepare();</span><br><span class="line">		pizza.bake();</span><br><span class="line">		pizza.cut();</span><br><span class="line">		pizza.box();</span><br><span class="line">		<span class="keyword">return</span> pizza;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//纽约风格的披萨</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NYPizzaStore</span> <span class="keyword">extends</span> <span class="title">PizzaStore</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">Pizza <span class="title">createPizza</span><span class="params">(String item)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (item.equals(<span class="string">&quot;cheese&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> NYStyleCheesePizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.equals(<span class="string">&quot;veggie&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> NYStyleVeggiePizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.equals(<span class="string">&quot;clam&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> NYStyleClamPizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.equals(<span class="string">&quot;pepperoni&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> NYStylePepperoniPizza();</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//芝加哥风格的披萨</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChicagoPizzaStore</span> <span class="keyword">extends</span> <span class="title">PizzaStore</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">Pizza <span class="title">createPizza</span><span class="params">(String item)</span> </span>&#123;</span><br><span class="line">        	<span class="keyword">if</span> (item.equals(<span class="string">&quot;cheese&quot;</span>)) &#123;</span><br><span class="line">            		<span class="keyword">return</span> <span class="keyword">new</span> ChicagoStyleCheesePizza();</span><br><span class="line">        	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.equals(<span class="string">&quot;veggie&quot;</span>)) &#123;</span><br><span class="line">        	    	<span class="keyword">return</span> <span class="keyword">new</span> ChicagoStyleVeggiePizza();</span><br><span class="line">        	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.equals(<span class="string">&quot;clam&quot;</span>)) &#123;</span><br><span class="line">        	    	<span class="keyword">return</span> <span class="keyword">new</span> ChicagoStyleClamPizza();</span><br><span class="line">        	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.equals(<span class="string">&quot;pepperoni&quot;</span>)) &#123;</span><br><span class="line">            		<span class="keyword">return</span> <span class="keyword">new</span> ChicagoStylePepperoniPizza();</span><br><span class="line">        	&#125; <span class="keyword">else</span> <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p>&emsp;&emsp;在所有的工厂模式中，还有一种叫抽象工厂模式。不过一直无法理解抽象工厂模式的具体使用场景，所以这部分留着今后对抽象工厂模式理解深刻了再来总结吧。</p>
+<h2 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h2><h3 id="简单工厂-1"><a href="#简单工厂-1" class="headerlink" title="简单工厂"></a>简单工厂</h3><p>&emsp;&emsp;举一个如下的业务场景：需要开发一个表单生成器，需要做到表单元素的自动生成。那么，可以采用简单工厂来创建表单元素对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">SampleFormFactory</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    SampleFormFactory.fn = SampleFormFactory.prototype;</span><br><span class="line">    SampleFormFactory.fn.getFormElement = <span class="function"><span class="keyword">function</span> (<span class="params">type</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (type)&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Input&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Input();</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Select&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Select();</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Textarea&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Textarea();</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Radio&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Radio();</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Checkbox&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Checkbox();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*****************标准表单对象*****************/</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Input</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Select</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Textarea</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Radio</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Checkbox</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用简单工厂创建表单元素</span></span><br><span class="line">    <span class="keyword">var</span> factory = <span class="keyword">new</span> SampleFormFactory();</span><br><span class="line">    <span class="keyword">var</span> element = factory.getFormElement(<span class="string">&quot;Input&quot;</span>);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;至于在javascript中工厂方法模式的使用，一时想不到使用场景，感觉有点为了用设计模式而设计模式，所以这里就不再举例了。  </p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%9B%9B%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之四装饰者模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/06/2016-12-06-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-12-02-设计模式系列之四装饰者模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1047,102 +1142,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-2016-10-16-《解忧杂货店》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/16/2016-10-16-%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B/">《解忧杂货店》</a>
-    </h1>
-  
-
-        
-        <a href="/2016/10/16/2016-10-16-%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B/" class="archive-article-date">
-  	<time datetime="2016-10-16T13:38:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-<p>&emsp;&emsp;全书共有五个章节，十一之后回来的连续五天读完，阅读时间统一为下班回家的地铁上，不由得感叹零碎时间充分的利用起来居然可以这么快的看完一本书。当然，这也离不开这是一本翻开就停不下来的书。<br>&emsp;&emsp;在这之前，看过东野圭吾的《白夜行》与《嫌疑人X的献身》。受这两部作品的影响，以为《解忧杂货店》也是一本悬疑小说，结果完全出乎意料。<br>&emsp;&emsp;书中，通过一封封的信件一个个的故事，看似杂乱，到后来都串成了一个统一的整体，作者的写作水平可见一斑。<br>&emsp;&emsp;<strong>最后的一张白纸既代表着一无所有，也代表着无限的可能。</strong><br>&emsp;&emsp;本来想整理一下全书的时间线，结果发现知乎上已经有人整理了，在<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27568787">这里</a>。  </p>
-<p>一些标注：  </p>
-<ul>
-<li>但她那略带忧郁的表情吸引了克郎。在她身上，有种不属于孩子的成熟韵味。</li>
-<li>那个女孩眼也不眨地望着他，眼神十分真挚。</li>
-<li>他们对克郎造成强烈的刺激。这种刺激用一句话概括，就是他们对音乐的热情。他们宁可牺牲一切，也要提高自己的音乐水准。</li>
-<li>“歌唱得跟你一样好的人多的是，如果你的声音很有特色，自然另当别论，但你没有。”</li>
-<li>“以外行来说，是还好。”评论家淡淡地答道，“不过可惜也就这个水平了。歌的旋律总有似曾相识的感觉，没有自己的新意。”</li>
-<li>人生中浪矢杂货店具有重要意义的人，也许出乎意料的多。</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/10/16/2016-10-16-%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/10/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/12/">Next &amp;raquo;</a>
@@ -1157,7 +1156,7 @@ var _hmt = _hmt || [];
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 YiYing
+    		&copy; 2021 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

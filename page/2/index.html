@@ -166,6 +166,164 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Javascript类型与类型判断" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/31/Javascript%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/">Javascript类型与类型判断</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/31/Javascript%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/" class="archive-article-date">
+  	<time datetime="2020-07-31T15:32:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JS类型与类型判断是JS中的基础，有必要归纳总结整理一下。</p>
+<blockquote>
+<p>对于这样一篇文章实际上是个人资料库里的一个整理文档，一直在想这么一篇烂大街的文章分享出来是不是有水文的嫌疑？但是，转过头一想，如果大家把文章中的外链都翻过一遍，那就会觉得：<strong>一个不起眼的小点也有它的价值。</strong></p>
+</blockquote>
+<h2 id="JS类型"><a href="#JS类型" class="headerlink" title="JS类型"></a>JS类型</h2><p>JS共有8种类型，如下表所示</p>
+<p>7种<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Glossary/Primitive">基本类型</a></p>
+<ul>
+<li>Boolean</li>
+<li>Null</li>
+<li>Undefined</li>
+<li>Number</li>
+<li>BigInt</li>
+<li>String</li>
+<li>Symbol</li>
+</ul>
+<blockquote>
+<p>基本类型（基本数值、基本数据类型）是一种既非对象也无方法的数据。<br>所有基本类型的值都是不可改变的。但需要注意的是，基本类型本身和一个赋值为基本类型的变量的区别。变量会被赋予一个新值，而原值不能像数组、对象以及函数那样被改变。</p>
+</blockquote>
+<p>剩余一种</p>
+<ul>
+<li>Object</li>
+</ul>
+<blockquote>
+<p>除 Object 以外的所有类型都是不可变的（值本身无法被改变）</p>
+<p>JavaScript 数据类型和数据结构：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures</a></p>
+</blockquote>
+<h2 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h2><h3 id="基本类型判断"><a href="#基本类型判断" class="headerlink" title="基本类型判断"></a>基本类型判断</h3><ul>
+<li><p>Boolean</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span> <span class="comment">// boolean</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Number</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">1</span> <span class="comment">// number</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="string">&#x27;1&#x27;</span> <span class="comment">// string</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Undefined</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">undefined</span> <span class="comment">// undefined</span></span><br><span class="line"><span class="literal">undefined</span> === <span class="literal">undefined</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Null</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// object</span></span><br><span class="line"><span class="literal">null</span> === <span class="literal">null</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为什么<code>typeof null</code>为Object呢？答案如下：<br>在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 “object”。（参考来源）<br>曾有一个 ECMAScript 的修复提案（通过选择性加入的方式），但被拒绝了。该提案会导致 typeof null === ‘null’。</p>
+<p>Why is typeof null “object”? : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18808226/why-is-typeof-null-object">https://stackoverflow.com/questions/18808226/why-is-typeof-null-object</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof#null">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof#null</a></p>
+</blockquote>
+</li>
+<li><p>BigInt<br>可以用在一个整数字面量后面加 n 的方式定义一个 BigInt ，如：10n，或者调用函数BigInt()。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">10n</span> === <span class="string">&#x27;bigint&#x27;</span>; <span class="comment">// true</span></span><br><span class="line"><span class="number">10n</span> == <span class="number">10</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">10n</span> === <span class="number">10</span> <span class="comment">// false</span></span><br><span class="line"><span class="keyword">typeof</span> BigInt(<span class="string">&#x27;1&#x27;</span>) === <span class="string">&#x27;bigint&#x27;</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>BigInt: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt</a></p>
+</blockquote>
+</li>
+<li><p>Symbol</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="built_in">Symbol</span>() <span class="comment">// symbol</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>由上可以看出，基本类型除了null之外，都可以使用typeof判断出来具体类型.</p>
+<p>Why is typeof null “object”? : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18808226/why-is-typeof-null-object">https://stackoverflow.com/questions/18808226/why-is-typeof-null-object</a></p>
+</blockquote>
+<h3 id="Object类型判断"><a href="#Object类型判断" class="headerlink" title="Object类型判断"></a>Object类型判断</h3><ul>
+<li><p>Array</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.isArray([<span class="number">1</span>,<span class="number">2</span>]) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Function</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> (<span class="function">()=&gt;</span>&#123;&#125;) <span class="comment">// function</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>对于像Date、Math等对象，就没有很好的直接判断方式了，但是可以通过<code>Object.prototype.toString.call(obj)</code>来判断</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.call([]); <span class="comment">// [object Array]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(&#123;&#125;); <span class="comment">// [object Object]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="string">&#x27;&#x27;</span>); <span class="comment">// [object String]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>()); <span class="comment">// [object Date]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="number">1</span>); <span class="comment">// [object Number]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;); <span class="comment">// [object Function]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="regexp">/test/i</span>); <span class="comment">// [object RegExp]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">true</span>); <span class="comment">// [object Boolean]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">null</span>); <span class="comment">// [object Null]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(); <span class="comment">// [object Undefined]</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Understanding JavaScript types and reliable type checking.<br><a target="_blank" rel="noopener" href="https://ultimatecourses.com/blog/understanding-javascript-types-and-reliable-type-checking">https://ultimatecourses.com/blog/understanding-javascript-types-and-reliable-type-checking</a></p>
+</blockquote>
+<h2 id="类型判断工具类"><a href="#类型判断工具类" class="headerlink" title="类型判断工具类"></a>类型判断工具类</h2><p>通过上面的总结分析，可以考虑封装一个类型判断的工具类，下面是感觉最简洁高效的一个实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> type = (<span class="function"><span class="keyword">function</span>(<span class="params">global</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cache = &#123;&#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> key;</span><br><span class="line">        <span class="keyword">return</span> obj === <span class="literal">null</span> ? <span class="string">&#x27;null&#x27;</span> <span class="comment">// null</span></span><br><span class="line">            : obj === <span class="built_in">global</span> ? <span class="string">&#x27;global&#x27;</span> <span class="comment">// window in browser or global in nodejs</span></span><br><span class="line">            : (key = <span class="keyword">typeof</span> obj) !== <span class="string">&#x27;object&#x27;</span> ? key <span class="comment">// basic: string, boolean, number, undefined, function</span></span><br><span class="line">            : obj.nodeType ? <span class="string">&#x27;object&#x27;</span> <span class="comment">// DOM element</span></span><br><span class="line">            : cache[key = (&#123;&#125;).toString.call(obj)] <span class="comment">// cached. date, regexp, error, object, array, math</span></span><br><span class="line">            || (cache[key] = key.slice(<span class="number">8</span>, <span class="number">-1</span>).toLowerCase()); <span class="comment">// get XXXX from [object XXXX], and cache it</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;(<span class="built_in">this</span>));</span><br></pre></td></tr></table></figure>
+<p>这样使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;); <span class="comment">// -&gt; &quot;function&quot;</span></span><br><span class="line">type([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// -&gt; &quot;array&quot;</span></span><br><span class="line">type(<span class="keyword">new</span> <span class="built_in">Date</span>()); <span class="comment">// -&gt; &quot;date&quot;</span></span><br><span class="line">type(&#123;&#125;); <span class="comment">// -&gt; &quot;object&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>The most accurate way to check JS object’s type? <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7893776/the-most-accurate-way-to-check-js-objects-type">https://stackoverflow.com/questions/7893776/the-most-accurate-way-to-check-js-objects-type</a></p>
+</blockquote>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><ul>
+<li>NaN<br>注意NaN不是一种数据类型。<br>NaN是一个全局对象的属性，它表示不是一个数字（Not-A-Number）。</li>
+</ul>
+<p>NaN有如下特性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">NaN</span> <span class="comment">// number</span></span><br><span class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>) <span class="comment">// true,可以通过此种方式来判断NaN</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="built_in">Number</span>(<span class="string">&#x27;num&#x27;</span>) <span class="comment">// 此时num为NaN</span></span><br><span class="line">num === num <span class="comment">// flase</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>NaN: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN</a><br>Why does typeof NaN return ‘number’? :<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2801601/why-does-typeof-nan-return-number">https://stackoverflow.com/questions/2801601/why-does-typeof-nan-return-number</a></p>
+</blockquote>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/31/Javascript%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Elasticsearch索引自动化管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1396,113 +1554,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-聊聊一线开发的基本素养" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/">聊聊一线开发的基本素养</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/" class="archive-article-date">
-  	<time datetime="2020-04-03T17:01:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/%E8%BF%BD%E6%B1%82.jpg" class="">
-
-<p>早上闹铃一响，摸到手机，关掉闹铃，打开微信，刷下朋友圈，刷到昨晚半夜的这样一条消息</p>
-<div style="width:100%;margin:auto">
-<img src="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/%E6%9C%8B%E5%8F%8B%E5%9C%88.jpg" class="">
-</div>
-
-<p>寥寥数语，形象跃然纸上！</p>
-<p>顿时人也精神了，想要立刻爬起来。</p>
-<p>原因无他，也被深深伤害过，感同身受！</p>
-<p>程序开发说简单也简单，按照程序语法写就行，说复杂也复杂，同一段业务逻辑，实现效果一致，但是实现方式可能千差万别，有些代码短小精干，有的你会很惊奇居然一团糟的情况下程序还能正常的跑起来!</p>
-<p>仔细分析你会发现，每个人都有自己的代码风格，有的人并不是能力不行，但是他的代码就是一个字：“糙”！</p>
-<p>细问原因，往往都会往逻辑复杂、工期紧上面靠。</p>
-<p>更深层次分析，实际上这是一个习惯问题，基本底线问题。</p>
-<p>我觉得一个优质的一线开发应该具备如下这些基本素养：</p>
-<ul>
-<li><p>理清需求所有业务逻辑</p>
-<blockquote>
-<p>面对需求不仅要摸清明面上的业务逻辑，还需要考虑异常兼容情况，最怕有if没有else，有异常捕获而没有捕获到异常的后续处理。只有做到了整个逻辑的完备，才能说理解了需求。</p>
-</blockquote>
-</li>
-<li><p>代码整体结构清晰，可维护</p>
-<blockquote>
-<p>合理抽象封装，明明是面向对象的高级语言，有些人偏偏喜欢面向过程记流水账。同时，请保持克制，别炫技，为了抽象而抽象。有一个KISS原则，叫做keep sample and stupid.</p>
-</blockquote>
-</li>
-<li><p>每行代码、每个变量都是有意义的</p>
-<blockquote>
-<p>杜绝没有意义的代码，特别需要注意重复性的模板代码，每次碰到要在一坨坨的模板代码上迭代新功能都恨不得推翻重写，因为屎山会越堆越大！~</p>
-</blockquote>
-</li>
-<li><p>注释清晰、代码工整</p>
-<blockquote>
-<p>点开文件第一眼就乱糟糟的绝对很打击继续看下去的勇气，能做到如沐春风，任何人都能很流畅的读下去就达标了。对于某些逻辑很绕的，必须写出ugly代码的地方，我的做法是注明原因，常规吐槽一下，打个todo标签</p>
-</blockquote>
-</li>
-<li><p>一点强迫症、一点细节控、一点对美的追求</p>
-<blockquote>
-<p>这一点不多说，懂的人自然懂，不懂的人说再多也没用，因为大家的追求不一样！</p>
-</blockquote>
-</li>
-</ul>
-<div style="width:70%;margin:auto">
-<img src="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/%E5%85%AC%E4%BC%97%E5%8F%B7%E4%BA%8C%E7%BB%B4%E7%A0%81.gif" class="">
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
@@ -1517,7 +1568,7 @@ var _hmt = _hmt || [];
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 YiYing
+    		&copy; 2021 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

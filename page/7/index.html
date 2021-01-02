@@ -166,6 +166,129 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2017-04-29-排序算法05：归并排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/29/2017-04-29-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">排序算法05：归并排序</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/29/2017-04-29-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="archive-article-date">
+  	<time datetime="2017-04-29T02:51:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;归并排序的算法逻辑为把两个有序的数组归并为一个有序的数组。</p>
+<p>举个例子，对于一个长度为8的数组，有两种归并方式</p>
+<p>自顶向下的归并:</p>
+<ol>
+<li>先分为[0-3],[4-7],左右有序后再归并到一起就变成一个完整的有序数组了</li>
+<li>让[0-3]有序又可以分为[0-1]、[2-3]有序，递归下去，最终归并为[0-3]有序</li>
+</ol>
+<p>自底向上的归并：</p>
+<ol>
+<li>先让[0-1],[2-3],[4-5],[6-7]有序</li>
+<li>再让[0-3],[4-7]有序</li>
+<li>最终归并[0-7],让整个数组有序</li>
+</ol>
+
+
+<h2 id="归并实现"><a href="#归并实现" class="headerlink" title="归并实现"></a>归并实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 原地归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">mid</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">arr,start,mid,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i=start,j=mid+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> temp = [];</span><br><span class="line">    <span class="comment">//数据复制一份将a[start..end]复制到temp[start..end],start不一定为0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> m=start;m&lt;=end;m++)&#123;</span><br><span class="line">        temp[m] = arr[m];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> n=start;n&lt;=end;n++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;mid)&#123;</span><br><span class="line">            <span class="comment">//左边用尽（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(j&gt;end)&#123;</span><br><span class="line">            <span class="comment">//右边用尽（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(temp[j]&lt;temp[i])&#123;</span><br><span class="line">            <span class="comment">//右半边的元素小于左半边的元素（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//右半边的元素大于左半边的元素（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面这张原地归并轨迹的样例图来自于《算法》第四版，左侧为arr，右侧为temp数组</p>
+
+
+
+<h2 id="自顶向下的归并"><a href="#自顶向下的归并" class="headerlink" title="自顶向下的归并"></a>自顶向下的归并</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自顶向下的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortDown</span>(<span class="params">arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//将数组arr[start..end]排序，这里的start并不一定是0</span></span><br><span class="line">    <span class="keyword">if</span>(end&lt;=start) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> mid = start + <span class="built_in">parseInt</span>((end-start)/<span class="number">2</span>);</span><br><span class="line">    sortDown(arr,start,mid);        <span class="comment">//- 将左半边排序</span></span><br><span class="line">    sortDown(arr,mid+<span class="number">1</span>,end);        <span class="comment">//- 将右半边排序</span></span><br><span class="line">    merge(arr,start,mid,end);       <span class="comment">//- 归并结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="自底向上的归并"><a href="#自底向上的归并" class="headerlink" title="自底向上的归并"></a>自底向上的归并</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自底向上的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortUp</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> sz=<span class="number">1</span>;sz&lt;len;sz=<span class="number">2</span>*sz)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> start=<span class="number">0</span>;start&lt;len-sz;start=start+<span class="number">2</span>*sz)&#123;</span><br><span class="line">            merge(arr,start,start+sz<span class="number">-1</span>,<span class="built_in">Math</span>.min(start+<span class="number">2</span>*sz<span class="number">-1</span>,len<span class="number">-1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><h3 id="javascript实现"><a href="#javascript实现" class="headerlink" title="javascript实现"></a>javascript实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/29.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 原地归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">mid</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">arr,start,mid,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i=start,j=mid+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> temp = [];</span><br><span class="line">    <span class="comment">//数据复制一份将a[start..end]复制到temp[start..end],start不一定为0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> m=start;m&lt;=end;m++)&#123;</span><br><span class="line">        temp[m] = arr[m];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> n=start;n&lt;=end;n++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;mid)&#123;</span><br><span class="line">            <span class="comment">//左边用尽（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(j&gt;end)&#123;</span><br><span class="line">            <span class="comment">//右边用尽（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(temp[j]&lt;temp[i])&#123;</span><br><span class="line">            <span class="comment">//右半边的元素小于左半边的元素（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//右半边的元素大于左半边的元素（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自顶向下的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortDown</span>(<span class="params">arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//将数组arr[start..end]排序，这里的start并不一定是0</span></span><br><span class="line">    <span class="keyword">if</span>(end&lt;=start) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> mid = start + <span class="built_in">parseInt</span>((end-start)/<span class="number">2</span>);</span><br><span class="line">    sortDown(arr,start,mid);        <span class="comment">//- 将左半边排序</span></span><br><span class="line">    sortDown(arr,mid+<span class="number">1</span>,end);        <span class="comment">//- 将右半边排序</span></span><br><span class="line">    merge(arr,start,mid,end);       <span class="comment">//- 归并结果</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自底向上的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortUp</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> sz=<span class="number">1</span>;sz&lt;len;sz=<span class="number">2</span>*sz)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> start=<span class="number">0</span>;start&lt;len-sz;start=start+<span class="number">2</span>*sz)&#123;</span><br><span class="line">            merge(arr,start,start+sz<span class="number">-1</span>,<span class="built_in">Math</span>.min(start+<span class="number">2</span>*sz<span class="number">-1</span>,len<span class="number">-1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr1 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(arr1);</span><br><span class="line">    sortDown(arr1,<span class="number">0</span>,arr1.length<span class="number">-1</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(arr1);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;----------------&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> arr2 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(arr2);</span><br><span class="line">    sortUp(arr2);</span><br><span class="line">    <span class="built_in">console</span>.log(arr2);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="java实现"><a href="#java实现" class="headerlink" title="java实现"></a>java实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Merge</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span>[] temp,<span class="keyword">int</span> start,<span class="keyword">int</span> mid,<span class="keyword">int</span> end)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i=start,j=mid+<span class="number">1</span>;</span><br><span class="line">		<span class="comment">//避免每次都创建数组对象</span></span><br><span class="line">		<span class="comment">//int[] temp = new int[arr.length];</span></span><br><span class="line">		<span class="comment">//数据复制一份将a[start..end]复制到temp[start..end],start不一定为0</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> m=start;m&lt;=end;m++)&#123;</span><br><span class="line">			temp[m] = arr[m];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> n=start;n&lt;=end;n++)&#123;</span><br><span class="line">	        <span class="keyword">if</span>(i&gt;mid)&#123;</span><br><span class="line">	            <span class="comment">//左边用尽（取右半边的元素）</span></span><br><span class="line">	            arr[n] = temp[j++];</span><br><span class="line">	        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(j&gt;end)&#123;</span><br><span class="line">	            <span class="comment">//右边用尽（取左半边的元素）</span></span><br><span class="line">	            arr[n] = temp[i++];</span><br><span class="line">	        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(temp[j]&lt;temp[i])&#123;</span><br><span class="line">	            <span class="comment">//右半边的元素小于左半边的元素（取右半边的元素）</span></span><br><span class="line">	            arr[n] = temp[j++];</span><br><span class="line">	        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	            <span class="comment">//右半边的元素大于左半边的元素（取左半边的元素）</span></span><br><span class="line">	            arr[n] = temp[i++];</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sortDown</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span>[] temp,<span class="keyword">int</span> start,<span class="keyword">int</span> end)</span></span>&#123;</span><br><span class="line">		<span class="comment">//将数组arr[start..end]排序，这里的start并不一定是0</span></span><br><span class="line">	    <span class="keyword">if</span>(end&lt;=start) <span class="keyword">return</span>;</span><br><span class="line">	    <span class="keyword">int</span> mid = start + (end-start)/<span class="number">2</span>;</span><br><span class="line">	    sortDown(arr,temp,start,mid);        <span class="comment">//- 将左半边排序</span></span><br><span class="line">	    sortDown(arr,temp,mid+<span class="number">1</span>,end);        <span class="comment">//- 将右半边排序</span></span><br><span class="line">	    merge(arr,temp,start,mid,end);       <span class="comment">//- 归并结果</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sortUp</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span>[] temp)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> sz=<span class="number">1</span>;sz&lt;len;sz=<span class="number">2</span>*sz)&#123;</span><br><span class="line">	        <span class="keyword">for</span>(<span class="keyword">int</span> start=<span class="number">0</span>;start&lt;len-sz;start=start+<span class="number">2</span>*sz)&#123;</span><br><span class="line">	            merge(arr,temp,start,start+sz-<span class="number">1</span>,Math.min(start+<span class="number">2</span>*sz-<span class="number">1</span>,len-<span class="number">1</span>));</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span>[] arr1  = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">		<span class="keyword">int</span>[] temp1 = <span class="keyword">new</span> <span class="keyword">int</span>[arr1.length];</span><br><span class="line">	    sortDown(arr1,temp1,<span class="number">0</span>,arr1.length-<span class="number">1</span>);</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> m:arr1)&#123;</span><br><span class="line">	    	System.out.print(m+<span class="string">&quot; &quot;</span>);</span><br><span class="line">	    &#125;</span><br><span class="line"></span><br><span class="line">	    System.out.println();</span><br><span class="line">	    System.out.println(<span class="string">&quot;----------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">int</span>[] arr2  = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">	    <span class="keyword">int</span>[] temp2 = <span class="keyword">new</span> <span class="keyword">int</span>[arr2.length];</span><br><span class="line">	    sortUp(arr2,temp2);</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> n:arr2)&#123;</span><br><span class="line">	    	System.out.print(n+<span class="string">&quot; &quot;</span>);</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>稳定。</li>
+<li>非原地排序。</li>
+<li>时间复杂度为NlogN</li>
+<li>空间复杂度为N</li>
+<li>归并排序的主要缺点是辅助数组所使用的额外空间和N的大小成正比</li>
+<li>归并排序的递归使小规模问题中方法的调用过于频繁。使用插入排序处理小规模的子数组（比如长度小于15）一般可以将归并排序的运行时间缩短10%-15%</li>
+<li>当数组长度为2的幂时，自顶向下和自底向上的归并排序所用的比较次数和数组的访问次数正好相同，只是顺序不同。其它时候，两种方法的比较和数组的访问次序会有所不同</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">排序算法04：希尔排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法06：快速排序</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/29/2017-04-29-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-04-23-排序算法04：希尔排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -988,90 +1111,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-2017-02-22-JavaScript实现二分查找" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/22/2017-02-22-JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">JavaScript实现二分查找</a>
-    </h1>
-  
-
-        
-        <a href="/2017/02/22/2017-02-22-JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="archive-article-date">
-  	<time datetime="2017-02-21T16:59:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;最近撸《算法》第四版，开篇就是一个Java版本的二分查找算法，下面以JS实现一下。</p>
-<p>&emsp;&emsp;二分查找的前提为：数组、有序。逻辑为：优先和数组的中间元素比较，如果等于中间元素，则直接返回。如果不等于则取半继续查找。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 二分查找，递归实现。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( start &gt; end)&#123;<span class="keyword">return</span> <span class="number">-1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> start   = start || <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> end     = end || arr.length<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> mid = <span class="built_in">parseInt</span>(start+(end-start)/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span>(target==arr[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;arr[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> binarySearch(target,arr,mid+<span class="number">1</span>,end);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> binarySearch(target,arr,start,mid<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 有序的二分查找，返回-1或存在的数组下标。不使用递归实现。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> start   = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> end     = arr.length<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (start&lt;=end)&#123;</span><br><span class="line">        <span class="keyword">var</span> mid = <span class="built_in">parseInt</span>(start+(end-start)/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span>(target==arr[mid])&#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;arr[mid])&#123;</span><br><span class="line">            start   = mid+<span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            end     = mid<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>&emsp;&emsp;写完有序，自然而然的想到了无序的情况如何使用二分查找呢？马上想到先使用快排分组，分好组再二分。代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无序的二分查找。返回true/false</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (arr.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//使用快速排序。以mid为中心划分大小，左边小，右边大。</span></span><br><span class="line">        <span class="keyword">var</span> left    = [];</span><br><span class="line">        <span class="keyword">var</span> right   = [];</span><br><span class="line">        <span class="comment">//选择第一个元素作为基准元素(基准元素可以为任意一个元素)</span></span><br><span class="line">        <span class="keyword">var</span> pivot   = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="comment">//由于取了第一个元素，所以从第二个元素开始循环</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;arr.length;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> item = arr[i];</span><br><span class="line">            <span class="comment">//大于基准的放右边，小于基准的放左边</span></span><br><span class="line">            item&gt;pivot ? right.push(item) : left.push(item);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//得到经过排序的新数组</span></span><br><span class="line">        <span class="keyword">if</span>(target==pivot)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;pivot)&#123;</span><br><span class="line">            arr     = right;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            arr     = left;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;写完用快速排序实现的无序二分查找，仔细想了一下该算法的时间复杂度，发现还不如直接一个for循环来得快……囧</p>
-<hr>
-<p>&emsp;&emsp;睡完一觉起来感觉也不是一无是处，这是一个用时间换空间的好办法，大规模问题下有助于节省内存开销。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/02/22/2017-02-22-JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/6/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/8/">Next &amp;raquo;</a>
@@ -1086,7 +1125,7 @@ var _hmt = _hmt || [];
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 YiYing
+    		&copy; 2021 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
