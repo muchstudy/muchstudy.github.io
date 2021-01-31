@@ -166,6 +166,107 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-12-10-设计模式系列之六命令模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/10/2016-12-10-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/10/2016-12-10-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2016-12-10T02:50:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>命令模式：</strong>将“请求”封装成对象，以便使用不同的请求、队列或者日志来参数化其他对象。命令模式也可支持可撤销的操作。</p>
+</blockquote>
+<p>&emsp;&emsp;有一个这样的业务逻辑，在客厅的进门处有一个开关面板，该面板上有两个开关，第一个开关是打开客厅的灯，第二个开关是打开客厅的电视。下面就来具体实现一下。  </p>
+<p>首先实现电视与灯:  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Light</span> </span>&#123;</span><br><span class="line">	String location = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Light</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.location = location;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">on</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;打开&quot;</span>+location+<span class="string">&quot;的灯&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">off</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;关闭&quot;</span>+location+<span class="string">&quot;的灯&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Television</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;打开电视&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;关闭电视&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="硬编码的方式实现开关面板功能"><a href="#硬编码的方式实现开关面板功能" class="headerlink" title="硬编码的方式实现开关面板功能"></a>硬编码的方式实现开关面板功能</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开关控制器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwitchControlOld</span> </span>&#123;</span><br><span class="line">	Light light = <span class="keyword">new</span> Light(<span class="string">&quot;客厅&quot;</span>);</span><br><span class="line">	Television television = <span class="keyword">new</span> Television();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//打开第一个开关</span></span><br><span class="line">		<span class="keyword">if</span>(solt==<span class="number">0</span>)&#123;</span><br><span class="line">			light.on();</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(solt==<span class="number">1</span>)&#123;</span><br><span class="line">			television.open();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">offButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//关闭第一个开关</span></span><br><span class="line">		<span class="keyword">if</span>(solt==<span class="number">0</span>)&#123;</span><br><span class="line">			light.off();</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(solt==<span class="number">1</span>)&#123;</span><br><span class="line">			television.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从上面可以看到，实现得十分的不友好，如果开关面板上再加个开关按钮就必须得再加一组判断。而且，开关控制面板跟具体的电器开关逻辑强耦合。</p>
+<h3 id="使用命令模式重新实现该逻辑"><a href="#使用命令模式重新实现该逻辑" class="headerlink" title="使用命令模式重新实现该逻辑"></a>使用命令模式重新实现该逻辑</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可以理解为这里为转接口的定义</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	<span class="comment">//运行</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//回退</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开灯命令</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LightOnCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Light light;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LightOnCommand</span><span class="params">(Light light)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.light = light;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		light.on();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		light.off();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//关灯命令</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LightOffCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Light light;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LightOffCommand</span><span class="params">(Light light)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.light = light;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		light.off();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		light.on();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打开电视</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TelevisionOnCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Television television;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TelevisionOnCommand</span><span class="params">(Television television)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.television = television;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.open();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//关闭电视</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TelevisionOffCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Television television;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TelevisionOffCommand</span><span class="params">(Television television)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.television = television;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.close();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.open();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用命令模式实现的开关控制器"><a href="#使用命令模式实现的开关控制器" class="headerlink" title="使用命令模式实现的开关控制器"></a>使用命令模式实现的开关控制器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开关控制器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwitchControl</span> </span>&#123;</span><br><span class="line">	Command[] onCommands = <span class="keyword">new</span> Command[<span class="number">2</span>];</span><br><span class="line">	Command[] offCommands = <span class="keyword">new</span> Command[<span class="number">2</span>];</span><br><span class="line">	<span class="comment">//把开关与具体要干的事情关联起来</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCommand</span><span class="params">(<span class="keyword">int</span> solt,Command onCommand,Command offCommand)</span> </span>&#123;</span><br><span class="line">		onCommands[solt] = onCommand;</span><br><span class="line">		offCommands[solt] = offCommand;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//按下开关</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		onCommands[solt].execute();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//回退</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">offButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		onCommands[solt].undo();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//有两个开关的开关控制器</span></span><br><span class="line">		SwitchControl control = <span class="keyword">new</span> SwitchControl();</span><br><span class="line">		<span class="comment">//把电灯逻辑绑定到第一个开关上</span></span><br><span class="line">		Light light = <span class="keyword">new</span> Light(<span class="string">&quot;客厅&quot;</span>);</span><br><span class="line">		control.setCommand(<span class="number">0</span>,<span class="keyword">new</span> LightOnCommand(light),<span class="keyword">new</span> LightOffCommand(light));</span><br><span class="line">		control.onButtonWasPressed(<span class="number">0</span>);		<span class="comment">//- 打印：打开客厅的灯</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//把电视逻辑绑定到第二个开关上</span></span><br><span class="line">		Television television = <span class="keyword">new</span> Television();</span><br><span class="line">		control.setCommand(<span class="number">1</span>,<span class="keyword">new</span> TelevisionOnCommand(television),<span class="keyword">new</span> TelevisionOffCommand(television));</span><br><span class="line">		control.onButtonWasPressed(<span class="number">1</span>);		<span class="comment">//- 打印：打开电视</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码中可以看到，对于开关控制面板来讲，它只需要按下开关并执行命令的<code>execute</code>方法，不需要知道每个电器的具体实现。  </p>
+<p>&emsp;&emsp;通过使用命令模式对代码的改造，让开关控制器跟具体电器的开/关彻底的解耦。如果想要在控制器上增加新的按钮，可以很方便的增加上去。使得代码更加清晰，易于扩展与维护。</p>
+<p>&emsp;&emsp;从命令模式的特性中可以看出，如果此时的需求变为按下一个开关需要同时打开灯与电视，那么只需要一个<code>command数组</code>即可。把<code>LightOnCommand</code>和<code>TelevisionOnCommand</code>放入其中，遍历调用<code>execute</code>。</p>
+<p>&emsp;&emsp;另外，在队列请求中大量的用到了命令模式。一个个的请求依次而来，接收端不需要知道每个请求的具体逻辑，只需要依次调用请求的<code>execute</code>方法即可完成请求的处理。  </p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">设计模式系列之五工厂模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/10/2016-12-10-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-12-06-设计模式系列之五工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1024,95 +1125,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/11/18/2016-11-18-Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2016-11-13-关于代码质量的一点思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/13/2016-11-13-%E5%85%B3%E4%BA%8E%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">关于代码质量的一点思考</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/13/2016-11-13-%E5%85%B3%E4%BA%8E%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2016-11-13T08:20:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;最近在做基础开发框架登录模块的重构，所以来谈一谈关于代码质量的思考。<br>&emsp;&emsp;进入正题之前，先吐槽一下，看看能不能引起一点共鸣。<br>&emsp;&emsp;之所以要重构这部分的代码，原因很简单，公司的测试团队通过压力测试发现登录这块有性能问题。同时，基于另外一个使用产品基础开发框架的团队需要在登录这块进行一些业务上的扩展。怀着激动的心情打开这块的相关代码，首先第一感觉就是杂乱无章，排版糟糕。没办法，要解决问题，还是得硬着头皮看下去。接着，从前端UI界面的输入到提交看起，发现代码相当的绕，很难看懂其中的逻辑。另外，其中还有大片的冗余拖沓代码。虽然整体功能逻辑完整的实现了，但是实现细节一团糟。毫不夸张的说，很多部分的代码完全属于技术验证阶段的代码。遇到这样的代码，我想很少能有人能静下心来完完整整的看完……</p>
-<p>下面说说我所认为的代码是怎么样的:  </p>
-<ol>
-<li>代码需要排版整洁干净、并且有清晰适当的注释，当打开代码源文件的瞬间，能给人一种赏心悦目的感觉。</li>
-<li>代码要简洁，不拖沓，不能为了封装而封装，为了面向对象而面向对象。重复功能的代码尽量封装成方法，杜绝成段成段的相同代码、冗余代码。</li>
-<li>代码的结构要清晰，让其他人能轻松的找到程序的入口，轻松摸清代码的整体脉络，并且不看每个方法中的具体内容，只需要看整个代码的骨骼即能了解程序的功能。</li>
-<li>模块与模块的对接部分要简洁。大部分情况为沟通不彻底或者相互对对方的模块缺乏基本的了解造成。</li>
-<li>注重代码的性能。这一块不仅需要从纯技术角度去考虑代码的性能，还需要深入的了解业务需求，往往一个灵光一闪的想法就能节约成片的代码、以简单的逻辑实现复杂的业务需求。</li>
-</ol>
-<p>一些思考：</p>
-<ol>
-<li>好的代码往往是经过不断的打磨产生的，一个精进的程序员应当具备一颗喜欢折腾代码的躁动的心。</li>
-<li>对于框架级的代码，越早重构越好，越往后拖所带来的成本越大。</li>
-<li>糟糕代码质量的代码后期维护成本不可估量，甚至会影响到后续新功能的开发，从这里真正能对比出一个优秀Programmer的价值。</li>
-<li>写代码也是一门艺术。一段完美精致代码的创造过程不亚于一件艺术品的创作过程。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Programmer//" class="article-tag-list-link color1">Programmer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/13/2016-11-13-%E5%85%B3%E4%BA%8E%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">展开全文 >></a>
         </p>
       
 
