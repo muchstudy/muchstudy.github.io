@@ -166,6 +166,81 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-模拟koa洋葱模型实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/26/%E6%A8%A1%E6%8B%9Fkoa%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0/">模拟koa洋葱模型实现</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/26/%E6%A8%A1%E6%8B%9Fkoa%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2020-08-26T06:32:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>koa洋葱模型即是注册的中间件采取先进后出的运行策略。</p>
+<img src="/2020/08/26/%E6%A8%A1%E6%8B%9Fkoa%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0/%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B.jpg" class="">
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">app.use(<span class="keyword">async</span> next =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.use(<span class="keyword">async</span> next =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异步函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            resolve(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        &#125;, <span class="number">3000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">app.use(<span class="keyword">async</span> next =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">let</span> res = <span class="keyword">await</span> fn(); <span class="comment">// 调用异步函数</span></span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">6</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.compose();</span><br></pre></td></tr></table></figure>
+
+<p>实现use与compose方法，预期输出如下结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">hello</span><br><span class="line">6</span><br><span class="line">4</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法实现"><a href="#方法实现" class="headerlink" title="方法实现"></a>方法实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = &#123;</span><br><span class="line">    middlewares: []</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建 use 方法</span></span><br><span class="line">app.use = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    app.middlewares.push(fn);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">app.compose = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 递归函数</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">index</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 如果所有中间件都执行完跳出</span></span><br><span class="line">        <span class="keyword">if</span> (index === app.middlewares.length) <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 取出第 index 个中间件并执行</span></span><br><span class="line">        <span class="keyword">const</span> middleware = app.middlewares[index];</span><br><span class="line">        <span class="comment">// 核心在这一行</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(middleware(<span class="function">() =&gt;</span> dispatch(index + <span class="number">1</span>)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 取出第一个中间件函数执行</span></span><br><span class="line">    dispatch(<span class="number">0</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/26/%E6%A8%A1%E6%8B%9Fkoa%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Promise重试功能实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1379,143 +1454,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-实际案例聊聊系统建模与面向对象设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/">实际案例聊聊系统建模与面向对象设计</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/" class="archive-article-date">
-  	<time datetime="2020-04-19T15:16:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%BB%A5%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1.jpg" class="">
-
-<blockquote>
-<p>什么样的设计才是最好的设计？<br>别问，问就是自己去体会……</p>
-</blockquote>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>PM同学组织了一场关于下单流程业务系统拆分的需求评审，整体功能为可线上售卖视频课，用户买完课之后可在线学习、不同的课程还包含线下实地培训等、学习完之后在线考试，颁发合格证书。</p>
-<p>实际上，该需求可分为两个部分来看</p>
-<ul>
-<li>售卖：通过各种渠道把各种各样的商品卖出去</li>
-<li>履约：完成不同商品与之对应的履约流程</li>
-</ul>
-<h2 id="已有的实现"><a href="#已有的实现" class="headerlink" title="已有的实现"></a>已有的实现</h2><img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B.png" class="">
-
-<p>从上图可以清晰的看到，左侧为售卖的各种商品，右侧为商品与之对应的履约流程。</p>
-<p>同时，每个商品对应一条独立的履约流程，商品之间可能存在相同的履约环节。</p>
-<h2 id="有什么问题？"><a href="#有什么问题？" class="headerlink" title="有什么问题？"></a>有什么问题？</h2><p>有什么问题得看从什么角度看</p>
-<p>如果从业务的角度看当然没啥问题，因为它能满足业务需求。</p>
-<p>但是，从系统设计角度看，存在如下几个问题</p>
-<ul>
-<li>要上架售卖新品类的商品，需要定制实现对应的履约流程</li>
-<li>已有商品履约流程调整，系统也需要做对应调整</li>
-<li>履约流程中的<strong>履约环节</strong>缺少复用性</li>
-</ul>
-<h2 id="业务抽象建模"><a href="#业务抽象建模" class="headerlink" title="业务抽象建模"></a>业务抽象建模</h2><img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E6%8A%BD%E8%B1%A1%E6%B5%81%E7%A8%8B.png" class="">
-
-<p>从上图中，可以看出如下几个改动点</p>
-<ul>
-<li>抽象了一个履约规则层，不同的商品对应不同的履约规则</li>
-<li>由<strong>履约规则</strong>串联起<strong>商品下单</strong>与<strong>订单履约</strong>，实现下单与履约的解耦</li>
-<li>订单履约模块可随意组合，以此完成履约流程</li>
-</ul>
-<p>相对与之前的设计，核心变更如下所示：</p>
-<img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E5%AF%B9%E6%AF%94.png" class="">
-
-<h2 id="有哪些好处？"><a href="#有哪些好处？" class="headerlink" title="有哪些好处？"></a>有哪些好处？</h2><p>通过这样的调整，好处很明显，完美的解决掉之前的问题</p>
-<ul>
-<li>上架新品类商品，无需对应开发与之的履约流程，新增履约配置即可</li>
-<li>已有商品履约流程调整，系统无需对应调整，只需修改履约配置即可</li>
-<li>因为实现了解耦，下单与履约相对独立，互不影响，履约部分可提供各种各样的履约单元组合实现履约流程</li>
-</ul>
-<h2 id="聊聊面向对象设计"><a href="#聊聊面向对象设计" class="headerlink" title="聊聊面向对象设计"></a>聊聊面向对象设计</h2><h3 id="面向对象的四大特性"><a href="#面向对象的四大特性" class="headerlink" title="面向对象的四大特性"></a>面向对象的四大特性</h3><ul>
-<li><strong>封装：</strong>独立模块只暴露对外接口，封装内部实现</li>
-<li><strong>抽象：</strong>例如上面抽象出来业务需求表象之下的履约规则层</li>
-<li><strong>继承：</strong>实现通用逻辑抽取，所有子类具有父类已实现的功能</li>
-<li><strong>多态：</strong>代码易扩展的利器，基于接口而不基于实现编程</li>
-</ul>
-<h3 id="面向对象的六大设计原则"><a href="#面向对象的六大设计原则" class="headerlink" title="面向对象的六大设计原则"></a>面向对象的六大设计原则</h3><ul>
-<li><strong>SRP 单一职责原则</strong>：每一个类、模块尽量做到职责单一</li>
-<li><strong>OCP 开闭原则</strong>：对扩展开放，对修改关闭</li>
-<li><strong>LSP 里式替换原则</strong>：即子类能够替换父类对象出现的任何地方，并且保证原来程序的逻辑行为不变或者说正确性不被破坏</li>
-<li><strong>DIP 依赖倒置原则</strong>：高层模块不依赖低层模块，它们共同依赖同一个抽象。抽象不要依赖具体实现细节，具体实现细节依赖抽象</li>
-<li><strong>ISP 接口隔离原则</strong>：意思即一个类不应该被强迫依赖它不需要的接口，即接口设计的时候不应该大而全，可做好分类，多使用接口组合</li>
-<li><strong>LOD 迪米特法则</strong>：核心在于降低类的耦合；不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口。迪米特法则是希望减少类之间的耦合，让类越独立越好。每个类都应该少了解系统的其他部分。一旦发生变化，需要了解这一变化的类就会比较少。</li>
-</ul>
-<p>其他还有</p>
-<ul>
-<li><strong>DRY原则</strong>（Don’t Repeat Yourself）</li>
-<li><strong>KISS原则</strong>（Keep It Simple and Stupid）</li>
-<li><strong>YAGNI原则</strong>（You Ain’t Gonna Need It）</li>
-</ul>
-<p>最后一个，我个人喜欢叫做<strong>不要加戏</strong>原则。</p>
-<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><p>设计模式更多的在于解决具体问题，我的体会是不要去套模式，多去思考怎么样去实现代码才会是最优解，当你这么做了之后，设计模式自然而然就会从你的代码里涌现出来。</p>
-<p>几年前翻了一遍《Head first 设计模式》一书，翻完的第一感受就是原来很多设计模式在实际代码中都用过，原来每个套路还有对应的名字…</p>
-<p>曾经整理了一个设计模式的系列文章，分别用Java与Javascript实现，在这里：</p>
-<p><a href="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">设计模式系列文章：</a><br><a href="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/</a></p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>工作得越久，越会不自觉的思考，十年一线老码农相对与工作四五年的正走上轨道且精力旺盛的生力军的核，心竞争力在哪里?</p>
-<p>可能就在于系统建模能力与面向对象设计能力上？</p>
-<p>在于哪些东西技术上能行，而实际上坑很深，敢于有所为有所不为上？</p>
-<p>不在于实现一个功能的快慢，而在于后续的持续迭代与维护成本上？</p>
-<p>软件开发说简单也简单，说复杂也复杂，复杂到无法量化精确评估它的好坏！</p>
-<p>什么样的设计才是最好的设计？</p>
-<p>别问，问就是自己去体会……</p>
-<div style="width:70%;margin:auto">
-<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/">展开全文 >></a>
         </p>
       
 

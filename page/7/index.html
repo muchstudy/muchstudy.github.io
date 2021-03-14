@@ -166,6 +166,104 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2017-04-30-排序算法07：三向快速排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/30/2017-04-30-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法07：三向快速排序</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/30/2017-04-30-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="archive-article-date">
+  	<time datetime="2017-04-30T14:07:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;在上一篇<a href="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法06：快速排序</a>中，可以知道，快速排序不停的递归切分数组。在有大量的重复元素情况下，这样的切分存在巨大的改进空间。三向切分的快速排序就是为了提升在有大量重复元素情况下快速排序的性能。</p>
+<p>&emsp;&emsp;快速排序把数组切分为两部分，分别对应与小于，大于切分元素的数组元素。而三向切分将数组切分为三部分，分别对应小于，等于，大于切分元素的数组元素。</p>
+<p>&emsp;&emsp;三向切分的快速排序的算法逻辑为：从左到右遍历数组一次，维护一个指针lt使得a[lo..lt-1]中的元素都小于v，一个指针gt使得a[gt+1..hi]中的元素都大于v，一个指针i使得a[gt..i-1]中的元素都等于v,a[i..gt]中的元素都还未确定。</p>
+<p><strong>三向切分的示意图：</strong></p>
+
+
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">quick3way</span>(<span class="params">a,lo,hi</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(hi&lt;=lo)&#123;<span class="keyword">return</span>;&#125;</span><br><span class="line">        <span class="keyword">var</span> lt=lo,i=lo+<span class="number">1</span>,gt=hi;</span><br><span class="line">        <span class="keyword">var</span> v = a[lo];              <span class="comment">//- 选择a[lo]为需要切分的元素</span></span><br><span class="line">        <span class="keyword">while</span> (i&lt;=gt)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a[i] &lt; v)&#123;</span><br><span class="line">                exch(a,lt++,i++)</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(a[i] &gt; v)&#123;</span><br><span class="line">                exch(a,i,gt--);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*程序运行到这里结果为:a[lo..lt-1] &lt; v &lt; a[gt+1,hi];其中v=a[lt..gt]*/</span></span><br><span class="line">        quick3way(a,lo,lt<span class="number">-1</span>);       <span class="comment">//- 对左侧（a[lo..lt-1]）进行排序</span></span><br><span class="line">        quick3way(a,gt+<span class="number">1</span>,hi);       <span class="comment">//- 对右侧(a[gt+1,hi])进行排序</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>三向切分的轨迹：</strong></p>
+
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><h3 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/30.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">quick3way</span>(<span class="params">a,lo,hi</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(hi&lt;=lo)&#123;<span class="keyword">return</span>;&#125;</span><br><span class="line">        <span class="keyword">var</span> lt=lo,i=lo+<span class="number">1</span>,gt=hi;</span><br><span class="line">        <span class="keyword">var</span> v = a[lo];              <span class="comment">//- 选择a[lo]为需要切分的元素</span></span><br><span class="line">        <span class="keyword">while</span> (i&lt;=gt)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a[i] &lt; v)&#123;</span><br><span class="line">                exch(a,lt++,i++)</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(a[i] &gt; v)&#123;</span><br><span class="line">                exch(a,i,gt--);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*程序运行到这里结果为:a[lo..lt-1] &lt; v &lt; a[gt+1,hi];其中v=a[lt..gt]*/</span></span><br><span class="line">        quick3way(a,lo,lt<span class="number">-1</span>);       <span class="comment">//- 对左侧（a[lo..lt-1]）进行排序</span></span><br><span class="line">        quick3way(a,gt+<span class="number">1</span>,hi);       <span class="comment">//- 对右侧(a[gt+1,hi])进行排序</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>a  数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exch</span>(<span class="params">a,m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = a[m];</span><br><span class="line">        a[m] = a[n];</span><br><span class="line">        a[n] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    W.Quick3way = <span class="function"><span class="keyword">function</span> (<span class="params">a</span>) </span>&#123;</span><br><span class="line">        quick3way(a,<span class="number">0</span>,a.length<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> chars = [<span class="string">&#x27;0&#x27;</span>,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;3&#x27;</span>,<span class="string">&#x27;4&#x27;</span>,<span class="string">&#x27;5&#x27;</span>,<span class="string">&#x27;6&#x27;</span>,<span class="string">&#x27;7&#x27;</span>,<span class="string">&#x27;8&#x27;</span>,<span class="string">&#x27;9&#x27;</span>,<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;E&#x27;</span>,<span class="string">&#x27;F&#x27;</span>,<span class="string">&#x27;G&#x27;</span>,<span class="string">&#x27;H&#x27;</span>,<span class="string">&#x27;I&#x27;</span>,<span class="string">&#x27;J&#x27;</span>,<span class="string">&#x27;K&#x27;</span>,<span class="string">&#x27;L&#x27;</span>,<span class="string">&#x27;M&#x27;</span>,<span class="string">&#x27;N&#x27;</span>,<span class="string">&#x27;O&#x27;</span>,<span class="string">&#x27;P&#x27;</span>,<span class="string">&#x27;Q&#x27;</span>,<span class="string">&#x27;R&#x27;</span>,<span class="string">&#x27;S&#x27;</span>,<span class="string">&#x27;T&#x27;</span>,<span class="string">&#x27;U&#x27;</span>,<span class="string">&#x27;V&#x27;</span>,<span class="string">&#x27;W&#x27;</span>,<span class="string">&#x27;X&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>,<span class="string">&#x27;Z&#x27;</span>];</span><br><span class="line">    <span class="keyword">var</span> arr = [];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">1000000</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> id = <span class="built_in">Math</span>.ceil(<span class="built_in">Math</span>.random()*<span class="number">35</span>);</span><br><span class="line">        arr[i] = chars[id];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.time(<span class="string">&quot;Quick3way&quot;</span>);</span><br><span class="line">    Quick3way(arr);      <span class="comment">//- chrome下一百万数据平均120ms,明显优于快速排序</span></span><br><span class="line">    <span class="built_in">console</span>.timeEnd(<span class="string">&quot;Quick3way&quot;</span>);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 三向快速排序（适用于重复元素较多的情况）</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> YiYing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@data</span> 2017年4月30日 下午10:34:09</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Quick3way</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (hi &lt;= lo) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> lt = lo, gt = hi;</span><br><span class="line">        Comparable v = a[lo];</span><br><span class="line">        <span class="keyword">int</span> i = lo;</span><br><span class="line">        <span class="keyword">while</span> (i &lt;= gt) &#123;</span><br><span class="line">            <span class="keyword">int</span> cmp = a[i].compareTo(v);</span><br><span class="line">            <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) exch(a, lt++, i++);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) exch(a, i, gt--);</span><br><span class="line">            <span class="keyword">else</span>              i++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//此时数组中的情况为：a[lo..lt-1] &lt; v = a[lt..gt] &lt; a[gt+1..hi].</span></span><br><span class="line">        sort(a, lo, lt-<span class="number">1</span>);		<span class="comment">//- 对左侧进行排序</span></span><br><span class="line">        sort(a, gt+<span class="number">1</span>, hi);		<span class="comment">//- 对右侧进行排序</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//交换 a[i]和a[j]的位置</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exch</span><span class="params">(Object[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        Object swap = a[i];</span><br><span class="line">        a[i] = a[j];</span><br><span class="line">        a[j] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(Integer[] a)</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.out.print(a[i]+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Integer[] arr = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">		Quick3way.sort(arr,<span class="number">0</span>,arr.length-<span class="number">1</span>);</span><br><span class="line">		Quick3way.show(arr);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>不稳定。</li>
+<li>原地排序。</li>
+<li>时间复杂度为介于N到NlogN之间</li>
+<li>空间复杂度为lgN</li>
+<li>经测试验证，在存在大量重复元素情况下，三向切分的快速排序的平均排序时间明显快于快速排序</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法06：快速排序</a><br>下一篇：<a href="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/">排序算法08：优先队列与堆排序</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/30/2017-04-30-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-04-29-排序算法06：快速排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1028,89 +1126,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/03/17/2017-03-17-nginx-tomcat-memcached%E9%85%8D%E7%BD%AEsession%E5%85%B1%E4%BA%AB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2017-03-14-JavaScript数组倒序算法与性能对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/14/2017-03-14-JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/">JavaScript数组倒序算法与性能对比</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/14/2017-03-14-JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/" class="archive-article-date">
-  	<time datetime="2017-03-14T03:38:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;最近正在撸算法第四版，关于JS中数组的倒序，想到如下几种实现方式。</p>
-<h2 id="for-push"><a href="#for-push" class="headerlink" title="for push"></a>for push</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = [],len=arr.length<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> right=len;right&gt;=<span class="number">0</span>;right--)&#123;</span><br><span class="line">        result.push(arr[right])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(result.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<h2 id="for-swap-half"><a href="#for-swap-half" class="headerlink" title="for swap half"></a>for swap half</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> left = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> right = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> length = array.length;</span><br><span class="line">    <span class="keyword">for</span> (left = <span class="number">0</span>; left &lt; length / <span class="number">2</span>; left += <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        right = length - <span class="number">1</span> - left;</span><br><span class="line">        <span class="keyword">var</span> temporary = array[left];</span><br><span class="line">        array[left] = array[right];</span><br><span class="line">        array[right] = temporary;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(array.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<h2 id="native-reverse"><a href="#native-reverse" class="headerlink" title="native reverse"></a>native reverse</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = arr.reverse();</span><br><span class="line">    <span class="built_in">console</span>.log(result.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><p>&emsp;&emsp;本来想再写一个性能测试的样例，在写之前感觉应该已经有人做过这件事了，所以Google了一下，找到Stackoverflow上<a   target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5276953/what-is-the-most-efficient-way-to-reverse-an-array-in-javascript"><strong>这篇答案</strong></a>，循着找到一个很全面的性能测试样例，点击<a target="_blank" rel="noopener" href="https://jsperf.com/js-array-reverse-vs-while-loop/66"><strong>这里</strong></a>。点击<strong>Run tests</strong>即能在对应的测试环境下测试各种算法的性能情况。</p>
-<p>在我本地环境（Testing in Chrome 56.0.2924 / Windows 10 0.0.0）的测试结果如图：</p>
-
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/14/2017-03-14-JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/">展开全文 >></a>
         </p>
       
 
