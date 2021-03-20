@@ -166,6 +166,83 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-12-12-jQuery-validator-addMethod-动态提示信息" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/12/2016-12-12-jQuery-validator-addMethod-%E5%8A%A8%E6%80%81%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF/">jQuery validator addMethod 动态提示信息</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/12/2016-12-12-jQuery-validator-addMethod-%E5%8A%A8%E6%80%81%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF/" class="archive-article-date">
+  	<time datetime="2016-12-12T07:22:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于jQuery validator addMethod自定义验证规则网络上大部分都是这样写的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.validator.addMethod(<span class="string">&#x27;PD_password&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = value.length;</span><br><span class="line">    <span class="keyword">if</span>(len&lt;<span class="number">6</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(len&gt;<span class="number">15</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;, <span class="string">&quot;密码必须在6-15位之间&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;现在，我想要更具体的提示信息，即能准确的提示到底是大于15位还是小于6位。在中文网页搜了一圈都没找到答案，最后在stackoverflow上找到了答案。想了想，感觉有必要把如何实现该需求分享一下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$.validator.addMethod(<span class="string">&#x27;PD_password&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = value.length;</span><br><span class="line">    <span class="keyword">if</span>(len&lt;<span class="number">6</span>)&#123;</span><br><span class="line">        $(element).data(<span class="string">&#x27;error-msg&#x27;</span>,<span class="string">&#x27;长度不能少于6位&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(len&gt;<span class="number">15</span>)&#123;</span><br><span class="line">        $(element).data(<span class="string">&#x27;error-msg&#x27;</span>,<span class="string">&#x27;长度不能大于15位&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">params, element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $(element).data(<span class="string">&#x27;error-msg&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/FrontEnd//" class="article-tag-list-link color4">FrontEnd</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/12/2016-12-12-jQuery-validator-addMethod-%E5%8A%A8%E6%80%81%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-12-11-Gulp合并requirejs并MD5文件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1074,103 +1151,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-2016-11-19-每一个优秀的人，都有一段默默努力的时光" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/19/2016-11-19-%E6%AF%8F%E4%B8%80%E4%B8%AA%E4%BC%98%E7%A7%80%E7%9A%84%E4%BA%BA%EF%BC%8C%E9%83%BD%E6%9C%89%E4%B8%80%E6%AE%B5%E9%BB%98%E9%BB%98%E5%8A%AA%E5%8A%9B%E7%9A%84%E6%97%B6%E5%85%89/">每一个优秀的人，都有一段默默努力的时光</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/19/2016-11-19-%E6%AF%8F%E4%B8%80%E4%B8%AA%E4%BC%98%E7%A7%80%E7%9A%84%E4%BA%BA%EF%BC%8C%E9%83%BD%E6%9C%89%E4%B8%80%E6%AE%B5%E9%BB%98%E9%BB%98%E5%8A%AA%E5%8A%9B%E7%9A%84%E6%97%B6%E5%85%89/" class="archive-article-date">
-  	<time datetime="2016-11-19T08:29:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-<p>&emsp;&emsp;“每一个优秀的人，都有一段默默努力的时光。”，在上班的地铁上，打开百词斩，这句话第一时间映入眼帘。</p>
-<p>&emsp;&emsp;还记得高中时，有一哥们儿经常被大家喷，什么原因呢？是这样的，这哥们儿各科成绩很好，另外，大家都知道这哥们儿很勤奋努力，每天晚自习回家都要背一下单词，复习一下第二天要学习的新知识点才睡觉。喜欢运动，一有空就叫人一起去篮球场打球。作业少，较轻松的时候，大家当然都很乐意跟他一起去投投篮什么的。当作业堆成小山的时候，这哥们儿每叫一次就会被喷一次，被喷的核心内容在于他自己的事情干完了就开始勾引其他人了……</p>
-<p>&emsp;&emsp;回想起当年高中时的日子，算得上是人生当中的一段努力时光。</p>
-<p>&emsp;&emsp;到了大学，高中时肩上那种沉重压力灰飞烟灭。放下担子，一路轻快的飞奔，沉醉在那自由自在的欢快时光中，无法自拔。然而，一个不经意间就到了毕业季……</p>
-<p>&emsp;&emsp;刚工作时，什么都不懂，觉得周围的人都是大神，感觉离他们之间有相当遥远的距离，可望而不可及。</p>
-<p>&emsp;&emsp;一次出差，到外地培训公司新招的实习生，在当地的讲师队伍中有一位喜欢吹牛逼讲师。他在给还没毕业的学弟学妹的讲课当中，常常吹嘘自己看了多少书，吹嘘自己看过市面上的所有心理学书籍，看过所有的关于超级记忆的书籍。听到“所有”这两字，我就呵呵了，不由得就跟“吹牛”划上了等号。在后来的慢慢接触当中，渐渐发现他思维开阔，懂的东西特别的多，不管什么内容不仅能扩展开了泛泛而谈，而且能深入直达本质。另外，他的确喜欢读书，经常看到他收快递，十有八九都是书。深入了解后，从他的口中了解到，他曾经喜欢研究心理学，所以才把市面上所有经典的心理学书籍都买来看，为了帮助小孩儿学英语，把市面上的所有关于超级记忆的书都买来看了一遍！了解到这些，不由得一阵惊叹！然后不理解的再问了一个问题，“也没必要把所有相关的书都买了吧？”，他给我的答案是：“<strong>在这个世界上，书是最廉价的东西，只要这本书中有一句话影响到你，对你有益。那么，这本书就没有白买，这种益处还是终生的！想想就觉得相当的赚。</strong>”。听到这个回答，再次被惊着，世界观被颠覆。</p>
-<p>&emsp;&emsp;在这次出差当中，正巧一位集团的副总裁在这边，顺便叫了过来给新招的实习生做一下分享，顺便让大家见见今后的领导。对于当时也属于新兵的我来说，这位领导如在云端，遥不可及。他从他的读书生涯讲起，讲他的高中时光，讲他的大学时光，讲他是怎么样从高中走进了清华的校园，然后怎么样从清华校园到出国学习，接着工作，然后一直到目前上市公司副总裁的位置。讲完他的人生履历，他总结道，其实，他并不聪明，只是比别人更努力而已。曾经由于期末成绩不好，在暑假发狠重学上学期的所有功课，周末一人泡在自习室，别人在尽情欢乐的时候他却泡在图书馆。<strong>因为没办法，没别人聪明，那就只有靠努力来补</strong>。最后，他希望大家都成为一个努力的人。听完他的分享，觉得他其实跟大家一样，都站在地上，并没有想象的那么遥远。</p>
-<p>&emsp;&emsp;在工作的这些年中，不乏一些名牌大学毕业、一些工作很多年头的同事。一些同事的确很聪明，经验很丰富。但另一些同事你会明显感觉到他过去的丰富履历跟目前工作能力不相符。而零星的一些过去履历不怎么闪耀的同事反而工作能力出众，他们的实际能力远远超出了过去平淡履历的客观印象。一个能够解释其中原因的逻辑为，一些人在很久以前即达到了人生的顶峰，然后慢慢的往下走。而另外一些人慢慢从波谷走出来，不断往顶峰攀登。大家上班的时间都是差不多的，在上班时间都需要为公司创造价值，很少有自己的时间。因此，可以肯定，在工作之外，那些不断向前的人应当远远不止一段默默努力的时光。</p>
-<p>&emsp;&emsp;曾经在知乎上回答过一个跟逆袭相关的问题，当时我的回答是，<strong>逆袭并不是一个偶然事件，而是一个量变产生质变的事件</strong>。本来就不聪明当然要比聪明的人下更多的功夫。聪明是天生优势，如果停止不前也是很容易被笨蛋超越的。知乎上面，还有一句广泛被大众所知的一句话：“以大多数人的努力程度，远远还没到拼天赋的时候！”</p>
-<p>&emsp;&emsp;最后，只想对自己说：“你一直在努力的路上，你的征途是知识的星辰大海。”</p>
-<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/19/2016-11-19-%E6%AF%8F%E4%B8%80%E4%B8%AA%E4%BC%98%E7%A7%80%E7%9A%84%E4%BA%BA%EF%BC%8C%E9%83%BD%E6%9C%89%E4%B8%80%E6%AE%B5%E9%BB%98%E9%BB%98%E5%8A%AA%E5%8A%9B%E7%9A%84%E6%97%B6%E5%85%89/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/10/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/12/">Next &amp;raquo;</a>
@@ -1333,6 +1313,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">工具类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工作思考</a>
               </li>
             
             <div class="clearfix"></div>
