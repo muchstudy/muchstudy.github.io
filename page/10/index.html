@@ -166,6 +166,95 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-12-25-设计模式系列之十三代理模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/25/2016-12-25-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">设计模式系列之十三代理模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/25/2016-12-25-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2016-12-25T07:40:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;代理模式可以理解为通过一个中间者来访问数据，比如我们通过代理来访问互联网，通过代理商购买游戏点卡等。这些都属于代理模式的设计思想。</p>
+
+
+<p>&emsp;&emsp;上图为代理模式的一般数据交互逻辑。在Java后台开发中，使用RMI调用远程数据既采用了代理模式。</p>
+<p>&emsp;&emsp;在我的实际开发中，以个人开发经验，使用代理模式最主要是为了解决如下两个问题:</p>
+<blockquote>
+<ol>
+<li>封装访问远程数据的具体实现逻辑。即客户端只需调用Proxy提供的方法即可，不关心数据从哪里取，本地or远程。</li>
+<li>提供一个统一的口径实现过滤。</li>
+</ol>
+</blockquote>
+<p>&emsp;&emsp;下面分享一个使用到代理模式设计思想的代码样例。需求是这样的，前后端分离，前端统一使用<code>$.ajax</code>来请求后端提供的RESTFULL服务。需要在框架层面做到系统级的异常处理，即开发人员不需再关心系统级的异常，只需要关注业务逻辑。<br>&emsp;&emsp;针对于该需求，明显是需要一个Proxy，通过一个Proxy来转发前后端的交互。或者说叫做数据请求过滤器的东西，来劫持所有的前端数据请求。最终的实现样例代码如下所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ajax方法clone</span></span><br><span class="line">    <span class="keyword">var</span> _ajax = $.ajax;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里相当于劫持了原生的$.ajax方法，通过劫持实现对请求的过滤，系统级异常的捕获</span></span><br><span class="line">    $.ajax = <span class="function"><span class="keyword">function</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//ajax deferred promise 保持原有promise操作</span></span><br><span class="line">        <span class="keyword">var</span> promise;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> _param = $.extend(&#123;&#125;, &#123;<span class="attr">autoWrap</span> : <span class="literal">true</span>&#125;, param);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果不需要默认的封装:autoWrap = false;</span></span><br><span class="line">        <span class="keyword">if</span> (!_param.autoWrap) &#123;</span><br><span class="line">            promise = _ajax(_param);</span><br><span class="line">            <span class="comment">//直接返回</span></span><br><span class="line">            <span class="keyword">return</span> promise;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//default ajax options</span></span><br><span class="line">        <span class="keyword">var</span> defaultOpts = &#123;</span><br><span class="line">            type: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            dataType: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">            cache: <span class="literal">false</span>,</span><br><span class="line">            headers: &#123;</span><br><span class="line">                <span class="string">&quot;CSRFToken&quot;</span> : getCSRFToken()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//deep extend</span></span><br><span class="line">        _param = $.extend(<span class="literal">true</span>, defaultOpts, _param);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//add timestamp</span></span><br><span class="line">        <span class="keyword">if</span> (!_param.cache) &#123;</span><br><span class="line">            <span class="keyword">var</span> _url = _param.url || <span class="string">&quot;&quot;</span>;</span><br><span class="line">            <span class="keyword">var</span> stamp = <span class="string">&quot;T=&quot;</span>+ <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</span><br><span class="line">            (_url.indexOf(<span class="string">&quot;?&quot;</span>) == <span class="number">-1</span>) ?( _url += <span class="string">&quot;?&quot;</span>+stamp):( _url += <span class="string">&quot;&amp;&quot;</span>+stamp);</span><br><span class="line">            _param.url = _url;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_param.success) &#123;</span><br><span class="line">            _param.callback = _param.success;</span><br><span class="line">            <span class="keyword">delete</span> _param.success;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        promise = _ajax($.extend(&#123;</span><br><span class="line">            success:<span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">var</span> code = response.status || response.code || <span class="string">&quot;200&quot;</span>;</span><br><span class="line">                <span class="comment">//如果是整形，转换为字符串</span></span><br><span class="line">                <span class="keyword">typeof</span>(code)==<span class="string">&quot;number&quot;</span> &amp;&amp; (code=code+<span class="string">&quot;&quot;</span>);</span><br><span class="line">                <span class="comment">//状态码控制</span></span><br><span class="line">                <span class="keyword">switch</span>(code)&#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;200&quot;</span>:</span><br><span class="line">                        <span class="comment">//数据转发</span></span><br><span class="line">                        <span class="keyword">if</span> (_param.callback) &#123;</span><br><span class="line">                             _param.callback(response);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;401&quot;</span>:</span><br><span class="line">                        <span class="comment">//需要认证：登录超时或未登录.Session超时，弹出登陆框，登录成功后继续业务逻辑。</span></span><br><span class="line">                        ReLogin(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                            $.ajax(param);</span><br><span class="line">                        &#125;);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;400&quot;</span>:</span><br><span class="line">                        alert(<span class="string">&quot;请求异常！&quot;</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;403&quot;</span>:</span><br><span class="line">                        alert(<span class="string">&quot;请求的资源未授权！&quot;</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;500&quot;</span>:</span><br><span class="line">                        alert(<span class="string">&quot;&lt;code&gt;500:&lt;/code&gt;服务器端异常,请联系管理员.&lt;br/&gt;&quot;</span>+(response.msg || response.message));</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">default</span> :</span><br><span class="line">                        alert(<span class="string">&quot;&lt;code&gt;&quot;</span>+code+<span class="string">&quot;:&lt;/code&gt;服务器端异常,请联系管理员.&lt;br/&gt;&quot;</span>+(response.msg || response.message));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            error:<span class="function"><span class="keyword">function</span>(<span class="params">XMLHttpRequest, textStatus, errorThrown</span>)</span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;ajax error:&quot;</span> + textStatus);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, _param));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> promise;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+
+<p>上一篇：<a href="http://muchstudy.com/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/25/2016-12-25-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-12-24-设计模式系列之十二状态模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -995,94 +1084,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/12/16/2016-12-16-%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2016-12-14-设计模式系列之七适配器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/14/2016-12-14-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/14/2016-12-14-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2016-12-14T13:37:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><strong>适配器模式：</strong>将一个类的接口，转换成客户期望的另一个接口。适配器让原本接口不兼容的类可以合作无间。</p>
-</blockquote>
-<p>&emsp;&emsp;对于适配器模式，实际上就是一个转接口的概念。比如iphone7的耳塞必须通过转接才能适配，比如水货笔记本的插头必须通过一个转接口才能适配国内的插座等。下面通过代码来具体认识一下适配器模式。</p>
-<h3 id="原始接口"><a href="#原始接口" class="headerlink" title="原始接口"></a>原始接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原始接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OldInterface</span> </span>&#123;</span><br><span class="line">	<span class="comment">//原始方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">oldWay</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OldWay</span> <span class="keyword">implements</span> <span class="title">OldInterface</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">oldWay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		System.out.println(<span class="string">&quot;This is old way.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="新接口"><a href="#新接口" class="headerlink" title="新接口"></a>新接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//目前的新接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NewInterface</span> </span>&#123;</span><br><span class="line">	<span class="comment">//以新方法去干一件事情</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">newWay</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用适配器适配原始接口"><a href="#使用适配器适配原始接口" class="headerlink" title="使用适配器适配原始接口"></a>使用适配器适配原始接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过适配器，使用新接口去调用老接口的方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adapter</span> <span class="keyword">implements</span> <span class="title">NewInterface</span></span>&#123;</span><br><span class="line">	OldInterface old;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Adapter</span><span class="params">(OldInterface old)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.old = old;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">newWay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		old.oldWay();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		OldWay old = <span class="keyword">new</span> OldWay();</span><br><span class="line">		<span class="comment">//通过适配，使用新接口去调用老接口</span></span><br><span class="line">		Adapter adapter = <span class="keyword">new</span> Adapter(old);</span><br><span class="line">		<span class="comment">//打印：This is old way.</span></span><br><span class="line">		adapter.newWay();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;通过上述代码，可以很清晰的理解适配器模式的核心思想。适配器模式大量存在与新旧代码兼容，以及如今的前后端分离中的数据接口对接部分。</p>
-<p>上一篇：<a href="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/14/2016-12-14-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
