@@ -166,6 +166,160 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-08-20-HTTP连接管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/20/2016-08-20-HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/">HTTP连接管理</a>
+    </h1>
+  
+
+        
+        <a href="/2016/08/20/2016-08-20-HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2016-08-20T09:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>&emsp;&emsp;曾经有同事给我说有客户问她我们的产品是否支持长连接，听到这问题，我告诉她长连接可以通过websocket来实现，考虑到目前的浏览器兼容性，大部分时候采用客户端轮询来曲线救国。当了解到HTTP的keep-alive时，不禁回想起这件事，当初我的回答可能并不是客户想要的的答案！</p>
+</blockquote>
+<p>&emsp;&emsp;下面，分享一下HTTP连接的一些情况，所有的截图均来自《HTTP权威指南》。想更详细了解的可以直接去看这本书的第四章，更深入的可以去翻翻RFC文档以及TCP/IP协议。有大部头恐惧症，以及只希望能有个初步以及概要性的了解的，接下来的内容很适合您!</p>
+<h3 id="一、HTTP连接的过程"><a href="#一、HTTP连接的过程" class="headerlink" title="一、HTTP连接的过程"></a>一、HTTP连接的过程</h3>
+
+<blockquote>
+<p> &emsp;&emsp;上图为从客户端-服务器端-客户端交互的整个过程。接下来介绍在这个交互过程中影响性能因素的几个关键点。</p>
+</blockquote>
+<h3 id="二、连接中的性能聚焦区域"><a href="#二、连接中的性能聚焦区域" class="headerlink" title="二、连接中的性能聚焦区域"></a>二、连接中的性能聚焦区域</h3><h4 id="HTTP事务的时延"><a href="#HTTP事务的时延" class="headerlink" title="HTTP事务的时延"></a>HTTP事务的时延</h4>
+
+<p>HTTP 事务的时延有以下几种主要原因：  </p>
+<ol>
+<li>客户端首先需要根据URI确定Web服务器的IP地址和端口号。</li>
+<li>接下来，客户端会向服务器发送一条 TCP 连接请求， 并等待服务器回送一个请求接受应答。</li>
+<li>一旦连接建立起来了，客户端就会通过新建立的 TCP 管道来发送 HTTP 请求。</li>
+<li>最后，Web 服务器会回送 HTTP 响应。</li>
+</ol>
+<blockquote>
+<p> &emsp;&emsp;这些TCP网络时延的大小取决于硬件速度、网络和服务器的负载，请求和响应报文的尺寸，以及客户端和服务器之间的距离。</p>
+</blockquote>
+<h4 id="TCP连接的握手时延"><a href="#TCP连接的握手时延" class="headerlink" title="TCP连接的握手时延"></a>TCP连接的握手时延</h4><p>&emsp;&emsp;TCP连接的握手时延对应于上图的建立连接部分。发送任意数据，当新建立一条TCP连接时，都会走一下如下握手过程。如果连接只用来传送少量数据，这些握手过程就会严重降低 HTTP 的性能。</p>
+
+
+<p>TCP 连接握手需要经过以下几个步骤：  </p>
+<ol>
+<li>请求新的 TCP 连接时， 客户端要向服务器发送一个小的 TCP 分组（ 通常是 40 ～60 个字节）。 这个分组中设置了一个特殊的 SYN 标记，说明这是一个连接请求。（a部分）</li>
+<li>如果服务器接受了连接，就会对一些连接参数进行计算，并向客户端回送一个TCP 分组，这个分组中的 SYN 和 ACK 标记都被置位，说明连接请求已被接受。（b部分）</li>
+<li>最后， 客户端向服务器回送一条确认信息， 通知它连接已成功建立（c部分）</li>
+</ol>
+<blockquote>
+<p>这部分对用户不可见</p>
+</blockquote>
+<h4 id="TCP慢启动"><a href="#TCP慢启动" class="headerlink" title="TCP慢启动"></a>TCP慢启动</h4><p>&emsp;&emsp;TCP 连接会随着时间进行自我“ 调谐”， 起初会限制连接的最大速度， 如果数据成功传输， 会随着时间的推移提高传输的速度。 这种调谐被称为 TCP 慢启动（ slow start）， 用于防止因特网的突然过载和拥塞。<br>&emsp;&emsp;由于存在这种拥塞控制特性， 所以新连接的传输速度会比已经交换过一定量数据的、“ 已调谐” 连接慢一些。</p>
+<h3 id="三、HTTP连接的处理"><a href="#三、HTTP连接的处理" class="headerlink" title="三、HTTP连接的处理"></a>三、HTTP连接的处理</h3><h4 id="1-并行连接"><a href="#1-并行连接" class="headerlink" title="1.并行连接"></a>1.并行连接</h4><p> &emsp;&emsp;试想，当浏览器加载一个页面时，如果一个个HTTP请求都串行执行，那显示出这个页面将会奇慢无比。</p>
+<p>下面用两个图来做个对比：  </p>
+
+
+
+
+<p>&emsp;&emsp;打开大量连接会消耗很多内存资源，从而引发自身的性能问题。复杂的Web页面可能会有数十或数百个内嵌对象。客户端可能可以打开数百个连接，但 Web 服务器通常要同时处理很多其他用户的请求， 所以很少有 Web 服务器希望出现这样的情况。 一百个用户同时发出申请， 每个用户打开 100 个连接， 服务器就要负责处理10000个连接。 这会造成服务器性能的严重下降。</p>
+<blockquote>
+<p> &emsp;&emsp;实际上，浏览器确实使用了并行连接,但它们会将并行连接的总数限制为一个较小的值（通常是4个）。之前看baidu的webuploader的设计文档，经过测试，当文件分片上传时，建议开始的线程为3个。<br>&emsp;&emsp;地址在<a href="http://fex.baidu.com/blog/2014/04/html5-uploader/?qq-pf-to=pcqq.c2c" target="_blank">这里</a>,更详细的在<a href="https://github.com/fex-team/webuploader/tree/research/experiment" target="_blank">这里</a>，上面的目录里也还有一些</p>
+</blockquote>
+<h4 id="2-持久连接"><a href="#2-持久连接" class="headerlink" title="2.持久连接"></a>2.持久连接</h4><p>&emsp;&emsp;HTTP/1.1（以及 HTTP/1.0 的各种增强版本）允许 HTTP 设备在事务处理结束之后将 TCP 连接保持在打开状态， 以便为未来的 HTTP 请求重用现存的连接。 在事务处理结束之后仍然保持在打开状态的 TCP 连接被称为持久连接。 非持久连接会在每个事务结束之后关闭。持久连接会在不同事务之间保持打开状态， 直到客户端或服务器决定将其关闭为止。<br>&emsp;&emsp;持久连接降低了时延和连接建立的开销，将连接保持在已调谐状态， 而且减少了打开连接的潜在数量。</p>
+<p>持久连接有两种类型：</p>
+<ol>
+<li>HTTP/1.0+ “keep-alive”连接</li>
+<li>HTTP/1.1 “persistent”连接</li>
+</ol>
+<h5 id="HTTP-1-0-keep-alive连接"><a href="#HTTP-1-0-keep-alive连接" class="headerlink" title="HTTP/1.0+ keep-alive连接"></a>HTTP/1.0+ keep-alive连接</h5><p> &emsp;&emsp;实现 HTTP/1.0 keep-alive 连接的客户端可以通过包含 <code>Connection: Keep-Alive</code>首部请求将一条连接保持在打开状态。<br>&emsp;&emsp;如果服务器愿意为下一条请求将连接保持在打开状态，就在响应中包含相同的首部。如果响应中没有 Connection: Keep-Alive 首部， 客户端就认为服务器不支持 keep-alive， 会在发回响应报文之后关闭连接。</p>
+
+
+<blockquote>
+<p> &emsp;&emsp;上图中将在串行连接上实现 4 个HTTP 事务的时间线与在一条持久连接上实现同样事务所需的时间线进行了比较。由于去除了进行连接和关闭连接的开销， 所以时间线有所缩减。</p>
+</blockquote>
+<h6 id="keep-alive选项："><a href="#keep-alive选项：" class="headerlink" title="keep-alive选项："></a>keep-alive选项：</h6><p>例如：<code>Keep-Alive: max=5, timeout=120</code>  </p>
+<ol>
+<li>参数 timeout 是在 Keep-Alive 响应首部发送的。 它估计了服务器希望将连接保持在活跃状态的时间。 这并不是一个承诺值。</li>
+<li>参数 max 是在 Keep-Alive 响应首部发送的。 它估计了服务器还希望为多少个事务保持此连接的活跃状态。 这并不是一个承诺值。</li>
+<li>Keep-Alive 首部还可支持任意未经处理的属性， 这些属性主要用于诊断和调试。语法为 name [=value]。</li>
+</ol>
+<blockquote>
+<p> &emsp;&emsp;在 HTTP/1.0 中，keep-alive 并不是默认使用的。客户端必须发送一个<code>Connection: Keep-Alive</code>请求首部来激活 keep-alive 连接。</p>
+</blockquote>
+<h5 id="HTTP-1-1-persistent连接"><a href="#HTTP-1-1-persistent连接" class="headerlink" title="HTTP/1.1 persistent连接"></a>HTTP/1.1 persistent连接</h5><p>&emsp;&emsp;HTTP/1.1 逐渐停止了对 keep-alive 连接的支持， 用一种名为持久连接（persistent connection） 的改进型设计取代了它。<br>&emsp;&emsp;与 HTTP/1.0+ 的 keep-alive 连接不同， HTTP/1.1 持久连接在默认情况下是激活的。 除非特别指明， 否则 HTTP/1.1 假定所有连接都是持久的。 要在事务处理结束之后将连接关闭， HTTP/1.1 应用程序必须向报文中显式地添加一个<code>Connection:close</code>首部。 这是与以前的 HTTP 协议版本很重要的区别， 在以前的版本中， keep-alive 连接要么是可选的，要么根本就不支持.<br>&emsp;&emsp;这种连接相当于是在HTTP/1.1之上默认开启keep-alive</p>
+<h4 id="3-管道化连接"><a href="#3-管道化连接" class="headerlink" title="3.管道化连接"></a>3.管道化连接</h4><p>&emsp;&emsp;HTTP/1.1 允许在持久连接上可选地使用请求管道。 这是相对于 keep-alive 连接的又一性能优化。 在响应到达之前， 可以将多条请求放入队列。当第一条请求通过网络流向地球另一端的服务器时， 第二条和第三条请求也可以开始发送了。 在高时延网络条件下， 这样做可以降低网络的环回时间，提高性能。  </p>
+
+
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>&emsp;&emsp;随着HTTP协议版本以及浏览器版本的不断升级更新，以上这些针对HTTP连接性能优化的选项基本上都实现了自动化、智能化。所以，大家了解了解就好，被人问到避免出现我之前的尴尬境况。<br>&emsp;&emsp;把这块弄清楚并整理出来后，强迫症减轻了不少……</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HTTP连接</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/HTTP//" class="article-tag-list-link color5">HTTP</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/08/20/2016-08-20-HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-08-20-HTTP状态码详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1507,94 +1661,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-博客开通" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/13/%E5%8D%9A%E5%AE%A2%E5%BC%80%E9%80%9A/">博客开通</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/13/%E5%8D%9A%E5%AE%A2%E5%BC%80%E9%80%9A/" class="archive-article-date">
-  	<time datetime="2016-08-13T09:54:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;个人博客开通。<br>&emsp;&emsp;曾经觉得自己还没能力写出高质量的文章，所以一直未开通博客。在网络上获取的知识多了之后，慢慢的觉得即使不能写出高质量的文章，只要把自己知道的东西分享出来，总会帮助到一些人，避免走弯路耗费大量时间。<br>&emsp;&emsp;希望分享的内容对你有所帮助。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/13/%E5%8D%9A%E5%AE%A2%E5%BC%80%E9%80%9A/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/13/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span>
+      <a class="extend prev" rel="prev" href="/page/13/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/15/">Next &amp;raquo;</a>
     </nav>
   
 
