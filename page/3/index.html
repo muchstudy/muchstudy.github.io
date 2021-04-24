@@ -166,6 +166,86 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-两个“跑路”级别BUG复盘" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/">两个“跑路”级别BUG复盘</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/" class="archive-article-date">
+  	<time datetime="2020-06-02T13:08:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="自动登录越权"><a href="#自动登录越权" class="headerlink" title="自动登录越权"></a>自动登录越权</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>小程序原生跳转到webview的H5页面时，需要打通用户登录；此时需要在跳转的URL上带上临时token，通过临时token换取登录cookie。</p>
+<p>实现的方案为通过Node服务的拦截器，自动拦截小程序环境中的H5页面请求，自动设置上cookie。</p>
+<h3 id="问题-amp-原因"><a href="#问题-amp-原因" class="headerlink" title="问题&amp;原因"></a>问题&amp;原因</h3><p>自动登录相关的逻辑封装在AutoLogin类中，如下所示</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自动登录相关</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoLogin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span> () &#123;</span><br><span class="line">    <span class="built_in">this</span>.ctx = <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  init (ctx) &#123;</span><br><span class="line">    <span class="built_in">this</span>.ctx = ctx</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 触发条件</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  trackRule () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 自动登录逻辑</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">res</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> autoLogin () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 自动退出登录逻辑</span></span><br><span class="line"><span class="comment">   * 备注：当实现小程序跳H5自动登录后，此时小程序退出登录，需同时保证H5页面也退出登录</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> autoLogout () &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">new</span> AutoLogin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>核心原因在于<code>this.ctx = ctx</code>这一行，这行代码意味着在内存中持有了koa的ctx对象，当并发场景，会造成第一个请求链路还未完结时，ctx被替换为第二个请求的上下文对象了，从而造成header中的cookie信息不对，权限错乱。</p>
+<h2 id="类型异常"><a href="#类型异常" class="headerlink" title="类型异常"></a>类型异常</h2><h3 id="问题-amp-原因-1"><a href="#问题-amp-原因-1" class="headerlink" title="问题&amp;原因"></a>问题&amp;原因</h3><p>问题代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Object.entries(config.proxy).map(([path, target]) &#x3D;&gt; &#123;</span><br><span class="line">        let &#123; url, login, intercept, extParams &#125; &#x3D; this.getProxyParams(target)</span><br><span class="line">        this.addRouter(&#123;</span><br><span class="line">          routerPath: &#96;$&#123;routerRoot&#125;$&#123;path&#125;&#96;,</span><br><span class="line">          target: url,</span><br><span class="line">          callback: async ctx &#x3D;&gt; &#123;</span><br><span class="line">            &#x2F;&#x2F; 支持extParams为function类型,传入ctx方便从request中获取数据</span><br><span class="line">            extParams &#x3D; Object.assign(&#123;&#125;, typeof (extParams) &#x3D;&#x3D;&#x3D; &#39;function&#39; ? extParams(ctx) : extParams)</span><br><span class="line">            &#x2F;&#x2F; 登录校验</span><br><span class="line">            if (login) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            &#x2F;&#x2F; 接口透传</span><br><span class="line">            await proxy.launch(&#123; url, reqParams &#125;, ctx)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>问题在于这一行代码<code>extParams = Object.assign(&#123;&#125;, typeof (extParams) === &#39;function&#39; ? extParams(ctx) : extParams)</code></p>
+<p>第一次请求的时候extParams为function类型，正常运行；第二次进来由于extParams已经变为了Object类型了，所以这段代码当第二个人请求进来时，永远都是运行的false逻辑，也就是第一个人ctx中的内容。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><ul>
+<li>在Node服务中，切忌保存上下文对象，尽量不要持有跟用户相关的非全局信息</li>
+<li>缺少TS的场景下，注意JS的类型</li>
+</ul>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-记一次Node线上服务迁移" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1447,105 +1527,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/14/2020-03-14-%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-人生中唯一的2019" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/17/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842019/">人生中唯一的2019</a>
-    </h1>
-  
-
-        
-        <a href="/2020/01/17/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842019/" class="archive-article-date">
-  	<time datetime="2020-01-17T09:53:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="2019"><a href="#2019" class="headerlink" title="2019"></a>2019</h3><h4 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h4><ul>
-<li>获得了2019年度优秀员工，公司组织去了一趟巴厘岛，感谢被认可</li>
-<li>这一年以来，把负责的保洁业务线业务梳理清晰，人员结构相对合理</li>
-<li>今年最后一个季度调整到职业培训业务线，面临新的挑战（新团队搭建+爆发式的业务需求）</li>
-<li>从0到1搭建前端监控平台：实现HTTP异常监控、页面性能监控，从收集、存储、分析、可视化全流程自建</li>
-<li>绩效从Q1-Q3保持全A，Q4B+，从入职连续保持6个季度全A记录，如果加上2018年的年度绩效A，则为连续7A，证明从干了接近8年的传统行业转到互联网公司，从传统行业的业务系统架构师转到互联网公司的前端开发还算成功</li>
-<li>职级晋升成功，由T5晋升到T6，离之前在传统行业里的高级系统架构师职级还差一级，希望来年能更上一层楼</li>
-</ul>
-<h4 id="个人"><a href="#个人" class="headerlink" title="个人"></a>个人</h4><ul>
-<li>读书：《大型网站技术架构》《月亮与六便士》《如何阅读一本书》《棋王》</li>
-<li>今年读书变少了，大部分时间投入到了极客时间的专栏上：《数据结构与算法之美》《Elasticsearch核心技术与实战》《重学前端》《从0打造音视频直播系统》，买了还没看的有：《从0开始学为服务》《设计模式之美》《Java核心技术面试精讲》，希望新的一年能够撸一遍</li>
-<li>今年带着家人去了这么几个地方：天津、苏州、曼谷&amp;普吉岛；公司团建去了一趟山西（悬空寺-恒山-应县木塔-云冈石窟）</li>
-<li>在接近年底的时候开通了个人公众号，与维护了3年的博客保持同步</li>
-</ul>
-<h3 id="2020"><a href="#2020" class="headerlink" title="2020"></a>2020</h3><h4 id="工作-1"><a href="#工作-1" class="headerlink" title="工作"></a>工作</h4><ul>
-<li>完成职业培训业务线团队的搭建，打造有战斗力、有影响力的团队</li>
-<li>支撑职培业务走上正轨</li>
-<li>前端监控体系完善</li>
-<li>希望能做到一半时间团队管理、一半时间coding，理想状态为团队强大稳定，有大把的时间可投入到想做的技术坑里不起来。。。</li>
-</ul>
-<h4 id="个人-1"><a href="#个人-1" class="headerlink" title="个人"></a>个人</h4><ul>
-<li>英语学习得捡起来了,定个小目标，每天新记3个单词，一年1000</li>
-<li>每个季度至少阅读一本书</li>
-<li>刷完极客时间里已购买的专栏</li>
-<li>今年博客写得也相对较少了，今年得加油，多沉淀总结,尽量保持每月一篇</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/01/17/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842019/">展开全文 >></a>
         </p>
       
 

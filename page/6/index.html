@@ -166,6 +166,93 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2018-01-08-专研精神是技术人员成长的源动力" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/08/2018-01-08-%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/">专研精神是技术人员成长的源动力</a>
+    </h1>
+  
+
+        
+        <a href="/2018/01/08/2018-01-08-%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/" class="archive-article-date">
+  	<time datetime="2018-01-08T07:10:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;前几天，项目中的开发人员向研发组提交了这样一个问题，发现在PC中使用搜狗输入法时，输入完成敲击回车按钮无法触发输入框的查询事件。同样，另外一个组件在IOS系统中，使用IOS原生的输入法也存在该问题。</p>
+<p>&emsp;&emsp;针对该问题我跟踪了一下，发现当使用搜狗输入法时，光标虽然在input框里，但是输入的内容却在输入法提供的浮动窗口中，输入结束，敲击空格或回车，此时才把输入的内容放入input框中。</p>
+<p>&emsp;&emsp;查看了该组件的实现代码，发现该组件是监听的keyup事件，以及监听了input的回车事件来实现输入完成后的自动查询。经过分析，使用搜狗输入法输入时，由于输入法有自己的弹出框，所有事件均在这个弹出框上，输入完成敲击回车或空格时同样也是，所以无法触发组件的input框事件。对于此种情况，考虑给input框绑定onchange事件来解决该问题，但是onchange事件必须要input框失去焦点才会触发。由此看起来，似乎已经没有什么好的解决办法了，于是乎就考虑到能否在input的输入框里加一个小的查询按钮来解决该问题。</p>
+<p>&emsp;&emsp;我把该分析过程以及产品组这边暂定的解决方案告诉了相关技术人员，让他们等候产品组这边的组件更新。本来想着这件事就告一段落，他们只需要等着产品组这边的更新即可了。但是，到了第二天下午，我收到一个amazing的消息，发现该问题的开发人员告诉我说已经自行解决了该问题，并且在产品组提供的组件上修改完成并做了有效性验证！让我这边再去看一下那样修改是否合适！</p>
+<p>&emsp;&emsp;最终是解决方案是使用HTML5的<code>oninput</code>与IE专属的<code>onpropertychange</code>来解决该问题。这篇帖子已经阐述得很详细了，这里就不在详细描述了。<a href="http://www.cnblogs.com/lhb25/archive/2012/11/30/oninput-and-onpropertychange-event-for-input.html" target="_blank">在这里</a>，截图如下：</p>
+
+
+<p>对于这件事有如下几点感想：</p>
+<ul>
+<li>技术人员的技术成长，不仅取决与多看书多看资料与文档，还取决于碰到问题不放弃的专研精神。同时，这股力量还会鞭策你多去了解你不懂的东西，弄懂之后发现更多的不懂，形成良好的正向循环。所以，毫不夸张的说<strong>专研精神是技术人员成长的源动力。</strong></li>
+<li>懈怠、满于现有解决方案而不更深入的去探求更完美的方案，是我这边在这个问题上没有走得更远的根本原因。</li>
+<li>团队中需要更多这样的技术人员，<strong>思想的碰撞才能产生更多的火花</strong>。同时技术人员之间需要更多的技术分享与沟通，<strong>独立的思想注定会是孤独的</strong>。</li>
+</ul>
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/01/08/2018-01-08-%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-12-31-人生中唯一的2017" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -955,91 +1042,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/07/02/2017-07-02-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8403%EF%BC%9A%E6%A0%88/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2017-06-30-基础数据结构02：队列" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/30/2017-06-30-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8402%EF%BC%9A%E9%98%9F%E5%88%97/">基础数据结构02：队列</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/30/2017-06-30-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8402%EF%BC%9A%E9%98%9F%E5%88%97/" class="archive-article-date">
-  	<time datetime="2017-06-30T15:49:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>&emsp;&emsp;队列是一种先进先出的数据结构。类似于一截水从一端流向另一端的水管，先进入水管的水最先从另一端出来。</p>
-<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2>
-
-<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><p>&emsp;&emsp;下面使用链表来实现先进先出的数据结构。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs.base;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkQueue</span>&lt;<span class="title">Item</span>&gt; <span class="keyword">implements</span> <span class="title">Iterable</span>&lt;<span class="title">Item</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Node first;		<span class="comment">// 指向最早添加的节点的链接</span></span><br><span class="line">	<span class="keyword">private</span> Node last;		<span class="comment">// 指向最近添加的节点的链接</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> N;			<span class="comment">// 队列中的元素总数量</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 队列中的一个元素</span></span><br><span class="line">	<span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>&#123;</span><br><span class="line">		Item item;</span><br><span class="line">		Node next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> N==<span class="number">0</span>;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> N;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 向队列中添加一个元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Item item)</span></span>&#123;</span><br><span class="line">		<span class="comment">// 向链表的尾部添加一个元素</span></span><br><span class="line">		Node oldLast = last;</span><br><span class="line">		last = <span class="keyword">new</span> Node();</span><br><span class="line">		last.item = item;</span><br><span class="line">		last.next = <span class="keyword">null</span>;</span><br><span class="line">		<span class="comment">//只有一个节点时，首节点和尾节点相等</span></span><br><span class="line">		<span class="keyword">if</span>(isEmpty()) 	first = last;</span><br><span class="line">		<span class="keyword">else</span>			oldLast.next = last;</span><br><span class="line">		N++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//从队列中删除一个元素(先进先出)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Item <span class="title">dequeue</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(first==<span class="keyword">null</span>)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;队列中没有元素&quot;</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 从表头删除元素</span></span><br><span class="line">		Item item = first.item;</span><br><span class="line">		first = first.next;</span><br><span class="line">		<span class="keyword">if</span>(isEmpty())	last = <span class="keyword">null</span>;</span><br><span class="line">		N--;</span><br><span class="line">		<span class="keyword">return</span> item;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterator&lt;Item&gt; <span class="title">iterator</span><span class="params">()</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ListIterator();  </span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//链表遍历实现</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ListIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">Item</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Node current = first;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span>  </span>&#123; <span class="keyword">return</span> current != <span class="keyword">null</span>;                     &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span>      </span>&#123; <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Item <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!hasNext()) <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">            Item item = current.item;</span><br><span class="line">            current = current.next;</span><br><span class="line">            <span class="keyword">return</span> item;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    	LinkQueue&lt;String&gt; queue = <span class="keyword">new</span> LinkQueue&lt;String&gt;();</span><br><span class="line">    	queue.enqueue(<span class="string">&quot;One&quot;</span>);</span><br><span class="line">    	queue.enqueue(<span class="string">&quot;two&quot;</span>);</span><br><span class="line">    	queue.enqueue(<span class="string">&quot;three&quot;</span>);</span><br><span class="line">		<span class="keyword">for</span>(String node:queue)&#123;</span><br><span class="line">			<span class="comment">//打印结果为：One-&gt;two-&gt;three-&gt;</span></span><br><span class="line">			System.out.print(node+<span class="string">&quot;-&gt;&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//删除一个元素</span></span><br><span class="line">		System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">		<span class="comment">//打印结果为：node:One</span></span><br><span class="line">		System.out.println(<span class="string">&quot;node:&quot;</span>+queue.dequeue());</span><br><span class="line">		<span class="keyword">for</span>(String node1:queue)&#123;</span><br><span class="line">			<span class="comment">//打印结果为：two-&gt;three-&gt;</span></span><br><span class="line">			System.out.print(node1+<span class="string">&quot;-&gt;&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&emsp;&emsp;对于队列的实现，除了可以使用链表，还可以使用数组来实现。但是在Java中的数组，初始化时必须指定数组的大小，所以当使用数组来实现队列时，需要动态调整队列的大小。<br>&emsp;&emsp;当数组空间不够时，需要扩展空间。当队列中的元素只有空间的四分之一时，此时可以把数组的长度减半。</p>
-<p>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以数组来实现队列或栈时需动态调整数组的大小</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resize</span><span class="params">(<span class="keyword">int</span> max)</span></span>&#123;</span><br><span class="line">	<span class="comment">//将队列中的元素移动到新数组中</span></span><br><span class="line">	Item[] temp = (Item[])<span class="keyword">new</span> Object[max];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">		temp[i] = queue[i]; <span class="comment">//queue为存放队列元素的数组</span></span><br><span class="line">	&#125;</span><br><span class="line">	queue = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
-<p>上一篇：<a href="http://muchstudy.com/2017/06/26/%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8401%EF%BC%9A%E9%93%BE%E8%A1%A8/">基础数据结构01：链表</a><br>下一篇：<a href="http://muchstudy.com/2017/07/02/%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8403%EF%BC%9A%E6%A0%88/">基础数据结构03：栈</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/30/2017-06-30-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8402%EF%BC%9A%E9%98%9F%E5%88%97/">展开全文 >></a>
         </p>
       
 
