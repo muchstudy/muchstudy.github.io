@@ -166,6 +166,170 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2020-03-14-一场关于系统架构的讨论" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/14/2020-03-14-%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/">一场关于系统架构的讨论</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/14/2020-03-14-%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/" class="archive-article-date">
+  	<time datetime="2020-03-14T05:09:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司新业务有视频点播与直播需求，经过一番对比分析，最终选择了腾讯云作为视频服务的供应商。  </p>
+<p>对于如何接入有如下争论点：<br>1.由中台统一对接视频服务，封装统一对外接口，如后续要切换视频服务供应商，上层无需更改</p>
+<blockquote>
+<p><strong><em>一致点：</em></strong> 统一封装对外服务<br>**<em>争议点：**</em> 要不要做到可无缝切换视频播放供应商而不影响上层业务</p>
+</blockquote>
+<p>2.APP与WEB侧基于腾讯视频上传&amp;播放SDk封装通用组件</p>
+<blockquote>
+<p><strong><em>一致点：</em></strong> 统一封装SDK<br>**<em>争议点：**</em> 封装粒度是强封装还是弱封装。即隐藏内部实现，只暴露自定义参数；还是组件参数透传腾讯SDk相关参数，只简单封装通用业务逻辑</p>
+</blockquote>
+<p>对于上述争议点，会议最终也没讨论出结论来。个人觉得，这两个争论点实际上是一个业务架构问题与技术架构问题，只有把这两个问题理清楚，才能做出清晰的判断。</p>
+<h2 id="业务架构"><a href="#业务架构" class="headerlink" title="业务架构"></a>业务架构</h2><blockquote>
+<p>业务架构：实际上就是理清各方如何分工，如何交互，如何设计的问题。</p>
+</blockquote>
+<p>对于该场景的有两种架构方式，一种为中控式、一种为并行式。</p>
+<h3 id="中控式"><a href="#中控式" class="headerlink" title="中控式"></a>中控式</h3><p>中控式可理解为由一个中枢统一控制，大致结构图如下所示：</p>
+<div style="width:70%;margin:auto">
+
+</div>
+
+<p><strong><em>核心思路：</em></strong> 由中台统一对接视频服务，抹平各服务商的差异，做到底层视频服务切换对上层无感知</p>
+<p><strong><em>好处：</em></strong></p>
+<ol>
+<li>视频服务切换，对业务方无影响，无额外开发工作量</li>
+</ol>
+<p><strong><em>难点&amp;弊端：</em></strong></p>
+<ol>
+<li>视频服务灰度切换问题</li>
+<li>中台需抽象化视频服务为共有服务，制定自有功能与交互逻辑；功能取交集，无法使用特有视频服务独有亮点功能</li>
+<li>中台逻辑复杂化，兼容维护成本高，不易迭代</li>
+</ol>
+<h3 id="并行式"><a href="#并行式" class="headerlink" title="并行式"></a>并行式</h3><p>并行式从字面意思可理解为并行设计，两条路线不冲突，大致结构图如下所示：</p>
+<div style="width:70%;margin:auto">
+
+</div>
+
+
+<p><strong><em>核心思路：</em></strong> 对接不同的视频服务上采用并行方案，互不影响</p>
+<p><strong><em>好处：</em></strong></p>
+<ol>
+<li>灰度切换方便，影响范围可控制在较小的业务范围</li>
+<li>无需兼容处理，代码逻辑清晰，精简；全部切换后相关代码可整体废弃</li>
+<li>可充分利用视频服务商的全部功能</li>
+</ol>
+<p><strong><em>难点&amp;弊端：</em></strong></p>
+<ol>
+<li>切换视频供应商时需重新设计与开发，带来巨额工作量</li>
+</ol>
+<h2 id="技术架构"><a href="#技术架构" class="headerlink" title="技术架构"></a>技术架构</h2><blockquote>
+<p>技术架构：技术实现细节如何做到高内聚、低耦合、易扩展、良好的版本迭代与向下兼容等，设计思路依赖业务架构。</p>
+</blockquote>
+<p>对于争论点二，有如下两种技术架构思路，一种为集中兼容处理，一种为特定处理。</p>
+<h3 id="集中处理-强封装"><a href="#集中处理-强封装" class="headerlink" title="集中处理-强封装"></a>集中处理-强封装</h3><p>对于各个视频服务SDK集中处理，统一对外参数，大致结构图如下所示：</p>
+<div style="width:70%;margin:auto">
+
+</div>
+
+<p><strong><em>核心思路：</em></strong> 隐藏内部实现逻辑，提供统一的对外出口</p>
+<p><strong><em>好处：</em></strong></p>
+<ol>
+<li>强有力的控制，可做到内部变更对外部无感知</li>
+</ol>
+<p><strong><em>难点&amp;弊端：</em></strong></p>
+<ol>
+<li>事前需要超前规划，强有力的抽象，需保持克制只提供最小功能集，避免兼容问题</li>
+<li>前期即需考虑封装不同视频服务保证后续能无缝切换问题，实现复杂，工作量大</li>
+</ol>
+<h3 id="特定处理-弱封装"><a href="#特定处理-弱封装" class="headerlink" title="特定处理-弱封装"></a>特定处理-弱封装</h3><p>对各个视频服务SDK特定处理，不同视频服务对应封装不同的前端组件，大致结构图如下所示：</p>
+<div style="width:70%;margin:auto">
+
+</div>
+
+<p><strong><em>核心思路：</em></strong> 最小开闭原则，不对视频SDK的做二次封装是，透传参数即可；额外扩展自定义通用业务封装。</p>
+<p><strong><em>好处：</em></strong></p>
+<ol>
+<li>可获得特定视频服务商全量的功能服务</li>
+<li>组件文档无需单独编写，开发人员参考官方文档即可，鼓励DIY，遇到问题自己排查，而不是推给组件提供者</li>
+<li>无需考虑兼容其他视频服务，代码简洁、清晰，可维护强</li>
+</ol>
+<p><strong><em>弊端：</em></strong></p>
+<ol>
+<li>切换视频服务需重新设计对应的组件，顶层业务侧也需根据新组件的参数规范做调整</li>
+</ol>
+<h2 id="个人想法"><a href="#个人想法" class="headerlink" title="个人想法"></a>个人想法</h2><p>1.克制、恰到好处</p>
+<blockquote>
+<p>这条实际上是一个平衡与取舍问题，不能一点不往将来考虑，但也不能一下考虑得太遥远，考虑太远的问题在于前期投入巨大工作量后期可能一点用不上。</p>
+</blockquote>
+<p>2.干净、利落、清晰</p>
+<blockquote>
+<p>个人在做业务架构时，会更多的考虑什么样的架构能够让技术架构更简洁、清晰，便于维护。尽量避免架构设计划定的框，造成技术实现细节繁琐复杂。</p>
+</blockquote>
+<p>3.低成本，高收益</p>
+<blockquote>
+<p>对于这个问题，干一件事总成本是相对固定的，对于上面的问题，我更倾向于前期采用低成本，后续真正要切的时候再投入另外的成本。</p>
+</blockquote>
+<p>4.清晰而坚定的开头、清晰而坚定的收尾</p>
+<blockquote>
+<p>选择了一种架构就应该从上到下保持一致，在一条道上做到最好，避免三心二意，这也要一点，那也要一点，最后几不像。</p>
+</blockquote>
+<p>最后，不同的选择对应不同的代价；系统架构的难点很多时候不在于如何架构，而在于如何平衡与取舍；萝卜白菜，各有所爱。</p>
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/14/2020-03-14-%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-人生中唯一的2019" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1049,90 +1213,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/09/28/2019-09-28-Elasticsearch%E5%B8%B8%E7%94%A8%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E8%AE%B0%E5%BD%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2019-08-19-Elasticsearch7-x安装与配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/19/2019-08-19-Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Elasticsearch7.x安装与配置</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/19/2019-08-19-Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2019-08-19T15:08:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>1.下载地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/cn/start">https://www.elastic.co/cn/start</a><br>复制下载链接</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载资源</span></span><br><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压资源</span></span><br><span class="line">tar -xf elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
-
-<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd elasticsearch-7.3.0-linux-x86_64</span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示启动elk</span></span><br><span class="line">./bin/elasticsearch</span><br><span class="line"><span class="meta">#</span><span class="bash"> 后台启动</span></span><br><span class="line">./bin/elasticsearch -d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="其它配置"><a href="#其它配置" class="headerlink" title="其它配置"></a>其它配置</h2><h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><p>当使用elasticsearch-head插件访问elk时，需要设置允许跨域访问</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="允许外部网络（非本地）访问9200端口"><a href="#允许外部网络（非本地）访问9200端口" class="headerlink" title="允许外部网络（非本地）访问9200端口"></a>允许外部网络（非本地）访问9200端口</h3><p>默认情况下，启动elk服务后，其它服务器是无法访问elk服务的（telnet不通），只允许本地访问。</p>
-<p>需要做如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br></pre></td></tr></table></figure>
-
-<p>此时，启动会报如下两个错误：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: [2] bootstrap checks failed</span><br><span class="line">[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</span><br><span class="line">[2]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</span><br></pre></td></tr></table></figure>
-
-<p>对于第一个配置，root用户权限下，增加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
-
-<p>对于第二个错误，增加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">cluster.initial_master_nodes: [“node-1”]</span><br></pre></td></tr></table></figure>
-
-<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/19/2019-08-19-Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">展开全文 >></a>
         </p>
       
 
