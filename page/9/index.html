@@ -166,6 +166,90 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2017-02-22-JavaScript实现二分查找" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/22/2017-02-22-JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">JavaScript实现二分查找</a>
+    </h1>
+  
+
+        
+        <a href="/2017/02/22/2017-02-22-JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="archive-article-date">
+  	<time datetime="2017-02-21T16:59:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;最近撸《算法》第四版，开篇就是一个Java版本的二分查找算法，下面以JS实现一下。</p>
+<p>&emsp;&emsp;二分查找的前提为：数组、有序。逻辑为：优先和数组的中间元素比较，如果等于中间元素，则直接返回。如果不等于则取半继续查找。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 二分查找，递归实现。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( start &gt; end)&#123;<span class="keyword">return</span> <span class="number">-1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> start   = start || <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> end     = end || arr.length<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> mid = <span class="built_in">parseInt</span>(start+(end-start)/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span>(target==arr[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;arr[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> binarySearch(target,arr,mid+<span class="number">1</span>,end);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> binarySearch(target,arr,start,mid<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 有序的二分查找，返回-1或存在的数组下标。不使用递归实现。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> start   = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> end     = arr.length<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (start&lt;=end)&#123;</span><br><span class="line">        <span class="keyword">var</span> mid = <span class="built_in">parseInt</span>(start+(end-start)/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span>(target==arr[mid])&#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;arr[mid])&#123;</span><br><span class="line">            start   = mid+<span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            end     = mid<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>&emsp;&emsp;写完有序，自然而然的想到了无序的情况如何使用二分查找呢？马上想到先使用快排分组，分好组再二分。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无序的二分查找。返回true/false</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (arr.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//使用快速排序。以mid为中心划分大小，左边小，右边大。</span></span><br><span class="line">        <span class="keyword">var</span> left    = [];</span><br><span class="line">        <span class="keyword">var</span> right   = [];</span><br><span class="line">        <span class="comment">//选择第一个元素作为基准元素(基准元素可以为任意一个元素)</span></span><br><span class="line">        <span class="keyword">var</span> pivot   = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="comment">//由于取了第一个元素，所以从第二个元素开始循环</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;arr.length;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> item = arr[i];</span><br><span class="line">            <span class="comment">//大于基准的放右边，小于基准的放左边</span></span><br><span class="line">            item&gt;pivot ? right.push(item) : left.push(item);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//得到经过排序的新数组</span></span><br><span class="line">        <span class="keyword">if</span>(target==pivot)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;pivot)&#123;</span><br><span class="line">            arr     = right;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            arr     = left;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;写完用快速排序实现的无序二分查找，仔细想了一下该算法的时间复杂度，发现还不如直接一个for循环来得快……囧</p>
+<hr>
+<p>&emsp;&emsp;睡完一觉起来感觉也不是一无是处，这是一个用时间换空间的好办法，大规模问题下有助于节省内存开销。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/02/22/2017-02-22-JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-02-12-怎样全面了解应聘者的实力" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1264,115 +1348,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/01/04/2017-01-04-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2017-01-02-产品研发记录01：为什么需要基础开发框架产品" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/02/2017-01-02-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/">产品研发记录01：为什么需要基础开发框架产品</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/02/2017-01-02-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/" class="archive-article-date">
-  	<time datetime="2017-01-02T15:18:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;目前负责一套基础开发框架产品的研发，从0到1开始已历经两年时间，日趋稳定。希望通过本系列文章记录下产品研发过程中的方方面面，归纳总结沉淀下来。</p>
-<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>&emsp;&emsp;传统行业，以项目为单位。在没有产品之前，所属部门所有人员打散进入一个个的项目，根据客户需求进行开发。Java体系，这个时候，各个项目基本上由各项目的技术负责人搭建项目开发环境，架构设计，模块拆分。完事后，再安排开发人员根据需求开发。之后，测试上线，最终验收，完成整个项目开发流程。之后再辗转新的项目，或者继续做该项目的下一期项目。</p>
-<p>&emsp;&emsp;这样的项目开发方式会带来如下问题：</p>
-<ul>
-<li><p><strong>大量冗余工作。</strong>比如开发环境搭建，登录、首页、菜单、权限、人员管理、系统监控等公共需求基本上在每个项目中都得重新开发一遍。</p>
-</li>
-<li><p><strong>技术债务风险。</strong>主要技术的选型往往由各个项目的技术负责人确定，一些零散的组件，比如前端常用的图表、树、弹出框等基础组件往往由实际开发人员决定。带来所用技术混乱，后期运维成本提高。</p>
-</li>
-<li><p><strong>对开发人员要求提高。</strong>项目与项目之间技术风格迥异，开发人员转项目往往得重新学习了解一套新的技术体系。从一个项目的熟手变为另一项目的生手。</p>
-</li>
-<li><p><strong>技术、经验无法沉淀。</strong>对于传统行业，技术与行业实施经验才是无价之宝。由于各项目单打独斗，项目与项目间经验无法复用，知识很难沉淀。</p>
-</li>
-</ul>
-<h2 id="二、基础开发框架产品"><a href="#二、基础开发框架产品" class="headerlink" title="二、基础开发框架产品"></a>二、基础开发框架产品</h2><p>&emsp;&emsp;为了解决上述问题，引入基础开发框架产品。所有项目的实施都以该基础框架产品为基座进行开发。该<strong>基座</strong>包含如下几点：</p>
-<ul>
-<li>整体架构前后端分离，使用RESTFULL进行前后端数据交互</li>
-<li>前后端技术体系统一</li>
-<li>由基础开发框架组负责技术选型，确定技术路线。比如React、Vue、Angular到表格组件，图表组件到底用哪个之类问题</li>
-<li>应用部分：提供登录、首页、菜单、人员管理、权限管理、字典管理、系统监控等通用模块</li>
-<li>前端部分：统一技术栈。提供通用前端开发组件，开发结构规范，提供公共的前端压缩合并以及缓存解决方案。</li>
-<li>安全：统一的XSS、CSRF、SQL注入等安全问题解决方案</li>
-<li>统一的框架级异常处理</li>
-<li>可平滑升级</li>
-<li>提供问题反馈、建议提交平台，构建正循环生态环境</li>
-<li>……</li>
-</ul>
-<p>&emsp;&emsp;总之，属于项目开发公共的部分都放入其中，随着项目的不断实施，不断的总结出新的组件，不断的完善现有基础组件。</p>
-<h2 id="三、带来的好处"><a href="#三、带来的好处" class="headerlink" title="三、带来的好处"></a>三、带来的好处</h2><ul>
-<li>开发实施效率明显提升</li>
-<li>项目后期维护成本降低</li>
-<li>技术路线统一后项目开发人员的技术学习成本降低</li>
-<li>基于同一套基础开发框架，A项目中的闪光点可直接搬到B项目中</li>
-<li>由基础开发框架组造完轮子后避免各个项目重复造轮子</li>
-<li>形成公司核心竞争力</li>
-</ul>
-<p>下一篇：<a href="http://muchstudy.com/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/">产品研发记录02：基础开发框架产品的设计哲学</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/产品研发//" class="article-tag-list-link color5">产品研发</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/02/2017-01-02-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/">展开全文 >></a>
         </p>
       
 
