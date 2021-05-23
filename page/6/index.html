@@ -166,6 +166,138 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-一个由line-height引发的血案与思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/">一个由line-height引发的血案与思考</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/" class="archive-article-date">
+  	<time datetime="2018-05-06T11:32:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="爆炸"><a href="#爆炸" class="headerlink" title="爆炸"></a>爆炸</h2><p>&emsp;&emsp;最近UI走查，发现页面中所有包含文字区块的高度与设计稿中的高度完全不一致，然后UI妹子就爆炸了!</p>
+<p>&emsp;&emsp;找了一下原因，发现是由于UI设计稿中设计的文字大部分是<code>font-size:24px;line-height:24px</code>,代码实现时为了不至于每处都写一遍字体大小，故直接在根节点上统一设置字体与字体大小为24px，小部分不一致的地方再单独设置字体大小，从而忽略了设置<code>line-height</code>为字体的高度。造成的结果就是文字所在的行的行高高于设计稿中的行高。</p>
+<h2 id="为什么文字行高与字体大小不相等呢？"><a href="#为什么文字行高与字体大小不相等呢？" class="headerlink" title="为什么文字行高与字体大小不相等呢？"></a>为什么文字行高与字体大小不相等呢？</h2><p>&emsp;&emsp;翻了一下line-height的<a target="_blank" rel="noopener" href='https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height'>官方说明</a>，如下所示：</p>
+<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/1.jpg" class=""><div>
+
+<p>&emsp;&emsp;文档里说line-height的默认值为<code>normal</code>,给<code>normal</code>的推荐设置值为<code>1.0到1.2之间</code>。相当于如果设置了字体的大小而不设置line-height,那么行高默认就为字体的1.0-1.2之间的一个倍数。</p>
+<p>&emsp;&emsp;<strong>那么，这个倍数到底具体是多少呢？</strong></p>
+<p>&emsp;&emsp;在chrome的控制台里跟踪了一下，看到项目中引入了<code>normalize.css</code>来初始化浏览器的默认css样式。其中，就设置html的<code>line-height</code>为<code>1.15</code>。</p>
+<h2 id="为什么normalize-css设置line-height默认为1-15？"><a href="#为什么normalize-css设置line-height默认为1-15？" class="headerlink" title="为什么normalize.css设置line-height默认为1.15？"></a>为什么normalize.css设置line-height默认为1.15？</h2><p>&emsp;&emsp;翻了一下github中normalize.css的issues,在593号issues里找到了答案，地址在<a target="_blank" rel="noopener" href='https://github.com/necolas/normalize.css/issues/593'>这里</a>。</p>
+<p>&emsp;&emsp;大致过程是这样的，有人发现相同字体与大小的文字在不同环境中line-height的值是不一致的，接着，就有人在crossbrowsertesting上做了个测试，得出的结论就是这个问题的的确确存在，而且差异还特别大</p>
+<blockquote>
+<p>When the font size was 100px, the most common line height was 115px. However, results varied from 101px on Mac Firefox to 136px on Android Chrome.</p>
+</blockquote>
+<p>&emsp;&emsp;最终，由于大部分的行高都为115px,所以，为了解决不同环境中相同字体与字号的文字行高不一致的问题，推荐设置默认<code>line-height</code>为1.15</p>
+<p>&emsp;&emsp;看到这里，想到一个问题，既然显示设置line-height为1.15是为了解决环境兼容的问题。那么，<strong>为什么不设置<code>line-height:1</code>即解决兼容问题，又解决由于行高放大与UI设计稿不符的问题？</strong> 。</p>
+<h2 id="设置overflow-hidden字体显示不全的问题"><a href="#设置overflow-hidden字体显示不全的问题" class="headerlink" title="设置overflow:hidden字体显示不全的问题"></a>设置overflow:hidden字体显示不全的问题</h2><p>&emsp;&emsp;当设置文字<code>line-height:1</code>后，再设置文字所在的容器<code>overflow:hidden</code>很容易复现文字显示不全的问题，比如下面：</p>
+<p><span style="font-size:100px;line-height:1;overflow:hidden;border:1px solid #ddd;display:inline-block">dphyTxg</span></p>
+<p>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">font-size:100px;</span></span></span><br><span class="line"><span class="tag"><span class="string">line-height:1;</span></span></span><br><span class="line"><span class="tag"><span class="string">overflow:hidden;</span></span></span><br><span class="line"><span class="tag"><span class="string">border:1px solid #ddd;</span></span></span><br><span class="line"><span class="tag"><span class="string">display:inline-block&quot;</span>&gt;</span>dphyTxg<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注：这里可以使用div演示，然后去掉display:inline-block。使用div发现不知道为毛markdown里的样例乱了…</p>
+<h2 id="为什么设置行高与字体大小一致文字会显示不全？"><a href="#为什么设置行高与字体大小一致文字会显示不全？" class="headerlink" title="为什么设置行高与字体大小一致文字会显示不全？"></a>为什么设置行高与字体大小一致文字会显示不全？</h2><p>&emsp;&emsp;到这里，才真正进入到深层次的原因探究。</p>
+<p>&emsp;&emsp;对于这个问题，需要先了解字体度量，引用一下其它的文章说明，如下所示：</p>
+<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/2.jpg" class=""><div>
+
+<ol>
+<li><a target="_blank" rel="noopener" href='https://zhuanlan.zhihu.com/p/25808995'>原文地址</a></li>
+<li><a target="_blank" rel="noopener" href='http://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align'>Deep dive CSS: font metrics, line-height and vertical-align</a></li>
+<li><a target="_blank" rel="noopener" href='http://designwithfontforge.com/zh-CN/The_EM_Square.html'>EM Square</a></li>
+<li><a target="_blank" rel="noopener" href='https://fontforge.github.io/en-US/'>FontForge</a></li>
+</ol>
+<p>简要解释为如下几点：</p>
+<ol>
+<li>我们设置<code>font-size</code>的高度实际上是对应字体的<code>EM square</code>部分</li>
+<li>字体在设计时可以超出<code>EM square</code>部分</li>
+<li>字体实际设计与<code>EM square</code>部分一致时，<code>line-height:normal</code>与<code>line-height:1</code>相等</li>
+<li>从上图中可以看到，<code>ascender+descender&gt;Em Size</code> 即<code>1100+540&gt;1000</code>,此时<code>line-height:1.64</code>,所以100px的文字默认的行高为164px</li>
+</ol>
+<h2 id="样例分析"><a href="#样例分析" class="headerlink" title="样例分析"></a>样例分析</h2><p>&emsp;&emsp;下面就以window环境下的默认字体微软雅黑为例实际看看line-height的计算。</p>
+<h1 id="font" style="line-height:normal;font-size: 100px;font-family: 微软雅黑">h1</h1>
+<p>line-height: <code id="o1" style="font-size: 50px"></code></p>
+<script>
+  document.getElementById('o1').textContent = window.getComputedStyle(document.getElementById('font')).height;
+</script>
+
+<p>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;font&quot;</span> <span class="attr">style</span>=<span class="string">&quot;line-height:normal;font-size: 100px;font-family: 微软雅黑&quot;</span>&gt;</span>h1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>line-height: <span class="tag">&lt;<span class="name">code</span> <span class="attr">id</span>=<span class="string">&quot;o1&quot;</span> <span class="attr">style</span>=<span class="string">&quot;font-size: 50px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.getElementById(<span class="string">&#x27;o1&#x27;</span>).textContent = <span class="built_in">window</span>.getComputedStyle(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;font&#x27;</span>)).height;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从上面可以看到微软雅黑100px情况在，在windows下行高显示为132px。通过FontForge来核对一下看看是不是这样的。</p>
+<div style='text-align:center'>&#123;% asset_img 3.jpg %&#125;<div>
+
+<p>&emsp;&emsp;从上图中可以看到，使用<code>（ascender+descender)/Em Size</code>,即<code>(2167+536)/2048≈1.32</code>，也就是line-height为1.32.</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li><code>line-height:normal</code>的值跟字体有关系，相同字体在不同环境也不一样</li>
+<li>当line-height设置的值小于默认的值时就会存在显示不全的问题</li>
+<li>normalize.css设置line-height默认为1.15，当字体line-height的normal大于1.15就会存在文字显示不全的问题</li>
+<li>要解决字体在不同平台line-height不一致的问题，需根据具体字体，选择normal在不同平台上的最大值设置</li>
+</ol>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/前端//" class="article-tag-list-link color3">前端</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2018-04-21-30" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -991,96 +1123,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-2017-09-18-HTTP协商缓存实践" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/18/2017-09-18-HTTP%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E5%AE%9E%E8%B7%B5/">HTTP协商缓存实践</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/18/2017-09-18-HTTP%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E5%AE%9E%E8%B7%B5/" class="archive-article-date">
-  	<time datetime="2017-09-18T03:28:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;从浏览器的缓存类型上来讲分为强缓存和协商缓存，之前写过一篇文章<a href="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/">《HTTP缓存详解》</a>做了详细的整理。</p>
-<p>&emsp;&emsp;目前做的知识管理产品，为了首页能够更快的加载，需要对首页请求的资源做缓存整理。通过整理分析，决定对css、js做强缓存处理；对个人头像的请求做协商缓存处理；</p>
-<p>&emsp;&emsp;为什么要头像不做强缓存处理呢？原因为目前的头像都是通过人员的ID来获取，而不是通过头像ID来获取。这样做的好处为在后台获取相关数据时，比如排行榜以人员ID作为主键，如果要带出该人员的头像信息，还得去头像表里面联查一下来获取头像ID。因此，由于后端部分的设计造成头像做协商缓存才是最优解。</p>
-<p>&emsp;&emsp;目前的逻辑为，当用户第一次进入知识管理系统，请求个人头像的URL会返回200并从服务器下载个人头像，此时服务器会在response里面设置ETAG值为头像的最后修改日期；当刷新页面时，服务器会判断请求头中的<code>If-None-Match</code>是否与当前的最后更新日期匹配，如果匹配则直接返回304（不返回数据），如果不匹配则从磁盘中取出头像。</p>
-<p><strong>相关代码如下：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 协商缓存控制</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> etag</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">cacheControl</span><span class="params">(HttpServletRequest request,HttpServletResponse response,String etag)</span></span>&#123;</span><br><span class="line">	String ifNoneMatch = request.getHeader(<span class="string">&quot;If-None-Match&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(etag.equals(ifNoneMatch))&#123;</span><br><span class="line">		response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	response.addHeader(<span class="string">&quot;ETag&quot;</span>, etag);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HTTP//" class="article-tag-list-link color5">HTTP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/18/2017-09-18-HTTP%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E5%AE%9E%E8%B7%B5/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/7/">Next &amp;raquo;</a>
@@ -1251,6 +1293,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Life</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">读书</a>
               </li>
             
             <div class="clearfix"></div>

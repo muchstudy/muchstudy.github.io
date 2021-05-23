@@ -166,6 +166,100 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-11-18-Servlet中Cookie增、删、改、查" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/18/2016-11-18-Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/">Servlet中Cookie增、删、改、查</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/18/2016-11-18-Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/" class="archive-article-date">
+  	<time datetime="2016-11-18T06:43:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;整理了一个在Servlet中对Cookie增删改查的工具类，首先要注意的是在服务器端是无法对Cookie做修改的，只能做到覆盖创建。</p>
+<p><strong>引用StackOverflow上James Sumners的<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5093250/how-do-you-update-an-existing-cookie-in-jsp">回答</a>：</strong></p>
+<blockquote>
+<p>Per section 3.3.4 of <a target="_blank" rel="noopener" href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a>, the user agent does not include the expiration information in the cookie header that is sent to the server. Therefore, there is no way to update an existing cookie’s value while retaining the expiration date that was initially set based solely on the information associated with the cookie.</p>
+</blockquote>
+<blockquote>
+<p>So the answer to this question is: you can’t do that.</p>
+</blockquote>
+<p><strong>工具类如下：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.demo.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.net.URLDecoder;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.Cookie;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CookieUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 新增Cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> value</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addCookie</span><span class="params">(HttpServletResponse response, String name,String value)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//特殊字符需要编码</span></span><br><span class="line">			Cookie cookie = <span class="keyword">new</span> Cookie(name,URLEncoder.encode(value, <span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">			cookie.setMaxAge(<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>*<span class="number">7</span>);	<span class="comment">//- 单位为秒，7天有效</span></span><br><span class="line">			cookie.setPath(<span class="string">&quot;/&quot;</span>);			<span class="comment">//- 根路径</span></span><br><span class="line">			<span class="comment">//JavaEE5兼容</span></span><br><span class="line">			<span class="keyword">try</span>&#123;</span><br><span class="line">				cookie.setHttpOnly(<span class="keyword">true</span>);	<span class="comment">//- 防XSS</span></span><br><span class="line">			&#125;<span class="keyword">catch</span> (NoSuchMethodError e) &#123;</span><br><span class="line">	        	e.printStackTrace();</span><br><span class="line">	        &#125;</span><br><span class="line">			response.addCookie(cookie);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 删除Cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">deleteCookie</span><span class="params">(HttpServletRequest request,HttpServletResponse response, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                	cookie.setMaxAge(<span class="number">0</span>);</span><br><span class="line">                	<span class="comment">//经测试发现还需设置如下两个值,之所以这样，原理为覆盖掉Cookie，而不是常规意义中的删除</span></span><br><span class="line">									cookie.setValue(<span class="string">&quot;&quot;</span>);</span><br><span class="line">									cookie.setPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">                	response.addCookie(cookie);</span><br><span class="line">									<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 覆盖掉之前的cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> value</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">overrideCookie</span><span class="params">(HttpServletRequest request,HttpServletResponse response, String name,String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                	cookie.setValue(value);</span><br><span class="line">									cookie.setPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">									<span class="comment">//cookie.getMaxAge()为-1，服务器端无法获取MaxAge</span></span><br><span class="line">									cookie.setMaxAge(<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>*<span class="number">7</span>);</span><br><span class="line">									response.addCookie(cookie);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取Cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Cookie <span class="title">getCookie</span><span class="params">(HttpServletRequest request, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cookie;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取Cookie对应的值</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCookieValue</span><span class="params">(HttpServletRequest request, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">						<span class="keyword">return</span> URLDecoder.decode(cookie.getValue(), <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">					&#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">						<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">						e.printStackTrace();</span><br><span class="line">						<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">					&#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">工具类</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/18/2016-11-18-Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-11-13-关于代码质量的一点思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1326,147 +1420,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-《嫌疑人X的献身》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/28/%E3%80%8A%E5%AB%8C%E7%96%91%E4%BA%BAX%E7%9A%84%E7%8C%AE%E8%BA%AB%E3%80%8B/">《嫌疑人X的献身》</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/28/%E3%80%8A%E5%AB%8C%E7%96%91%E4%BA%BAX%E7%9A%84%E7%8C%AE%E8%BA%AB%E3%80%8B/" class="archive-article-date">
-  	<time datetime="2016-08-28T14:09:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2016/08/28/%E3%80%8A%E5%AB%8C%E7%96%91%E4%BA%BAX%E7%9A%84%E7%8C%AE%E8%BA%AB%E3%80%8B/%E5%AB%8C%E7%96%91%E4%BA%BAX%E7%9A%84%E7%8C%AE%E8%BA%AB.jpg" class="" title="《嫌疑人X的献身》">
-
-<blockquote>
-<p>黑色的封面，代表着这是一个悲伤的故事。</p>
-</blockquote>
-<p>&emsp;&emsp;紧接<a href="http://muchstudy.com/2016/08/28/%E3%80%8A%E7%99%BD%E5%A4%9C%E8%A1%8C%E3%80%8B/">上一篇</a>,看完《白夜行》后，发现节奏带太快，收不住。忍不住搜一搜东野圭吾的其他小说，最后确定目标：《嫌疑人X的献身》。就是想一窥到底，看看东野圭吾是不是像网评的那么神！<br>&emsp;&emsp;之所以会盯上这本书，是因为大家都说这本书的故事神奇。一开始，读者便知道了作案凶手以及详细的作案细节！我勒个去！这么搞那还有什么悬念可言？在平生所看的悬疑类小说中，通常一开始就埋坑，然后到结尾才知道答案，抓住凶手。东野圭吾这是要搞哪样，太嚣张了！<br>&emsp;&emsp;这本书讲述的是一个理工男暗恋上隔壁女邻居的故事。这个女邻居离异，和女儿一起生活。前任老公一直缠着她不放，经常找她要钱。一次来找她，她和她女儿一起把前任老公杀死了。住在隔壁的理工男协助掩盖真相，故事由此展开。<br>&emsp;&emsp;最多剧透到此，不能再剧透了！照例放点儿书中的内容片段勾起大家的想要一睹为快的冲动！</p>
-<ul>
-<li><p>石神并不排斥森冈这种质疑的态度，<strong>对于为何要学习某种东西抱有疑问，本是理所当然。唯有疑问解除了，才会产生求知的欲望，才能走上理解数学本质之路。</strong>可惜太多老师不愿回答这种单纯的疑问。不，是答不出，石神知道，他们也没真正理解数学，只是按照既定的教材照本宣科，只想着让学生拿到好分数。对森冈提出的这种质疑，恐怕只会觉得不耐烦。</p>
-<blockquote>
-<p>可惜自己开窍得太晚！当需要用知识去赚钱生活时才发现上学那会儿的课程是多么的重要！线性代数、统计、积分……想想都是泪！</p>
-</blockquote>
-</li>
-<li><p>这个世上没有无用的齿轮，只有齿轮自身才能决定自己的用途</p>
-<blockquote>
-<p>人也一样，需要自己成全自己。（突然想到《霸王别姬》中大师兄让小师弟自己成全自己。假霸王，真虞姬，哎！）</p>
-</blockquote>
-</li>
-<li><p>草薙告诉我一件有趣的事，是关于你出考题的方式，针对自以为是的盲点。比方说看起来是几何问题，其实是函数问题，我听了恍然大悟。对那种不懂数学的本质、早已习惯根据思维定势解答的学生来说，这种题目想必很有效。乍看之下是几何问题，学生拼命朝那个方向想，却解不出来，唯有时间分秒流逝。要说是坏心眼，确实有点儿过分，但用来测试真正的实力，诚然有效。”</p>
-<blockquote>
-<p>上学时，就经常碰到这样坏心眼儿的老师！好像暴露了什么……强行逆转，看问题不应该被问题的表象所蒙蔽，应该直达问题的本质。解决程序Bug也一样。再次成功穿越……</p>
-</blockquote>
-</li>
-<li><p>“最后一次见到石神时，他问了我一个问题——P≠NP。自己想出答案和判断别人的答案是否正确，何者较容易——这是著名的数学难题。” 　　草薙皱起眉头。 　　“那是数学？听起来像哲学。” 　　“你明白吗？石神给你们提出了一个答案，也就是这次的自首、供述内容。这一自白怎么看都像正确无误的解答，是他充分发挥智慧想出来的。如果就这么乖乖相信，那就表示你们输了。你们正受到来自他的挑战和考验！接下来，该轮到你们全力以赴，判断他提供的答案是否正确。” 　　“我们已经作了各种证实。” 　　“你们做的，只是按照他的证明方法走。你们该做的，是探寻有没有别的答案。除了他提供的答案之外别无可能——唯有证明到这个地步，才能断言，那个答案是唯一的答案！”</p>
-<blockquote>
-<p>由此可见，判断别人给的答案是否正确远比自己想出答案更难。自信的数学家，妙！</p>
-</blockquote>
-</li>
-<li><p>指示之后，还有这么一段。工藤邦明先生是个诚实可靠的人。和他结婚，你和美里获得幸福的几率较高。把我完全忘记，不要有任何负罪感。如果你过得不幸福，我所做的一切才是徒劳。她看了又看，再次落泪。</p>
-<blockquote>
-<p>这就是一个数学家，一个理工男对爱的表达。</p>
-</blockquote>
-</li>
-<li><p>心如明镜不带丝毫阴霾的，世上只有石神。</p>
-<blockquote>
-<p>理工男往往是比较单纯的，内心世界只有逻辑。</p>
-</blockquote>
-</li>
-<li><p>他再次感到，自己并不需要任何人的肯定。他也有发表论文、受人重视的欲望，但那非关数学本质。让别人知道是谁第一个爬上山顶固然重要，但只要当事人自己明白其中的真味，也就足够了。</p>
-<blockquote>
-<p>很理解这种乐在其中的快乐。</p>
-</blockquote>
-</li>
-<li><p>他已毫无留恋。没有理由寻死，也没有理由活着，如此而已。 　　他站上台子，正要把脖子套进绳索时，门铃响了。 　　是扭转命运方向的门铃。 　　他没有置之不理，他不想给任何人添麻烦。门外的某人，说不定有急事。 　　开门一看，门外站着两个女子，是一对母女。 　　母亲自我介绍说她们刚搬来隔壁，女儿在一旁鞠躬。看到两人时，石神的身体仿佛猛然被某种东西贯穿。 　　怎么会有眼睛如此美丽的母女？在那之前，他从未被任何东西的美丽吸引、感动过，也不了解艺术的意义。然而这一瞬间，他全都懂了，他发觉这和求解数学的美感在本质上乃是殊途同归。</p>
-<blockquote>
-<p><a href="http://muchstudy.com/2016/08/16/%E7%9C%9F%E3%80%81%E5%96%84%E3%80%81%E7%BE%8E/">真、善、美</a>其实是共通的，殊途同归。</p>
-</blockquote>
-</li>
-<li><p>石神早已忘记她们是怎么打招呼的，但两人凝视他的明眸如何流转，至今仍清晰烙印在记忆深处。</p>
-<blockquote>
-<p>喜欢上一个人往往只需要一瞬！</p>
-</blockquote>
-</li>
-</ul>
-<p>&emsp;&emsp;看完了全书，由衷的赞叹本田圭吾能写出如此神作，故事架构精巧慎密，看到最后，当知道实情后眼前一亮，虎躯一震，惊叹万分。<br>&emsp;&emsp;整本书的感受只能用Perfect、Amazing、Heartbreaking 来形容。</p>
-<div style="width:70%;margin:auto">
-<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/28/%E3%80%8A%E5%AB%8C%E7%96%91%E4%BA%BAX%E7%9A%84%E7%8C%AE%E8%BA%AB%E3%80%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/12/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/14/">Next &amp;raquo;</a>
@@ -1637,6 +1590,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Life</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">读书</a>
               </li>
             
             <div class="clearfix"></div>
