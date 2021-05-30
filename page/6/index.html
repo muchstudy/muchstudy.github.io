@@ -166,6 +166,132 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2018-07-13-Gitlab-8-x-runner安装与配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/13/2018-07-13-Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab 8.x runner安装与配置</a>
+    </h1>
+  
+
+        
+        <a href="/2018/07/13/2018-07-13-Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="archive-article-date">
+  	<time datetime="2018-07-13T10:41:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>&emsp;&emsp;Gitlab 8.x之后默认集成了Gitlab CI，意味着支持了持续集成相关功能。每一次集成操作都需要对应的runner来跑代码构建、测试、发布等操作。Runner实际上就是为Gitlab的持续集成指定一个环境。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>官方文档地址：<a target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/install/">https://docs.gitlab.com/runner/install/</a></p>
+</blockquote>
+<p>&emsp;&emsp;Gitlab Runner的版本需要跟Gitlab对应,<a target="_blank" rel="noopener" href='https://docs.gitlab.com/runner/'>这里</a>有一个对照表。最新的版本对照表中并没有Gitlab8.X对应的Runner版本，查了一下Gitlab8.X对应的Runner版本为<code>1.X</code>,所以这里选择<code>runner 1.11.2</code>版本。</p>
+<p>&emsp;&emsp;这里运行Gitlab与Runner的环境均为CentOS，之前尝试在windows上安装runner，对接Linux上的Gitlab，发现在Gitlab runner运行的控制台出现乱码问题。</p>
+<p>0.准备</p>
+<p>在opt下创建gitlab-runner目录并进入该目录，后续执行的操作与所有的资源都放在这个目录中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">mkdir gitlab-runner</span><br><span class="line"><span class="built_in">cd</span> gitlab-runner/</span><br></pre></td></tr></table></figure>
+
+<p>1.下载</p>
+<p>下载安装资源到gitlab-runner目录中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/v1.11.2/binaries/gitlab-ci-multi-runner-linux-386</span><br></pre></td></tr></table></figure>
+
+<p>2.添加运行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x gitlab-ci-multi-runner-linux-386</span><br></pre></td></tr></table></figure>
+
+<p>3.创建用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>4.安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./gitlab-ci-multi-runner-linux-386 install --user=gitlab-runner --working-directory=/opt/gitlab-runner</span><br><span class="line">sudo gitlab-ci-multi-runner-linux-386 start</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>&emsp;&emsp;经过上面的步骤，Runner就已经跑起来了，剩下的还需要Runner与项目对接起来。Runner的类型分为<a target="_blank" rel="noopener" href='https://docs.gitlab.com/ee/ci/runners/README.html'>Shared, specific and group Runners</a>。这里选择specific类型，即单独的项目使用。</p>
+<p>&emsp;&emsp;在Gitlab项目的setting-runner中,配置过程中会使用到<code>url</code>和<code>token</code>如下所示：</p>
+<div style='text-align:center'><div>
+
+<p>1.运行register命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gitlab-ci-multi-runner-linux-386 register</span><br></pre></td></tr></table></figure>
+<p>之后就按照提示就行了</p>
+<p>2.输入url地址<br>3.输入token<br>4.输入描述，任意即可<br>5.输入标签，这里直接Enter跳过<br>6.选择Runner executor，这里选择shell  </p>
+<p>到这里就已经注册成功了，输入<code>./gitlab-ci-multi-runner-linux-386 list</code>就能看到上面的注册的条目。</p>
+<p>官方文档地址：<a target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/register/index.html">https://docs.gitlab.com/runner/register/index.html</a></p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>&emsp;&emsp;上面两个步骤做完后，此时按理说Gitlab就能调用Runner跑持续集成了，实际当中还会碰到其它问题，整理如下。</p>
+<h3 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h3><p>&emsp;&emsp;如果在Gitlab的Build控制台上报<code>无法创建文件夹</code>、<code>无法运行bash</code>等,证明创建的<code>GitLab Runner</code>权限不够。<br>此时，我这里是修改GitLab Runner的权限跟root保持一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>通过上面命令可以编辑用户对应的权限，我这里打开默认为<code>gitlab-runner:x:601:601:GitLab Runner:/home/gitlab-runner:/bin/bash</code>,权限组修改为跟root的一致<code>gitlab-runner:x:0:0:GitLab Runner:/home/gitlab-runner:/bin/bash</code>。(root的权限组名为0)</p>
+<blockquote>
+<p>这里在另外一台机器上还碰到这样修改了也不好使的问题，最终gitlab-runner install的时候，直接指定为root，而不新创建用户。</p>
+</blockquote>
+<h3 id="环境问题"><a href="#环境问题" class="headerlink" title="环境问题"></a>环境问题</h3><p>由于Runner运行需要环境支撑，比如git、node、npm等，需要在Runner所在的服务器上准备好所有的依赖。</p>
+<ul>
+<li>Linux Node安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line">wget https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz</span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -xf  node-v8.11.3-linux-x64.tar.xz</span><br><span class="line"><span class="comment"># 建立软链接，实现全局访问</span></span><br><span class="line">ln -s /opt/gitlab-runner/node-v8.11.3-linux-x64/bin/node /usr/<span class="built_in">local</span>/bin/node</span><br><span class="line">ln -s /opt/gitlab-runner/node-v8.11.3-linux-x64/bin/npm /usr/<span class="built_in">local</span>/bin/npm</span><br></pre></td></tr></table></figure>
+
+<p>此时，输入<code>node -v</code>就能看到node的版本了。</p>
+<p>使用软连接方式可能对非root用户无效，可以转而使用配置环境变量的方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改配置文件</span></span><br><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment">#set for nodejs,新增NODE_HOME并放到PATH上</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/opt/soft/java</span><br><span class="line"><span class="built_in">export</span> NODE_HOME=/opt/gitlab-runner/node-v8.11.3-linux-x64  </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$NODE_HOME</span>/bin</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在vim环境下点击i进入插入状态,编辑完成后按Esc键,然后输入 :wq 按回车保存退出。</p>
+</blockquote>
+<p>备注：内外环境还需修改NPM的镜像源，比如修改为<code>npm config set registry https://registry-npm.daojia-inc.com/</code></p>
+<h2 id="附录-部分GitLab-Runner常用命令"><a href="#附录-部分GitLab-Runner常用命令" class="headerlink" title="附录 部分GitLab-Runner常用命令"></a>附录 部分GitLab-Runner常用命令</h2><p>1.gitlab-runner帮助：gitlab-runner –help</p>
+<p>2.gitlab-runner指定命令帮助：gitlab-runner <commond> –help</p>
+<p>3.注册runner：gitlab-runner register</p>
+<p>4.注销runner：gitlab-runner unregister</p>
+<p>5.当前运行的runner：gitlab-runner list</p>
+<p>6.启动runner：gitlab-runner start</p>
+<p>7.停止runner：gitlab-runner stop</p>
+<p>8.重启runner：gitlab-runner restart</p>
+<p>9.查询runner状态：gitlab-runner status</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/07/13/2018-07-13-Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-一个由line-height引发的血案与思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1010,90 +1136,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/11/17/2017-11-17-JSONP%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2017-10-23-MySql启动报-write-error-No-space-left-on-device问题解决" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/23/2017-10-23-MySql%E5%90%AF%E5%8A%A8%E6%8A%A5-write-error-No-space-left-on-device%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">MySql启动报 write error: No space left on device问题解决</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/23/2017-10-23-MySql%E5%90%AF%E5%8A%A8%E6%8A%A5-write-error-No-space-left-on-device%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="archive-article-date">
-  	<time datetime="2017-10-23T03:20:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>启动MySQL数据库时报如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redmine-3.1.1-1]# .&#x2F;ctlscript.sh start</span><br><span class="line">171023 09:36:32 mysqld_safe Logging to &#39;&#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;data&#x2F;mysqld.log&#39;.</span><br><span class="line">171023 09:36:32 mysqld_safe Starting mysqld.bin daemon with databases from &#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;data</span><br><span class="line">&#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;bin&#x2F;mysqld_safe: line 128: echo: write error: No space left on device</span><br><span class="line">&#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;bin&#x2F;mysqld_safe: line 165: 16298 Killed  </span><br></pre></td></tr></table></figure>
-
-<p>其中，引人注目的就是<code>No space left on device</code>。</p>
-<p>使用<code>df -h</code>命令查看磁盘使用情况如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# df -h</span><br><span class="line">Filesystem            Size  Used Avail Use% Mounted on</span><br><span class="line">&#x2F;dev&#x2F;sda2              50G   50G     0 100% &#x2F;</span><br><span class="line">tmpfs                 3.8G  100K  3.8G   1% &#x2F;dev&#x2F;shm</span><br><span class="line">&#x2F;dev&#x2F;sda1             485M   54M  407M  12% &#x2F;boot</span><br><span class="line">&#x2F;dev&#x2F;sda5             404G  227M  383G   1% &#x2F;home</span><br></pre></td></tr></table></figure>
-<p>可以看到磁盘空间已经被完全占满。  </p>
-<p>接着，使用<code>du -sh *</code>命令查看<code>/dev/sda2</code>中的磁盘占用具体情况，结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost &#x2F;]# du -sh *</span><br><span class="line">8.8M	bin</span><br><span class="line">37M	boot</span><br><span class="line">344K	dev</span><br><span class="line">34M	etc</span><br><span class="line">29M	home</span><br><span class="line">122M	lib</span><br><span class="line">27M	lib64</span><br><span class="line">4.0K	media</span><br><span class="line">0	misc</span><br><span class="line">4.0K	mnt</span><br><span class="line">0	net</span><br><span class="line">42G	opt</span><br><span class="line">2.4G	root</span><br><span class="line">19M	sbin</span><br><span class="line">4.0K	srv</span><br><span class="line">164K	tmp</span><br><span class="line"></span><br><span class="line">[root@localhost &#x2F;]# cd opt</span><br><span class="line">[root@localhost opt]# du -sh *</span><br><span class="line">15M	apache-tomcat-9.0.0.M8</span><br><span class="line">15M	ksar</span><br><span class="line">200M	nexus-3.2.0-01</span><br><span class="line">100M	nexus-3.2.0-01-unix.tar.gz</span><br><span class="line">904M	redmine-3.1.1-1</span><br><span class="line">40G	sonatype-work</span><br></pre></td></tr></table></figure>
-
-<p>逐级往下找，发现是nexus的日志文件已经有30多G了，删掉，再次启动mysql问题得到解决。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/DBMS//" class="article-tag-list-link color5">DBMS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/23/2017-10-23-MySql%E5%90%AF%E5%8A%A8%E6%8A%A5-write-error-No-space-left-on-device%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">展开全文 >></a>
         </p>
       
 

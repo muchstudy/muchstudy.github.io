@@ -166,6 +166,105 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2017-01-08-产品研发记录04：关于技术选型的总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/08/2017-01-08-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">产品研发记录04：关于开源组件选择与技术方案选择的总结</a>
+    </h1>
+  
+
+        
+        <a href="/2017/01/08/2017-01-08-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2017-01-08T06:48:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;在<a href="http://muchstudy.com/2017/01/02/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/">基础开发框架产品</a>构建当中，由于人力成本等其它原因，无法做到所有的代码都自己实现。所以，在技术部分就包含开源组件选择与选择合适的技术方案自己实现两部分。</p>
+<h2 id="一、开源组件选择"><a href="#一、开源组件选择" class="headerlink" title="一、开源组件选择"></a>一、开源组件选择</h2><p>&emsp;&emsp;对于开源组件的选择应当考虑如下几个方面：</p>
+<ul>
+<li>是否已经经过了时间的考验。例如Jquery之类组件。</li>
+<li>是否有完善的生态环境。如果一款开源组件长时间没人管，没人用，圈子不活跃，建议不要选择。</li>
+<li>如果是小团队，还需要考虑团队人员的技术栈。大团队，需考虑新组件的推广成本。例如React、Angular、Vue。</li>
+<li>文档是否完善。</li>
+</ul>
+<h2 id="二、技术方案选择"><a href="#二、技术方案选择" class="headerlink" title="二、技术方案选择"></a>二、技术方案选择</h2><ul>
+<li>首先筛选出做一件事都有哪些技术方案能实现。</li>
+<li>通过Demo样例来判断每种方案的实现难易程度，判断每条路走下去分别会有哪些坑。</li>
+<li>市面上是否已有成熟的、已用于真实环境的技术解决方案。</li>
+<li>预估业务增长的速度，是否能支撑起增长变化后的需求。</li>
+<li>性能考量，实现复杂度考量。</li>
+</ul>
+<h2 id="三、其它"><a href="#三、其它" class="headerlink" title="三、其它"></a>三、其它</h2><ul>
+<li>不管什么组件，什么技术方案，首要需考虑的是是否能够很好的契合目前需要解决的问题。</li>
+<li>如果所选的会使用在核心部分，那么需考虑在3-5年后是否会过时。</li>
+<li>做好对比分析，最好仔细列出优缺点，折衷考虑。</li>
+<li>拿不定主意，不好评估的可先行小范围试用。如果不行，可快速切换；如果不错，再推广开。</li>
+<li>新组件，新技术未经过充分验证不可推进太快，就跟车速太快不好调头一个道理。</li>
+</ul>
+<p>&emsp;&emsp;总的来说，随着时间的推移与业务的变更，技术也应当随之改变。不管是开源组件的选择还是技术方案的选择，<strong>只能保证在那么一段时间内是最优的选择。</strong>技术人员必须时刻保持敏锐的嗅觉，跟上技术的步伐。如果一直停止不前，不管是对于一款产品也好，对于产品的研发人员也好，迎面而来的只有被淘汰的命运。</p>
+<p>&emsp;&emsp;在本文的最后，还想多说两句。<strong>所有的东西都不可能是一成不变的。</strong>产品没有随着新技术的提升与业务的变更而跟着做相应的调整，几年过后，就会变得越来越难用；技术人员安于呆在温水中，个人能力没有随着工作年限的增加而增加，几年之后会觉得越来越尴尬；</p>
+<p>&emsp;&emsp;在知乎上有这么一个问题：”<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/41167695">有哪些一开始觉得离自己很遥远的事，真的发生在自己身上时措手不及？</a>“。其中有一个简短而有力的答案，这个答案是：<strong>“平凡”。</strong></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/">产品研发记录03：关于技术债务的思考</a><br>下一篇：<a href="http://muchstudy.com/2017/02/10/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/">产品研发记录05：产品研发人员应当具备的特质</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/产品研发//" class="article-tag-list-link color5">产品研发</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/01/08/2017-01-08-%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-01-07-产品研发记录03：关于技术债务的思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1048,89 +1147,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/12/24/2016-12-24-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2016-12-23-Maven私服Nexus3-x权限配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/23/2016-12-23-Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/">Maven私服Nexus3.x权限配置</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/23/2016-12-23-Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2016-12-23T09:31:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、禁用匿名访问权限"><a href="#一、禁用匿名访问权限" class="headerlink" title="一、禁用匿名访问权限"></a>一、禁用匿名访问权限</h2>
-
-<h2 id="二、角色创建"><a href="#二、角色创建" class="headerlink" title="二、角色创建"></a>二、角色创建</h2>
-
-<h2 id="三、人员创建"><a href="#三、人员创建" class="headerlink" title="三、人员创建"></a>三、人员创建</h2>
-
-<h2 id="四、代理配置"><a href="#四、代理配置" class="headerlink" title="四、代理配置"></a>四、代理配置</h2><p>&emsp;&emsp;通过该配置可以使得两个Nexus服务器相关联。</p>
-<h3 id="1-配置地址"><a href="#1-配置地址" class="headerlink" title="1.配置地址"></a>1.配置地址</h3>
-
-<h3 id="2-配置用户"><a href="#2-配置用户" class="headerlink" title="2.配置用户"></a>2.配置用户</h3>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Maven//" class="article-tag-list-link color1">Maven</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/23/2016-12-23-Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/">展开全文 >></a>
         </p>
       
 
