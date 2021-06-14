@@ -166,6 +166,75 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2018-09-27-前端getTime时区问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/27/2018-09-27-%E5%89%8D%E7%AB%AFgetTime%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98/">前端getTime时区问题</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/27/2018-09-27-%E5%89%8D%E7%AB%AFgetTime%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2018-09-26T18:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;发现客户端选择下单时间后，提交订单并查看订单，在订单上显示的之前用户之前选择的时间存在1-N小时不等的差值。<br>&emsp;&emsp;例如：在下单页选择的<code>2018-01-01 10:00</code>,下单完成后，在订单详情页上面显示为<code>2018-01-01 09:00</code>,与实际的相差1小时。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>&emsp;&emsp;结合代码分析，发现当用户选择完时间后，会把选择的时间字符串调用getTime方法转换为毫秒数传给后端，后端再转换回时间字符串，在这个转换过程中，时间出现了差值。<br>&emsp;&emsp;最终，排查出问题原因为时区问题。还是以上面的样例为范本。当客户端的时区为<code>东京</code>，服务器端的时区为<code>北京</code>就能完美复该问题。<br>&emsp;&emsp;使用getTime方法获取时间的毫秒数时，实际上的获取当前的<code>格林威治时间</code>与<code>1970年1月1日</code>之间的毫秒数。东京时间为东9区，比标准时间快9个小时，所以在东京时区下时间转毫秒数就会减去9个小时才会为标准时间。此时北京时间与标准时间为8个小时的时差，客户端用东京时间转换为毫秒数（减9个小时），服务器端再用北京时间把毫秒数转换为时间字符串（加8个小时），此时就出现了时间差。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
+<li>避免使用getTime，前后端直接使用时间字符串传输</li>
+<li>前端对时区就行修复，代码如下</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTruthTime</span> (<span class="params">time</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 服务器端时区，北京东八区（-8*60）</span></span><br><span class="line">  <span class="keyword">let</span> timezone = <span class="number">-480</span></span><br><span class="line">  <span class="comment">// 客户端实际时区(例如东京为东九区：-540)</span></span><br><span class="line">  <span class="keyword">let</span> offsetGMT = <span class="keyword">new</span> <span class="built_in">Date</span>().getTimezoneOffset()</span><br><span class="line">  <span class="comment">// 计算差值（用户在东京时区下下单，需要补回1小时）</span></span><br><span class="line">  <span class="keyword">let</span> adjust = timezone - offsetGMT</span><br><span class="line">  <span class="comment">// 需要修复的时间，支持字符串传参</span></span><br><span class="line">  <span class="keyword">let</span> nowDate = time ? <span class="keyword">new</span> <span class="built_in">Date</span>(time).getTime() : <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</span><br><span class="line">  <span class="keyword">let</span> timeStamp = <span class="keyword">new</span> <span class="built_in">Date</span>(nowDate + adjust * <span class="number">60</span> * <span class="number">1000</span>)</span><br><span class="line">  <span class="keyword">return</span> timeStamp.getTime()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/27/2018-09-27-%E5%89%8D%E7%AB%AFgetTime%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-HTTP协议与前后端联调" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1153,121 +1222,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/12/13/2017-12-13-Tomcat%E5%90%AF%E7%94%A8HTTPS%E9%85%8D%E7%BD%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2017-12-06-字符解码时加号解码为空格问题探究" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/06/2017-12-06-%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/">字符解码时加号解码为空格问题探究</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/06/2017-12-06-%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/" class="archive-article-date">
-  	<time datetime="2017-12-06T09:22:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;最近发现一个问题，后台Java代码使用<code>new URL(url)</code>方式发起一个POST请求，模拟表单提交操作，从后台提交数据到服务器端。当客户端的数据中带加号时，服务器端的Servlet使用<code>request.getParameter(&#39;param&#39;)</code>得到的数据加号被变为了空格。比如：客户端发送的数据为<code>aa+aa</code>，服务器接收到的数据变为了<code>aa aa</code>。  </p>
-<p>简单写了几句代码验证一下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">&quot;aaa+aaa aaa%2B&quot;</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;ENCODE=&quot;</span>+URLEncoder.encode(str, <span class="string">&quot;utf-8&quot;</span>));</span><br><span class="line">System.out.println(<span class="string">&quot;DECODE=&quot;</span>+URLDecoder.decode(str,<span class="string">&quot;utf-8&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<p>运行结果如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENCODE=aaa%<span class="number">2</span>Baaa+aaa%<span class="number">252</span>B</span><br><span class="line">DECODE=aaa aaa aaa+</span><br></pre></td></tr></table></figure>
-
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>&emsp;&emsp;通过上面的代码可以看到，编码时，空格被编码成了+号，+号变成了<code>%2b</code>。当未经过编码的带+号的字符串解码时，+号直接转变为了空格。  </p>
-<p><strong>翻了一下文档是这么说的（<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/6/docs/api/java/net/URLEncoder.html">地址</a>）：</strong></p>
-
-
-<p><strong>接着到application/x-www-form-urlencoded MIME format的说明处（<a target="_blank" rel="noopener" href="https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">地址</a>）：</strong></p>
-
-
-<p><strong>再翻了一下servlet中<code>request.getParameter(&#39;param&#39;)</code>方法说明，如下：</strong></p>
-
-
-<p><strong>接着看getParameter到底如何取数据的：</strong></p>
-
-
-<p>&emsp;&emsp;从上图可以知道，当在servlet中使用<code>getParameter</code>方法来接收POST数据时，默认是会根据请求头的类型来解码的。这就证实了如果通过后端<code>new URL(url)</code>的方式模拟表单的POST，<strong>如果在POST前不对数据进行编码且数据中带有+号，那么服务器端收到的数据必然会是错误的（+号会被自动解码为空格）。</strong></p>
-<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>&emsp;&emsp;常规的表单提交content-type有两种：<code>application/x-www-form-urlencoded</code>和<code>multipart/form-data</code>,如果表单提交时不设置任何类型，默认以第一种方式提交数据；第二种属于带附件的表单提交，当表单中有附件时，必须设置表单的<code>enctype</code>为<code>multipart/form-data</code>.</p>
-<p>&emsp;&emsp;很多时候，我们用 Ajax 提交数据时，也是使用这种方式。例如 JQuery的 Ajax，Content-Type 默认值为<code>application/x-www-form-urlencoded;charset=utf-8</code>。</p>
-<h3 id="前端代码"><a href="#前端代码" class="headerlink" title="前端代码"></a>前端代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url:getServer()+<span class="string">&quot;/TestServlet&quot;</span>,</span><br><span class="line">  data:&#123;<span class="attr">yiying</span>:<span class="string">&quot;aaa+aa a&quot;</span>&#125;,</span><br><span class="line">  type:<span class="string">&#x27;post&#x27;</span>,</span><br><span class="line">  success:<span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="HTTP请求情况"><a href="#HTTP请求情况" class="headerlink" title="HTTP请求情况"></a>HTTP请求情况</h3>
-
-<p>&emsp;&emsp;由于在chrome的控制台中所显示的数据被优化显示了，所以在<code>Form Date</code>部分，需要点击后面的<code>view source</code>才能看到浏览器发送数据的真实格式是怎么样的。默认优化后的显示应当为<code>yiying:aaa+aa a</code>,</p>
-<p>&emsp;&emsp;从上图中可以看到，浏览器实际上的使用<code>Content-Type:application/x-www-form-urlencoded; charset=UTF-8</code>的<a target="_blank" rel="noopener" href="https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">编码规则</a>，实际发送的数据为<code>yiying=aaa%2Baa+a</code>,其中+号变为了%2b,空格被编码为+号。</p>
-<h3 id="后端情况"><a href="#后端情况" class="headerlink" title="后端情况"></a>后端情况</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/TestServlet&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		doPost(request,response);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;===&quot;</span>+request.getParameter(<span class="string">&quot;yiying&quot;</span>)+<span class="string">&quot;===&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出值为</span></span><br><span class="line">===aaa+aa a===</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;从后端的输出值可以看到，后端的servlet自动解码为原始数据。</p>
-<p><strong>关于后端中文乱码问题的特别说明：</strong></p>
-<blockquote>
-<p>后端服务器(tomcat 的server.xml)如果没有设置编码规则（URIEncoding=”utf-8”），Servlet默认会以<code>ISO-8859-1</code>来解码中文字符(Servlet规范定义)，而前端标识为utg-8,此种情况就会产生乱码，可以用如下3种办法来解决：</p>
-</blockquote>
-<ol>
-<li>在server.xml设置编码规则为utf-8</li>
-<li>在调用getParameter之前使用代码设置编码规则，<code>request.setCharacterEncoding(&quot;utf-8&quot;);</code></li>
-<li>定点处理，<code>String name = new String(request.getParameter(&quot;name&quot;).getBytes(&quot;iso-8859-1&quot;),&quot;utf-8&quot;);</code></li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>&emsp;&emsp;显而易见，如果需要在后端使用<code>new java.net.URL(url)</code>的方式POST提交数据，需要像浏览器那样先给数据编码处理，再发送数据。</p>
-<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/其它//" class="article-tag-list-link color3">其它</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/06/2017-12-06-%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/">展开全文 >></a>
         </p>
       
 
