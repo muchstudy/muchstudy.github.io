@@ -166,6 +166,101 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-08-14-用sqlmap验证sql注入" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/14/2016-08-14-%E7%94%A8sqlmap%E9%AA%8C%E8%AF%81sql%E6%B3%A8%E5%85%A5/">用sqlmap验证sql注入</a>
+    </h1>
+  
+
+        
+        <a href="/2016/08/14/2016-08-14-%E7%94%A8sqlmap%E9%AA%8C%E8%AF%81sql%E6%B3%A8%E5%85%A5/" class="archive-article-date">
+  	<time datetime="2016-08-14T15:00:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一-安装python"><a href="#一-安装python" class="headerlink" title="一.安装python"></a>一.安装python</h3><p><a target="_blank" rel="noopener" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a><br>使用python 2.x即可</p>
+<h3 id="二-step-by-step安装完后添加环境变量path"><a href="#二-step-by-step安装完后添加环境变量path" class="headerlink" title="二.step by step安装完后添加环境变量path"></a>二.step by step安装完后添加环境变量path</h3><p><img src="/images/20160814/1.png" alt="描述"></p>
+<h3 id="三-下载sqlmap"><a href="#三-下载sqlmap" class="headerlink" title="三.下载sqlmap"></a>三.下载sqlmap</h3><p><a target="_blank" rel="noopener" href="http://sqlmap.org/">http://sqlmap.org/</a><br>解压到本地磁盘即可</p>
+<h3 id="四-使用sqlmap验证注入项"><a href="#四-使用sqlmap验证注入项" class="headerlink" title="四.使用sqlmap验证注入项"></a>四.使用sqlmap验证注入项</h3><p>例如：通过存在的注入点扫描出有哪些数据库，还可通过该注入点把整个数据库的数据下载到本地，基本上只要是拼字符串的sql都存在注入问题<br><img src="/images/20160814/2.png" alt="描述"></p>
+<h3 id="五-sqlmap常用参数"><a href="#五-sqlmap常用参数" class="headerlink" title="五.sqlmap常用参数"></a>五.sqlmap常用参数</h3><p><img src="/images/20160814/3.png" alt="描述"></p>
+<p>post注入<br> 使用 –data参数</p>
+<pre><code>sqlmap -u “192.168.216.147/checklogin.php” –data “myusername=admin&amp;mypassword=admin&amp;Submit=Login” –level=5 –risk=3 –dbs</code></pre>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql注入</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sqlmap</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/安全//" class="article-tag-list-link color3">安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/08/14/2016-08-14-%E7%94%A8sqlmap%E9%AA%8C%E8%AF%81sql%E6%B3%A8%E5%85%A5/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-博客开通" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -425,6 +520,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">读书</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
             
             <div class="clearfix"></div>

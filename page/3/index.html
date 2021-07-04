@@ -166,6 +166,94 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-关于祖传“屎山”代码的一些思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/08/%E5%85%B3%E4%BA%8E%E7%A5%96%E4%BC%A0%E2%80%9C%E5%B1%8E%E5%B1%B1%E2%80%9D%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">关于祖传“屎山”代码的一些思考</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/08/%E5%85%B3%E4%BA%8E%E7%A5%96%E4%BC%A0%E2%80%9C%E5%B1%8E%E5%B1%B1%E2%80%9D%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="archive-article-date">
+  	<time datetime="2020-11-08T14:40:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/11/08/%E5%85%B3%E4%BA%8E%E7%A5%96%E4%BC%A0%E2%80%9C%E5%B1%8E%E5%B1%B1%E2%80%9D%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/%E6%A0%91.png" class="">
+
+
+<p>目前负责一个持续迭代了好几年的系统，同时还是两种技术栈并存，很多文件都是上千行的代码，完全不具备可阅读性，修改一个变量为了防止修改不完全，只能靠文件搜索找引用依赖，十分炸裂…</p>
+<p>对于我这种有点代码洁癖的人来说，简直欲罢不能，时刻都在想着如何能改变“屎山”代码的现状…</p>
+<p>重构？</p>
+<p>但是很大的问题在于业务逻辑相当复杂，没人知道详细逻辑，而且线上稳定运行，使用频繁，风险很大。</p>
+<p>然后还很难回答，重构能给业务带来什么收益？</p>
+<p>越想越无力！～</p>
+<p>偶然在知乎上看到这样两个问题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/347870607">如何妥善的应对祖传屎山(代码)?</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/347870607">https://www.zhihu.com/question/347870607</a>     </li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/265453795/answer/1453787207">你见过最烂的代码长什么样子？</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/265453795/answer/1453787207">https://www.zhihu.com/question/265453795/answer/1453787207</a></li>
+</ul>
+<p>看完下面各种欢乐的回答，感觉跟“屎山”代码和解了！～</p>
+<p>这其中有一句话说得好：<strong>再差的代码也是经过线上验证过的！</strong></p>
+<p>而且，重构的代码从最终结果来看，不一定能赶上重构前的代码，至少没有经过线上各种情况的锤炼。</p>
+<p>相信不论哪个系统，当不停迭代几年之后，或多或少都会有这样的问题。</p>
+<p>原因很简单：<strong>那就是越到后面，迭代的人越需要小心翼翼，只能基于现有的设计与架构去新增业务逻辑，从而代码结构越来越变形，渐渐变成“屎山”代码。</strong></p>
+<p>从目前的情况，换个角度来看，实际上还是有很多有价值的东西的，比如</p>
+<p>有哪些好的方式可以避免一个长期迭代的系统代码味道慢慢变味儿？</p>
+<p>从最开始的系统架构、中间的迭代、最新业务逻辑的增加可以有哪些思路去规避最终的问题？</p>
+<p>可以站在业务最终态的角度去思考业务系统的发展逻辑，有没有办法从最开始的架构设计上减轻目前的困境？</p>
+<p>总的来说，学会妥协，并且从中发现能让自己有收获的点，一切都坦然了。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/08/%E5%85%B3%E4%BA%8E%E7%A5%96%E4%BC%A0%E2%80%9C%E5%B1%8E%E5%B1%B1%E2%80%9D%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-在一个成熟稳定的团队如何找到技术发力点？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1281,86 +1369,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-两个“跑路”级别BUG复盘" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/">两个“跑路”级别BUG复盘</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/" class="archive-article-date">
-  	<time datetime="2020-06-02T13:08:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="自动登录越权"><a href="#自动登录越权" class="headerlink" title="自动登录越权"></a>自动登录越权</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>小程序原生跳转到webview的H5页面时，需要打通用户登录；此时需要在跳转的URL上带上临时token，通过临时token换取登录cookie。</p>
-<p>实现的方案为通过Node服务的拦截器，自动拦截小程序环境中的H5页面请求，自动设置上cookie。</p>
-<h3 id="问题-amp-原因"><a href="#问题-amp-原因" class="headerlink" title="问题&amp;原因"></a>问题&amp;原因</h3><p>自动登录相关的逻辑封装在AutoLogin类中，如下所示</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自动登录相关</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoLogin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span> () &#123;</span><br><span class="line">    <span class="built_in">this</span>.ctx = <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  init (ctx) &#123;</span><br><span class="line">    <span class="built_in">this</span>.ctx = ctx</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 触发条件</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  trackRule () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 自动登录逻辑</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">res</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> autoLogin () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 自动退出登录逻辑</span></span><br><span class="line"><span class="comment">   * 备注：当实现小程序跳H5自动登录后，此时小程序退出登录，需同时保证H5页面也退出登录</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> autoLogout () &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">new</span> AutoLogin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>核心原因在于<code>this.ctx = ctx</code>这一行，这行代码意味着在内存中持有了koa的ctx对象，当并发场景，会造成第一个请求链路还未完结时，ctx被替换为第二个请求的上下文对象了，从而造成header中的cookie信息不对，权限错乱。</p>
-<h2 id="类型异常"><a href="#类型异常" class="headerlink" title="类型异常"></a>类型异常</h2><h3 id="问题-amp-原因-1"><a href="#问题-amp-原因-1" class="headerlink" title="问题&amp;原因"></a>问题&amp;原因</h3><p>问题代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Object.entries(config.proxy).map(([path, target]) &#x3D;&gt; &#123;</span><br><span class="line">        let &#123; url, login, intercept, extParams &#125; &#x3D; this.getProxyParams(target)</span><br><span class="line">        this.addRouter(&#123;</span><br><span class="line">          routerPath: &#96;$&#123;routerRoot&#125;$&#123;path&#125;&#96;,</span><br><span class="line">          target: url,</span><br><span class="line">          callback: async ctx &#x3D;&gt; &#123;</span><br><span class="line">            &#x2F;&#x2F; 支持extParams为function类型,传入ctx方便从request中获取数据</span><br><span class="line">            extParams &#x3D; Object.assign(&#123;&#125;, typeof (extParams) &#x3D;&#x3D;&#x3D; &#39;function&#39; ? extParams(ctx) : extParams)</span><br><span class="line">            &#x2F;&#x2F; 登录校验</span><br><span class="line">            if (login) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            &#x2F;&#x2F; 接口透传</span><br><span class="line">            await proxy.launch(&#123; url, reqParams &#125;, ctx)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br></pre></td></tr></table></figure>
-
-<p>问题在于这一行代码<code>extParams = Object.assign(&#123;&#125;, typeof (extParams) === &#39;function&#39; ? extParams(ctx) : extParams)</code></p>
-<p>第一次请求的时候extParams为function类型，正常运行；第二次进来由于extParams已经变为了Object类型了，所以这段代码当第二个人请求进来时，永远都是运行的false逻辑，也就是第一个人ctx中的内容。</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><ul>
-<li>在Node服务中，切忌保存上下文对象，尽量不要持有跟用户相关的非全局信息</li>
-<li>缺少TS的场景下，注意JS的类型</li>
-</ul>
-<div style="width:70%;margin:auto">
-<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
@@ -1535,6 +1543,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">读书</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
             
             <div class="clearfix"></div>
