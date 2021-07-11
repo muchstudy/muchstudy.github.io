@@ -166,6 +166,90 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2019-08-19-Elasticsearch7-x安装与配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/19/2019-08-19-Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Elasticsearch7.x安装与配置</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/19/2019-08-19-Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="archive-article-date">
+  	<time datetime="2019-08-19T15:08:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>1.下载地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/cn/start">https://www.elastic.co/cn/start</a><br>复制下载链接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载资源</span></span><br><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压资源</span></span><br><span class="line">tar -xf elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd elasticsearch-7.3.0-linux-x86_64</span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示启动elk</span></span><br><span class="line">./bin/elasticsearch</span><br><span class="line"><span class="meta">#</span><span class="bash"> 后台启动</span></span><br><span class="line">./bin/elasticsearch -d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="其它配置"><a href="#其它配置" class="headerlink" title="其它配置"></a>其它配置</h2><h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><p>当使用elasticsearch-head插件访问elk时，需要设置允许跨域访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="允许外部网络（非本地）访问9200端口"><a href="#允许外部网络（非本地）访问9200端口" class="headerlink" title="允许外部网络（非本地）访问9200端口"></a>允许外部网络（非本地）访问9200端口</h3><p>默认情况下，启动elk服务后，其它服务器是无法访问elk服务的（telnet不通），只允许本地访问。</p>
+<p>需要做如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br></pre></td></tr></table></figure>
+
+<p>此时，启动会报如下两个错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: [2] bootstrap checks failed</span><br><span class="line">[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</span><br><span class="line">[2]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</span><br></pre></td></tr></table></figure>
+
+<p>对于第一个配置，root用户权限下，增加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+
+<p>对于第二个错误，增加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">cluster.initial_master_nodes: [“node-1”]</span><br></pre></td></tr></table></figure>
+
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/19/2019-08-19-Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CodeReview过程中关于JS代码性能的随想整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1203,96 +1287,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-2018-01-13-读《恶意》有感" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/13/2018-01-13-%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/">读《恶意》有感</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/13/2018-01-13-%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/" class="archive-article-date">
-  	<time datetime="2018-01-13T14:58:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-<p>&emsp;&emsp;实际上读完这本书已经有一段时间了，有几点感想需要尽快的记录下来，因为深知越往后拖就越没有记录下来的动力。</p>
-<h2 id="关于写作手法"><a href="#关于写作手法" class="headerlink" title="关于写作手法"></a>关于写作手法</h2><p>&emsp;&emsp;文章的写作手法是第一个让我惊奇的地方。全书并不是常见的从头到尾讲故事的叙述文，而是由犯罪嫌疑人和警察的笔记，以及心理活动穿插构成。笔记与心理活动相穿插，让故事与案件逻辑层层递进，不断的推进故事的发展。使得读者更容易的进入到故事当中，把笔记当作案件的记录与线索，把心理活动当作对案件的分析与不断的剥离出事实真相。这是我第一次看到这种写作手法，不由得赞叹：小说居然还能这么写！~</p>
-<h2 id="关于先入为主"><a href="#关于先入为主" class="headerlink" title="关于先入为主"></a>关于先入为主</h2><p>&emsp;&emsp;在故事的一开始，野野口修透露日高邦彦杀猫的情节给人一股深深的寒意，让读者一下子就觉得日高邦彦不会是什么好人。但是，事实却恰恰相反，这是野野口修故意设下的圈套。当得知最终的真相后，由于先入为主的观念，一个微不足道的小情节居然能带来如此巨大的影响，值得深思。</p>
-<h2 id="关于”恶意”"><a href="#关于”恶意”" class="headerlink" title="关于”恶意”"></a>关于”恶意”</h2><p>&emsp;&emsp;<strong>“也没有什么特别的原因，就是看他不爽！”</strong>这就是野野口修杀害日高邦彦的犯罪动机。这么一句毫无逻辑，毫无道理的话，让人毛骨悚然，不寒而栗。<br>&emsp;&emsp;回归到现实世界，在日常的生活与工作中，这样毫无缘由的恶意有时候也会毫无缘由的出现在你面前，当你感受到别人对你的这股恶意时，你会觉得很无力也很可怕。<br>&emsp;&emsp;希望自己永远不要成为这样的人。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/13/2018-01-13-%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/7/">Next &amp;raquo;</a>
@@ -1471,6 +1465,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">团队管理</a>
               </li>
             
             <div class="clearfix"></div>
