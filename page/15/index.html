@@ -154,6 +154,95 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-关于代码质量的一点思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/13/%E5%85%B3%E4%BA%8E%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">关于代码质量的一点思考</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/13/%E5%85%B3%E4%BA%8E%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="archive-article-date">
+  	<time datetime="2016-11-13T08:20:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;最近在做基础开发框架登录模块的重构，所以来谈一谈关于代码质量的思考。<br>&emsp;&emsp;进入正题之前，先吐槽一下，看看能不能引起一点共鸣。<br>&emsp;&emsp;之所以要重构这部分的代码，原因很简单，公司的测试团队通过压力测试发现登录这块有性能问题。同时，基于另外一个使用产品基础开发框架的团队需要在登录这块进行一些业务上的扩展。怀着激动的心情打开这块的相关代码，首先第一感觉就是杂乱无章，排版糟糕。没办法，要解决问题，还是得硬着头皮看下去。接着，从前端UI界面的输入到提交看起，发现代码相当的绕，很难看懂其中的逻辑。另外，其中还有大片的冗余拖沓代码。虽然整体功能逻辑完整的实现了，但是实现细节一团糟。毫不夸张的说，很多部分的代码完全属于技术验证阶段的代码。遇到这样的代码，我想很少能有人能静下心来完完整整的看完……</p>
+<p>下面说说我所认为的代码是怎么样的:  </p>
+<ol>
+<li>代码需要排版整洁干净、并且有清晰适当的注释，当打开代码源文件的瞬间，能给人一种赏心悦目的感觉。</li>
+<li>代码要简洁，不拖沓，不能为了封装而封装，为了面向对象而面向对象。重复功能的代码尽量封装成方法，杜绝成段成段的相同代码、冗余代码。</li>
+<li>代码的结构要清晰，让其他人能轻松的找到程序的入口，轻松摸清代码的整体脉络，并且不看每个方法中的具体内容，只需要看整个代码的骨骼即能了解程序的功能。</li>
+<li>模块与模块的对接部分要简洁。大部分情况为沟通不彻底或者相互对对方的模块缺乏基本的了解造成。</li>
+<li>注重代码的性能。这一块不仅需要从纯技术角度去考虑代码的性能，还需要深入的了解业务需求，往往一个灵光一闪的想法就能节约成片的代码、以简单的逻辑实现复杂的业务需求。</li>
+</ol>
+<p>一些思考：</p>
+<ol>
+<li>好的代码往往是经过不断的打磨产生的，一个精进的程序员应当具备一颗喜欢折腾代码的躁动的心。</li>
+<li>对于框架级的代码，越早重构越好，越往后拖所带来的成本越大。</li>
+<li>糟糕代码质量的代码后期维护成本不可估量，甚至会影响到后续新功能的开发，从这里真正能对比出一个优秀Programmer的价值。</li>
+<li>写代码也是一门艺术。一段完美精致代码的创造过程不亚于一件艺术品的创作过程。</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Programmer//" class="article-tag-list-link color1">Programmer</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/13/%E5%85%B3%E4%BA%8E%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-《解忧杂货店》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1337,144 +1426,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/08/28/%E3%80%8A%E5%AB%8C%E7%96%91%E4%BA%BAX%E7%9A%84%E7%8C%AE%E8%BA%AB%E3%80%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-《白夜行》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/28/%E3%80%8A%E7%99%BD%E5%A4%9C%E8%A1%8C%E3%80%8B/">《白夜行》</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/28/%E3%80%8A%E7%99%BD%E5%A4%9C%E8%A1%8C%E3%80%8B/" class="archive-article-date">
-  	<time datetime="2016-08-28T06:08:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>好东西需要分享，所以今天来义务当一回五毛。</p>
-</blockquote>
-<p>&emsp;&emsp;前段时间休了一次长假，长假回来发现状态全无，晚上下班回家无所事事，什么事儿没干一晃就到了睡觉时间，这种状态让人感觉很不踏实。为了找找学习状态，重找晚上回家看书的习惯，需要带一波节奏。<br>&emsp;&emsp;据以往经验，想要把节奏带起来，不能来得太陡，必须循序渐进。如果一上来就找本技术大部头来啃绝对容易打瞌睡！很早之前在知乎就看到有人推荐东野圭吾的《白夜行》，说这本小说很不错，属于推理悬疑小说。看到推理悬疑，想到这种小说肯定属于不断挖坑，引人入胜，打开就停不下来的小说。每天晚上回家来上一章，绝对停不下来！带节奏神器！<br>&emsp;&emsp;下面，就来先见见这本书的封面。</p>
-<img src="/2016/08/28/%E3%80%8A%E7%99%BD%E5%A4%9C%E8%A1%8C%E3%80%8B/%E7%99%BD%E5%A4%9C%E8%A1%8C.jpg" class="" title="《白夜行》">
-
-<p>&emsp;&emsp;从封面上看，可能会觉得很普通，老实说，当时看到的第一眼也是这么认为的。不过当我看完全书再回过头来着封面，觉得设计得真TMD的有深意！<br>&emsp;&emsp;作为摇旗呐喊的五毛，当然是不可能剧透的！不过倒是可以放点儿书中的内容勾引勾引….</p>
-<ul>
-<li><p>她的眼神里有一种微妙得难以言喻的刺。但那并不是社交舞社社长无视她的存在，只顾和朋友讲话而自尊受伤的样子。那双眼睛里栖息的光并不属于那种类型。 那是更危险的光——这才是一成的感觉，可以说是隐含了卑劣下流的光。他认为真正的名门闺秀，眼神里不应栖息着那样的光。</p>
-<blockquote>
-<p>&emsp;&emsp;公司最近招了一拨实习生，好怀念自己当年初入职场时那单纯、清澈的眼神！随着阅历的增加，眼神中的那股清流慢慢的消失。如果能一直保持住像三四岁小孩儿那种干净清澈的眼神该多好！已入职场6年，希望能不断学习成长，通过智慧让自己的眼神不至于渐渐变得黯淡无光，不求清澈见底，至少炯炯、明亮。</p>
-</blockquote>
-</li>
-<li><p>“捡别人丢的东西不还，跟偷别人随意放置的东西，并没有什么差别。有错的难道不是把装了钱的包随便放的人吗？<strong>这个社会上，让别人有机可乘的人注定要吃亏。</strong>”</p>
-</li>
-<li><p>“我很不想承认，可你的确是本世纪最幸运的男人。娶到那么美的老婆就该偷笑了，她竟然还烧得一手好菜！<strong>一想到我跟你活在同一个世界上，实在很难不嫌弃自己。</strong>”</p>
-</li>
-<li><p>看着她，总会感到一种莫名的诡异，我实在不认为她只是个坚强的女子。”</p>
-<blockquote>
-<p>坚强往往是需要某种力量来支撑的！</p>
-</blockquote>
-</li>
-<li><p>一双看尽人性丑恶的眼睛，一种堪称真正冷静清澈的光静静地栖息其中。</p>
-<blockquote>
-<p>这句话是形容书中一直追踪命案二十年一直不放弃的老警察</p>
-</blockquote>
-</li>
-<li><p>“枪虾会挖洞，住在洞里。可有个家伙却要去住在它的洞里，那就是虾虎鱼。不过虾虎鱼也不白住，它会在洞口巡视，要是有外敌靠近，就摆动尾鳍通知洞里的枪虾。它们合作无间，这好像叫互利共生。”</p>
-<blockquote>
-<p>仔细想想，这种相互依偎取暖也挺可怜的！</p>
-</blockquote>
-</li>
-<li><p>“有一株芽应该在那时就摘掉，因为没摘，芽一天天成长茁壮，长大了还开了花，而且是作恶的花。”</p>
-<blockquote>
-<p>恶之花一开始就应该摘掉，越晚摘除后果越大。写代码也一样，问题代码一开始就应该干掉，而不应该一味的容忍做兼容！神转折吧！</p>
-</blockquote>
-</li>
-<li><p>曾经拥有的东西被夺走，并不代表就会回到原来没有那种东西的时候。</p>
-<blockquote>
-<p>这句话很有深意啊！值得仔细思考！</p>
-</blockquote>
-</li>
-<li><p>“那时，我比现在的你更小，真的还是小孩子。但是，恶魔不会因为你是小孩子就放过你。而且，恶魔还不止一个。”  </p>
-<blockquote>
-<p>遇到恶魔就不要指望得到恶魔的同情。</p>
-</blockquote>
-</li>
-<li><p>“喏，夏美，一天当中，有太阳升起的时候，也有下沉的时候。人生也一样，有白天和黑夜，只是不会像真正的太阳那样，有定时的日出和日落。看个人，有些人一辈子都活在太阳的照耀下，也有些人不得不一直活在漆黑的深夜里。人害怕的，就是本来一直存在的太阳落下不再升起，也就是非常害怕原本照在身上的光芒消失，现在的夏美就是这样。” 夏美听不懂老板在说什么，只好点头。 “我呢，从来就没有生活在太阳底下过。” “怎么会！”夏美笑了，“社长总是如日中天呢。” 她摇头。她的眼神是那么真挚，夏美的笑容也不由得消失了。 “我的天空里没有太阳，总是黑夜，但并不暗，因为有东西代替了太阳。虽然没有太阳那么明亮，但对我来说已经足够。凭借着这份光，我便能把黑夜当成白天。你明白吧？我从来就没有太阳，所以不怕失去。”“代替太阳的东西是什么呢？” “你说呢？也许夏美以后会有明白的一天。”</p>
-<blockquote>
-<p>看到这儿，终于明白书名为何取为《白夜行》。这样的人生居然还能如此坚强！在白夜中行走需要多大的勇气！</p>
-</blockquote>
-</li>
-</ul>
-<p>&emsp;&emsp;看完书的最后一个字，合上书，静静的看着书的封面，思绪万千！</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/28/%E3%80%8A%E7%99%BD%E5%A4%9C%E8%A1%8C%E3%80%8B/">展开全文 >></a>
         </p>
       
 

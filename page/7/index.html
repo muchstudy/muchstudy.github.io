@@ -154,6 +154,84 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-前端防抖与节流" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/21/%E5%89%8D%E7%AB%AF%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/">前端防抖与节流</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/21/%E5%89%8D%E7%AB%AF%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/" class="archive-article-date">
+  	<time datetime="2019-10-21T02:19:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;函数防抖与节流印象中都是为了控制函数执行频率，比如避快速点击提交按钮多次提交、避免模糊搜索框keyup事件监听时快速打字每次都去调用一次查询接口、避免页面滚动监听事件快速执行影响性能等；之前对防抖和节流的具体概念缺乏了解，比如他们有啥区别？具体是怎么样的？如何方便的理解这两个概念？翻了翻资料，结合自己的理解与思考整理如下</p>
+<h3 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h3><h4 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h4><p>触发高频事件后n秒内函数只会执行一次，如果n秒内高频事件再次被触发，则重新计算时间</p>
+<blockquote>
+<p>example1: 模糊搜索框keyup事件监听，始终要等到用户输入告一段落后才会执行数据查询<br>example2: 游戏释放技能有一个准备时间，当准备阶段被打断时，需要重新走技能准备，准备完成才能够释放技能</p>
+</blockquote>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 防抖</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>fn      需要做防抖处理的函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>delay   技能准备（延迟）执行时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Function&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, delay = <span class="number">500</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> time = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(time)</span><br><span class="line">    time = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 只会打印debounce2</span></span><br><span class="line"><span class="keyword">const</span> debounceTest = debounce(<span class="function">(<span class="params">param</span>) =&gt;</span> &#123; <span class="built_in">console</span>.log(param) &#125;)</span><br><span class="line">debounceTest(<span class="string">&#x27;debounce1&#x27;</span>)</span><br><span class="line">debounceTest(<span class="string">&#x27;debounce2&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h3><h4 id="名词解释-1"><a href="#名词解释-1" class="headerlink" title="名词解释"></a>名词解释</h4><p>高频事件触发，但在n秒内只会执行一次</p>
+<blockquote>
+<p>example1：查询按钮，第一次可以立即点击，防止快速点击控制3s之内只能点一次<br>example2：游戏技能冷却，可用时随时可立即执行，当执行后有一个冷却时间</p>
+</blockquote>
+<h4 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 节流</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>fn      需要做节流处理的函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>limit   技能的冷却（限制）时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Function&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, limit = <span class="number">500</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> flag = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">      fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">      flag = <span class="literal">false</span></span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123; flag = <span class="literal">true</span> &#125;, limit)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 只会打印throttle1</span></span><br><span class="line"><span class="keyword">const</span> throttleTest = throttle(<span class="function">(<span class="params">param</span>) =&gt;</span> &#123; <span class="built_in">console</span>.log(param) &#125;)</span><br><span class="line">throttleTest(<span class="string">&#x27;throttle1&#x27;</span>)</span><br><span class="line">throttleTest(<span class="string">&#x27;throttle2&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/21/%E5%89%8D%E7%AB%AF%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Elasticsearch常用增删改查记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1141,87 +1219,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-30" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/21/30/">30</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/21/30/" class="archive-article-date">
-  	<time datetime="2018-04-21T03:15:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <div style='text-align:center'><img src="/2018/04/21/30/30.jpg" class=""><div>
-
-<p>&emsp;&emsp;30岁是一道坎。</p>
-<p>&emsp;&emsp;从年龄上来讲，又是一个十年。人生就这样过完了三分之一，不由得心生感慨！感慨时光如梭，感慨事业无成，感概没有了上一个十年时的锐气，就连眼神也没有了那时的干净清澈。从十年前的白面书生变成了中年油腻男，时间真的是一把杀猪刀！</p>
-<p>&emsp;&emsp;从工作与生活上来讲，三十而立。但很多人在这个时候面对着上有老下有有小往往却力不从心。需要咬紧牙关坚持下去，翻过这道坎。</p>
-<p>&emsp;&emsp;就在前几天，我也进入了而立之年。生日当天，那一整天仿佛都充满了仪式感，仿佛过完了那一天就进入到了一个新的人生阶段。当时灵感爆棚（也可能是一时冲动，人很多时候会把冲动当作灵感），希望能记下点什么，但什么都没记下……</p>
-<p>&emsp;&emsp;今年的315入职新公司，在三十岁之前从传统行业转到互联网行业。之所以转，是因为觉得在传统行业中已经到了天花板，进入了舒适区，不想温水煮青蛙，想换一种环境看看。从目前的情况来看，似乎还不错，在新的环境里有很多事情值得做，值得拼一下。似乎又回到了刚入职场的状态，这是一个之前一直期望的状态，很满意。</p>
-<p>&emsp;&emsp;30岁不仅仅是一道坎，跨过这道坎实际上是一趟新的征程。希望在这趟新的旅程中能一直坚挺下去！</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/21/30/">展开全文 >></a>
         </p>
       
 
