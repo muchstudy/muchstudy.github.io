@@ -154,6 +154,109 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-一文搞定JS异常捕获" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/">一文搞定JS异常捕获</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/" class="archive-article-date">
+  	<time datetime="2019-11-10T02:48:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div style="width:70%;margin:auto">
+<img src="/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/catch.jpg" class="">
+</div>
+
+<p>&emsp;&emsp;关于JS的异常捕获，主要分为两种，一种为同步情况下的异常捕获，一种为一步执行下的异常捕获；异常捕获的【坑】主要集中在异步场景。</p>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>&emsp;&emsp;在同步场景下，简单粗暴，直接使用try/catch解决问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// catch: ReferenceError: obj is not defined</span></span><br><span class="line">    <span class="built_in">console</span>.log(obj.error)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;catch:&#x27;</span>, e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="keyword">catch</span>: <span class="built_in">ReferenceError</span>: obj is not defined</span><br><span class="line">    at &lt;anonymous&gt;:<span class="number">4</span>:<span class="number">17</span></span><br><span class="line">    at &lt;anonymous&gt;:<span class="number">8</span>:<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><h4 id="setTimeout异常"><a href="#setTimeout异常" class="headerlink" title="setTimeout异常"></a>setTimeout异常</h4><p>在异步场景下，按照上面的异常捕获方式是无法捕获到异常的，如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 无法捕获到异常</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(obj.error)</span><br><span class="line">    &#125;, <span class="number">500</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;catch:&#x27;</span>, e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">Uncaught <span class="built_in">ReferenceError</span>: obj is not defined</span><br><span class="line">    at &lt;anonymous&gt;:<span class="number">4</span>:<span class="number">19</span></span><br><span class="line">    at i (init.js:<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>之所以无法捕获到异常，原因在于异步方法执行时，主流程已执行完毕，try/catch已经退出函数调用栈；正确的异常捕获如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(obj.error)</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="comment">// 此处捕获到异常</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;catch1:&#x27;</span>, e)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">500</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="comment">// 此处无法捕获到异常</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;catch2:&#x27;</span>, e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">catch1: <span class="built_in">ReferenceError</span>: obj is not defined</span><br><span class="line">    at &lt;anonymous&gt;:<span class="number">5</span>:<span class="number">21</span></span><br><span class="line">    at i (init.js:<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>从这里可以看出，最外层的try/catch是不生效的，可以去掉。</p>
+<h4 id="promise异常"><a href="#promise异常" class="headerlink" title="promise异常"></a>promise异常</h4><p>首先通过两端代码来看promise的异常捕获情况<br>代码一：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 此处的异常无法被捕获</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;1&#x27;</span>, obj.error)</span><br><span class="line">        resolve(<span class="number">100</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">    promise.then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;result:&#x27;</span>, result)</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 此处无法捕获到异常</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;catch1:&#x27;</span>, error)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="comment">// 此处无法捕获到异常</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;catch2:&#x27;</span>, e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">Uncaught <span class="built_in">ReferenceError</span>: obj is not defined</span><br><span class="line">    at &lt;anonymous&gt;:<span class="number">6</span>:<span class="number">26</span></span><br><span class="line">    at i (init.js:<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>代码二：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(obj.error)</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        resolve(<span class="number">100</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">    promise.then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;result:&#x27;</span>, result)</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 此处捕获到异常</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;catch1:&#x27;</span>, error)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="comment">// 此处无法捕获到异常</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;catch2:&#x27;</span>, e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">catch1: <span class="built_in">ReferenceError</span>: obj is not defined</span><br><span class="line">    at &lt;anonymous&gt;:<span class="number">4</span>:<span class="number">19</span></span><br><span class="line">    at <span class="keyword">new</span> <span class="built_in">Promise</span> (<span class="xml"><span class="tag">&lt;<span class="name">anonymous</span>&gt;</span>)</span></span><br><span class="line">    at &lt;anonymous&gt;:3:21</span><br><span class="line">    at &lt;anonymous&gt;:19:3</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>总结：</p>
+<ol>
+<li>最外层的try/catch对于promise中的异常捕获完全无效</li>
+<li>new Promise()中的异步异常(setTimeout)只能在内部捕获</li>
+<li>new Promise()中的同步异常只能通过catch捕获</li>
+</ol>
+</blockquote>
+<p><strong><em>核心：熟悉EventLoop就知道，每个任务使用独立的函数调用栈；所以，每一个task都需要单独捕获异常；使用promise.catch能够捕获到promise任务的异常。</em></strong></p>
+<h4 id="async-await异常"><a href="#async-await异常" class="headerlink" title="async/await异常"></a>async/await异常</h4><p>追寻<code>talk is cheap,show me the code</code>的原则，这里直接上验证代码，让实际结果来说明一切。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(obj.error)</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 1.这里的异常只能在setTimeout内部使用try/catch捕获</span></span><br><span class="line">      <span class="comment">// console.log(obj.error)</span></span><br><span class="line">      resolve(<span class="number">100</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> f().catch(<span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 2.优先捕获到异常</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;catch1:&#x27;</span>, e)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="built_in">console</span>.log(result)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="comment">// 3.如果没有catch1，这里也能捕获到异常</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;catch2:&#x27;</span>, e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>总结：</p>
+<ol>
+<li>new Promise()中的异步异常(setTimeout)只能在内部捕获</li>
+<li>可以使用<code>.catch</code>也可使用<code>try/catch</code>来捕获异常，其中<code>.catch</code>优先级较高</li>
+</ol>
+</blockquote>
+<p>本文首发于公众号</p>
+<img src="/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg" class="">
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-前端防抖与节流" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1116,138 +1219,6 @@
 
 
   
-    <article id="post-一个由line-height引发的血案与思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/">一个由line-height引发的血案与思考</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2018-05-06T11:32:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="爆炸"><a href="#爆炸" class="headerlink" title="爆炸"></a>爆炸</h2><p>&emsp;&emsp;最近UI走查，发现页面中所有包含文字区块的高度与设计稿中的高度完全不一致，然后UI妹子就爆炸了!</p>
-<p>&emsp;&emsp;找了一下原因，发现是由于UI设计稿中设计的文字大部分是<code>font-size:24px;line-height:24px</code>,代码实现时为了不至于每处都写一遍字体大小，故直接在根节点上统一设置字体与字体大小为24px，小部分不一致的地方再单独设置字体大小，从而忽略了设置<code>line-height</code>为字体的高度。造成的结果就是文字所在的行的行高高于设计稿中的行高。</p>
-<h2 id="为什么文字行高与字体大小不相等呢？"><a href="#为什么文字行高与字体大小不相等呢？" class="headerlink" title="为什么文字行高与字体大小不相等呢？"></a>为什么文字行高与字体大小不相等呢？</h2><p>&emsp;&emsp;翻了一下line-height的<a target="_blank" rel="noopener" href='https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height'>官方说明</a>，如下所示：</p>
-<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/1.jpg" class=""><div>
-
-<p>&emsp;&emsp;文档里说line-height的默认值为<code>normal</code>,给<code>normal</code>的推荐设置值为<code>1.0到1.2之间</code>。相当于如果设置了字体的大小而不设置line-height,那么行高默认就为字体的1.0-1.2之间的一个倍数。</p>
-<p>&emsp;&emsp;<strong>那么，这个倍数到底具体是多少呢？</strong></p>
-<p>&emsp;&emsp;在chrome的控制台里跟踪了一下，看到项目中引入了<code>normalize.css</code>来初始化浏览器的默认css样式。其中，就设置html的<code>line-height</code>为<code>1.15</code>。</p>
-<h2 id="为什么normalize-css设置line-height默认为1-15？"><a href="#为什么normalize-css设置line-height默认为1-15？" class="headerlink" title="为什么normalize.css设置line-height默认为1.15？"></a>为什么normalize.css设置line-height默认为1.15？</h2><p>&emsp;&emsp;翻了一下github中normalize.css的issues,在593号issues里找到了答案，地址在<a target="_blank" rel="noopener" href='https://github.com/necolas/normalize.css/issues/593'>这里</a>。</p>
-<p>&emsp;&emsp;大致过程是这样的，有人发现相同字体与大小的文字在不同环境中line-height的值是不一致的，接着，就有人在crossbrowsertesting上做了个测试，得出的结论就是这个问题的的确确存在，而且差异还特别大</p>
-<blockquote>
-<p>When the font size was 100px, the most common line height was 115px. However, results varied from 101px on Mac Firefox to 136px on Android Chrome.</p>
-</blockquote>
-<p>&emsp;&emsp;最终，由于大部分的行高都为115px,所以，为了解决不同环境中相同字体与字号的文字行高不一致的问题，推荐设置默认<code>line-height</code>为1.15</p>
-<p>&emsp;&emsp;看到这里，想到一个问题，既然显示设置line-height为1.15是为了解决环境兼容的问题。那么，<strong>为什么不设置<code>line-height:1</code>即解决兼容问题，又解决由于行高放大与UI设计稿不符的问题？</strong> 。</p>
-<h2 id="设置overflow-hidden字体显示不全的问题"><a href="#设置overflow-hidden字体显示不全的问题" class="headerlink" title="设置overflow:hidden字体显示不全的问题"></a>设置overflow:hidden字体显示不全的问题</h2><p>&emsp;&emsp;当设置文字<code>line-height:1</code>后，再设置文字所在的容器<code>overflow:hidden</code>很容易复现文字显示不全的问题，比如下面：</p>
-<p><span style="font-size:100px;line-height:1;overflow:hidden;border:1px solid #ddd;display:inline-block">dphyTxg</span></p>
-<p>代码如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">font-size:100px;</span></span></span><br><span class="line"><span class="tag"><span class="string">line-height:1;</span></span></span><br><span class="line"><span class="tag"><span class="string">overflow:hidden;</span></span></span><br><span class="line"><span class="tag"><span class="string">border:1px solid #ddd;</span></span></span><br><span class="line"><span class="tag"><span class="string">display:inline-block&quot;</span>&gt;</span>dphyTxg<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>注：这里可以使用div演示，然后去掉display:inline-block。使用div发现不知道为毛markdown里的样例乱了…</p>
-<h2 id="为什么设置行高与字体大小一致文字会显示不全？"><a href="#为什么设置行高与字体大小一致文字会显示不全？" class="headerlink" title="为什么设置行高与字体大小一致文字会显示不全？"></a>为什么设置行高与字体大小一致文字会显示不全？</h2><p>&emsp;&emsp;到这里，才真正进入到深层次的原因探究。</p>
-<p>&emsp;&emsp;对于这个问题，需要先了解字体度量，引用一下其它的文章说明，如下所示：</p>
-<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/2.jpg" class=""><div>
-
-<ol>
-<li><a target="_blank" rel="noopener" href='https://zhuanlan.zhihu.com/p/25808995'>原文地址</a></li>
-<li><a target="_blank" rel="noopener" href='http://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align'>Deep dive CSS: font metrics, line-height and vertical-align</a></li>
-<li><a target="_blank" rel="noopener" href='http://designwithfontforge.com/zh-CN/The_EM_Square.html'>EM Square</a></li>
-<li><a target="_blank" rel="noopener" href='https://fontforge.github.io/en-US/'>FontForge</a></li>
-</ol>
-<p>简要解释为如下几点：</p>
-<ol>
-<li>我们设置<code>font-size</code>的高度实际上是对应字体的<code>EM square</code>部分</li>
-<li>字体在设计时可以超出<code>EM square</code>部分</li>
-<li>字体实际设计与<code>EM square</code>部分一致时，<code>line-height:normal</code>与<code>line-height:1</code>相等</li>
-<li>从上图中可以看到，<code>ascender+descender&gt;Em Size</code> 即<code>1100+540&gt;1000</code>,此时<code>line-height:1.64</code>,所以100px的文字默认的行高为164px</li>
-</ol>
-<h2 id="样例分析"><a href="#样例分析" class="headerlink" title="样例分析"></a>样例分析</h2><p>&emsp;&emsp;下面就以window环境下的默认字体微软雅黑为例实际看看line-height的计算。</p>
-<h1 id="font" style="line-height:normal;font-size: 100px;font-family: 微软雅黑">h1</h1>
-<p>line-height: <code id="o1" style="font-size: 50px"></code></p>
-<script>
-  document.getElementById('o1').textContent = window.getComputedStyle(document.getElementById('font')).height;
-</script>
-
-<p>代码如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;font&quot;</span> <span class="attr">style</span>=<span class="string">&quot;line-height:normal;font-size: 100px;font-family: 微软雅黑&quot;</span>&gt;</span>h1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>line-height: <span class="tag">&lt;<span class="name">code</span> <span class="attr">id</span>=<span class="string">&quot;o1&quot;</span> <span class="attr">style</span>=<span class="string">&quot;font-size: 50px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.getElementById(<span class="string">&#x27;o1&#x27;</span>).textContent = <span class="built_in">window</span>.getComputedStyle(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;font&#x27;</span>)).height;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;从上面可以看到微软雅黑100px情况在，在windows下行高显示为132px。通过FontForge来核对一下看看是不是这样的。</p>
-<div style='text-align:center'>&#123;% asset_img 3.jpg %&#125;<div>
-
-<p>&emsp;&emsp;从上图中可以看到，使用<code>（ascender+descender)/Em Size</code>,即<code>(2167+536)/2048≈1.32</code>，也就是line-height为1.32.</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
-<li><code>line-height:normal</code>的值跟字体有关系，相同字体在不同环境也不一样</li>
-<li>当line-height设置的值小于默认的值时就会存在显示不全的问题</li>
-<li>normalize.css设置line-height默认为1.15，当字体line-height的normal大于1.15就会存在文字显示不全的问题</li>
-<li>要解决字体在不同平台line-height不一致的问题，需根据具体字体，选择normal在不同平台上的最大值设置</li>
-</ol>
-<div style="width:70%;margin:auto">
-<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/前端//" class="article-tag-list-link color3">前端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/6/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/8/">Next &amp;raquo;</a>
@@ -1262,7 +1233,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2023 YiYing
+    		&copy; 2024 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

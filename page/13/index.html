@@ -154,6 +154,105 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-设计模式系列之十一组合模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">设计模式系列之十一组合模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2016-12-21T12:50:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>组合模式：</strong>允许将对象组合成树型结构来表现“整体/部分”层次结构。组合能让一致的方式处理个别对象以及对象组合。</p>
+</blockquote>
+<p>&emsp;&emsp;接上一篇**<a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a>**的业务逻辑，现在集团公司业务扩张，新增了湖南分公司，那么采用迭代器模式可以很方便的打印出湖南分公司的所有部门。</p>
+<h2 id="一、新需求实现"><a href="#一、新需求实现" class="headerlink" title="一、新需求实现"></a>一、新需求实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//湖南分公司</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HNBranch</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HNBranch</span><span class="params">()</span></span>&#123;</span><br><span class="line">		depts = <span class="keyword">new</span> ArrayList&lt;Dept&gt;();</span><br><span class="line">		<span class="comment">//添加部门</span></span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;湖南-财务部&quot;</span>));</span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;湖南-开发部&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里不再使用自定义实现的Iterator接口，而是使用Java原生集合对象的Iterator</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterator <span class="title">createrIterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> HNBranchIterator(depts);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//湖南分公司的部门迭代器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HNBranchIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span></span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line">	<span class="keyword">int</span> position	= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HNBranchIterator</span><span class="params">(ArrayList&lt;Dept&gt; depts)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.depts = depts;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(position&gt;=depts.size() || depts.get(position)==<span class="keyword">null</span>)&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Dept dept = depts.get(position);</span><br><span class="line">		position  = position + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> dept;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestNew</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Iterator BJ = <span class="keyword">new</span> BJBranch().createrIterator();</span><br><span class="line">		Iterator SH = <span class="keyword">new</span> SHBranch().createrIterator();</span><br><span class="line">		Iterator HN = <span class="keyword">new</span> HNBranch().createrIterator();</span><br><span class="line"></span><br><span class="line">		printDeptName(BJ);</span><br><span class="line">		printDeptName(SH);</span><br><span class="line">		<span class="comment">//打印新设立的湖南分公司的所有部门</span></span><br><span class="line">		printDeptName(HN);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printDeptName</span><span class="params">(Iterator iterator)</span></span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">			Dept dept = (Dept) iterator.next();</span><br><span class="line">			System.out.println(dept.getName());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;依次类推，如果再设立其它省份的分公司一样的可以很快增加上去。但是，如果需要在湖南分公司下<strong>再设立下隶属于湖南分公司的长沙分公司</strong>呢？此时，整个结构变为一棵树型结构。</p>
+<img src="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/Composite.png" class="">
+
+
+<h2 id="二、组合模式使用"><a href="#二、组合模式使用" class="headerlink" title="二、组合模式使用"></a>二、组合模式使用</h2><p>&emsp;&emsp;可使用组合模式来表现“整体/部分”层次结构。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不管是分子机构，还是分支机构下的部门对象都需要继承组件对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	<span class="comment">//不管是父节点还是叶子节点都有该方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//叶子节点可以没有该方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Component component)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//分支机构，即父节点</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Branch</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">	ArrayList&lt;Component&gt; components;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Branch</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">		components = <span class="keyword">new</span> ArrayList&lt;Component&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Component component)</span></span>&#123;</span><br><span class="line">		components.add(component);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(getName());</span><br><span class="line">		System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">		<span class="comment">//打印子节点，这里既可以是叶子节点也可以是父节点。通过这里实现了递归</span></span><br><span class="line">		<span class="keyword">for</span>(Component com:components)&#123;</span><br><span class="line">			com.print();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//机构中的部门对象，即叶子节点</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dept</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Dept</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name= name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(getName());</span><br><span class="line">		System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//下面的为同级</span></span><br><span class="line">		Component BJBranch = <span class="keyword">new</span> Branch(<span class="string">&quot;北京分公司&quot;</span>);</span><br><span class="line">		BJBranch.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-财务部&quot;</span>));</span><br><span class="line">		Component SHBranch = <span class="keyword">new</span> Branch(<span class="string">&quot;上海分公司&quot;</span>);</span><br><span class="line">		SHBranch.add(<span class="keyword">new</span> Dept(<span class="string">&quot;上海-财务部&quot;</span>));</span><br><span class="line">		Component HNBranch = <span class="keyword">new</span> Branch(<span class="string">&quot;湖南分公司&quot;</span>);</span><br><span class="line">		HNBranch.add(<span class="keyword">new</span> Dept(<span class="string">&quot;湖南-财务部&quot;</span>));</span><br><span class="line">		<span class="comment">//下面的为子级</span></span><br><span class="line">		Component CS = <span class="keyword">new</span> Branch(<span class="string">&quot;长沙子公司&quot;</span>);</span><br><span class="line">		CS.add(<span class="keyword">new</span> Dept(<span class="string">&quot;长沙-财务部&quot;</span>));</span><br><span class="line">		HNBranch.add(CS);</span><br><span class="line"></span><br><span class="line">		Component root = <span class="keyword">new</span> Branch(<span class="string">&quot;集团公司&quot;</span>);</span><br><span class="line">		root.add(BJBranch);</span><br><span class="line">		root.add(SHBranch);</span><br><span class="line">		root.add(HNBranch);</span><br><span class="line">		<span class="comment">//这里会递归遍历下去，直至所有节点遍历完毕</span></span><br><span class="line">		root.print();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码中可以看出，核心在于父节点与叶子节点都属于<code>Component</code>，才能组合在一起，实现递归打印。</p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Linux下搭建Maven私服Nexus3-X" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1009,117 +1108,6 @@
 
 
   
-    <article id="post-Gulp合并requirejs并MD5文件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/">Gulp合并requirejs并MD5文件</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/" class="archive-article-date">
-  	<time datetime="2016-12-11T08:46:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="项目目录结构"><a href="#项目目录结构" class="headerlink" title="项目目录结构"></a>项目目录结构</h2><img src="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg" class="" title="目录结构">
-
-<p>可以从<a target="_blank" rel="noopener" href="https://github.com/muchstudy/GulpDemo">https://github.com/muchstudy/GulpDemo</a> 这里下载样例代码，求Star!  </p>
-<p>说明：  </p>
-<ol>
-<li>js的的依赖关系为<code>main.build.js</code>–&gt;<code>three.js</code>–&gt;<code>two.js</code>–&gt;<code>one.js</code></li>
-<li><code>main-build.js</code>为构建的入口</li>
-<li>从github上拿下来的项目是可以直接运行的。可执行<code>gulp clean</code>与<code>gulp</code>观察结果。</li>
-</ol>
-<h2 id="文件合并"><a href="#文件合并" class="headerlink" title="文件合并"></a>文件合并</h2><ol>
-<li>在requirejs目录下运行<code>npm init</code>，初始化package.json</li>
-<li>运行<code>npm install gulp --save-dev</code>、<code>npm install gulp-requirejs-optimize --save-dev</code>、``npm install gulp-rename –save-dev`</li>
-</ol>
-<p>文件合并代码如下:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp            = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> reqOptimize     = <span class="built_in">require</span>(<span class="string">&#x27;gulp-requirejs-optimize&#x27;</span>);   <span class="comment">//- requireJs文件合并所需模块，选择该模块的原因为相对于其它模块活跃度较高</span></span><br><span class="line"><span class="keyword">var</span> rename          = <span class="built_in">require</span>(<span class="string">&quot;gulp-rename&quot;</span>);               <span class="comment">//- 文件重命名</span></span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;optimize&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">&quot;app/main-build.js&quot;</span>)</span><br><span class="line">        .pipe(reqOptimize(&#123;</span><br><span class="line">            optimize:<span class="string">&quot;none&quot;</span>,                                <span class="comment">//- none为不压缩资源</span></span><br><span class="line">            <span class="comment">//findNestedDependencies: true,                 //- 解析嵌套中的require</span></span><br><span class="line">            paths:&#123;</span><br><span class="line">                <span class="string">&quot;PDAppDir&quot;</span>:<span class="string">&quot;&quot;</span>,                              <span class="comment">//- 所有文件的路径都相对于main-build.js，所以这里为空即可</span></span><br><span class="line">                <span class="string">&quot;jquery&quot;</span>:<span class="string">&quot;empty:&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(rename(<span class="string">&quot;main.min.js&quot;</span>))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;app&#x27;</span>));                            <span class="comment">//- 映射文件输出目录</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>说明：  </p>
-<ol>
-<li>运行<code>gulp optimize</code>即可把<code>main-build.js</code>所依赖的文件合并到<code>main.min.js</code>中。</li>
-<li>在代码中有一个<code>findNestedDependencies</code>参数，意思是代码中如果是使用<code>require</code>方式而不是<code>define</code>方式依赖文件，默认不解析</li>
-<li><code>:empty</code>代表忽略该文件</li>
-<li>reqOptimize的详细参数见requirejs的<a target="_blank" rel="noopener" href="https://github.com/requirejs/r.js/blob/master/build/example.build.js">官方文档</a></li>
-</ol>
-<h2 id="文件md5"><a href="#文件md5" class="headerlink" title="文件md5"></a>文件md5</h2><p>运行：<code>npm install gulp-rev --save-dev</code></p>
-<h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>文件MD5代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">&quot;md5&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">&quot;app/main-build.js&quot;</span>)</span><br><span class="line">        .pipe(reqOptimize(&#123;</span><br><span class="line">            optimize:<span class="string">&quot;none&quot;</span>,                                <span class="comment">//- none为不压缩资源</span></span><br><span class="line">            <span class="comment">//findNestedDependencies: true,                 //- 解析嵌套中的require</span></span><br><span class="line">            paths:&#123;</span><br><span class="line">                <span class="string">&quot;PDAppDir&quot;</span>:<span class="string">&quot;&quot;</span>,                              <span class="comment">//- 所有文件的路径都相对于main-build.js，所以这里为空即可</span></span><br><span class="line">                <span class="string">&quot;jquery&quot;</span>:<span class="string">&quot;empty:&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(rev())                                        <span class="comment">//- 文件名加MD5后缀</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&quot;app&quot;</span>))                             <span class="comment">//- 生成MD5后的文件</span></span><br><span class="line">        .pipe(rev.manifest(&#123;<span class="attr">merge</span>:<span class="literal">true</span>&#125;))                   <span class="comment">//- 生成一个rev-manifest.json</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))                                <span class="comment">//- 映射文件输出目录</span></span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>运行<code>gulp md5</code>，此时就会生成类似于这样的文件<code>main-min-c144065c18.js</code>。现在问题就来了，文件名变了，就需要动态替换首页上的引用文件名。</p>
-<h3 id="路径替换"><a href="#路径替换" class="headerlink" title="路径替换"></a>路径替换</h3><p>运行：<code>mpn install gulp-rev-collector --save-dev</code>、<code>npm install through2 --save-dev</code><br>代码如下:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">modify</span>(<span class="params">modifier</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> through2.obj(<span class="function"><span class="keyword">function</span>(<span class="params">file, encoding, done</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> content = modifier(<span class="built_in">String</span>(file.contents));</span><br><span class="line">        file.contents = <span class="keyword">new</span> Buffer(content);</span><br><span class="line">        <span class="built_in">this</span>.push(file);</span><br><span class="line">        done();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replaceSuffix</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> data.replace(<span class="regexp">/\.js/gmi</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//去掉.js后缀，因为requirejs的引用一般都不带后缀</span></span><br><span class="line">gulp.task(<span class="string">&quot;replaceSuffix&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src([<span class="string">&#x27;rev-manifest.json&#x27;</span>])</span><br><span class="line">        .pipe(modify(replaceSuffix))            <span class="comment">//- 去掉.js后缀</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;replaceHomePath&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src([<span class="string">&#x27;rev-manifest.json&#x27;</span>, <span class="string">&#x27;index-build.html&#x27;</span>])</span><br><span class="line">        .pipe(revCollector())                   <span class="comment">//- 替换为MD5后的文件名</span></span><br><span class="line">        .pipe(rename(<span class="string">&quot;index.html&quot;</span>))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>依次运行<code>gulp replaceSuffix</code>、<code>gulp replaceHomePath</code>即可生成可运行的首页。相对于原始首页，依赖的文件路径为md5后的路径。</p>
-<h2 id="整合"><a href="#整合" class="headerlink" title="整合"></a>整合</h2><p>从上面可以看到，这一套下来需要运行一系列的task，而且这些task的运行还有先后顺序。下面尝试使用一个task来完成整个任务。由于gulp的task都是异步运行的，所以需要使用到<code>run-sequence</code><br>安装<code>npm install gulp-clean --save-dev</code>、<code>npm install run-sequence --save-dev</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除掉上一次构建时创建的资源</span></span><br><span class="line">gulp.task(<span class="string">&quot;clean&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src([</span><br><span class="line">        <span class="string">&#x27;rev-manifest.json&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;**/*-build-*.js&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;index.html&#x27;</span></span><br><span class="line">    ]).pipe(clean());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建总入口</span></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    runSequence(</span><br><span class="line">        <span class="string">&quot;clean&quot;</span>,                <span class="comment">//- 上一次构建的结果清空</span></span><br><span class="line">        <span class="string">&quot;md5&quot;</span>,                  <span class="comment">//- 文件合并与md5</span></span><br><span class="line">        <span class="string">&quot;replaceSuffix&quot;</span>,        <span class="comment">//- 替换.js后缀</span></span><br><span class="line">        <span class="string">&quot;replaceHomePath&quot;</span>,      <span class="comment">//- 首页路径替换为md5后的路径</span></span><br><span class="line">        callback);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>说明:  </p>
-<ol>
-<li>可以看到上面的task中最后都有一句<code>.on(&#39;end&#39;, cb)</code>这个是为了解决task任务异步运行的问题</li>
-<li>此时，只需要运行<code>gulp</code>即可完成所有的构建任务。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/FrontEnd//" class="article-tag-list-link color4">FrontEnd</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/12/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/">Next &amp;raquo;</a>
@@ -1134,7 +1122,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2023 YiYing
+    		&copy; 2024 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

@@ -154,6 +154,117 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Gulp合并requirejs并MD5文件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/">Gulp合并requirejs并MD5文件</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/" class="archive-article-date">
+  	<time datetime="2016-12-11T08:46:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="项目目录结构"><a href="#项目目录结构" class="headerlink" title="项目目录结构"></a>项目目录结构</h2><img src="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg" class="" title="目录结构">
+
+<p>可以从<a target="_blank" rel="noopener" href="https://github.com/muchstudy/GulpDemo">https://github.com/muchstudy/GulpDemo</a> 这里下载样例代码，求Star!  </p>
+<p>说明：  </p>
+<ol>
+<li>js的的依赖关系为<code>main.build.js</code>–&gt;<code>three.js</code>–&gt;<code>two.js</code>–&gt;<code>one.js</code></li>
+<li><code>main-build.js</code>为构建的入口</li>
+<li>从github上拿下来的项目是可以直接运行的。可执行<code>gulp clean</code>与<code>gulp</code>观察结果。</li>
+</ol>
+<h2 id="文件合并"><a href="#文件合并" class="headerlink" title="文件合并"></a>文件合并</h2><ol>
+<li>在requirejs目录下运行<code>npm init</code>，初始化package.json</li>
+<li>运行<code>npm install gulp --save-dev</code>、<code>npm install gulp-requirejs-optimize --save-dev</code>、``npm install gulp-rename –save-dev`</li>
+</ol>
+<p>文件合并代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp            = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> reqOptimize     = <span class="built_in">require</span>(<span class="string">&#x27;gulp-requirejs-optimize&#x27;</span>);   <span class="comment">//- requireJs文件合并所需模块，选择该模块的原因为相对于其它模块活跃度较高</span></span><br><span class="line"><span class="keyword">var</span> rename          = <span class="built_in">require</span>(<span class="string">&quot;gulp-rename&quot;</span>);               <span class="comment">//- 文件重命名</span></span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;optimize&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">&quot;app/main-build.js&quot;</span>)</span><br><span class="line">        .pipe(reqOptimize(&#123;</span><br><span class="line">            optimize:<span class="string">&quot;none&quot;</span>,                                <span class="comment">//- none为不压缩资源</span></span><br><span class="line">            <span class="comment">//findNestedDependencies: true,                 //- 解析嵌套中的require</span></span><br><span class="line">            paths:&#123;</span><br><span class="line">                <span class="string">&quot;PDAppDir&quot;</span>:<span class="string">&quot;&quot;</span>,                              <span class="comment">//- 所有文件的路径都相对于main-build.js，所以这里为空即可</span></span><br><span class="line">                <span class="string">&quot;jquery&quot;</span>:<span class="string">&quot;empty:&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(rename(<span class="string">&quot;main.min.js&quot;</span>))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;app&#x27;</span>));                            <span class="comment">//- 映射文件输出目录</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>说明：  </p>
+<ol>
+<li>运行<code>gulp optimize</code>即可把<code>main-build.js</code>所依赖的文件合并到<code>main.min.js</code>中。</li>
+<li>在代码中有一个<code>findNestedDependencies</code>参数，意思是代码中如果是使用<code>require</code>方式而不是<code>define</code>方式依赖文件，默认不解析</li>
+<li><code>:empty</code>代表忽略该文件</li>
+<li>reqOptimize的详细参数见requirejs的<a target="_blank" rel="noopener" href="https://github.com/requirejs/r.js/blob/master/build/example.build.js">官方文档</a></li>
+</ol>
+<h2 id="文件md5"><a href="#文件md5" class="headerlink" title="文件md5"></a>文件md5</h2><p>运行：<code>npm install gulp-rev --save-dev</code></p>
+<h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>文件MD5代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">&quot;md5&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">&quot;app/main-build.js&quot;</span>)</span><br><span class="line">        .pipe(reqOptimize(&#123;</span><br><span class="line">            optimize:<span class="string">&quot;none&quot;</span>,                                <span class="comment">//- none为不压缩资源</span></span><br><span class="line">            <span class="comment">//findNestedDependencies: true,                 //- 解析嵌套中的require</span></span><br><span class="line">            paths:&#123;</span><br><span class="line">                <span class="string">&quot;PDAppDir&quot;</span>:<span class="string">&quot;&quot;</span>,                              <span class="comment">//- 所有文件的路径都相对于main-build.js，所以这里为空即可</span></span><br><span class="line">                <span class="string">&quot;jquery&quot;</span>:<span class="string">&quot;empty:&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(rev())                                        <span class="comment">//- 文件名加MD5后缀</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&quot;app&quot;</span>))                             <span class="comment">//- 生成MD5后的文件</span></span><br><span class="line">        .pipe(rev.manifest(&#123;<span class="attr">merge</span>:<span class="literal">true</span>&#125;))                   <span class="comment">//- 生成一个rev-manifest.json</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))                                <span class="comment">//- 映射文件输出目录</span></span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>运行<code>gulp md5</code>，此时就会生成类似于这样的文件<code>main-min-c144065c18.js</code>。现在问题就来了，文件名变了，就需要动态替换首页上的引用文件名。</p>
+<h3 id="路径替换"><a href="#路径替换" class="headerlink" title="路径替换"></a>路径替换</h3><p>运行：<code>mpn install gulp-rev-collector --save-dev</code>、<code>npm install through2 --save-dev</code><br>代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">modify</span>(<span class="params">modifier</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> through2.obj(<span class="function"><span class="keyword">function</span>(<span class="params">file, encoding, done</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> content = modifier(<span class="built_in">String</span>(file.contents));</span><br><span class="line">        file.contents = <span class="keyword">new</span> Buffer(content);</span><br><span class="line">        <span class="built_in">this</span>.push(file);</span><br><span class="line">        done();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replaceSuffix</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> data.replace(<span class="regexp">/\.js/gmi</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//去掉.js后缀，因为requirejs的引用一般都不带后缀</span></span><br><span class="line">gulp.task(<span class="string">&quot;replaceSuffix&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src([<span class="string">&#x27;rev-manifest.json&#x27;</span>])</span><br><span class="line">        .pipe(modify(replaceSuffix))            <span class="comment">//- 去掉.js后缀</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;replaceHomePath&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src([<span class="string">&#x27;rev-manifest.json&#x27;</span>, <span class="string">&#x27;index-build.html&#x27;</span>])</span><br><span class="line">        .pipe(revCollector())                   <span class="comment">//- 替换为MD5后的文件名</span></span><br><span class="line">        .pipe(rename(<span class="string">&quot;index.html&quot;</span>))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>依次运行<code>gulp replaceSuffix</code>、<code>gulp replaceHomePath</code>即可生成可运行的首页。相对于原始首页，依赖的文件路径为md5后的路径。</p>
+<h2 id="整合"><a href="#整合" class="headerlink" title="整合"></a>整合</h2><p>从上面可以看到，这一套下来需要运行一系列的task，而且这些task的运行还有先后顺序。下面尝试使用一个task来完成整个任务。由于gulp的task都是异步运行的，所以需要使用到<code>run-sequence</code><br>安装<code>npm install gulp-clean --save-dev</code>、<code>npm install run-sequence --save-dev</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除掉上一次构建时创建的资源</span></span><br><span class="line">gulp.task(<span class="string">&quot;clean&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src([</span><br><span class="line">        <span class="string">&#x27;rev-manifest.json&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;**/*-build-*.js&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;index.html&#x27;</span></span><br><span class="line">    ]).pipe(clean());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建总入口</span></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    runSequence(</span><br><span class="line">        <span class="string">&quot;clean&quot;</span>,                <span class="comment">//- 上一次构建的结果清空</span></span><br><span class="line">        <span class="string">&quot;md5&quot;</span>,                  <span class="comment">//- 文件合并与md5</span></span><br><span class="line">        <span class="string">&quot;replaceSuffix&quot;</span>,        <span class="comment">//- 替换.js后缀</span></span><br><span class="line">        <span class="string">&quot;replaceHomePath&quot;</span>,      <span class="comment">//- 首页路径替换为md5后的路径</span></span><br><span class="line">        callback);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>说明:  </p>
+<ol>
+<li>可以看到上面的task中最后都有一句<code>.on(&#39;end&#39;, cb)</code>这个是为了解决task任务异步运行的问题</li>
+<li>此时，只需要运行<code>gulp</code>即可完成所有的构建任务。</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/FrontEnd//" class="article-tag-list-link color4">FrontEnd</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-设计模式系列之六命令模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1048,100 +1159,6 @@
 
 
   
-    <article id="post-Servlet中Cookie增、删、改、查" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/18/Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/">Servlet中Cookie增、删、改、查</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/18/Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/" class="archive-article-date">
-  	<time datetime="2016-11-18T06:43:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;整理了一个在Servlet中对Cookie增删改查的工具类，首先要注意的是在服务器端是无法对Cookie做修改的，只能做到覆盖创建。</p>
-<p><strong>引用StackOverflow上James Sumners的<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5093250/how-do-you-update-an-existing-cookie-in-jsp">回答</a>：</strong></p>
-<blockquote>
-<p>Per section 3.3.4 of <a target="_blank" rel="noopener" href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a>, the user agent does not include the expiration information in the cookie header that is sent to the server. Therefore, there is no way to update an existing cookie’s value while retaining the expiration date that was initially set based solely on the information associated with the cookie.</p>
-</blockquote>
-<blockquote>
-<p>So the answer to this question is: you can’t do that.</p>
-</blockquote>
-<p><strong>工具类如下：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.demo.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.net.URLDecoder;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.Cookie;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CookieUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 新增Cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> value</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addCookie</span><span class="params">(HttpServletResponse response, String name,String value)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//特殊字符需要编码</span></span><br><span class="line">			Cookie cookie = <span class="keyword">new</span> Cookie(name,URLEncoder.encode(value, <span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">			cookie.setMaxAge(<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>*<span class="number">7</span>);	<span class="comment">//- 单位为秒，7天有效</span></span><br><span class="line">			cookie.setPath(<span class="string">&quot;/&quot;</span>);			<span class="comment">//- 根路径</span></span><br><span class="line">			<span class="comment">//JavaEE5兼容</span></span><br><span class="line">			<span class="keyword">try</span>&#123;</span><br><span class="line">				cookie.setHttpOnly(<span class="keyword">true</span>);	<span class="comment">//- 防XSS</span></span><br><span class="line">			&#125;<span class="keyword">catch</span> (NoSuchMethodError e) &#123;</span><br><span class="line">	        	e.printStackTrace();</span><br><span class="line">	        &#125;</span><br><span class="line">			response.addCookie(cookie);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 删除Cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">deleteCookie</span><span class="params">(HttpServletRequest request,HttpServletResponse response, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                	cookie.setMaxAge(<span class="number">0</span>);</span><br><span class="line">                	<span class="comment">//经测试发现还需设置如下两个值,之所以这样，原理为覆盖掉Cookie，而不是常规意义中的删除</span></span><br><span class="line">									cookie.setValue(<span class="string">&quot;&quot;</span>);</span><br><span class="line">									cookie.setPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">                	response.addCookie(cookie);</span><br><span class="line">									<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 覆盖掉之前的cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> value</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">overrideCookie</span><span class="params">(HttpServletRequest request,HttpServletResponse response, String name,String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                	cookie.setValue(value);</span><br><span class="line">									cookie.setPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">									<span class="comment">//cookie.getMaxAge()为-1，服务器端无法获取MaxAge</span></span><br><span class="line">									cookie.setMaxAge(<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>*<span class="number">7</span>);</span><br><span class="line">									response.addCookie(cookie);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取Cookie</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Cookie <span class="title">getCookie</span><span class="params">(HttpServletRequest request, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cookie;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取Cookie对应的值</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCookieValue</span><span class="params">(HttpServletRequest request, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (request.getCookies() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : request.getCookies()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">						<span class="keyword">return</span> URLDecoder.decode(cookie.getValue(), <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">					&#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">						<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">						e.printStackTrace();</span><br><span class="line">						<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">					&#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">工具类</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/18/Servlet%E4%B8%ADCookie%E5%A2%9E%E3%80%81%E5%88%A0%E3%80%81%E6%94%B9%E3%80%81%E6%9F%A5/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/13/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/15/">Next &amp;raquo;</a>
@@ -1156,7 +1173,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2023 YiYing
+    		&copy; 2024 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

@@ -154,6 +154,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JavaScript数组倒序算法与性能对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/">JavaScript数组倒序算法与性能对比</a>
+    </h1>
+  
+
+        
+        <a href="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/" class="archive-article-date">
+  	<time datetime="2017-03-14T03:38:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;最近正在撸算法第四版，关于JS中数组的倒序，想到如下几种实现方式。</p>
+<h2 id="for-push"><a href="#for-push" class="headerlink" title="for push"></a>for push</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = [],len=arr.length<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> right=len;right&gt;=<span class="number">0</span>;right--)&#123;</span><br><span class="line">        result.push(arr[right])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(result.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="for-swap-half"><a href="#for-swap-half" class="headerlink" title="for swap half"></a>for swap half</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> left = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> right = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> length = array.length;</span><br><span class="line">    <span class="keyword">for</span> (left = <span class="number">0</span>; left &lt; length / <span class="number">2</span>; left += <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        right = length - <span class="number">1</span> - left;</span><br><span class="line">        <span class="keyword">var</span> temporary = array[left];</span><br><span class="line">        array[left] = array[right];</span><br><span class="line">        array[right] = temporary;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(array.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="native-reverse"><a href="#native-reverse" class="headerlink" title="native reverse"></a>native reverse</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = arr.reverse();</span><br><span class="line">    <span class="built_in">console</span>.log(result.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><p>&emsp;&emsp;本来想再写一个性能测试的样例，在写之前感觉应该已经有人做过这件事了，所以Google了一下，找到Stackoverflow上<a   target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5276953/what-is-the-most-efficient-way-to-reverse-an-array-in-javascript"><strong>这篇答案</strong></a>，循着找到一个很全面的性能测试样例，点击<a target="_blank" rel="noopener" href="https://jsperf.com/js-array-reverse-vs-while-loop/66"><strong>这里</strong></a>。点击<strong>Run tests</strong>即能在对应的测试环境下测试各种算法的性能情况。</p>
+<p>在我本地环境（Testing in Chrome 56.0.2924 / Windows 10 0.0.0）的测试结果如图：</p>
+<img src="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png" class="">
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法的时间复杂度" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1219,134 +1302,6 @@
 
 
   
-    <article id="post-产品研发记录03：关于技术债务的思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/">产品研发记录03：关于技术债务的思考</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2017-01-07T15:17:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、何谓技术债务"><a href="#一、何谓技术债务" class="headerlink" title="一、何谓技术债务"></a>一、何谓技术债务</h2><p>&emsp;&emsp;技术债务就是传说中的各种坑，这些坑有大有小，不外乎如下几种类型：</p>
-<ul>
-<li><p>代码的坑。</p>
-<blockquote>
-<p>&emsp;&emsp;无注释、无排版、各种冗余、各种难以维护的代码；绕来绕去很难看懂的代码；明显性能问题的代码；甚至还有逻辑混乱然后还能跑起来的神级代码。碰到这样的代码坑，给人的统一印象就是<strong>很难保持淡定。</strong></p>
-</blockquote>
-</li>
-<li><p>业务的坑。</p>
-<blockquote>
-<p>&emsp;&emsp;业务一而再再而三的变，变得面目全非，甚至变得代码需要重新写。</p>
-</blockquote>
-</li>
-<li><p>设计的坑。</p>
-<blockquote>
-<p>&emsp;&emsp;架构设计，功能设计，API接口设计不合理。造成后续使用困难，扩展困难，跟不上业务的快速增长。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="二、产生的原因"><a href="#二、产生的原因" class="headerlink" title="二、产生的原因"></a>二、产生的原因</h2><p>&emsp;&emsp;技术债务产生的原因不外乎如下几个：</p>
-<ul>
-<li><p>时间不够。</p>
-<blockquote>
-<p>&emsp;&emsp;很难见到有时间充裕的项目，大多数项目都有一个deadline。比如双十一活动，那么对于苦逼的程序员，就必须得保证在这一天之前把所有的活动页面做出来。在时间紧迫的情况下，做出东西为首要目标，具体过程就是八仙过海各显神通了。在这种情况下，当然就是怎么快怎么来，而不会过多的考虑代码的整体结构、扩展、性能等要素。</p>
-</blockquote>
-</li>
-<li><p>能力不够。</p>
-<blockquote>
-<p>&emsp;&emsp;技术人员的能力不够，经验不够丰富，此种情况下即使给予充裕的时间可能也不会得到满意的结果。在做出优秀设计，写出优秀的代码这件事上无速成可言。</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li>不可控。<blockquote>
-<p>&emsp;&emsp;不可控是指自己无法控制，各种身不由己。比如：强势客户、强势领导非要让你这么干；前期框架就这样，即使知道有问题，还是得按照之前的套路走；</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="三、如何面对技术债务"><a href="#三、如何面对技术债务" class="headerlink" title="三、如何面对技术债务"></a>三、如何面对技术债务</h2><ul>
-<li><p>淡定。</p>
-<blockquote>
-<p>&emsp;&emsp;这是首先要做的事情。畏难情绪一起来，工作效率随之降低。只有保持清醒的头脑，面对技术债务时才能做出正确的决定。</p>
-</blockquote>
-</li>
-<li><p>填坑。</p>
-<blockquote>
-<p>&emsp;&emsp;填坑得赶紧。从个人经验上来看，一些关键坑如果不赶紧填，坑就会越来越大，越到后面越难填，越让人头疼。</p>
-</blockquote>
-</li>
-<li><p>总结。</p>
-<blockquote>
-<p>&emsp;&emsp;总结为什么会有这个坑，避免今后再挖相同的坑。</p>
-</blockquote>
-</li>
-</ul>
-<p>上一篇：<a href="http://muchstudy.com/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/">产品研发记录02：基础开发框架产品的设计哲学</a><br>下一篇：<a href="http://muchstudy.com/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">产品研发记录04：关于开源组件选择与技术方案选择的总结</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/产品研发//" class="article-tag-list-link color5">产品研发</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/10/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/12/">Next &amp;raquo;</a>
@@ -1361,7 +1316,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2023 YiYing
+    		&copy; 2024 YiYing
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
