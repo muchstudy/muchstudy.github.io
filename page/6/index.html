@@ -154,6 +154,121 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-通过Nginx解决网络隔离实践记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/">通过Nginx解决网络隔离实践记录</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/" class="archive-article-date">
+  	<time datetime="2020-05-01T16:39:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95.png" class="">
+
+
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>最近需要迁移Node线上服务，于是新申请了两台线上服务器；</p>
+<p>部署服务器后，需要验证服务是否正常，办公环境与线上环境网络是隔离的，无法直接访问；但是，线上服务器可通过部署服务器访问，而办公网络是可以访问部署机的；</p>
+<p>所以，可通过在部署机上配置代理的方式，办公环境请求部署机，然后把请求代理到线上服务的方式验证服务是否正常。</p>
+<p>整个网络结构如下图所示：</p>
+<img src="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%951.png" class="">
+
+
+<h2 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a>Nginx安装</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><blockquote>
+<p>下载页面: <a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a> 选择版本鼠标右键拷贝链接地址</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载</span></span><br><span class="line">[work@40-10-14 opt]$ wget http://nginx.org/download/nginx-1.18.0.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压文件</span></span><br><span class="line">[work@40-10-14 opt]$ tar -xvf nginx-1.18.0.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 默认安装：root权限进入解压后的目录，执行如下命令安装</span></span><br><span class="line">[root@40-10-14 nginx-1.18.0]# ./configure &amp;&amp; make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2.指定目录：安装到指定的/opt/nginx目录</span></span><br><span class="line">[work@40-10-14 opt]$ mkdir /opt/nginx</span><br><span class="line">[work@40-10-14 nginx-1.18.0]$ ./configure --prefix=/opt/nginx &amp;&amp; make &amp;&amp; mae install</span><br></pre></td></tr></table></figure>
+
+<p>默认安装，非root权限会报如下错误</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir: cannot create directory `/usr/local/nginx&#x27;: Permission denied</span><br><span class="line">make[1]: *** [install] Error 1</span><br><span class="line">make[1]: Leaving directory `/opt/nginx-1.18.0&#x27;</span><br><span class="line">make: *** [install] Error 2</span><br></pre></td></tr></table></figure>
+
+<p>默认安装后，查看nginx的安装目录，可以看到安装在<code>/usr/local/nginx</code>目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@40-10-14 opt]# whereis nginx</span><br><span class="line">nginx: /usr/local/nginx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.建议使用指定目录方式安装。如果切换为root权限去安装，后续修改config文件也需要root权限<br>2.或者root安装后，修改权限为普通用户可操作也行</p>
+</blockquote>
+<h3 id="添加软链"><a href="#添加软链" class="headerlink" title="添加软链"></a>添加软链</h3><p>添加软链，使得nginx命令全局能访问，每次运行就不用切换到安装目录中了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加软链</span></span><br><span class="line">[root@40-10-14 sbin]# ln -s /opt/nginx/sbin/nginx /usr/local/bin/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看版本</span></span><br><span class="line">[root@40-10-14 sbin]# nginx -v</span><br><span class="line">nginx version: nginx/1.18.0</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li>启动：<code>nginx</code></li>
+<li>停止：<code>nginx -s stop</code></li>
+<li>重启：<code>nginx -s reload</code></li>
+<li>帮助命令: <code>nginx -h</code></li>
+</ul>
+<p><strong>强制停止：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看linux进程id</span></span><br><span class="line">[root@40-10-14 ~]# ps -ef | grep nginx</span><br><span class="line">nobody   45198     1  0 16:12 ?        00:00:00 nginx: worker process</span><br><span class="line">root     51261 50692  0 17:00 pts/0    00:00:00 grep nginx</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭进程</span></span><br><span class="line">[root@40-10-14 ~]# kill 45198</span><br><span class="line"><span class="meta">#</span><span class="bash"> 之前的进程已被关闭</span></span><br><span class="line">[root@40-10-14 ~]# ps -ef | grep nginx</span><br><span class="line">root     51277 50692  0 17:00 pts/0    00:00:00 grep nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h2><p>配置两台机器的请求转发,编辑nginx安装目录下的<code>nginx/conf/nginx.conf</code>文件即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">user  nobody;</span></span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">error_log  logs/error.log;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">error_log  logs/error.log  notice;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">error_log  logs/error.log  info;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">pid        logs/nginx.pid;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">    #                  &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">    #                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    # 请求需要转发到如下两台机器上，流量平分;指定IP和端口</span><br><span class="line">    upstream  zpserver   &#123;</span><br><span class="line">              server   xx.xx.xx.22:10001;</span><br><span class="line">              server   xx.xx.xx.23:10001;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        # nginx服务端口为80</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        # /user根路径的请求才转发</span><br><span class="line">        location /user &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">            proxy_pass        http://zpserver;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    proxy_pass   http://127.0.0.1;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache&#x27;s document root</span><br><span class="line">        # concurs with nginx&#x27;s one</span><br><span class="line">        #</span><br><span class="line">        #location ~ /\.ht &#123;</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：修改完nginx的配置文件后，需要运行<code>nginx -s reload</code>才能生效</p>
+</blockquote>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>由于线上服务很多都是需要登录的，所以访问时需要使用域名访问，而不能使用IP访问，因为cookie都是跟域名绑定的</p>
+<p>解决这个问题很简单，配置本机host即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> IP为Nginx服务器IP</span></span><br><span class="line">xx.xx.xx.14 edu.daojia.com</span><br></pre></td></tr></table></figure>
+
+<p>通过上述配置，在本机浏览器上请求<code>edu.daojia.com</code>即可间接通过部署机上的Nginx访问到线上服务，以此在内网测试服务是否正确；待服务无异常后，把线上流量切过来即可。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-实际案例聊聊系统建模与面向对象设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1180,105 +1295,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/12/01/%E6%89%8B%E5%86%99JS%E5%87%BD%E6%95%B0%E7%9A%84call%E3%80%81apply%E3%80%81bind%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-你是否也默默吐槽过XXX的代码写得真烂" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/26/%E4%BD%A0%E6%98%AF%E5%90%A6%E4%B9%9F%E9%BB%98%E9%BB%98%E5%90%90%E6%A7%BD%E8%BF%87XXX%E7%9A%84%E4%BB%A3%E7%A0%81%E5%86%99%E5%BE%97%E7%9C%9F%E7%83%82/">你是否也默默吐槽过XXX的代码写得真烂？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/26/%E4%BD%A0%E6%98%AF%E5%90%A6%E4%B9%9F%E9%BB%98%E9%BB%98%E5%90%90%E6%A7%BD%E8%BF%87XXX%E7%9A%84%E4%BB%A3%E7%A0%81%E5%86%99%E5%BE%97%E7%9C%9F%E7%83%82/" class="archive-article-date">
-  	<time datetime="2019-11-26T15:57:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <div style="width:70%;margin:auto">
-<img src="/2019/11/26/%E4%BD%A0%E6%98%AF%E5%90%A6%E4%B9%9F%E9%BB%98%E9%BB%98%E5%90%90%E6%A7%BD%E8%BF%87XXX%E7%9A%84%E4%BB%A3%E7%A0%81%E5%86%99%E5%BE%97%E7%9C%9F%E7%83%82/title.jpg" class="">
-</div>
-
-<p>&emsp;&emsp;前段时间在做前端监控代码的交接，交接之前对代码质量有点忧虑（实际上也没有想象的那么差… - _ - ）</p>
-<p>&emsp;&emsp;忧虑的原因是什么呢，曾经做一线开发时，用到公司基础框架组提供的框架时，当大家觉得不好用或者翻看源代码发现代码质量不高时，都会整齐一致的默默的一顿吐槽!~</p>
-<p>&emsp;&emsp;后来，当自己也成为了基础框架研发组的一员时，就特别小心，深知吐槽的威力…</p>
-<p>&emsp;&emsp;这里是背景，再回到本次代码交接。</p>
-<p>&emsp;&emsp;忧虑的根本原因还是在于**<em>对现有代码不满意，感觉还有优化的空间**</em>。</p>
-<p>&emsp;&emsp;那么，问题就来了，既然都对现有代码不满意，那为啥还会写出这样的代码呢？</p>
-<p>&emsp;&emsp;这个人是不是有毛病？是不是做事比较糙？不靠谱？</p>
-<p>&emsp;&emsp;其实，并不是！</p>
-<p>&emsp;&emsp;在我看来，**<em>每一个阶段都有每一个阶段的代码与之完美契合**</em>，项目到了下一阶段，如果代码还在停留在上一阶级，那么看起来就会相当丑陋。</p>
-<p>&emsp;&emsp;这也与我自己一直践行的**<em>简单直接**</em>，反对滥用设计模式、反对过度设计相匹配。</p>
-<p>&emsp;&emsp;那么，怎么才能避免被人吐槽呢？</p>
-<p>&emsp;&emsp;很简单，**<em>不断的重构！~**</em></p>
-<p>&emsp;&emsp;在我看来，好的代码or产品都并不是一蹴而就的，都是**<em>不断打磨**</em>出来的。</p>
-<blockquote>
-<p>&emsp;&emsp;本来前几天就想把这篇文章写下来的，标题都起好了，叫做《关于代码重构的一点思考》，迟迟无法下笔，因为按我之前写文章的套路，都会先把整个文章的结构先想出来，针对于这个标题，始终想不好文章的整体结构、有哪几个标题段落</p>
-</blockquote>
-<blockquote>
-<p>&emsp;&emsp;早上，看到了公众号【顾问之路】的一篇<a target="_blank" rel="noopener" href='https://mp.weixin.qq.com/s/7Xz6v0hJCU9oirYT4rn6qQ'>《用心生活还是用脑生活？思考了一年之后，我决定选择前者》</a>, 因为下面的几句话，有了启发</p>
-</blockquote>
-<ul>
-<li>我好像一直在用头脑生活，用各种范式武装自己</li>
-<li>朋友是这么说的：我们都这么熟了，你没有必要用你对待工作的态度来对我</li>
-<li>在过去的那么多年里，我好像一直都在顽固的坚持用**<em>工作脑**</em>去同时对待工作和生活</li>
-</ul>
-<blockquote>
-<p>&emsp;&emsp;最后，感谢**<em>猎头麦**</em>，从此我的文章风格进入了新时代！哈哈哈！~</p>
-</blockquote>
-<blockquote>
-<p>&emsp;&emsp;回想起16年在Blog中写过一篇叫《关于代码质量的一点思考》，顺便搬运到公众号上来了，<a target="_blank" rel="noopener" href='https://mp.weixin.qq.com/s/EQflyMXsDXnIg-6R8jnKSA'>点击这里</a></p>
-</blockquote>
-<div style="width:70%;margin:auto">
-<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/11/26/%E4%BD%A0%E6%98%AF%E5%90%A6%E4%B9%9F%E9%BB%98%E9%BB%98%E5%90%90%E6%A7%BD%E8%BF%87XXX%E7%9A%84%E4%BB%A3%E7%A0%81%E5%86%99%E5%BE%97%E7%9C%9F%E7%83%82/">展开全文 >></a>
         </p>
       
 
