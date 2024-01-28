@@ -154,6 +154,138 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-安全算法梳理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/">安全算法梳理</a>
+    </h1>
+  
+
+        
+        <a href="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/" class="archive-article-date">
+  	<time datetime="2016-09-04T10:16:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>&emsp;&emsp;经常见到RSA、MD5、SHA系列算法，另外还有数字摘要、数字签名、数字证书等名词，以及对称加密与非对称加密。他们之间到底是什么关系呢？下面就通过这篇文章来梳理一下。</p>
+</blockquote>
+<h3 id="一、加密算法"><a href="#一、加密算法" class="headerlink" title="一、加密算法"></a>一、加密算法</h3><p>&emsp;&emsp;加密算法，简而言之就是一种能够把原始内容加密，然后再解密获得原始内容的算法。</p>
+<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86.jpg" class="" title="加密与解密">
+
+<p><a target="_blank" rel="noopener" href="http://baike.baidu.com/view/155969.htm">加密算法</a>可以划分为如下两类：</p>
+<h4 id="1-对称加密"><a href="#1-对称加密" class="headerlink" title="1.对称加密"></a>1.对称加密</h4><p>&emsp;&emsp;对称加密可以理解为加密与解密都使用同一套算法（即密钥）。</p>
+<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E5%BE%AA%E7%8E%AF%E7%A7%BB%E4%BD%8D%E7%AE%97%E6%B3%95.jpg" class="" title="循环移位算法">
+
+<p>&emsp;&emsp;上图是一个经典对称加密算法。采用字母移位的办法对原始字符串进行转换，解密时再根据之前的移位,转换为原始字符串。可以根据此种算法，设计一个密码机，输入移位n，自动进行编码与解码。<br>&emsp;&emsp;在谍战电视剧中经常出现你争我抢的密码本，加密与解密双方使用同一个密码本对要传递的内容进行加解密，这也是一种对称加密算法。<br>&emsp;&emsp;对于对称加密在实际使用中的问题，可以通过如下样例来说明。<br>&emsp;&emsp;假如淘宝网的登录密码传输部分使用的是对称加密算法。此时，张三、李四、还有王五同学需要访问淘宝。那么，服务器就需要生成3个不同的密钥，比如张三的密钥为移5位，李四的密钥为移6位。如果全部都用一个密钥，显然张三用自己的密钥可以解密其它人加密后的密码。对于服务器来讲，有多少个用户就得维护多少组密钥，这样做显然是不合理的。  </p>
+<blockquote>
+<ol>
+<li>常用的对称加密算法有：DES、3DES、TDEA、Blowfish、RC2、RC4、RC5、IDEA、SKIPJACK、AES等。  </li>
+<li>百度百科：<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=0qjwcCKyQIEi1v9AQFWCZgM0xC-rB8D4xNwEg1zxBMywtgwILONBk4ex0l2CQ2HcnaZi5fAy5YfXxP4FpLz5nK">对称加密</a></li>
+</ol>
+</blockquote>
+<h4 id="2-非对称加密"><a href="#2-非对称加密" class="headerlink" title="2.非对称加密"></a>2.非对称加密</h4><p>&emsp;&emsp;针对于对称加密存在的问题，使用非对称加密即可完美的解决。  </p>
+<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%B8%8E%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86.jpg" class="" title="对称加密与非对称加密">
+
+<p>&emsp;&emsp;由上图可以看出，左侧的对称加密为A、B、C、D四个用户分别分配了一个密钥，而右侧的非对称加密（也叫公开密钥加密技术）为A、B、C、D四个用户分配了相同的密钥。<br>&emsp;&emsp;非对称加密的密钥分为<code>公钥</code>和<code>私钥</code>，其中公钥和私钥都可以加密与解密。特别的是，公钥所加密的内容只有私钥能够解密。这样，对于服务器来讲，只需要把公钥分发给所有客户，自己保存好私钥即可。  </p>
+<blockquote>
+<ol>
+<li>常用的非对称加密算法有：RSA、Elgamal、背包算法、Rabin、D-H、ECC（椭圆曲线加密算法）等。</li>
+<li>百度百科：<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=8MulbP9azuXwFgYkk-6OBVL0sDO7lFi4OeWewhENEdHo5o4dp-drc-HR6SnMm2gqSPg7B9hqM2bH0e1ZNfNBFq">非对称加密</a></li>
+</ol>
+</blockquote>
+<h3 id="二、摘要算法"><a href="#二、摘要算法" class="headerlink" title="二、摘要算法"></a>二、摘要算法</h3><p>&emsp;&emsp;首先需要指明的是，摘要算法不属于加解密算法。<br>&emsp;&emsp;对摘要两字可以理解为<strong>对信息主体的浓缩</strong>。这种浓缩是一个<strong>不可逆</strong>的过程。<br>&emsp;&emsp;可以在这些地方使用摘要算法：明文密码取摘要后把摘要存入数据库、文件断点续传与秒传（用文件摘要确定唯一性）、不在网络中传输密码（密码做摘要后传输，在服务器端取出密码用相同的摘要算法计算摘要后再跟客户端传过来的摘要比对）  </p>
+<blockquote>
+<ol>
+<li>常用的摘要算法有：MD5、SHA1、SHA256、SHA384、SHA512</li>
+<li>百度百科：<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=tCGQhcauD76QaTOjKvDaDmm5bS4Mw3bXf91WlepD2tumL4WBsexxaCxWrZqB-nBpJaIzY8s9bOduekfpCUxRNK">摘要算法</a></li>
+</ol>
+</blockquote>
+<h3 id="三、数字签名"><a href="#三、数字签名" class="headerlink" title="三、数字签名"></a>三、数字签名</h3><p>&emsp;&emsp;数字签名可以理解为<code>摘要算法</code>与<code>非对称加密</code>的综合使用。<br>&emsp;&emsp;数字签名可以对应为经常见到的骑缝章（经常有人喜欢把名字写在书的侧面）。数字签名需要说明是谁编写的报文，同时证明报文未被篡改过。  </p>
+<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.jpg" class="" title="数字签名">
+
+<p>&emsp;&emsp;通过上图，可以清楚的看出，使用<code>摘要算法</code>来证明报文未被篡改过，使用<code>非对称加密</code>来说明是谁写的报文。</p>
+<blockquote>
+<p>百度百科:<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=UjEIytZExoysf06dwc8LWXHNbMapFlmtm4UNmxy2ynHXzjlxqIOEMac7Qhel4qBaiSwv1EGmOLd08sr1wOpp2K">数字签名</a></p>
+</blockquote>
+<h3 id="四、数字证书"><a href="#四、数字证书" class="headerlink" title="四、数字证书"></a>四、数字证书</h3><p>&emsp;&emsp;我们可以通过非对称加密可以解决报文裸奔的问题。<br>&emsp;&emsp;试想，有这么一个场景，服务器A分发一个公钥给客户端B，正常情况下很OK。此时A和B之前有个中间代理C，A和B之间的所有数据传输都要经过C来中转。C被黑客控制，C把自己的公钥发给B（B误以为是A的），C收到B传输给A的消息，先用自己的私钥解密，获得明文。然后用A的公钥加密密文再转发给A。<br>&emsp;&emsp;这里就牵涉到一个问题，B怎么确定收到的公钥的确是A的，而不是别人伪造的？现实中的身份证，要想确定身份证是否是真实的，去权威机构（也就是公安局）查一下就行了。<br>&emsp;&emsp;数字证书也是这个原理，需要一个<strong>权威机构</strong>来颁发。以此来证明这个公钥到底是谁的。</p>
+<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6.jpg" class="" title="数字证书">
+
+<p>&emsp;&emsp;上图是百度的数字证书，详细标明了颁发者、使用者、有效期、加密算法等信息。</p>
+<blockquote>
+<p>资料：<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html">“数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么?</a></p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/HTTP//" class="article-tag-list-link color5">HTTP</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-RSA加密解密样例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1262,169 +1394,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-哈佛大学公开课《死亡》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/">哈佛大学公开课《死亡》</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/" class="archive-article-date">
-  	<time datetime="2016-08-17T15:41:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/1.png" class="" title="Professor">
-
-<p>下载地址：<a target="_blank" rel="noopener" href="http://data.movie.kankan.com/movie/65382">http://data.movie.kankan.com/movie/65382</a><br>目录：  </p>
-<img src="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/2.png" class="">
-
-<p>笔记：  </p>
-<ul>
-<li><p>1、二元论，首先身体（body）和灵魂（soul）有一定的互动，如果身体的死亡可以描述为b1-bn，那么伴随着b1-bn会不会也存在S1-Sn呢？即灵魂跟身体一起死亡。</p>
-</li>
-<li><p>2、当我们在电视机里看到曼哈顿的新闻，我们可能会认为我们就在曼哈顿，因为身体而戴上有色眼镜，那么soul是否也有可能在别处？</p>
-</li>
-<li><p>3、描述死亡，首先得对死亡下定义，给“存在”下定义，对于我是谁这个问题，就得首先找出对于我有哪些属性，去掉这些属性呢？</p>
-</li>
-<li><p>4、a smile是为了表述肉体具有微笑的能力，是对一系列事件的综合描述，并不是代表smile是存在的某一事物，那soul呢？</p>
-</li>
-<li><p>5、一元论认为，心灵并不代表大脑，而只是身体具有一系列属性的整体描述而已，就跟smile一样。</p>
-</li>
-<li><p>6、看不见的病毒造成我们生病，而不是魔鬼，这种属于“最佳解释”，b1-bn导致s1-sn呢？</p>
-</li>
-<li><p>7、二元论反驳认为，人会不会是上帝创造的机器人，是先注入soul，自由意识是否也属于上帝所划分的范围之内？</p>
-</li>
-<li><p>8、通过对象棋程序的拟人话，是否能说明任何存物理对象都不能真正又有信念和欲望呢？信念和欲望只是我们强加的一个词汇而已</p>
-</li>
-<li><p>9、free will 自由意志</p>
-</li>
-<li><p>推论：</p>
-<blockquote>
-<p>1.我们有自由意识<br>2.任何服从决定论的系统都没有自由意识<br>3.所有纯物理系统的准守决定论<br>4.我们不仅仅是纯物理系统</p>
-</blockquote>
-</li>
-<li><p>10、柏拉图认为，对于像数字加减这种，数字是不存在的，身体无法掌握，必然需要soul</p>
-</li>
-<li><p>推论：</p>
-<blockquote>
-<p>1.理念或者型向是永恒的 是非现实的<br>2.永恒和非现实的事物只能被永恒和非现实的事物所认知<br>3.能认知理念或型向的事物必须是永恒和非现实的<br>非物理的—not the body</p>
-</blockquote>
-</li>
-<li><p>11、苏格拉底的回忆论认为灵魂出现在我们之前，举个简单的例子，当看到一张相片，我们必须对相片上的人之前认识或熟悉才能认识这张相片，对于圆形之类的东西，肯定是我们的前世有所认知，才能够在现在能认知</p>
-</li>
-<li><p>12、越简单越无懈可击</p>
-</li>
-<li><p>柏拉图的推论：</p>
-<blockquote>
-<p>1.只有合成的事物才能被摧毁<br>2.只有会改变的事物才是合成的<br>3.无形的事物不会被改变<br>4.无形的事物不会被摧毁<br>5.灵魂是无形的<br>6.so 灵魂无法被摧毁<br>赛贝斯：以上论点并不能说明soul不朽，也有可能经过几世不断泯灭</p>
-</blockquote>
-</li>
-<li><p>研究哲学的经常在自己画的圈里找出口</p>
-</li>
-<li><p>13、灵魂理论，即使活下去也没多大意义.who cares？ so what ？ 那又怎样呢   重要的不是活下去，而是带着相同的人格活下去</p>
-</li>
-<li><p>14、 we are die alone.</p>
-</li>
-<li><p>15、当我们存在时，死亡还未降临，当死亡来临时，我们已不复存在</p>
-</li>
-<li><p>16、剥夺说从一个方面解释了我们害怕死亡的原因</p>
-</li>
-<li><p>17、对于不朽，没有任何生活对于一个人永远有吸引力</p>
-</li>
-<li><p>18、如果从死亡可以解除年老时带来的一些痛苦，那么死亡并不是一件坏事</p>
-</li>
-<li><p>19、如果你陷入永生的怪圈，那么你想过一种怎么样的生活？</p>
-</li>
-<li><p>20、正因为生活中包含无数的意外以及相对负面的东西才使生活充满了乐趣以及无限的可能，产生不同的人生体验，同时包含完美与不完美的世界才能称得上是完美的</p>
-</li>
-<li><p>21、“上帝制作了泥人，上帝烦了。所以上帝对一些泥人说，‘站起来。看我创造的一切。高山，大海，天空，星辰。’我就是那种坐起来环顾四周的泥人。幸福的我，幸福的泥人。我，一个泥人坐了起来，看见了上帝创造的奇迹。你太棒了，上帝！世界上只有您上帝才能做到这一切！我当然不能。和您相比，我感到自己十分渺小。一想到还有许多泥人未能做起来环顾四周，我便感到自己还有一点重要。我已经得到这么多，而大多数泥人却一无所获。谢谢您的垂顾！现在泥人又躺下睡了，泥人又多少值得回忆的事啊！我曾和多少有趣的坐起来的泥人见过面啊！我爱我看见过的一切。”</p>
-</li>
-</ul>
-<p>摘自 库尔特·冯内古特《猫的摇篮》</p>
-<blockquote>
-<p>“God made mud. God got lonesome. So God said to some of the mud, ‘Sit up.See all I’ve made,’ Said God. ‘The hills, the sea, the sky, the stars.’ And I, with some of the mud, had got to sit up and look around. Lucky me, lucky mud. I, mud, sat up and saw what a nice job God had done. Nice going God! Nobody but you could have done it God! I certainly couldn’t have. I feel very unimportant compared to You. The only way I can feel the least bit important is to think of all the mud that didn’t even get to sit up and look around. I got so much, and most mud got so little. Thank you for the honor! Now mud lies down again and goes to sleep. What memories for mud to have! What interesting other kinds of sitting-up mud I met! I loved everything i saw.”</p>
-</blockquote>
-<p>from Kurt Vonnegut &lt;Cat’s Cradle&gt;</p>
-<ul>
-<li>22、应当为成为坐起来的泥人而感到幸运</li>
-<li>23、我们对失去生命无能为力，唯一能做的是让它更有价值，让有限的人生更饱满</li>
-<li>24、在合理条件下，自杀也有其合理性</li>
-<li>25、我们只是这个世界的过客，we are on this earth for a while,and then we’re not anymore!</li>
-<li>26、There is no soul,we are just machines.</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">哲学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/">展开全文 >></a>
         </p>
       
 

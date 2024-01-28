@@ -154,6 +154,93 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-设计模式系列之十二状态模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2016-12-24T03:03:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;举一个自动取款机的场景来说明状态模式的使用。去自动提款机取钱首先得有插卡的动作，最后还会有取卡的动作。对应两个状态，一个是无卡状态，另外一个是有卡状态。</p>
+<h2 id="一、代码实现"><a href="#一、代码实现" class="headerlink" title="一、代码实现"></a>一、代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ATM</span> </span>&#123;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> NO_CARD 	= <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> HAVE_CARD  = <span class="number">1</span>;</span><br><span class="line">	<span class="comment">//提款机初始状态为无卡</span></span><br><span class="line">	<span class="keyword">int</span> state = NO_CARD;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//插卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(state==NO_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;插入卡片&quot;</span>);</span><br><span class="line">			<span class="comment">//设置状态为有卡状态</span></span><br><span class="line">			setState(HAVE_CARD);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(state==HAVE_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;已插入银行卡&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//取卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(state==NO_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;你没有插入银行卡&quot;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(state==HAVE_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;退出卡片&quot;</span>);</span><br><span class="line">			<span class="comment">//设置状态为无卡状态</span></span><br><span class="line">			setState(NO_CARD);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(<span class="keyword">int</span> state)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.state = state;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码可以预见到，如果再增加状态，那么对应的操作里面就需要增加一组if-else，越到后面代码将越来越难以维护。</p>
+<h2 id="二、使用状态模式改造"><a href="#二、使用状态模式改造" class="headerlink" title="二、使用状态模式改造"></a>二、使用状态模式改造</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//状态接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">State</span> </span>&#123;</span><br><span class="line">	<span class="comment">//插入卡片</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//取出卡片</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//无卡状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NoCard</span> <span class="keyword">implements</span> <span class="title">State</span></span>&#123;</span><br><span class="line">	NewATM atm;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NoCard</span><span class="params">(NewATM newATM)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.atm = newATM;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;插入卡片&quot;</span>);</span><br><span class="line">		atm.setState(NewATM.HAVE_CARD);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;你没有插入银行卡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//有卡状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HaveCard</span> <span class="keyword">implements</span> <span class="title">State</span></span>&#123;</span><br><span class="line">	NewATM atm;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HaveCard</span><span class="params">(NewATM newATM)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.atm = newATM;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;已插入银行卡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;退出卡片&quot;</span>);</span><br><span class="line">		atm.setState(NewATM.NO_CARD);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用状态模式改造后的业务代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewATM</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> State  NO_CARD;</span><br><span class="line">	<span class="keyword">static</span> State HAVE_CARD;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> State state = NO_CARD;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NewATM</span><span class="params">()</span></span>&#123;</span><br><span class="line">		NO_CARD 	= <span class="keyword">new</span> NoCard(<span class="keyword">this</span>);</span><br><span class="line">		HAVE_CARD 	= <span class="keyword">new</span> HaveCard(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//插卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		state.insertCard();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//取卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		state.quitCard();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(State state)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.state = state;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;经过改造，彻底干掉了繁琐的if-else状态判断。当有业务变更，或是新状态加入时可灵活的调整代码。</p>
+<p><strong>系列文章：</strong><br><a href="http://muchstudy.com/2016/11/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%80%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">设计模式系列之一单例模式</a><br><a href="http://muchstudy.com/2016/11/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%8C%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">设计模式系列之二策略模式</a><br><a href="http://muchstudy.com/2016/11/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%89%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之三观察者模式</a><br><a href="http://muchstudy.com/2016/12/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%9B%9B%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之四装饰者模式</a><br><a href="http://muchstudy.com/2016/12/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">设计模式系列之五工厂模式</a><br><a href="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a><br><a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a><br><a href="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a><br><a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a><br><a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a><br><a href="http://muchstudy.com/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">设计模式系列之十一组合模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Maven私服Nexus3-x权限配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -986,105 +1073,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-读《巨流河》有感" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/">读《巨流河》有感</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/" class="archive-article-date">
-  	<time datetime="2016-12-12T14:42:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/%E5%B7%A8%E6%B5%81%E6%B2%B3.gif" class="" title="《巨流河》-齐邦媛">
-
-<p>&emsp;&emsp;这本书是一位八十多岁的老太太所写的自传。从小学、初中、高中一直到大学的抗战时期到横渡海峡后的台湾时期。以一个历史见证人的角度，徐徐讲述了在那波澜壮阔的历史背景下，她所遇见的人与经历的事。通过本书，可以深切体会到作为一个解放后迁往台湾的异乡人那种复杂的感情。本书十分值得一读，尤其是<strong>台版</strong>。</p>
-<h2 id="关于国家"><a href="#关于国家" class="headerlink" title="关于国家"></a>关于国家</h2><p>&emsp;&emsp;《巨流河》的开篇写道“献给──所有为国家献身的人。”，看了作者讲述的张大飞以及作者的父亲的一生，算是真正理解了这句话的含义。</p>
-<p>&emsp;&emsp;父母被日本人所杀的张大飞刚满十八岁即参军，为了保卫国家成为一名飞行员。抗战胜利前夕壮烈牺牲，二十多岁正值青春年华即走完自己的一生。对比如今的和平时代，跟他年龄相仿的人估计才刚刚大学毕业，懵懵懂懂的进入社会，一些人可能还在啃老。而张大飞为了保家卫国，此时已在蓝天中与日本人的战斗机战斗了无数个回合。而这一切，是真实发生在距今六七十年前的事。</p>
-<p>&emsp;&emsp;齐邦媛的父亲留学德国，回国后参加郭松龄的改革兵变失败而被迫流亡。而后，抗日战争爆发，积极与日本人做斗争。在这之前，只知道那时的国民党腐败横行，各种无能。看完了齐邦媛讲述父亲的事迹，发现不能一概而论。她的父亲为了整个国家民族，为了东北，为了沦陷区的父老乡亲而呕心沥血。在那个时代背景下的人们，同仇敌忾，把民族大义放在首位，不计个人得失共同抵御外敌。</p>
-<p>&emsp;&emsp;站在国家的角度，应当摒弃政党的偏见，像这些为了国家而牺牲的人不应被遗忘，值得永远铭记。</p>
-<h2 id="关于文学"><a href="#关于文学" class="headerlink" title="关于文学"></a>关于文学</h2><p>&emsp;&emsp;大学时，齐邦媛原本选择的是哲学，后来转为英语文学，师从朱光潜。书中有两个关于朱光潜的轶事。</p>
-<p>&emsp;&emsp;其一：“一日，一学生见朱光潜的院子里满地落叶，相帮老师打扫一下，朱老师立刻阻止他说，我等了好久才存了这么多层落叶，晚上在书房看书，可以听见雨落下来，风卷起的声音。这个记忆，比赞许多秋天境界的诗更为生动、深刻。”；</p>
-<p>&emsp;&emsp;其二：“朱老师读到”the fowls of heaven have wings，……chains tie us down by land and sea”（天上的鸟儿有翅膀，链紧我们的是大地和海洋），说中国古诗有相似的风云有鸟路，江汉限无梁”之句，此时竟然语带便咽，稍微停顿又继续念下去，念“if any chance to heave a sign”（若有人为我叹息，）“they pity me，and not my grief.”（他们怜悯的是我,不是我的悲苦。）老师取下了眼镜，眼泪流下双颊，突然把书合上，快步走出教室，留下满室愕然，却无人开口说话。也许，在那样一个艰困的时代，坦率表现感情是一件奢侈的事，对于仍然崇拜偶的大学三年级学生来说，这是一件难于评论的意外，甚至是感到荣幸的事，能看到文学名师至情的眼泪。”</p>
-<p>&emsp;&emsp;上面的轶事中，文学的美让一位老师在众目睽睽之下而流泪。有这样一位老师，沉浸在文学的海洋中应当有无穷的乐趣。</p>
-<p>&emsp;&emsp;书中讲到了英诗，知道了雪莱的《云雀之歌》、济慈的《夜莺颂》，通过作者的介绍而真切感受到了英诗的美妙。后来作者到美国进修，那种对知识的渴望，对文学的追求令人心生敬佩。</p>
-<h2 id="关于人生"><a href="#关于人生" class="headerlink" title="关于人生"></a>关于人生</h2><p>&emsp;&emsp;看完了《巨流河》，只觉得人生是何其的短暂。</p>
-<p>&emsp;&emsp;作者在八十岁高龄时回忆起少年往事恍若隔世。两岸开放探亲后，相隔半个世纪回到大陆。见到曾经的大学同学，印象中个个花枝招展，此时此刻都变成了老太太。大家都变了模样，各自经历了自己的人生而到了暮年。慢慢的，收到曾经大学同学一个个去逝的消息，半个世纪相隔两岸没有交集，只依稀记得同学时期的故事，给人一种快速来到这个世界上然后又快速离开的错觉。</p>
-<p>&emsp;&emsp;人生短暂，更显得每一天、每时每刻都更加珍贵。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/">展开全文 >></a>
         </p>
       
 

@@ -154,6 +154,114 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-登录模块的设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/20/%E7%99%BB%E5%BD%95%E6%A8%A1%E5%9D%97%E7%9A%84%E8%AE%BE%E8%AE%A1/">登录模块的设计</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/20/%E7%99%BB%E5%BD%95%E6%A8%A1%E5%9D%97%E7%9A%84%E8%AE%BE%E8%AE%A1/" class="archive-article-date">
+  	<time datetime="2016-11-20T11:09:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2016/11/20/%E7%99%BB%E5%BD%95%E6%A8%A1%E5%9D%97%E7%9A%84%E8%AE%BE%E8%AE%A1/%E7%99%BB%E5%BD%95.jpg" class="">
+
+<p>&emsp;&emsp;最近做完系统登录模块的重构，登录这块的核心在于安全的控制。下面通过本文来总结一下登录模块的设计实现，以及哪些方面需要注意。</p>
+<h2 id="用户创建"><a href="#用户创建" class="headerlink" title="用户创建"></a>用户创建</h2><ul>
+<li>密码保存需要做不可逆加密。即密码不能明文保存且即使是内部技术人员也无法得到真实密码，常见的加密方法有MD5，SHA系列算法，如果对加密算法不太了解的可以移步<a href="http://muchstudy.com/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/">这里</a>。</li>
+<li>密码强度限制。不允许使用弱口令，比如跟用户生日相等。</li>
+<li>手机、邮箱验证。方便后续找回密码。</li>
+</ul>
+<h2 id="用户登录"><a href="#用户登录" class="headerlink" title="用户登录"></a>用户登录</h2><h3 id="需要注意的问题"><a href="#需要注意的问题" class="headerlink" title="需要注意的问题"></a>需要注意的问题</h3><ul>
+<li>使用验证码。增加暴力破解的成本。</li>
+<li>登录错误次数限制，一定时间后自动解锁，彻底堵死暴力破解。</li>
+<li>关键cookie设置HTTPOnly属性，防止xss盗取用户cookie。</li>
+<li>保证密码在网络传输中的安全。启用HTTPS，或使用RAS加密。请求登录界面时，生成公钥与私钥，私钥放在服务器端，密码传输前，使用公钥加密，服务器端收到密文后使用私钥解密密文得到用户输入的真实密码。</li>
+<li>集群状态下，采用session共享的方式实现SSO时，在session上记录的登录状态信息需要可序列化。</li>
+<li>页面跳转时使用服务器端跳转，<code>request.getRequestDispatcher().forward()</code>。尽量不要使用<code>response.sendRedirect()</code>,因为每次redirect都会触发客户端304，重新再次发起一次HTTP请求。</li>
+</ul>
+<h3 id="记住密码"><a href="#记住密码" class="headerlink" title="记住密码"></a>记住密码</h3><p>可以考虑这样去实现记住密码功能：cookie中需要保存如下3个值<br>username：用户的登录名<br>token：使用公钥加密过的用户密码<br>sequence：登录序列（防重放攻击。如果自动登录的该字段与服务器的不相符时，则证明用户在其他地方登录过。）  </p>
+<p>&emsp;&emsp;当勾选记住密码登录时，在服务器端保存当前的私钥、生成一个随机的登录序列（UUID）保存起来。同时，把用户名、登录传输过来的已经用公钥加密的密文、新生成的sequence保存到cookie中。下次用户请求登录页面时，从cookie中取得用户名放到用户名的输入框中，任意字符串放到密码框中，继续勾选上记住密码框。这个时候只需要输入验证码即可点击登录按钮。服务器端，判断出本次登录是记住密码登录，首先验证cookie中的sequence是否跟服务保存的一致，如果不一致，则登录失败。一致时，取出私钥解密从cookie中拿到的token，得到真实密码，接着按照常规登录流程完成登录验证。</p>
+<h2 id="密码变更"><a href="#密码变更" class="headerlink" title="密码变更"></a>密码变更</h2><ul>
+<li>修改密码需要提供原始密码</li>
+<li>相关信息在网络传输中需保证加密传输</li>
+<li>找回密码功能可以考虑使用手机验证码，邮件链接实现。另外，还可考虑提供用户在本系统中的留痕供用户选择（比如什么时候注册、最近做了什么操作等），从而识别出真正的用户。</li>
+</ul>
+<h2 id="日志记录"><a href="#日志记录" class="headerlink" title="日志记录"></a>日志记录</h2><ul>
+<li>记录用户的登录日志。可记录下登录时间、退出时间、IP等信息，分析过往日志，甄别出异常登录并提醒用户。</li>
+<li>记录用户登录失败日志。限制登录失败重试次数，防止暴力破解。</li>
+</ul>
+<h2 id="服务器相关"><a href="#服务器相关" class="headerlink" title="服务器相关"></a>服务器相关</h2><p>&emsp;&emsp;有时应用的安全部分做得再好，也抵不住服务器直接被攻破，所以运行应用的服务器的安全也需要特别注意。</p>
+<ul>
+<li>服务器访问日志（建议开启）</li>
+<li>可疑用户</li>
+<li>可疑进程</li>
+<li>可疑服务</li>
+<li>操作系统日志（日志最大大小） 定期备份</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Programmer//" class="article-tag-list-link color1">Programmer</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/20/%E7%99%BB%E5%BD%95%E6%A8%A1%E5%9D%97%E7%9A%84%E8%AE%BE%E8%AE%A1/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-每一个优秀的人，都有一段默默努力的时光" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1234,138 +1342,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/09/11/%E3%80%8A%E9%BB%84%E9%87%91%E6%97%B6%E4%BB%A3%E3%80%8B-%E7%8E%8B%E5%B0%8F%E6%B3%A2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-安全算法梳理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/">安全算法梳理</a>
-    </h1>
-  
-
-        
-        <a href="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/" class="archive-article-date">
-  	<time datetime="2016-09-04T10:16:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>&emsp;&emsp;经常见到RSA、MD5、SHA系列算法，另外还有数字摘要、数字签名、数字证书等名词，以及对称加密与非对称加密。他们之间到底是什么关系呢？下面就通过这篇文章来梳理一下。</p>
-</blockquote>
-<h3 id="一、加密算法"><a href="#一、加密算法" class="headerlink" title="一、加密算法"></a>一、加密算法</h3><p>&emsp;&emsp;加密算法，简而言之就是一种能够把原始内容加密，然后再解密获得原始内容的算法。</p>
-<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86.jpg" class="" title="加密与解密">
-
-<p><a target="_blank" rel="noopener" href="http://baike.baidu.com/view/155969.htm">加密算法</a>可以划分为如下两类：</p>
-<h4 id="1-对称加密"><a href="#1-对称加密" class="headerlink" title="1.对称加密"></a>1.对称加密</h4><p>&emsp;&emsp;对称加密可以理解为加密与解密都使用同一套算法（即密钥）。</p>
-<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E5%BE%AA%E7%8E%AF%E7%A7%BB%E4%BD%8D%E7%AE%97%E6%B3%95.jpg" class="" title="循环移位算法">
-
-<p>&emsp;&emsp;上图是一个经典对称加密算法。采用字母移位的办法对原始字符串进行转换，解密时再根据之前的移位,转换为原始字符串。可以根据此种算法，设计一个密码机，输入移位n，自动进行编码与解码。<br>&emsp;&emsp;在谍战电视剧中经常出现你争我抢的密码本，加密与解密双方使用同一个密码本对要传递的内容进行加解密，这也是一种对称加密算法。<br>&emsp;&emsp;对于对称加密在实际使用中的问题，可以通过如下样例来说明。<br>&emsp;&emsp;假如淘宝网的登录密码传输部分使用的是对称加密算法。此时，张三、李四、还有王五同学需要访问淘宝。那么，服务器就需要生成3个不同的密钥，比如张三的密钥为移5位，李四的密钥为移6位。如果全部都用一个密钥，显然张三用自己的密钥可以解密其它人加密后的密码。对于服务器来讲，有多少个用户就得维护多少组密钥，这样做显然是不合理的。  </p>
-<blockquote>
-<ol>
-<li>常用的对称加密算法有：DES、3DES、TDEA、Blowfish、RC2、RC4、RC5、IDEA、SKIPJACK、AES等。  </li>
-<li>百度百科：<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=0qjwcCKyQIEi1v9AQFWCZgM0xC-rB8D4xNwEg1zxBMywtgwILONBk4ex0l2CQ2HcnaZi5fAy5YfXxP4FpLz5nK">对称加密</a></li>
-</ol>
-</blockquote>
-<h4 id="2-非对称加密"><a href="#2-非对称加密" class="headerlink" title="2.非对称加密"></a>2.非对称加密</h4><p>&emsp;&emsp;针对于对称加密存在的问题，使用非对称加密即可完美的解决。  </p>
-<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%B8%8E%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86.jpg" class="" title="对称加密与非对称加密">
-
-<p>&emsp;&emsp;由上图可以看出，左侧的对称加密为A、B、C、D四个用户分别分配了一个密钥，而右侧的非对称加密（也叫公开密钥加密技术）为A、B、C、D四个用户分配了相同的密钥。<br>&emsp;&emsp;非对称加密的密钥分为<code>公钥</code>和<code>私钥</code>，其中公钥和私钥都可以加密与解密。特别的是，公钥所加密的内容只有私钥能够解密。这样，对于服务器来讲，只需要把公钥分发给所有客户，自己保存好私钥即可。  </p>
-<blockquote>
-<ol>
-<li>常用的非对称加密算法有：RSA、Elgamal、背包算法、Rabin、D-H、ECC（椭圆曲线加密算法）等。</li>
-<li>百度百科：<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=8MulbP9azuXwFgYkk-6OBVL0sDO7lFi4OeWewhENEdHo5o4dp-drc-HR6SnMm2gqSPg7B9hqM2bH0e1ZNfNBFq">非对称加密</a></li>
-</ol>
-</blockquote>
-<h3 id="二、摘要算法"><a href="#二、摘要算法" class="headerlink" title="二、摘要算法"></a>二、摘要算法</h3><p>&emsp;&emsp;首先需要指明的是，摘要算法不属于加解密算法。<br>&emsp;&emsp;对摘要两字可以理解为<strong>对信息主体的浓缩</strong>。这种浓缩是一个<strong>不可逆</strong>的过程。<br>&emsp;&emsp;可以在这些地方使用摘要算法：明文密码取摘要后把摘要存入数据库、文件断点续传与秒传（用文件摘要确定唯一性）、不在网络中传输密码（密码做摘要后传输，在服务器端取出密码用相同的摘要算法计算摘要后再跟客户端传过来的摘要比对）  </p>
-<blockquote>
-<ol>
-<li>常用的摘要算法有：MD5、SHA1、SHA256、SHA384、SHA512</li>
-<li>百度百科：<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=tCGQhcauD76QaTOjKvDaDmm5bS4Mw3bXf91WlepD2tumL4WBsexxaCxWrZqB-nBpJaIzY8s9bOduekfpCUxRNK">摘要算法</a></li>
-</ol>
-</blockquote>
-<h3 id="三、数字签名"><a href="#三、数字签名" class="headerlink" title="三、数字签名"></a>三、数字签名</h3><p>&emsp;&emsp;数字签名可以理解为<code>摘要算法</code>与<code>非对称加密</code>的综合使用。<br>&emsp;&emsp;数字签名可以对应为经常见到的骑缝章（经常有人喜欢把名字写在书的侧面）。数字签名需要说明是谁编写的报文，同时证明报文未被篡改过。  </p>
-<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.jpg" class="" title="数字签名">
-
-<p>&emsp;&emsp;通过上图，可以清楚的看出，使用<code>摘要算法</code>来证明报文未被篡改过，使用<code>非对称加密</code>来说明是谁写的报文。</p>
-<blockquote>
-<p>百度百科:<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=UjEIytZExoysf06dwc8LWXHNbMapFlmtm4UNmxy2ynHXzjlxqIOEMac7Qhel4qBaiSwv1EGmOLd08sr1wOpp2K">数字签名</a></p>
-</blockquote>
-<h3 id="四、数字证书"><a href="#四、数字证书" class="headerlink" title="四、数字证书"></a>四、数字证书</h3><p>&emsp;&emsp;我们可以通过非对称加密可以解决报文裸奔的问题。<br>&emsp;&emsp;试想，有这么一个场景，服务器A分发一个公钥给客户端B，正常情况下很OK。此时A和B之前有个中间代理C，A和B之间的所有数据传输都要经过C来中转。C被黑客控制，C把自己的公钥发给B（B误以为是A的），C收到B传输给A的消息，先用自己的私钥解密，获得明文。然后用A的公钥加密密文再转发给A。<br>&emsp;&emsp;这里就牵涉到一个问题，B怎么确定收到的公钥的确是A的，而不是别人伪造的？现实中的身份证，要想确定身份证是否是真实的，去权威机构（也就是公安局）查一下就行了。<br>&emsp;&emsp;数字证书也是这个原理，需要一个<strong>权威机构</strong>来颁发。以此来证明这个公钥到底是谁的。</p>
-<img src="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6.jpg" class="" title="数字证书">
-
-<p>&emsp;&emsp;上图是百度的数字证书，详细标明了颁发者、使用者、有效期、加密算法等信息。</p>
-<blockquote>
-<p>资料：<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html">“数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么?</a></p>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HTTP//" class="article-tag-list-link color5">HTTP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/09/04/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E6%A2%B3%E7%90%86/">展开全文 >></a>
         </p>
       
 
