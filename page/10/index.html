@@ -154,6 +154,134 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySQL两表关联的连接表该如何创建索引？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/">MySQL两表关联的连接表该如何创建索引？</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/" class="archive-article-date">
+  	<time datetime="2017-05-15T14:38:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题介绍"><a href="#问题介绍" class="headerlink" title="问题介绍"></a>问题介绍</h2><p>&emsp;&emsp;创建数据库的索引，可以选择单列索引，也可以选择创建组合索引。</p>
+<p>&emsp;&emsp;遇到如下这种情况，用户表（user）与部门表（dept）通过部门用户关联表（deptuser）连接起来，如下图所示：</p>
+<img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/reference.jpg" class="" title="表间关系">
+
+<p>&emsp;&emsp;问题就是，在这个关联表中该如何建立索引呢？</p>
+<p><strong>针对该表，有如下四种选择:</strong></p>
+<ol>
+<li>针对于user_uuid建立单列索引idx_user</li>
+<li>针对于user_dept建立单列索引idx_dept</li>
+<li>建立组合索引idx_user_dept,即（user_uuid,dept_uuid）</li>
+<li>建立组合索引idx_dept_user,即（dept_uuid,user_uuid）</li>
+</ol>
+<p><strong>对关联表的查询，有如下四种情况：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 一、人员查所属部门用and方式</span></span><br><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> d.dept_name,u.* <span class="keyword">FROM</span> org_dept d,org_user u,org_dept_user duser <span class="keyword">WHERE</span> u.user_uuid=duser.user_uuid <span class="keyword">AND</span> d.dept_uuid=duser.dept_uuid  <span class="keyword">AND</span> u.user_code=<span class="string">&quot;dev1&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 二、人员查所属部门用join方式</span></span><br><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> d.dept_name,u.* <span class="keyword">FROM</span> org_user u <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> org_dept_user du <span class="keyword">ON</span> u.user_uuid=du.user_uuid <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> org_dept d <span class="keyword">ON</span> du.dept_uuid=d.dept_uuid <span class="keyword">WHERE</span> u.user_code=<span class="string">&quot;dev1&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 三、部门查人员用and方式</span></span><br><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> d.dept_name,u.* <span class="keyword">FROM</span> org_dept d,org_user u,org_dept_user du <span class="keyword">WHERE</span> u.user_uuid=du.user_uuid <span class="keyword">AND</span> d.dept_uuid=du.dept_uuid <span class="keyword">AND</span> d.dept_code=<span class="string">&quot;D006&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 四、部门查所属人员用join方式</span></span><br><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> d.dept_name,u.* <span class="keyword">FROM</span> org_dept d <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> org_dept_user du <span class="keyword">ON</span> d.dept_uuid=du.dept_uuid <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> org_user u <span class="keyword">ON</span> u.user_uuid=du.user_uuid <span class="keyword">WHERE</span> d.dept_code=<span class="string">&quot;D006&quot;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h2><h3 id="一-人员查所属部门用and方式"><a href="#一-人员查所属部门用and方式" class="headerlink" title="一.人员查所属部门用and方式"></a>一.人员查所属部门用and方式</h3><h4 id="1-1-关联表无索引"><a href="#1-1-关联表无索引" class="headerlink" title="1.1 关联表无索引"></a>1.1 关联表无索引</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/1-1.png" class="">
+<h4 id="1-2-单索引-Idx-dept"><a href="#1-2-单索引-Idx-dept" class="headerlink" title="1.2 单索引 Idx_dept"></a>1.2 单索引 Idx_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/1-2.png" class="">
+<h4 id="1-3-单索引-Idx-user"><a href="#1-3-单索引-Idx-user" class="headerlink" title="1.3 单索引 Idx_user"></a>1.3 单索引 Idx_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/1-3.png" class="">
+<h4 id="1-4-组合索引-Idx-dept-user"><a href="#1-4-组合索引-Idx-dept-user" class="headerlink" title="1.4 组合索引 Idx_dept_user"></a>1.4 组合索引 Idx_dept_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/1-4.png" class="">
+<h4 id="1-5-组合索引-Idx-user-dept"><a href="#1-5-组合索引-Idx-user-dept" class="headerlink" title="1.5 组合索引 Idx_user_dept"></a>1.5 组合索引 Idx_user_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/1-5.png" class="">
+<h4 id="1-6-所有都建立上"><a href="#1-6-所有都建立上" class="headerlink" title="1.6 所有都建立上"></a>1.6 所有都建立上</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/1-6.png" class="">
+
+<h3 id="二-、人员查所属部门用join方式"><a href="#二-、人员查所属部门用join方式" class="headerlink" title="二 、人员查所属部门用join方式"></a>二 、人员查所属部门用join方式</h3><h4 id="2-1-关联表无索引"><a href="#2-1-关联表无索引" class="headerlink" title="2.1 关联表无索引"></a>2.1 关联表无索引</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/2-1.png" class="">
+<h4 id="2-2-单索引-Idx-dept"><a href="#2-2-单索引-Idx-dept" class="headerlink" title="2.2 单索引 Idx_dept"></a>2.2 单索引 Idx_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/2-2.png" class="">
+<h4 id="2-3-单索引-Idx-user"><a href="#2-3-单索引-Idx-user" class="headerlink" title="2.3 单索引 Idx_user"></a>2.3 单索引 Idx_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/2-3.png" class="">
+<h4 id="2-4-组合索引-Idx-dept-user"><a href="#2-4-组合索引-Idx-dept-user" class="headerlink" title="2.4 组合索引 Idx_dept_user"></a>2.4 组合索引 Idx_dept_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/2-4.png" class="">
+<h4 id="2-5-组合索引-Idx-user-dept"><a href="#2-5-组合索引-Idx-user-dept" class="headerlink" title="2.5 组合索引 Idx_user_dept"></a>2.5 组合索引 Idx_user_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/2-5.png" class="">
+<h4 id="2-6-所有都建立上"><a href="#2-6-所有都建立上" class="headerlink" title="2.6 所有都建立上"></a>2.6 所有都建立上</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/2-6.png" class="">
+
+<h3 id="三-、部门查人员用and方式"><a href="#三-、部门查人员用and方式" class="headerlink" title="三 、部门查人员用and方式"></a>三 、部门查人员用and方式</h3><h4 id="3-1-关联表无索引"><a href="#3-1-关联表无索引" class="headerlink" title="3.1 关联表无索引"></a>3.1 关联表无索引</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/3-1.png" class="">
+<h4 id="3-2-单索引-Idx-dept"><a href="#3-2-单索引-Idx-dept" class="headerlink" title="3.2 单索引 Idx_dept"></a>3.2 单索引 Idx_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/3-2.png" class="">
+<h4 id="3-3-单索引-Idx-user"><a href="#3-3-单索引-Idx-user" class="headerlink" title="3.3 单索引 Idx_user"></a>3.3 单索引 Idx_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/3-3.png" class="">
+<h4 id="3-4-组合索引-Idx-dept-user"><a href="#3-4-组合索引-Idx-dept-user" class="headerlink" title="3.4 组合索引 Idx_dept_user"></a>3.4 组合索引 Idx_dept_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/3-4.png" class="">
+<h4 id="3-5-组合索引-Idx-user-dept"><a href="#3-5-组合索引-Idx-user-dept" class="headerlink" title="3.5 组合索引 Idx_user_dept"></a>3.5 组合索引 Idx_user_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/3-5.png" class="">
+<h4 id="3-6-所有都建立上"><a href="#3-6-所有都建立上" class="headerlink" title="3.6 所有都建立上"></a>3.6 所有都建立上</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/3-6.png" class="">
+
+<h3 id="四-、部门查所属人员用join方式"><a href="#四-、部门查所属人员用join方式" class="headerlink" title="四 、部门查所属人员用join方式"></a>四 、部门查所属人员用join方式</h3><h4 id="4-1-关联表无索引"><a href="#4-1-关联表无索引" class="headerlink" title="4.1 关联表无索引"></a>4.1 关联表无索引</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/4-1.png" class="">
+<h4 id="4-2-单索引-Idx-dept"><a href="#4-2-单索引-Idx-dept" class="headerlink" title="4.2 单索引 Idx_dept"></a>4.2 单索引 Idx_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/4-2.png" class="">
+<h4 id="4-3-单索引-Idx-user"><a href="#4-3-单索引-Idx-user" class="headerlink" title="4.3 单索引 Idx_user"></a>4.3 单索引 Idx_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/4-3.png" class="">
+<h4 id="4-4-组合索引-Idx-dept-user"><a href="#4-4-组合索引-Idx-dept-user" class="headerlink" title="4.4 组合索引 Idx_dept_user"></a>4.4 组合索引 Idx_dept_user</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/4-4.png" class="">
+<h4 id="4-5-组合索引-Idx-user-dept"><a href="#4-5-组合索引-Idx-user-dept" class="headerlink" title="4.5 组合索引 Idx_user_dept"></a>4.5 组合索引 Idx_user_dept</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/4-5.png" class="">
+<h4 id="4-6-所有都建立上"><a href="#4-6-所有都建立上" class="headerlink" title="4.6 所有都建立上"></a>4.6 所有都建立上</h4><img src="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/4-6.png" class="">
+
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>&emsp;&emsp;通过上面的实际测试结果可以得出如下结论：<strong>针对于该关联表分别针对于user_uuid与dept_uuid建立单列索引idx_user,idx_dept最优。</strong></p>
+<p>&emsp;&emsp;其中索引idx_user适用与通过人员ID查询出该人员所在的部门；索引idx_dept适用与通过部门查询出该部门下所属的人员。</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h3><a href="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/Test.sql" title="Test.sql">Test.sql</a>
+
+<h3 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000003072424">MYSQL-索引</a></li>
+<li><a target="_blank" rel="noopener" href="http://tech.meituan.com/mysql-index.html">MySQL索引原理及慢查询优化</a></li>
+</ul>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/DBMS//" class="article-tag-list-link color5">DBMS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/15/MySQL%E4%B8%A4%E8%A1%A8%E5%85%B3%E8%81%94%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%A1%A8%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%9F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-排序算法09：总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1075,98 +1203,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9501%EF%BC%9A%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-循环删除数组元素的几种姿势" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/">循环删除数组元素的几种姿势</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/" class="archive-article-date">
-  	<time datetime="2017-04-07T03:16:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;在码代码的过程中，经常会遇到在循环中移除指定元素的需求。按照常规的思路，直接一个for循环，然后在循环里面来个if判断，在判断中删除掉指定元素即可。但是实际情况往往不会像预想的那样顺利运行。下面以一段Javascript代码为例演示这一过程。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="comment">//打印数组中的情况，便于跟踪数组中数据的变化</span></span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="comment">//删除掉所有为2的元素</span></span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            arr.splice(i,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-
-<p>运行结果如下：</p>
-<img src="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4.jpg" class="">
-
-<p>&emsp;&emsp;从最终的结果可以看到实际上只删除掉了匹配的其中一个元素，而另外一个元素还存在。</p>
-<p>&emsp;&emsp;从打印出的运行过程不难发现，原因为当删除掉了一个元素后，数组的索引发生的变化，造成了程序的异常。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>找到了问题的原因，就不难解决问题了。</p>
-<h3 id="姿势一"><a href="#姿势一" class="headerlink" title="姿势一"></a>姿势一</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="comment">//打印数组中的情况，便于跟踪数组中数据的变化</span></span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="comment">//删除掉所有为2的元素</span></span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="comment">//注意对比这行代码：删除元素后调整i的值</span></span><br><span class="line">            arr.splice(i--,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-
-<p>上面的代码看起来不大好理解，有没有看起来更易于理解的代码呢？请看下面</p>
-<h3 id="姿势二"><a href="#姿势二" class="headerlink" title="姿势二"></a>姿势二</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> len = arr.length<span class="number">-1</span>;</span><br><span class="line">    <span class="comment">//start from the top</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=len;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            arr.splice(i,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-
-<p>从后往前遍历可以有效解决问题，也容易理解，那么还有没有跟简洁的实现呢？接着看下面代码</p>
-<h3 id="姿势三"><a href="#姿势三" class="headerlink" title="姿势三"></a>姿势三</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> i = arr.length;</span><br><span class="line">    <span class="keyword">while</span>(i--)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            arr.splice(i,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-
-<p>使用<code>while(i--)</code>,i为数组下标，个人觉得这是最简洁、高效的代码实现了。</p>
-<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Programmer//" class="article-tag-list-link color1">Programmer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/">展开全文 >></a>
         </p>
       
 
