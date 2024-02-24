@@ -154,6 +154,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-解决正确配置Servlet-async-supported参数而不好使的问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/28/%E8%A7%A3%E5%86%B3%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AEServlet-async-supported%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E5%A5%BD%E4%BD%BF%E7%9A%84%E9%97%AE%E9%A2%98/">解决正确配置Servlet async-supported参数报错问题</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/28/%E8%A7%A3%E5%86%B3%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AEServlet-async-supported%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E5%A5%BD%E4%BD%BF%E7%9A%84%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2016-12-28T09:44:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、描述"><a href="#一、描述" class="headerlink" title="一、描述"></a>一、描述</h2><p>环境：</p>
+<blockquote>
+<p>JDK 1.7<br>Servlet 3.0<br>tomcat 7</p>
+</blockquote>
+<p>&emsp;&emsp;Servlet 3.0新增异步处理支持，配置servlet参数<code>&lt;async-supported&gt;true&lt;/async-supported&gt; </code>，或通过注解方式启用<code>@WebServlet(urlPatterns = &quot;/demo&quot;,asyncSupported = true) </code>。当正确配置后，发现照例报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalStateException: A filter or servlet of the current chain does not support asynchronous operations.</span><br><span class="line">	org.apache.catalina.connector.Request.startAsync(Request.java:1660)</span><br><span class="line">	org.apache.catalina.connector.Request.startAsync(Request.java:1653)</span><br><span class="line">	org.apache.catalina.connector.RequestFacade.startAsync(RequestFacade.java:1022)</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、解决办法"><a href="#二、解决办法" class="headerlink" title="二、解决办法"></a>二、解决办法</h2><p>&emsp;&emsp;找了一圈，所有的解决办法都在说可能是参数配置未配置正确，或者是需要在server.xml上配置。最后，在<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/10970829/async-servlet-exception">StackOverflow</a>上找到了如下答案</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.setAttribute(<span class="string">&quot;org.apache.catalina.ASYNC_SUPPORTED&quot;</span>, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、其它"><a href="#三、其它" class="headerlink" title="三、其它"></a>三、其它</h2><p>Servlet 3.0 新特性详解：<a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/">https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/28/%E8%A7%A3%E5%86%B3%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AEServlet-async-supported%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E5%A5%BD%E4%BD%BF%E7%9A%84%E9%97%AE%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-设计模式系列之十三代理模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -988,92 +1072,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-文章推荐-《独家回应-陈天桥与加州理工的1亿美元》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/16/%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/">文章推荐:《独家回应:陈天桥与加州理工的1亿美元》</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/16/%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/" class="archive-article-date">
-  	<time datetime="2016-12-16T04:48:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;在微信公众号<strong>知识分子</strong>上看到了这篇文章，对文中的这一段印象深刻。</p>
-<p>&emsp;&emsp;在一次访谈中陈天桥被问到“<strong>为什么会产生支持脑科学研究的想法？</strong>”</p>
-<p>他给出的答案如下：</p>
-<blockquote>
-<p>&emsp;&emsp;十七年前我们创立第一个游戏式虚拟社区，五年后就已经有千万人同时在线，十七年的商业运营让我们积累了财富，积累了对世界的认知，也积累了迷思，比如<strong>为什么虚拟世界的种种虚拟成就或痛苦会如同真实世界一样深刻地影响每个参与者，甚至促使其做出种种匪夷所思的决定等等。</strong>对于这些迷思，过去这么多年我们试图从哲学、宗教、科学多个角度来解释，但思考的结果往往是带来更多的迷惑。</p>
-</blockquote>
-<blockquote>
-<p>&emsp;&emsp;这些问题既重大、严肃又充满无尽的想象空间。它吸引我们如同回到十七年前创业之初一样，从零开始研究各个可投入的社会领域，从零开始构画各种发展策略。所幸的是，我们比起十七年前拥有更多智慧而坦诚的朋友和师长。他们鼓励并支持我们以最大的勇气和最坚定的信念来继续探寻上述我们包括所有人都迷惑的问题。因此我们把<strong>这个理想定义为——全力支持人类在对大脑认知领域的无尽探索。</strong></p>
-</blockquote>
-<blockquote>
-<p>&emsp;&emsp;脑科学作为人类现有知识体系里最为复杂而困难的课题之一，既充满魅力又让人望而却步。我们深知支持脑科学研究的决定将带来两个必然的挑战：巨大的付出和漫长的等待。对于前者，<strong>我们的回答是：全力以赴，对于后者，我们的回答是：永不止步。</strong></p>
-</blockquote>
-<p>&emsp;&emsp;看完这个回答，给我也带来了无尽的迷思……另外，有益于全人类的理想以及面对困难的全力以赴与永不止步使人由.衷的敬佩。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/16/%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/">展开全文 >></a>
         </p>
       
 

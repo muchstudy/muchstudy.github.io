@@ -154,6 +154,134 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-排序算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    </h1>
+  
+
+        
+        <a href="/2016/09/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2016-09-11T06:53:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>最近需要写一个排序算法，很久没写发现有些生疏了，抽时间用JavaScript实现了几种常用的排序算法，以备不时之需。</p>
+</blockquote>
+<h3 id="一、快速排序"><a href="#一、快速排序" class="headerlink" title="一、快速排序"></a>一、快速排序</h3><blockquote>
+<p>步骤：</p>
+</blockquote>
+<ol>
+<li>在数据集之中，选择一个元素作为”基准”（pivot）。</li>
+<li>所有小于”基准”的元素，都移到”基准”的左边；所有大于”基准”的元素，都移到”基准”的右边。</li>
+<li>对”基准”左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 快速排序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="variable">Array</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> arr   = [<span class="number">55</span>,<span class="number">1</span>,<span class="number">22</span>,<span class="number">77</span>,<span class="number">99</span>,<span class="number">11</span>,<span class="number">88</span>,<span class="number">33</span>,<span class="number">66</span>,<span class="number">44</span>];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">quickSort</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//递推跳出</span></span><br><span class="line">    <span class="keyword">if</span> (arr.length &lt;= <span class="number">1</span>) &#123; <span class="keyword">return</span> arr; &#125;</span><br><span class="line">    <span class="comment">//首先定义“基准”左右数据的数组</span></span><br><span class="line">    <span class="keyword">var</span> left    = [];</span><br><span class="line">    <span class="keyword">var</span> right   = [];</span><br><span class="line">    <span class="comment">//选择第一个元素作为基准元素(基准元素可以为任意一个元素)</span></span><br><span class="line">    <span class="keyword">var</span> pivot   = arr[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">var</span> len     = arr.length;</span><br><span class="line">    <span class="comment">//由于取了第一个元素，所以从第二个元素开始循环</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> item = arr[i];</span><br><span class="line">        <span class="comment">//大于基准的放右边，小于基准的放左边</span></span><br><span class="line">        item&gt;pivot ? right.push(item) : left.push(item);</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//递归左右数组</span></span><br><span class="line">    <span class="keyword">return</span> quickSort(left).concat([pivot],quickSort(right));</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(quickSort(arr));</span><br><span class="line"><span class="built_in">console</span>.log(count);  <span class="comment">//21</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="二、插入排序"><a href="#二、插入排序" class="headerlink" title="二、插入排序"></a>二、插入排序</h3><blockquote>
+<p>步骤：</p>
+</blockquote>
+<ol>
+<li>从第一个元素开始，该元素可以认为已经被排序</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描</li>
+<li>如果被扫描的元素（已排序）大于新元素，将该元素后移一位</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置</li>
+<li>将新元素插入到该位置后</li>
+<li>重复步骤2~5</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 插入排序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="variable">Array</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> arr   = [<span class="number">55</span>,<span class="number">1</span>,<span class="number">22</span>,<span class="number">77</span>,<span class="number">99</span>,<span class="number">11</span>,<span class="number">88</span>,<span class="number">33</span>,<span class="number">66</span>,<span class="number">44</span>];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">insertSort</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sorted  = [];</span><br><span class="line">    <span class="comment">//把数组中的第一个元素定义为已排序元素</span></span><br><span class="line">    sorted.push(arr[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">//不断取未排序的元素插入到已排序元素中</span></span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i= <span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> item        = arr[i];</span><br><span class="line">        <span class="comment">//在已经排序的元素序列中从后向前扫描</span></span><br><span class="line">        <span class="keyword">var</span> flag    = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">var</span> j       = sorted.length<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(j;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">            <span class="comment">//直到比自己小的元素，就把自己放在该元素后面</span></span><br><span class="line">            <span class="keyword">if</span>(item&gt;sorted[j])&#123;</span><br><span class="line">                <span class="comment">//插入到元素之后</span></span><br><span class="line">                sorted.splice(j+<span class="number">1</span>,<span class="number">0</span>,item);</span><br><span class="line">                flag = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//自己最小，直接放到第一个位置</span></span><br><span class="line">        <span class="keyword">if</span>(flag)&#123;sorted.splice(<span class="number">0</span>,<span class="number">0</span>,item);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sorted;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(insertSort(arr));</span><br><span class="line"><span class="built_in">console</span>.log(count);  <span class="comment">//19</span></span><br></pre></td></tr></table></figure>
+
+<p>排序演示：</p>
+<img src="/2016/09/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F.gif" class="" title="插入排序">
+
+<h3 id="三、冒泡排序"><a href="#三、冒泡排序" class="headerlink" title="三、冒泡排序"></a>三、冒泡排序</h3><blockquote>
+<p>步骤：</p>
+</blockquote>
+<ol>
+<li>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</li>
+<li>对第0个到第n-1个数据做同样的工作。这时，最大的数就“浮”到了数组最后的位置上。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 冒泡排序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="variable">Array</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> arr   = [<span class="number">55</span>,<span class="number">1</span>,<span class="number">22</span>,<span class="number">77</span>,<span class="number">99</span>,<span class="number">11</span>,<span class="number">88</span>,<span class="number">33</span>,<span class="number">66</span>,<span class="number">44</span>];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">var</span> temp= [];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="comment">//每一次的最后结果都是最大的元素放到了最后</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> j=<span class="number">0</span>;j&lt;len-i<span class="number">-1</span>;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j]&gt;arr[j+<span class="number">1</span>])&#123;</span><br><span class="line">                temp    = arr[j];</span><br><span class="line">                arr[j]  = arr[j+<span class="number">1</span>];</span><br><span class="line">                arr[j+<span class="number">1</span>]= temp;</span><br><span class="line">            &#125;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(bubbleSort(arr));</span><br><span class="line"><span class="built_in">console</span>.log(count);  <span class="comment">//45</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="四、时间复杂度"><a href="#四、时间复杂度" class="headerlink" title="四、时间复杂度"></a>四、时间复杂度</h3><blockquote>
+<p>来自于<a target="_blank" rel="noopener" href="http://wuchong.me/blog/2014/02/09/algorithm-sort-summary/">这里<a></p>
+</blockquote>
+<img src="/2016/09/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6.jpg" class="" title="时间复杂度">
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/09/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-《黄金时代》-王小波" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1297,105 +1425,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP状态码详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/">HTTP状态码详解</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/" class="archive-article-date">
-  	<time datetime="2016-08-20T06:31:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>触发整理这篇资料的初心为在工作中，经常看到不规范的HTTP状态码使用，实际的问题原因与应有的原因范围不符，很容易对人造成误解。</p>
-</blockquote>
-<h3 id="一、状态码分类"><a href="#一、状态码分类" class="headerlink" title="一、状态码分类"></a>一、状态码分类</h3><blockquote>
-<p>HTTP状态码分为如下5类</p>
-</blockquote>
-<p>总体范围 | 已定义范围 | 类别<br>—-|——|<br>100<del>199 | 100</del>101 | 信息<br>200<del>299 | 200</del>206 | 成功<br>300<del>399 | 300</del>305 | 重定向<br>400<del>499 | 400</del>417 | 客户端错误<br>500<del>599 | 500</del>505 | 服务器错误</p>
-<h3 id="二、状态码详细说明"><a href="#二、状态码详细说明" class="headerlink" title="二、状态码详细说明"></a>二、状态码详细说明</h3><h4 id="100199（已定义：100101）"><a href="#100199（已定义：100101）" class="headerlink" title="100199（已定义：100101）"></a>100<del>199（已定义：100</del>101）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>100 | Continue（ 继续） | 收到了请求的起始部分， 客户端应该继续请求<br>101 | Switching Protocols（ 切换协议） | 服务器正根据客户端的指示将协议切换成 Update首部列出的协议</p>
-<h4 id="200299（已定义：200206）"><a href="#200299（已定义：200206）" class="headerlink" title="200299（已定义：200206）"></a>200<del>299（已定义：200</del>206）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>200 | OK | 服务器已成功处理请求<br>201 | Created（ 已创建） | 对那些要服务器创建对象的请求来说， 资源已创建完毕<br>202 | Accepted（ 已接受） | 请求已接受， 但服务器尚未处理<br>203 | Non-Authoritative Information（ 非权威信息）| 服务器已将事务成功处理， 只是实体首部包含的信息不是来自原始服务器， 而是来自资源的副本<br>204 | No Content（ 没有内容） | 响应报文包含一些首部和一个状态行， 但不包含实体的主体内容<br>205 | Reset Content（ 重置内容）| 另一个主要用于浏览器的代码。 意思是浏览器应该重置当前页面上所有的 HTML 表单<br>206 | Partial Content（ 部分内容） |部分请求成功</p>
-<h4 id="300399（已定义300307）"><a href="#300399（已定义300307）" class="headerlink" title="300399（已定义300307）"></a>300<del>399（已定义300</del>307）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>300 | Multiple Choices（ 多项选择） | 客户端请求了实际指向多个资源的 URL。 这个代码是和一个选项列表一起返回的， 然后用户就可以选择他希望使用的选项了<br>301 | Moved Permanently（ 永久搬离） | 请求的 URL 已移走。 响应中应该包含一个 LocationURL， 说明资源现在所处的位置<br>302 | Found（ 已找到） | 与状态码 301 类似， 但这里的搬离是临时的。 客户端应该用 Location 首部给出的 URL 对资源进行临时定位<br>303 | See Other（ 参见其他） | 告诉客户端应该用另一个 URL 获取资源。 这个新的URL 位于响应报文的 Location 首部<br>304 | Not Modified（ 未修改）| 客户端可以通过它们所包含的请求首部发起条件请求。 这个代码说明资源未发生过变化<br>305 | Use Proxy（ 使用代理） | 必须通过代理访问资源， 代理的位置是在 Location首部中给出的<br>306 |（ 未用） | 这个状态码当前并未使用<br>307 | Temporary Redirect（ 临时重定向） | 和状态码 301 类似。 但客户端应该用 Location 首部给出的 URL对资源进行临时定位</p>
-<h4 id="400499（已定义400417）"><a href="#400499（已定义400417）" class="headerlink" title="400499（已定义400417）"></a>400<del>499（已定义400</del>417）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>400 | Bad request（ 坏请求） | 告诉客户端它发送了一条异常请求<br>401 | Unauthorized（ 未授权） | 与适当的首部一起返回， 在客户端获得资源访问权之前， 请它进行身份认证<br>402 | Payment Required（ 要求付款） | 当前此状态码并未使用， 是为未来使用预留的<br>403 | Forbidden（ 禁止） | 服务器拒绝了请求<br>404 | Not Found（ 未找到） | 服务器无法找到所请求的 URL<br>405 | Method Not Allowed（ 不允许使用的方法）| 请求中有一个所请求的 URI 不支持的方法。 响应中应该包含一个 Allow 首部，以告知客户端所请求的资源支持使用哪些方法<br>406 | Not Acceptable（ 无法接受） | 客户端可以指定一些参数来说明希望接受哪些类型的实体。 服务器没有资源与客户端可接受的 URL 相匹配时可使用此代码<br>407 | Proxy Authentication Required（ 要求进行代理认证）| 和状态码 401 类似， 但用于需要进行资源认证的代理服务器<br>408 | Request Timeout（ 请求超时） | 如果客户端完成其请求时花费的时间太长， 服务器可以回送这个状态码并关闭连接<br>409 | Conflict（ 冲突） | 发出的请求在资源上造成了一些冲突<br>410 | Gone（ 消失了） | 除了服务器曾持有这些资源之外， 与状态码 404 类似<br>411 | Length Required（ 要求长度指示） | 服务器要求在请求报文中包含Content-Length首部时会使用这个代码。发起的请求中若没有Content-Length 首部， 服务器是不会接受此资源请求的<br>412 | Precondition Failed（ 先决条件失败） | 如果客户端发起了一个条件请求， 如果服务器无法满足其中的某个条件， 就返回这个响应码<br>413 | Request Entity Too Large（ 请求实体太大）| 客户端发送的实体主体部分比服务器能够或者希望处理的要大<br>414 | Request URI Too Long（请 求 URI太长）| 客户端发送的请求所携带的请求 URL 超过了服务器能够或者希望处理的长度<br>415 | Unsupported Media Type（ 不支持的媒体类型）| 服务器无法理解或不支持客户端所发送的实体的内容类型<br>416 | Requested Range Not Satisfiable（ 所请求的范围未得到满足） | 请求报文请求的是某范围内的指定资源， 但那个范围无效，或者未得到满足<br>417 | Expectation Failed（ 无法满足期望） | 请求的 Expect 首部包含了一个预期内容， 但服务器无法满足</p>
-<h4 id="500599（已定义500505）"><a href="#500599（已定义500505）" class="headerlink" title="500599（已定义500505）"></a>500<del>599（已定义500</del>505）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>500 | Internal Server Error（ 内 部 服 务 器错误）| 服务器遇到了一个错误， 使其无法为请求提供服务<br>501 | Not Implemented（ 未实现） | 服务器无法满足客户端请求的某个功能<br>502 | Bad Gateway（ 网关故障） | 作为代理或网关使用的服务器遇到了来自响应链中上游的无效响应<br>503 | Service Unavailable（未提供此服务） | 服务器目前无法为请求提供服务， 但过一段时间就可以恢复服务<br>504 | Gateway Timeout（ 网关超时） | 与状态码 408 类似， 但是响应来自网关或代理， 此网关或代理在等待另一台服务器的响应时出现了超时<br>505 | HTTP Version Not Supported（ 不支持的 HTTP 版本）| 服务器收到的请求是以它不支持或不愿支持的协议版本表示的</p>
-<blockquote>
-<p>以上资料来自于《HTTP权威指南》，看了一下百度百科，发现有几个新的，后续可能还会增加，所以就不补充进来了，可以查阅百度百科的<a href="http://baike.baidu.com/link?url=rOqqmW08lpN2g6oY7pvcMBWwDlsn7-FOXFqd0oHVu8gZKZcAxHkMzUYfiD963Cnc-n8AfY4rIKH2ubYn64vuR_" target="_blank">HTTP状态码</a></p>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">HTTP状态码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HTTP//" class="article-tag-list-link color5">HTTP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/">展开全文 >></a>
         </p>
       
 
