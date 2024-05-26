@@ -154,6 +154,118 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySQL-5-7-绿色版安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/">MySQL 5.7 绿色版安装</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/" class="archive-article-date">
+  	<time datetime="2016-12-29T07:16:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>安装环境为windows2008 R2，X64</p>
+</blockquote>
+<h2 id="一、下载解压"><a href="#一、下载解压" class="headerlink" title="一、下载解压"></a>一、下载解压</h2><p>&emsp;&emsp;官网下载地址：<a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a><br>&emsp;&emsp;选择跟环境对应的版本，然后解压即可。我这里解压到<code>C:\work\mysql-5.7.17-winx64</code></p>
+<h2 id="二、-环境变量配置"><a href="#二、-环境变量配置" class="headerlink" title="二、 环境变量配置"></a>二、 环境变量配置</h2><p>&emsp;&emsp;把<code>C:\work\mysql-5.7.17-winx64\bin</code>添加到用户的环境变量<code>path</code>中</p>
+<h2 id="三、-添加配置文件"><a href="#三、-添加配置文件" class="headerlink" title="三、 添加配置文件"></a>三、 添加配置文件</h2><p>&emsp;&emsp;复制<code>my-default.ini</code>一份该文件，在当前目录下粘贴为<code>my.ini</code>，并增加如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set&#x3D;utf8</span><br><span class="line">[mysqld]</span><br><span class="line">character_set_server&#x3D;utf8</span><br><span class="line">basedir&#x3D;C:\work\mysql-5.7.17-winx64</span><br><span class="line">datadir&#x3D;C:\work\mysql-5.7.17-winx64\data</span><br><span class="line">port   &#x3D; 3306</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;修改默认的字符编码为UTF-8 解决中文乱码问题。</p>
+<h2 id="四、数据库初始化"><a href="#四、数据库初始化" class="headerlink" title="四、数据库初始化"></a>四、数据库初始化</h2><p>&emsp;&emsp;用管理员身份打开CMD，并执行如下命令：</p>
+<ul>
+<li><code>mysqld --initialize --user=mysql --console</code></li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/1.jpg" class="">
+
+<p>&emsp;&emsp;结尾部分为初始化的随机root密码，可以先从控制台上复制下来，下一步修改密码会使用</p>
+<h2 id="五、修改root密码"><a href="#五、修改root密码" class="headerlink" title="五、修改root密码"></a>五、修改root密码</h2><p>&emsp;&emsp;运行如下命令：</p>
+<ul>
+<li><code>mysql -u root -p</code> 之后会提示输入密码</li>
+<li><code>set password for root@localhost = password(&#39;root&#39;);</code>修改密码为root</li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/2.jpg" class="">
+
+<h2 id="六、创建新用户"><a href="#六、创建新用户" class="headerlink" title="六、创建新用户"></a>六、创建新用户</h2><p>&emsp;&emsp;运行如下命令：</p>
+<ul>
+<li><code>CREATE USER &#39;admin&#39;@&#39;%&#39; IDENTIFIED BY &#39;password&#39;;</code></li>
+<li><code>GRANT ALL PRIVILEGES ON *.* TO &#39;admin&#39;@&#39;%&#39;;</code></li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/3.jpg" class="">
+
+<p>&emsp;&emsp;注意<code>admin&#39;@&#39;%</code>中的百分号，这里使用百分号意味着允许任意远程客户端连接。<code>root@localhost</code>意味着只允许本地客户端连接。  </p>
+<p>&emsp;&emsp;官方文档：<a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/5.7/en/adding-users.html">http://dev.mysql.com/doc/refman/5.7/en/adding-users.html</a></p>
+<h2 id="七、添加为系统服务"><a href="#七、添加为系统服务" class="headerlink" title="七、添加为系统服务"></a>七、添加为系统服务</h2><p>&emsp;&emsp;运行如下命令：</p>
+<ul>
+<li><code>mysqld --install MySQL57</code></li>
+<li><code>net start MySQL57</code></li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/4.jpg" class="">
+
+<p>&emsp;&emsp;删除服务可运行<code>sc delete MySQL57</code></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/DBMS//" class="article-tag-list-link color5">DBMS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-设计模式总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -935,134 +1047,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/12/18/%E5%9D%9A%E6%8C%81%E4%B8%80%E5%B9%B4%E8%83%8C%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E6%80%BB%E7%BB%93/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-设计模式系列之九模板方法模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2016-12-17T09:23:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><strong>模板方法模式：</strong>在一个方法中定义一个算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤。</p>
-</blockquote>
-<p>&emsp;&emsp;有一个泡茶和冲咖啡的业务，他们都有差不多相似的流程。</p>
-<h2 id="一、不使用设计模式"><a href="#一、不使用设计模式" class="headerlink" title="一、不使用设计模式"></a>一、不使用设计模式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tea</span> </span>&#123;</span><br><span class="line">	<span class="comment">//泡茶流程</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		boilWater();</span><br><span class="line">		steepTeaBag();</span><br><span class="line">		pourInCup();</span><br><span class="line">		addLemon();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">steepTeaBag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;泡茶&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addLemon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加柠檬&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Coffee</span> </span>&#123;</span><br><span class="line">	<span class="comment">//冲咖啡流程</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		boilWater();</span><br><span class="line">		brewCoffeeGrinds();</span><br><span class="line">		pourInCup();</span><br><span class="line">		addSugarAndMilk();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brewCoffeeGrinds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;冲咖啡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addSugarAndMilk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加牛奶和糖&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、模板方法模式的使用"><a href="#二、模板方法模式的使用" class="headerlink" title="二、模板方法模式的使用"></a>二、模板方法模式的使用</h2><p>&emsp;&emsp;下面以一个代码样例来说明模板方法模式的使用。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义模板方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line">	<span class="comment">//冲咖啡和泡茶的模板，注意这里的final,意味着该方法不可修改，即模板中方法的先后顺序被固定</span></span><br><span class="line">	<span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">template</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//烧水</span></span><br><span class="line">		boilWater();</span><br><span class="line">		<span class="comment">//冲泡：用沸水&quot;浸泡&quot;茶叶/用沸水&quot;冲泡&quot;咖啡</span></span><br><span class="line">		brew();</span><br><span class="line">		<span class="comment">//把泡好的饮料倒进杯子</span></span><br><span class="line">		pourInCup();</span><br><span class="line">		<span class="comment">//加调料</span></span><br><span class="line">		addCondiments();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**这两个方法交给子类去实现**/</span></span><br><span class="line">	<span class="comment">//茶应该&quot;浸泡&quot;，咖啡应该&quot;冲泡&quot;</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//茶加柠檬，咖啡加牛奶和糖</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**这两个方法属于公用方法**/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tea</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;浸泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加柠檬&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Coffee</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;冲泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加糖和牛奶&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Tea tea = <span class="keyword">new</span> Tea();</span><br><span class="line">		Coffee coffee = <span class="keyword">new</span> Coffee();</span><br><span class="line">		<span class="comment">//泡茶</span></span><br><span class="line">		tea.template();</span><br><span class="line">		<span class="comment">//冲咖啡</span></span><br><span class="line">		coffee.template();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、使用钩子-hook-来做一些其它操作"><a href="#三、使用钩子-hook-来做一些其它操作" class="headerlink" title="三、使用钩子(hook)来做一些其它操作"></a>三、使用钩子(hook)来做一些其它操作</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义模板方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplateMethodWithHook</span> </span>&#123;</span><br><span class="line">	<span class="comment">//冲咖啡和泡茶的模板，注意这里的final,意味着该方法不可修改，即模板中方法的先后顺序被固定</span></span><br><span class="line">	<span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">template</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//烧水</span></span><br><span class="line">		boilWater();</span><br><span class="line">		<span class="comment">//冲泡：用沸水&quot;浸泡&quot;茶叶/用沸水&quot;冲泡&quot;咖啡</span></span><br><span class="line">		brew();</span><br><span class="line">		<span class="comment">//把泡好的饮料倒进杯子</span></span><br><span class="line">		pourInCup();</span><br><span class="line">		<span class="comment">//加调料</span></span><br><span class="line">		<span class="keyword">if</span> (customerWantsCondiments()) &#123;</span><br><span class="line">			addCondiments();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**这两个方法交给子类去实现**/</span></span><br><span class="line">	<span class="comment">//茶应该&quot;浸泡&quot;，咖啡应该&quot;冲泡&quot;</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//茶加柠檬，咖啡加牛奶和糖</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**这两个方法属于公用方法**/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里是个钩子，子类可决定是否需要加调料。也就是说子类可通过这个hook控制模板定义的逻辑</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">customerWantsCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TeaWithHook</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;浸泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加柠檬&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">customerWantsCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//不需要加柠檬</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CoffeeWithHook</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;冲泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加糖和牛奶&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">customerWantsCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//需要加糖和牛奶</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHook</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		TeaWithHook teaHook = <span class="keyword">new</span> TeaWithHook();</span><br><span class="line">		CoffeeWithHook coffeeHook = <span class="keyword">new</span> CoffeeWithHook();</span><br><span class="line">		<span class="comment">//泡茶，不加柠檬</span></span><br><span class="line">		teaHook.template();</span><br><span class="line">		<span class="comment">//冲咖啡，加糖和牛奶</span></span><br><span class="line">		coffeeHook.template();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="四、比较"><a href="#四、比较" class="headerlink" title="四、比较"></a>四、比较</h2><table>
-<thead>
-<tr>
-<th>不使用设计模式</th>
-<th align="center">使用模板方法模式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Coffee和Tea主导一切；它们控制了算法</td>
-<td align="center">TemplateMethod控制了一切，它拥有算法，并且<strong>保护这个算法</strong></td>
-</tr>
-<tr>
-<td>Coffee和Tea之间存在着重复的代码</td>
-<td align="center">通过TemplateMethod类实现了代码的复用</td>
-</tr>
-<tr>
-<td>如果算法变了，需要修改Coffee和Tea类</td>
-<td align="center">新增算法或调整顺序只需要修改TemplateMethod类</td>
-</tr>
-<tr>
-<td>由于类的组织不具有弹性，新加入第三种类型时需要完全重写一份</td>
-<td align="center">由于有模板存在，只需要实现差异化的逻辑即可</td>
-</tr>
-<tr>
-<td>算法的知识和它的实现会分散在许多类中</td>
-<td align="center">TemplateMethod类专注在算法本身，而由子类提供完整的实现</td>
-</tr>
-</tbody></table>
-<p>上一篇：<a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 

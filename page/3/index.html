@@ -154,6 +154,184 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CSS权重计算规则" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/04/CSS%E6%9D%83%E9%87%8D%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99/">CSS权重计算规则</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/04/CSS%E6%9D%83%E9%87%8D%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99/" class="archive-article-date">
+  	<time datetime="2021-07-04T14:12:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近准备校招生的培训材料，关于CSS的权重计算规则，正好梳理了一下，顺便整理分享出来。</p>
+<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><p>CSS的权重计算有如下几类：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>权值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一等：!important，优先级最高</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>第二等：内联选择器，如style=“”</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>第三等：ID选择器，如#container</td>
+<td>0100</td>
+</tr>
+<tr>
+<td>第四等：类、伪类、属性选择器，权值0010</td>
+<td>0010</td>
+</tr>
+<tr>
+<td>第五等：元素选择器，如div p，权值0001</td>
+<td>0001</td>
+</tr>
+<tr>
+<td>第六等：通配符，子选择器，相邻选择器</td>
+<td>0000</td>
+</tr>
+<tr>
+<td>第七等：继承样式无权值</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<p><code>!important</code> &gt; <code>行内样式</code> &gt; <code>ID选择器</code> &gt; <code>类选择器 | 属性选择器 | 伪类选择器</code> &gt; <code>元素选择器</code> &gt; <code>通配符</code> &gt; <code>继承样式</code></p>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><p align="center">
+<img src="/2021/07/04/CSS%E6%9D%83%E9%87%8D%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99/css-priority.jpg" class="">
+</p>
+
+
+<table>
+<thead>
+<tr>
+<th>Selector</th>
+<th>千位</th>
+<th>百位</th>
+<th>十位</th>
+<th>个位</th>
+<th>总计</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0001</td>
+</tr>
+<tr>
+<td>h1 + p::first-letter</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+<td>0003</td>
+</tr>
+<tr>
+<td>li &gt; a[href*=”en-US”] &gt; .inline-warning</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>0022</td>
+</tr>
+<tr>
+<td>#identifier</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0100</td>
+</tr>
+<tr>
+<td>No selector, with a rule inside an element’s style attribute</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1000</td>
+</tr>
+</tbody></table>
+<p>备注：从上面的图以及表格样例可以看出具体的计算规则</p>
+<h2 id="相关材料"><a href="#相关材料" class="headerlink" title="相关材料"></a>相关材料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity">https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.html.cn/qa/css3/16549.html">https://www.html.cn/qa/css3/16549.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance#specificity_2">https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance#specificity_2 </a></li>
+<li><a target="_blank" rel="noopener" href="https://specifishity.com/">https://specifishity.com/</a></li>
+</ul>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/04/CSS%E6%9D%83%E9%87%8D%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-要忙得有价值" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1147,93 +1325,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/05/06/%E5%86%8D%E8%A7%81%EF%BC%8C%E5%8F%8C%E9%97%A8%E6%B4%9E/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-你是一个“奋斗逼”吗？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/24/%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E2%80%9C%E5%A5%8B%E6%96%97%E9%80%BC%E2%80%9D%E5%90%97%EF%BC%9F/">你是一个“奋斗逼”吗？</a>
-    </h1>
-  
-
-        
-        <a href="/2021/04/24/%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E2%80%9C%E5%A5%8B%E6%96%97%E9%80%BC%E2%80%9D%E5%90%97%EF%BC%9F/" class="archive-article-date">
-  	<time datetime="2021-04-24T06:54:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p align="center">
-<img src="/2021/04/24/%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E2%80%9C%E5%A5%8B%E6%96%97%E9%80%BC%E2%80%9D%E5%90%97%EF%BC%9F/snow.jpeg" class="">
-</p>
-
-<p>第一次看到奋斗逼这个词的时候，内心实际上是有些不快的，因为自己就是那个一直在奋斗的人，还从不停歇……</p>
-<p>自认为这么多年下来，跟周围的人相处都挺愉快的，也不是一个喜欢加班的人，喜欢到点就走那种。甚至是一行代码刚敲到一半，留下半截单词还没敲完，旁边的兄弟一叫吃饭，马上就能合上电脑走人那种，吃饭最重要！~</p>
-<p>那么，问题出在什么地方呢？</p>
-<p>反复想了想，问题可能在于对奋斗的定义上。</p>
-<p>大家反感的是从老板那儿大包大揽为了挣表现；反感的是下班老板不走自己坚决不走，反而还表现得更忙；反感的是无脑的加班996；反感的是曾经某米喜欢很晚了在工作区拍张照，发到大群里，然后一群人点赞；</p>
-<p>实际上，这些行为不能叫做奋斗，叫“肝”。</p>
-<p>我觉得大部分人应该都不反感为了把自己变得更好为目的的努力和奋斗。</p>
-<p>最近在脉脉上，看到一个互联网人发的这么一句话：“<strong>大部分人在这个行业里的坚持都是为了家人，为了下一代。但是，都是第一次做人，我也想轻轻松松的过一辈子。想找个机会上岸，不想卷了。</strong>”</p>
-<p>当时就在想，我们辛苦奋斗的意义是什么？为什么而奋斗？</p>
-<p>后面细想，这实际上不是一个关于奋斗的问题，而是一个想要什么样的生活的问题。</p>
-<p>以我看到的，之所以很多优秀的人一直在这个行业坚持，原因有这么几点</p>
-<ul>
-<li>希望现在辛苦一点，为今后创造更多的选择。毕竟离开这里换个轻松的，赚钱少点的容易，再想换回来就相对难了。</li>
-<li>在更激烈的竞争环境下，更容易看到自身的差距与不足，希望待在这种环境下帮助督促自身提高。</li>
-<li>在这个行业里牛人很多，能够看到更多的可能性，帮助突破自己的天花板。</li>
-</ul>
-<p>再接回来关于奋斗的话题，奋斗的意义是什么？为什么而奋斗？</p>
-<p>我觉得可以用这么一句话来回答：“<strong>为了追求更好的生活，更好的自己而奋斗。</strong>”</p>
-<p><strong>这样的奋斗不应当被鄙视。</strong></p>
-<div style="width:70%;margin:auto">
-<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
-</div>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/24/%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E2%80%9C%E5%A5%8B%E6%96%97%E9%80%BC%E2%80%9D%E5%90%97%EF%BC%9F/">展开全文 >></a>
         </p>
       
 
