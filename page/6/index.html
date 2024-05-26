@@ -154,6 +154,117 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Elasticsearch索引自动化管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/">Elasticsearch索引自动化管理</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2020-06-04T10:19:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/%E7%B4%A2%E5%BC%95.jpg" class="">
+
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前端性能监控的日志之前为单一索引，随着日志内容的不断增多，索引文件变得越来越多大（官方建议单个索引文件不要超过20G）。</p>
+<p>在此种方案下只能定时通过<code>delete query</code>的方式删除xxx天之前的数据，此种方式删除数据时异常缓慢，而且磁盘空间不会立即释放。</p>
+<p>亟需采取新的索引方案解决该问题，比如按天生成索引，定时删除一个月之前的索引文件,直接删除索引文件的效率会高不少。</p>
+<h2 id="索引创建"><a href="#索引创建" class="headerlink" title="索引创建"></a>索引创建</h2><h3 id="索引模板"><a href="#索引模板" class="headerlink" title="索引模板"></a>索引模板</h3><p>索引模板是为了方便按天去生成相同配置的索引文件，样例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"># 创建索引模板</span><br><span class="line">PUT _template&#x2F;jz-fe-performance-log-template</span><br><span class="line">&#123;</span><br><span class="line">  &quot;index_patterns&quot; : [&quot;jz-fe-performance-log-*&quot;],</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">      &quot;index&quot; : &#123;</span><br><span class="line">        &quot;lifecycle&quot; : &#123;</span><br><span class="line">          &quot;name&quot; : &quot;jz-fe-log-15days&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;:&#123;</span><br><span class="line">      &quot;groupName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;projectName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;href&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;clientDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;serverDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;appId&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;hmsr&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;znsr&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;hmpl&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;unloadTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;redirectTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;appCacheTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;dnsTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;tcpTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;requestTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;responseTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;analysisTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;loadEventTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;connectTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;resourceTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;domReadyTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTFBTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTSRTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTDCTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTFLTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;FMPTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;uid&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;phone&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;platform&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;os&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;browser&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;version&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;userAgent&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;ip&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;networkType&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;ISP&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;region&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li><code>PUT _template/jz-fe-performance-log-template</code>创建名称为<code>jz-fe-performance-log-template</code>的索引模板</li>
+<li><code>index_patterns</code>中的<code>jz-fe-performance-log-*</code>代表索引名称为<code>jz-fe-performance-log-</code>的索引都按这个模板的配置去生成</li>
+<li><code>settings</code>中的<code>lifecycle</code>项注明以哪一个lifecycle配置来管理该索引，在后续的索引删除部分会使用到</li>
+<li><code>mappings</code>就是所有文档的配置了，<code>strict</code>表面为严格模式，索引数据只能为下面声明的字段名称，否则无法保存</li>
+</ul>
+<h3 id="数据保存"><a href="#数据保存" class="headerlink" title="数据保存"></a>数据保存</h3><p>在数据调用Node服务接口时，做如下处理，即可按天把日志保存到当天的日志文件中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; Client &#125; = <span class="built_in">require</span>(<span class="string">&#x27;@elastic/elasticsearch&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 性能数据索引</span></span><br><span class="line"><span class="keyword">const</span> PERFORMANCE_PROD_INDEX = <span class="string">&#x27;jz-fe-performance-log&#x27;</span></span><br><span class="line"><span class="keyword">const</span> PERFORMANCE_TEST_INDEX = <span class="string">&#x27;jz-fe-performance-log-test&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ES数据插入操作</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>index 索引</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>data 数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&lt;ApiResponse&lt;any&gt;&gt;&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">base</span> (<span class="params">&#123; index, data &#125;</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> client.index(&#123;</span><br><span class="line">        index: index,</span><br><span class="line">        body: data</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.error(<span class="string">&#x27;err&#x27;</span>, <span class="built_in">JSON</span>.stringify(err))</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 日期格式化</span></span><br><span class="line"><span class="comment">  * 返回 2020-6-5类型数据</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param <span class="type">&#123;日期&#125;</span> <span class="variable">date</span></span></span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dateFormat</span> (<span class="params">date</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> year = date.getFullYear()</span><br><span class="line">    <span class="keyword">const</span> month = date.getMonth() + <span class="number">1</span></span><br><span class="line">    <span class="keyword">const</span> day = date.getDate()</span><br><span class="line">    <span class="keyword">return</span> year + <span class="string">&#x27;-&#x27;</span> + month + <span class="string">&#x27;-&#x27;</span> + day</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 性能数据入库</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">body</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&lt;ApiResponse&lt;any&gt;|TResult&gt;&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">performanceAdd</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> index = tools.isTestENV() ? PERFORMANCE_TEST_INDEX : <span class="string">`<span class="subst">$&#123;PERFORMANCE_PROD_INDEX&#125;</span>-<span class="subst">$&#123;dateFormat(<span class="keyword">new</span> <span class="built_in">Date</span>())&#125;</span>`</span></span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> base(&#123; <span class="attr">index</span>: index, data &#125;)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>索引名称以<code>jz-fe-performance-log</code>打头的索引文件没有时都为以上面的模板新创建</li>
+<li>性能数据保存时，指定保存到当天的索引文件中</li>
+</ul>
+<h2 id="索引删除"><a href="#索引删除" class="headerlink" title="索引删除"></a>索引删除</h2><p>实现了索引文件按天拆分之后，下一步就需要考虑如何把索引文件管理起来。</p>
+<p>日志数据一般只保留一个月，这个时候可以考虑可以写一个程序定时去删除一个月之前的索引。</p>
+<p>Elasticsearch 6.6开始提供了一个叫<code>Index Lifecycle Management</code>的功能来管理日志。</p>
+<h3 id="ILM配置"><a href="#ILM配置" class="headerlink" title="ILM配置"></a>ILM配置</h3><p>可以通过kibana可视化的做配置，也可以通过写ES语句的方式创建</p>
+<img src="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/ES-IML-1.jpg" class="">
+
+<p>点击<code>Create policy</code>即可创建对应配置</p>
+<img src="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/ES-IML-2.jpg" class="">
+
+<p>可通过如下方式查看刚才创建的具体配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看Index Lifecycle Manegment配置</span><br><span class="line">GET &#x2F;_ilm&#x2F;policy&#x2F;jz-fe-log-15days</span><br></pre></td></tr></table></figure>
+
+<p>返回结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;jz-fe-log-15days&quot; : &#123;</span><br><span class="line">    &quot;version&quot; : 1,</span><br><span class="line">    &quot;modified_date&quot; : &quot;2020-06-04T10:02:16.233Z&quot;,</span><br><span class="line">    &quot;policy&quot; : &#123;</span><br><span class="line">      &quot;phases&quot; : &#123;</span><br><span class="line">        &quot;hot&quot; : &#123;</span><br><span class="line">          &quot;min_age&quot; : &quot;0ms&quot;,</span><br><span class="line">          &quot;actions&quot; : &#123;</span><br><span class="line">            &quot;set_priority&quot; : &#123;</span><br><span class="line">              &quot;priority&quot; : 100</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;delete&quot; : &#123;</span><br><span class="line">          &quot;min_age&quot; : &quot;15d&quot;,</span><br><span class="line">          &quot;actions&quot; : &#123;</span><br><span class="line">            &quot;delete&quot; : &#123; &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>索引要被哪个ILM管理是在索引的<code>settings</code>的<code>lifecycle</code>处指定的</li>
+<li>ES默认10分钟执行一次检查，如果对应索引满足创建时间大于15天，则删除索引</li>
+</ul>
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><p>下面是测试验证该功能会用到的相关ES语句</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> =========索引模板相关===========</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建索引模板</span></span><br><span class="line">PUT _template/jz-fe-test-template</span><br><span class="line">&#123;</span><br><span class="line">  &quot;index_patterns&quot; : [&quot;jz-fe-test-*&quot;],</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">      &quot;index&quot; : &#123;</span><br><span class="line">        &quot;lifecycle&quot; : &#123;</span><br><span class="line">          &quot;name&quot; : &quot;jz-fe-log-30s&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;:&#123;</span><br><span class="line">      &quot;gitGroup&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;projectName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看指定template信息</span></span><br><span class="line">GET /_template/jz-fe-test-template</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看指定前缀template信息</span></span><br><span class="line">GET /_template/jz-fe-*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除索引模板</span></span><br><span class="line">DELETE /_template/jz-fe-test-template</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 增加数据</span></span><br><span class="line">POST /jz-fe-test-2020-06-03/_doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;gitGroup&quot;:&quot;OS X&quot;,</span><br><span class="line">  &quot;projectName&quot;:&quot;iPhone2&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询数据</span></span><br><span class="line">GET jz-fe-test-2020-06-*/_search</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引详情</span></span><br><span class="line">GET /_cat/indices/jz-fe-test*?v&amp;s=index</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除测试索引</span></span><br><span class="line">DELETE /jz-fe-test-2020-06-*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> =========Index Lifecyce Management===========</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置10秒刷新1次(即定时器间隔)，生产环境10分种刷新一次</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可设置索引的保留时间为30s，每10s判断一次是否满足条件</span></span><br><span class="line">PUT _cluster/settings</span><br><span class="line">&#123;</span><br><span class="line">  &quot;persistent&quot;: &#123;</span><br><span class="line">    &quot;indices.lifecycle.poll_interval&quot;:&quot;10s&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看设置</span></span><br><span class="line">GET _cluster/settings</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看Index Lifecycle Manegment配置</span></span><br><span class="line">GET /_ilm/policy/jz-fe-log-15days</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-两个“跑路”级别BUG复盘" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1351,170 +1462,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/04/04/%E8%81%8A%E8%81%8A%E4%B8%80%E7%BA%BF%E5%BC%80%E5%8F%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-一场关于系统架构的讨论" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/">一场关于系统架构的讨论</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/" class="archive-article-date">
-  	<time datetime="2020-03-14T05:09:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/title.jpg" class="">
-
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司新业务有视频点播与直播需求，经过一番对比分析，最终选择了腾讯云作为视频服务的供应商。  </p>
-<p>对于如何接入有如下争论点：<br>1.由中台统一对接视频服务，封装统一对外接口，如后续要切换视频服务供应商，上层无需更改</p>
-<blockquote>
-<p><strong><em>一致点：</em></strong> 统一封装对外服务<br>**<em>争议点：**</em> 要不要做到可无缝切换视频播放供应商而不影响上层业务</p>
-</blockquote>
-<p>2.APP与WEB侧基于腾讯视频上传&amp;播放SDk封装通用组件</p>
-<blockquote>
-<p><strong><em>一致点：</em></strong> 统一封装SDK<br>**<em>争议点：**</em> 封装粒度是强封装还是弱封装。即隐藏内部实现，只暴露自定义参数；还是组件参数透传腾讯SDk相关参数，只简单封装通用业务逻辑</p>
-</blockquote>
-<p>对于上述争议点，会议最终也没讨论出结论来。个人觉得，这两个争论点实际上是一个业务架构问题与技术架构问题，只有把这两个问题理清楚，才能做出清晰的判断。</p>
-<h2 id="业务架构"><a href="#业务架构" class="headerlink" title="业务架构"></a>业务架构</h2><blockquote>
-<p>业务架构：实际上就是理清各方如何分工，如何交互，如何设计的问题。</p>
-</blockquote>
-<p>对于该场景的有两种架构方式，一种为中控式、一种为并行式。</p>
-<h3 id="中控式"><a href="#中控式" class="headerlink" title="中控式"></a>中控式</h3><p>中控式可理解为由一个中枢统一控制，大致结构图如下所示：</p>
-<div style="width:70%;margin:auto">
-<img src="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/%E4%B8%AD%E6%8E%A7%E5%BC%8F.jpg" class="">
-</div>
-
-<p><strong><em>核心思路：</em></strong> 由中台统一对接视频服务，抹平各服务商的差异，做到底层视频服务切换对上层无感知</p>
-<p><strong><em>好处：</em></strong></p>
-<ol>
-<li>视频服务切换，对业务方无影响，无额外开发工作量</li>
-</ol>
-<p><strong><em>难点&amp;弊端：</em></strong></p>
-<ol>
-<li>视频服务灰度切换问题</li>
-<li>中台需抽象化视频服务为共有服务，制定自有功能与交互逻辑；功能取交集，无法使用特有视频服务独有亮点功能</li>
-<li>中台逻辑复杂化，兼容维护成本高，不易迭代</li>
-</ol>
-<h3 id="并行式"><a href="#并行式" class="headerlink" title="并行式"></a>并行式</h3><p>并行式从字面意思可理解为并行设计，两条路线不冲突，大致结构图如下所示：</p>
-<div style="width:70%;margin:auto">
-<img src="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/%E5%B9%B6%E8%A1%8C%E5%BC%8F.jpg" class="">
-</div>
-
-
-<p><strong><em>核心思路：</em></strong> 对接不同的视频服务上采用并行方案，互不影响</p>
-<p><strong><em>好处：</em></strong></p>
-<ol>
-<li>灰度切换方便，影响范围可控制在较小的业务范围</li>
-<li>无需兼容处理，代码逻辑清晰，精简；全部切换后相关代码可整体废弃</li>
-<li>可充分利用视频服务商的全部功能</li>
-</ol>
-<p><strong><em>难点&amp;弊端：</em></strong></p>
-<ol>
-<li>切换视频供应商时需重新设计与开发，带来巨额工作量</li>
-</ol>
-<h2 id="技术架构"><a href="#技术架构" class="headerlink" title="技术架构"></a>技术架构</h2><blockquote>
-<p>技术架构：技术实现细节如何做到高内聚、低耦合、易扩展、良好的版本迭代与向下兼容等，设计思路依赖业务架构。</p>
-</blockquote>
-<p>对于争论点二，有如下两种技术架构思路，一种为集中兼容处理，一种为特定处理。</p>
-<h3 id="集中处理-强封装"><a href="#集中处理-强封装" class="headerlink" title="集中处理-强封装"></a>集中处理-强封装</h3><p>对于各个视频服务SDK集中处理，统一对外参数，大致结构图如下所示：</p>
-<div style="width:70%;margin:auto">
-<img src="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/%E9%9B%86%E4%B8%AD%E5%A4%84%E7%90%86.jpg" class="">
-</div>
-
-<p><strong><em>核心思路：</em></strong> 隐藏内部实现逻辑，提供统一的对外出口</p>
-<p><strong><em>好处：</em></strong></p>
-<ol>
-<li>强有力的控制，可做到内部变更对外部无感知</li>
-</ol>
-<p><strong><em>难点&amp;弊端：</em></strong></p>
-<ol>
-<li>事前需要超前规划，强有力的抽象，需保持克制只提供最小功能集，避免兼容问题</li>
-<li>前期即需考虑封装不同视频服务保证后续能无缝切换问题，实现复杂，工作量大</li>
-</ol>
-<h3 id="特定处理-弱封装"><a href="#特定处理-弱封装" class="headerlink" title="特定处理-弱封装"></a>特定处理-弱封装</h3><p>对各个视频服务SDK特定处理，不同视频服务对应封装不同的前端组件，大致结构图如下所示：</p>
-<div style="width:70%;margin:auto">
-<img src="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/%E7%89%B9%E5%AE%9A%E5%A4%84%E7%90%86.jpg" class="">
-</div>
-
-<p><strong><em>核心思路：</em></strong> 最小开闭原则，不对视频SDK的做二次封装是，透传参数即可；额外扩展自定义通用业务封装。</p>
-<p><strong><em>好处：</em></strong></p>
-<ol>
-<li>可获得特定视频服务商全量的功能服务</li>
-<li>组件文档无需单独编写，开发人员参考官方文档即可，鼓励DIY，遇到问题自己排查，而不是推给组件提供者</li>
-<li>无需考虑兼容其他视频服务，代码简洁、清晰，可维护强</li>
-</ol>
-<p><strong><em>弊端：</em></strong></p>
-<ol>
-<li>切换视频服务需重新设计对应的组件，顶层业务侧也需根据新组件的参数规范做调整</li>
-</ol>
-<h2 id="个人想法"><a href="#个人想法" class="headerlink" title="个人想法"></a>个人想法</h2><p>1.克制、恰到好处</p>
-<blockquote>
-<p>这条实际上是一个平衡与取舍问题，不能一点不往将来考虑，但也不能一下考虑得太遥远，考虑太远的问题在于前期投入巨大工作量后期可能一点用不上。</p>
-</blockquote>
-<p>2.干净、利落、清晰</p>
-<blockquote>
-<p>个人在做业务架构时，会更多的考虑什么样的架构能够让技术架构更简洁、清晰，便于维护。尽量避免架构设计划定的框，造成技术实现细节繁琐复杂。</p>
-</blockquote>
-<p>3.低成本，高收益</p>
-<blockquote>
-<p>对于这个问题，干一件事总成本是相对固定的，对于上面的问题，我更倾向于前期采用低成本，后续真正要切的时候再投入另外的成本。</p>
-</blockquote>
-<p>4.清晰而坚定的开头、清晰而坚定的收尾</p>
-<blockquote>
-<p>选择了一种架构就应该从上到下保持一致，在一条道上做到最好，避免三心二意，这也要一点，那也要一点，最后几不像。</p>
-</blockquote>
-<p>最后，不同的选择对应不同的代价；系统架构的难点很多时候不在于如何架构，而在于如何平衡与取舍；萝卜白菜，各有所爱。</p>
-<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/14/%E4%B8%80%E5%9C%BA%E5%85%B3%E4%BA%8E%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E8%AE%A8%E8%AE%BA/">展开全文 >></a>
         </p>
       
 
