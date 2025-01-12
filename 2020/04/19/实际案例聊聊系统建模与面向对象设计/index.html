@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>实际案例聊聊系统建模与面向对象设计 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么样的设计才是最好的设计？别问，问就是自己去体会……  背景PM同学组织了一场关于下单流程业务系统拆分的需求评审，整体功能为可线上售卖视频课，用户买完课之后可在线学习、不同的课程还包含线下实地培训等、学习完之后在线考试，颁发合格证书。 实际上，该需求可分为两个部分来看  售卖：通过各种渠道把各种各样的商品卖出去 履约：完成不同商品与之对应的履约流程  已有的实现  从上图可以清晰的看到，左">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实际案例聊聊系统建模与面向对象设计">
+<meta property="og:url" content="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="什么样的设计才是最好的设计？别问，问就是自己去体会……  背景PM同学组织了一场关于下单流程业务系统拆分的需求评审，整体功能为可线上售卖视频课，用户买完课之后可在线学习、不同的课程还包含线下实地培训等、学习完之后在线考试，颁发合格证书。 实际上，该需求可分为两个部分来看  售卖：通过各种渠道把各种各样的商品卖出去 履约：完成不同商品与之对应的履约流程  已有的实现  从上图可以清晰的看到，左">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%BB%A5%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1.jpg">
+<meta property="og:image" content="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E6%8A%BD%E8%B1%A1%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif">
+<meta property="article:published_time" content="2020-04-19T15:16:08.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.777Z">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%BB%A5%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-实际案例聊聊系统建模与面向对象设计" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time datetime="2020-04-19T15:16:08.000Z" itemprop="datePublished">2020-04-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      实际案例聊聊系统建模与面向对象设计
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%BB%A5%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1.jpg" class="">
+
+<blockquote>
+<p>什么样的设计才是最好的设计？<br>别问，问就是自己去体会……</p>
+</blockquote>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>PM同学组织了一场关于下单流程业务系统拆分的需求评审，整体功能为可线上售卖视频课，用户买完课之后可在线学习、不同的课程还包含线下实地培训等、学习完之后在线考试，颁发合格证书。</p>
+<p>实际上，该需求可分为两个部分来看</p>
+<ul>
+<li>售卖：通过各种渠道把各种各样的商品卖出去</li>
+<li>履约：完成不同商品与之对应的履约流程</li>
+</ul>
+<h2 id="已有的实现"><a href="#已有的实现" class="headerlink" title="已有的实现"></a>已有的实现</h2><img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B.png" class="">
+
+<p>从上图可以清晰的看到，左侧为售卖的各种商品，右侧为商品与之对应的履约流程。</p>
+<p>同时，每个商品对应一条独立的履约流程，商品之间可能存在相同的履约环节。</p>
+<h2 id="有什么问题？"><a href="#有什么问题？" class="headerlink" title="有什么问题？"></a>有什么问题？</h2><p>有什么问题得看从什么角度看</p>
+<p>如果从业务的角度看当然没啥问题，因为它能满足业务需求。</p>
+<p>但是，从系统设计角度看，存在如下几个问题</p>
+<ul>
+<li>要上架售卖新品类的商品，需要定制实现对应的履约流程</li>
+<li>已有商品履约流程调整，系统也需要做对应调整</li>
+<li>履约流程中的<strong>履约环节</strong>缺少复用性</li>
+</ul>
+<h2 id="业务抽象建模"><a href="#业务抽象建模" class="headerlink" title="业务抽象建模"></a>业务抽象建模</h2><img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E6%8A%BD%E8%B1%A1%E6%B5%81%E7%A8%8B.png" class="">
+
+<p>从上图中，可以看出如下几个改动点</p>
+<ul>
+<li>抽象了一个履约规则层，不同的商品对应不同的履约规则</li>
+<li>由<strong>履约规则</strong>串联起<strong>商品下单</strong>与<strong>订单履约</strong>，实现下单与履约的解耦</li>
+<li>订单履约模块可随意组合，以此完成履约流程</li>
+</ul>
+<p>相对与之前的设计，核心变更如下所示：</p>
+<img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E5%AF%B9%E6%AF%94.png" class="">
+
+<h2 id="有哪些好处？"><a href="#有哪些好处？" class="headerlink" title="有哪些好处？"></a>有哪些好处？</h2><p>通过这样的调整，好处很明显，完美的解决掉之前的问题</p>
+<ul>
+<li>上架新品类商品，无需对应开发与之的履约流程，新增履约配置即可</li>
+<li>已有商品履约流程调整，系统无需对应调整，只需修改履约配置即可</li>
+<li>因为实现了解耦，下单与履约相对独立，互不影响，履约部分可提供各种各样的履约单元组合实现履约流程</li>
+</ul>
+<h2 id="聊聊面向对象设计"><a href="#聊聊面向对象设计" class="headerlink" title="聊聊面向对象设计"></a>聊聊面向对象设计</h2><h3 id="面向对象的四大特性"><a href="#面向对象的四大特性" class="headerlink" title="面向对象的四大特性"></a>面向对象的四大特性</h3><ul>
+<li><strong>封装：</strong>独立模块只暴露对外接口，封装内部实现</li>
+<li><strong>抽象：</strong>例如上面抽象出来业务需求表象之下的履约规则层</li>
+<li><strong>继承：</strong>实现通用逻辑抽取，所有子类具有父类已实现的功能</li>
+<li><strong>多态：</strong>代码易扩展的利器，基于接口而不基于实现编程</li>
+</ul>
+<h3 id="面向对象的六大设计原则"><a href="#面向对象的六大设计原则" class="headerlink" title="面向对象的六大设计原则"></a>面向对象的六大设计原则</h3><ul>
+<li><strong>SRP 单一职责原则</strong>：每一个类、模块尽量做到职责单一</li>
+<li><strong>OCP 开闭原则</strong>：对扩展开放，对修改关闭</li>
+<li><strong>LSP 里式替换原则</strong>：即子类能够替换父类对象出现的任何地方，并且保证原来程序的逻辑行为不变或者说正确性不被破坏</li>
+<li><strong>DIP 依赖倒置原则</strong>：高层模块不依赖低层模块，它们共同依赖同一个抽象。抽象不要依赖具体实现细节，具体实现细节依赖抽象</li>
+<li><strong>ISP 接口隔离原则</strong>：意思即一个类不应该被强迫依赖它不需要的接口，即接口设计的时候不应该大而全，可做好分类，多使用接口组合</li>
+<li><strong>LOD 迪米特法则</strong>：核心在于降低类的耦合；不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口。迪米特法则是希望减少类之间的耦合，让类越独立越好。每个类都应该少了解系统的其他部分。一旦发生变化，需要了解这一变化的类就会比较少。</li>
+</ul>
+<p>其他还有</p>
+<ul>
+<li><strong>DRY原则</strong>（Don’t Repeat Yourself）</li>
+<li><strong>KISS原则</strong>（Keep It Simple and Stupid）</li>
+<li><strong>YAGNI原则</strong>（You Ain’t Gonna Need It）</li>
+</ul>
+<p>最后一个，我个人喜欢叫做<strong>不要加戏</strong>原则。</p>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><p>设计模式更多的在于解决具体问题，我的体会是不要去套模式，多去思考怎么样去实现代码才会是最优解，当你这么做了之后，设计模式自然而然就会从你的代码里涌现出来。</p>
+<p>几年前翻了一遍《Head first 设计模式》一书，翻完的第一感受就是原来很多设计模式在实际代码中都用过，原来每个套路还有对应的名字…</p>
+<p>曾经整理了一个设计模式的系列文章，分别用Java与Javascript实现，在这里：</p>
+<p><a href="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">设计模式系列文章：</a><br><a href="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/</a></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>工作得越久，越会不自觉的思考，十年一线老码农相对与工作四五年的正走上轨道且精力旺盛的生力军的核，心竞争力在哪里?</p>
+<p>可能就在于系统建模能力与面向对象设计能力上？</p>
+<p>在于哪些东西技术上能行，而实际上坑很深，敢于有所为有所不为上？</p>
+<p>不在于实现一个功能的快慢，而在于后续的持续迭代与维护成本上？</p>
+<p>软件开发说简单也简单，说复杂也复杂，复杂到无法量化精确评估它的好坏！</p>
+<p>什么样的设计才是最好的设计？</p>
+<p>别问，问就是自己去体会……</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/" data-id="cm5tqeew0007zwaypeoyhe4ya" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          通过Nginx解决网络隔离实践记录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/16/%E5%89%A9%E8%80%85%E4%B8%BA%E7%8E%8B%EF%BC%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">剩者为王？</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

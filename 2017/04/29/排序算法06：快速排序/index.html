@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>排序算法06：快速排序 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="算法介绍&amp;emsp;&amp;emsp;快速排序是一种分治的排序算法。排序逻辑为：先挑一个元素来切分数组，最终让该元素的左侧都小于该元素，右侧的所有元素都大于该元素。递归的让左侧和右侧分别执行该操作，最终让整个数组变得有序。 快速排序示意图：   &amp;emsp;&amp;emsp;咋眼一看快速排序跟归并排序很像，其实区别挺明显的。归并排序将数组分成两个子数组分别排序，并将有序的子数组归并以将整个数组排序；而快速排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法06：快速排序">
+<meta property="og:url" content="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="算法介绍&amp;emsp;&amp;emsp;快速排序是一种分治的排序算法。排序逻辑为：先挑一个元素来切分数组，最终让该元素的左侧都小于该元素，右侧的所有元素都大于该元素。递归的让左侧和右侧分别执行该操作，最终让整个数组变得有序。 快速排序示意图：   &amp;emsp;&amp;emsp;咋眼一看快速排序跟归并排序很像，其实区别挺明显的。归并排序将数组分成两个子数组分别排序，并将有序的子数组归并以将整个数组排序；而快速排序">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%88%87%E5%88%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%88%87%E5%88%86%E8%BD%A8%E8%BF%B9.jpg">
+<meta property="article:published_time" content="2017-04-29T14:04:08.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.653Z">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-排序算法06：快速排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-04-29T14:04:08.000Z" itemprop="datePublished">2017-04-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      排序算法06：快速排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;快速排序是一种分治的排序算法。排序逻辑为：先挑一个元素来切分数组，最终让该元素的左侧都小于该元素，右侧的所有元素都大于该元素。递归的让左侧和右侧分别执行该操作，最终让整个数组变得有序。</p>
+<p><strong>快速排序示意图：</strong></p>
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" class="" title="快速排序示意图">
+
+<p>&emsp;&emsp;咋眼一看快速排序跟归并排序很像，其实区别挺明显的。归并排序将数组分成两个子数组分别排序，并将有序的子数组归并以将整个数组排序；而快速排序将数组排序的方式则是当左右两个数组有序时整个数组为自然有序状态。</p>
+<h2 id="快速排序的切分"><a href="#快速排序的切分" class="headerlink" title="快速排序的切分"></a>快速排序的切分</h2><p>&emsp;&emsp;快速排序的核心在于数组的切分。切分的逻辑为，维护两个指针i和j，i从前往后移动，j从后往前移动。最终让切分元素的左侧都小于切分元素，右侧都大于切分元素。</p>
+<p><strong>切分示意图如下：</strong></p>
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%88%87%E5%88%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" class="" title="快速排序切分示意图">
+
+
+<p>Javascript代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将数组a切分为a[lo...i-1],a[i],a[i+1,hi]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>a     需要切分的数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>lo    起始位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>hi    结束位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">partition</span>(<span class="params">a,lo,hi</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> i = lo,j=hi+<span class="number">1</span>;      <span class="comment">//- i,j为左右扫描的指针</span></span><br><span class="line">        <span class="keyword">var</span> v = a[lo];          <span class="comment">//- 选择第lo元素为切分元素，让lo左边的都小于a[lo],右边的都大于a[lo]</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="comment">//不断从前向后移动指针</span></span><br><span class="line">            <span class="keyword">while</span> (a[++i] &lt; v)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i==hi)&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//不断的从后往前移动指针</span></span><br><span class="line">            <span class="keyword">while</span> (v &lt; a[--j])&#123;</span><br><span class="line">                <span class="keyword">if</span>(j==lo)&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i&gt;=j)&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">            <span class="comment">//较小的往前放，较小的往后放</span></span><br><span class="line">            exch(a,i,j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//把切分的元素放到正确的位置，交换lo与j的位置</span></span><br><span class="line">        exch(a,lo,j);</span><br><span class="line">        <span class="keyword">return</span> j;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>一次切分的切分轨迹如下：</strong></p>
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/%E5%88%87%E5%88%86%E8%BD%A8%E8%BF%B9.jpg" class="" title="切分轨迹">
+
+
+<h2 id="排序实现"><a href="#排序实现" class="headerlink" title="排序实现"></a>排序实现</h2><p>切分完成了排序就比较简单了，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 快速排序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>a     需要排序的数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>lo    起始位置</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>hi    结束位置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sort</span>(<span class="params">a,lo,hi</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(hi&lt;=lo)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> j = partition(a,lo,hi); <span class="comment">//- 切分数组，让a[j]左边的都小于它，右边的都大于它。</span></span><br><span class="line">    sort(a,lo,j-<span class="number">1</span>);             <span class="comment">//- 将左半部分a[lo..j-1]排序</span></span><br><span class="line">    sort(a,j+<span class="number">1</span>,hi);             <span class="comment">//- 将右半部份a[j+1...hi]排序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><h3 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/30.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 快速排序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>a     需要排序的数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>lo    起始位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>hi    结束位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">sort</span>(<span class="params">a,lo,hi</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(hi&lt;=lo)<span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">var</span> j = partition(a,lo,hi); <span class="comment">//- 切分数组，让a[j]左边的都小于它，右边的都大于它。</span></span><br><span class="line">        sort(a,lo,j-<span class="number">1</span>);             <span class="comment">//- 将左半部分a[lo..j-1]排序</span></span><br><span class="line">        sort(a,j+<span class="number">1</span>,hi);             <span class="comment">//- 将右半部份a[j+1...hi]排序</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将数组a切分为a[lo...i-1],a[i],a[i+1,hi]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>a     需要切分的数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>lo    起始位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>hi    结束位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">partition</span>(<span class="params">a,lo,hi</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> i = lo,j=hi+<span class="number">1</span>;      <span class="comment">//- i,j为左右扫描的指针</span></span><br><span class="line">        <span class="keyword">var</span> v = a[lo];          <span class="comment">//- 选择第lo元素为切分元素，让lo左边的都小于a[lo],右边的都大于a[lo]</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="comment">//不断从前向后移动指针</span></span><br><span class="line">            <span class="keyword">while</span> (a[++i] &lt; v)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i==hi)&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//不断的从后往前移动指针</span></span><br><span class="line">            <span class="keyword">while</span> (v &lt; a[--j])&#123;</span><br><span class="line">                <span class="keyword">if</span>(j==lo)&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i&gt;=j)&#123;<span class="keyword">break</span>;&#125;</span><br><span class="line">            <span class="comment">//较小的往前放，较小的往后放</span></span><br><span class="line">            exch(a,i,j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//把切分的元素放到正确的位置，交换lo与j的位置</span></span><br><span class="line">        exch(a,lo,j);</span><br><span class="line">        <span class="keyword">return</span> j;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>a  数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exch</span>(<span class="params">a,m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = a[m];</span><br><span class="line">        a[m] = a[n];</span><br><span class="line">        a[n] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    W.QuickSort = <span class="function"><span class="keyword">function</span> (<span class="params">a</span>) </span>&#123;</span><br><span class="line">        sort(a,<span class="number">0</span>,a.length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//var arr = [4,5,6,0,3,5,21,7,9,0,1];</span></span><br><span class="line">    <span class="comment">//console.log(arr);</span></span><br><span class="line">    <span class="keyword">var</span> chars = [<span class="string">&#x27;0&#x27;</span>,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;3&#x27;</span>,<span class="string">&#x27;4&#x27;</span>,<span class="string">&#x27;5&#x27;</span>,<span class="string">&#x27;6&#x27;</span>,<span class="string">&#x27;7&#x27;</span>,<span class="string">&#x27;8&#x27;</span>,<span class="string">&#x27;9&#x27;</span>,<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;E&#x27;</span>,<span class="string">&#x27;F&#x27;</span>,<span class="string">&#x27;G&#x27;</span>,<span class="string">&#x27;H&#x27;</span>,<span class="string">&#x27;I&#x27;</span>,<span class="string">&#x27;J&#x27;</span>,<span class="string">&#x27;K&#x27;</span>,<span class="string">&#x27;L&#x27;</span>,<span class="string">&#x27;M&#x27;</span>,<span class="string">&#x27;N&#x27;</span>,<span class="string">&#x27;O&#x27;</span>,<span class="string">&#x27;P&#x27;</span>,<span class="string">&#x27;Q&#x27;</span>,<span class="string">&#x27;R&#x27;</span>,<span class="string">&#x27;S&#x27;</span>,<span class="string">&#x27;T&#x27;</span>,<span class="string">&#x27;U&#x27;</span>,<span class="string">&#x27;V&#x27;</span>,<span class="string">&#x27;W&#x27;</span>,<span class="string">&#x27;X&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>,<span class="string">&#x27;Z&#x27;</span>];</span><br><span class="line">    <span class="keyword">var</span> arr = [];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">1000000</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> id = <span class="built_in">Math</span>.ceil(<span class="built_in">Math</span>.random()*<span class="number">35</span>);</span><br><span class="line">        arr[i] = chars[id];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.time(<span class="string">&quot;QuickSort&quot;</span>);</span><br><span class="line">    QuickSort(arr);      <span class="comment">//- chrome下一百万数据平均250ms,如果不计算长度，则小于200ms</span></span><br><span class="line">    <span class="built_in">console</span>.timeEnd(<span class="string">&quot;QuickSort&quot;</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Quick</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a)</span> </span>&#123;</span><br><span class="line">        sort(a, <span class="number">0</span>, a.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//让数组从a[lo] 到 a[hi]有序</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (hi &lt;= lo) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> j = partition(a, lo, hi);</span><br><span class="line">        sort(a, lo, j-<span class="number">1</span>);</span><br><span class="line">        sort(a, j+<span class="number">1</span>, hi);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切分数组a[lo..hi] 最终让数组满足如下状态： a[lo..j-1] &lt;= a[j] &lt;= a[j+1..hi]</span></span><br><span class="line">    <span class="comment">// 并返回j</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = lo;</span><br><span class="line">        <span class="keyword">int</span> j = hi + <span class="number">1</span>;</span><br><span class="line">        Comparable v = a[lo];</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span> (less(a[++i], v))</span><br><span class="line">                <span class="keyword">if</span> (i == hi) <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">while</span> (less(v, a[--j]))</span><br><span class="line">                <span class="keyword">if</span> (j == lo) <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">if</span> (i &gt;= j) <span class="keyword">break</span>;</span><br><span class="line">            exch(a, i, j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 把切分的元素放到j的位置上</span></span><br><span class="line">        exch(a, lo, j);</span><br><span class="line">        <span class="keyword">return</span> j;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 判断v &lt; w ?</span></span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(Comparable v, Comparable w)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> v.compareTo(w) &lt; <span class="number">0</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 交换 a[i]和 a[j]</span></span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exch</span><span class="params">(Object[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">         Object swap = a[i];</span><br><span class="line">         a[i] = a[j];</span><br><span class="line">         a[j] = swap;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(Integer[] a)</span></span>&#123;</span><br><span class="line"> 		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">             System.out.print(a[i]+<span class="string">&quot; &quot;</span>);</span><br><span class="line">         &#125;</span><br><span class="line"> 	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Integer[] a = &#123;<span class="number">1</span>,<span class="number">55</span>,<span class="number">32</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line">		sort(a);</span><br><span class="line">		show(a);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>不稳定。</li>
+<li>原地排序。</li>
+<li>时间复杂度为NlogN</li>
+<li>空间复杂度为lgN</li>
+<li>快速排序最好的情况是每次都正好能将数组对半分</li>
+<li>如果使用左右两个辅助数组可以方便实现切分，但把数组复制回去的成本会大大降低排序的速度</li>
+<li>归并排序和希尔排序一般都比快速排序慢。原因为：快速排序切分中用一个递增的索引将数组元素和一个定值比较。而归并排序和希尔排序在内循环中移动数据的频率较高。</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">排序算法05：归并排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/30/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法07：三向快速排序</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" data-id="cm5tqeev9005twaypasdacsar" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/30/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          排序算法07：三向快速排序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">排序算法05：归并排序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

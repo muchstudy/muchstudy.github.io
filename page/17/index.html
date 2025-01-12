@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/17/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-字符编码详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2016-08-26T15:23:08.000Z" itemprop="datePublished">2016-08-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/">字符编码详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>&emsp;&emsp;经常有人问，为啥出来乱码呢？要么是前端浏览器显示乱码，要么是后台服务器接收是乱码。前两天又碰到一哥们儿来问我这问题！那么，今天就来聊聊字符编码。</p>
+</blockquote>
+<h3 id="一、字符编码要解决什么问题？"><a href="#一、字符编码要解决什么问题？" class="headerlink" title="一、字符编码要解决什么问题？"></a>一、字符编码要解决什么问题？</h3><p>&emsp;&emsp;就一句话，解决二进制与字符相互转换的问题！</p>
+<h3 id="二、字符编码是如何工作的？"><a href="#二、字符编码是如何工作的？" class="headerlink" title="二、字符编码是如何工作的？"></a>二、字符编码是如何工作的？</h3><p>&emsp;&emsp;以ASCII编码为例，规定以一个字节来表示一个字符，一个字节8位（11111111），一共可以表示256个字符，目前只用到0-127号。</p>
+<img src="/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/ASCII%E7%A0%81%E8%A1%A8.jpg" class="" title="ASCII码表">
+
+<p>&emsp;&emsp;有了这个规则，那么字符在网络间传输时就可以按照这个规则进行编码解码。</p>
+<img src="/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B.png" class="" title="编码解码过程">
+
+<p>&emsp;&emsp;上图是以一个大写的字符A为例，基于ASCII编码字符集的编码解码过程。</p>
+<h3 id="三、各种字符编码间是何种关系？"><a href="#三、各种字符编码间是何种关系？" class="headerlink" title="三、各种字符编码间是何种关系？"></a>三、各种字符编码间是何种关系？</h3><p>&emsp;&emsp;谈到字符编码，就会有人问<code>UTF-8</code>和<code>GB2312</code>到底啥关系，跟<code>ASCII</code>编码又是啥关系？<br>&emsp;&emsp;还是一句话，他们相互间无直接关系！<br>&emsp;&emsp;解释一下，可以简单粗暴的理解为每一种字符编码对应于一种语言字符与二进制间的转换Map关系，最终形成一个字符集。当初设计的时候，只考虑到英文字符，用ASCII绰绰有余。但是后来碰到日文字符、中文字符、阿拉伯语字符等当然就不好使了，而且对于汉字来讲，有上万个字符，一个字节8位显然无法完全表示这么多个汉字字符。这个时候当然需要设计新的字符编码规则来解决不同语言编码的问题。紧接着，世界上的语言那么多种类，如果大家都各自为自己的设计一套，那岂不是很难管理，所以就整出个Unicode来统一标准。<br>&emsp;&emsp;这里的<code>无直接</code>是指一些编码规则保留了前面127位与最早的<code>ASCII</code>编码相兼容。<strong>这也是为什么大部分时候只有中文出现乱码，而英文字符能正常使用的原因。</strong></p>
+<p>这里有两篇文章帮助理解：  </p>
+<ol>
+<li><a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank">字符编码笔记：ASCII，Unicode和UTF-8</a></li>
+<li><a href="http://dengo.org/archives/901" target="_blank">ASCII、Unicode、GBK和UTF-8字符编码的区别联系</a></li>
+</ol>
+<h3 id="四、浏览器跟服务器是如何勾搭上的？"><a href="#四、浏览器跟服务器是如何勾搭上的？" class="headerlink" title="四、浏览器跟服务器是如何勾搭上的？"></a>四、浏览器跟服务器是如何勾搭上的？</h3><p>&emsp;&emsp;当然，要想勾搭上，当然得先有暗号！这样才能暗送秋波。不然两边各自讲相互听不懂的语言当然就无法沟通。  </p>
+<p>名称 | 说明 | 样例<br>—-|—— |<br>Accept-Charset | 客户端告诉服务器接收哪种字符编码 | <code>Accept-Charset:utf-8,is0-8859-1;1=0.8</code>,q表示优先级，1最高<br>charset | 告诉接收者传输内容使用何种字符编码，这里的接收者既可以是服务器端也可以是客户端 | <code>Content-Type: text/html;chart=utf-8</code></p>
+<p>&emsp;&emsp;上面是通过HTTP头信息设置编码规则，还可以在页面上设置编码规则<br>HTML中：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">HEAD</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">META</span> <span class="attr">HTTP-EQUIV</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">CONTENT</span>=<span class="string">&quot;text/html; charset=iso-2022-jp&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">META</span> <span class="attr">LANG</span>=<span class="string">&quot;jp&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TITLE</span>&gt;</span>A Japanese Document<span class="tag">&lt;/<span class="name">TITLE</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HEAD</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>JSP中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language&#x3D;&quot;java&quot; import&#x3D;&quot;java.util.*&quot; contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;utf-8&quot;%&gt;  </span><br></pre></td></tr></table></figure>
+
+<p>JQuery ajax自动设置Content-Type:<br>&emsp;&emsp;在<code>http://v3.bootcss.com/</code>的console里运行<code>$.ajax(&#123;url:&quot;/ajaxDemo&quot;,type:&quot;post&quot;,data:&#123;name:&quot;YiYing&quot;&#125;,success:function()&#123;&#125;&#125;)</code>，发起的ajax请求如下图所示：</p>
+<img src="/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%A1%E6%81%AF.jpg" class="" title="请求头信息r">
+
+<p>jquery 源码：  </p>
+<img src="/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/jquery%E6%BA%90%E7%A0%81.jpg" class="" title="jquery源码">
+
+
+<h3 id="五、造成乱码的原因"><a href="#五、造成乱码的原因" class="headerlink" title="五、造成乱码的原因"></a>五、造成乱码的原因</h3><p>&emsp;&emsp;查了一下<a target="_blank" rel="noopener" href="https://www.w3.org/Protocols/rfc1341/7_1_Text.html">RFC文档</a>，Content-Type的默认值为<code>Content-Type: text/plain; charset=us-ascii</code>。如果客户端的字符A以ASCII编码，最终在网络中传输的是二进制的65。如果服务器以另外一种编码规则解码（这个时候恰好未兼容ASCII），那么通过65解码出来的字符就不是字符A，而是其它字符了，从而造成传说中的乱码。     &emsp;&emsp;或者一端用可变长度的UTF-8编码，另一端用ASCII解码（只能表示128个字符，固定一个字节），UTF-8这边如果一个字符占3个字节，如果用ASCII来解码，一个字符被当成3个字符来解码，当然结果就不对。</p>
+<h3 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h3><p>&emsp;&emsp;看到这里，以后碰到乱码问题解决起来就so easy了吧！只需要检查编码与解码规则在哪个环节未对应上即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/" data-id="cm5tqeetr000xwayp8ieq8ews" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-《南渡北归》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/22/%E3%80%8A%E5%8D%97%E6%B8%A1%E5%8C%97%E5%BD%92%E3%80%8B/" class="article-date">
+  <time datetime="2016-08-22T15:29:34.000Z" itemprop="datePublished">2016-08-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/22/%E3%80%8A%E5%8D%97%E6%B8%A1%E5%8C%97%E5%BD%92%E3%80%8B/">《南渡北归》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2016/08/22/%E3%80%8A%E5%8D%97%E6%B8%A1%E5%8C%97%E5%BD%92%E3%80%8B/%E5%8D%97%E6%B8%A1%E5%8C%97%E5%BD%92.jpg" class="" title="大师远去再无大师">
+
+
+<blockquote>
+<p>看完《南渡北归》，感慨万千，真正理解了何谓“大师”！  </p>
+</blockquote>
+<p>&emsp;&emsp;此书分本《南渡》《北归》《伤离别》三部，共计150余万字，以时间线划分为抗战前、抗战期间、抗战后大致到文革结束。<br>     &emsp;&emsp;书中牵涉到一系列人物，读完全书，到现在还能记起来的有：梁启超、王国维、赵元任、陈寅恪、胡适、傅斯年、李济、吴宓、吴晗、闻一多、刘文典、梁思永、梁思成、林徽因、金岳霖、冯友兰、冰心、徐志摩、陆小曼、张伯苓、梅贻琦、陶孟和、吴金鼎、夏鼐、曾国藩家族的曾昭抡、曾昭橘、穆旦、钱穆、钱钟书，童第周、华罗庚、李政道、杨振宁…….<br>     &emsp;&emsp;这三部书差不多耗时3个月，大部分是在上班的地铁上读完。此书虽然在文笔上不尽如意，而且很多摘录、备注，有点像个大杂烩的感觉。但是对于了解1880-1980这100年间中国近代史还是有帮助的，特别是能了解在此期间大师、名人学者在此大时代中的抉择、命运纠葛，等等。</p>
+<p>&emsp;&emsp;下面是一些还能回想起来的内容片段:</p>
+<ul>
+<li>清华四大导师：梁启超、王国维、陈寅恪、赵元任；</li>
+<li>当年皇帝老师，著名国学大师王国维的跳未名湖自杀；</li>
+<li>陈寅恪为王国维撰写碑文中的“独立之精神、自由之思想”;</li>
+<li>梁启超住院错割好肾，反而为现代医学辩护；</li>
+<li>梁启超希望两个儿子所从事两个事业的远大抱负，梁思成建筑、梁思永考古；</li>
+<li>李济、董作宾、梁思永、吴金鼎、夏鼐、曾昭橘一票考古学专家，发现殷墟遗址，发现甲骨文，从而打破中国文化外来说；</li>
+<li>抗战打响前，国军将领张自忠、宋哲元等的私心导致北平失守；</li>
+<li>纨绔子弟张学良，对于他至死都没回过大陆，隐约能猜出几分原因；</li>
+<li>衡阳会战，中国战场上最惨烈的一战，双方紧张窒息的氛围达到极致，战至最后守军上下严守军人职责苦苦支撑，以死报国的决心电文”来生再见“的精神让人感动，蒋介石与方先觉见面的悲喜交集让人动容。</li>
+<li>全书有大量笔墨的傅斯年，史语所所长、北大代校长、台大校长，唯一的不成器在美国的儿子。最终归骨于田横之岛</li>
+<li>林徽因与梁思成、徐志摩、金岳霖的关系；徐志摩与陆小曼，书中有一张陆小曼年轻时候的照片，的确漂亮…. 金岳霖的一生未娶；</li>
+<li>冰心讥讽林徽因的“太太的客厅”；</li>
+<li>徐悲鸿的感情纠葛，1949年，妻子蒋碧薇留下与徐悲鸿的一子一女与张道藩去台湾；</li>
+<li>吴宓苦追毛彦文而不得….</li>
+<li>西南联大时期的吴晗、共产党胜利后出任北京市副市长，风光一时；文革中由于《海瑞罢官》引火烧身，吴晗与妻子袁震分别惨死，留下十来岁的一儿一女，不久女儿精神病自杀，一家人最后只剩下十来岁的儿子吴彰在好心人的帮助下长大。</li>
+<li>胡适，抗战赴美担任驻美大使，执意留在大陆不去台湾的胡思杜在文革中惨死，胡适在台湾至死都不明确儿子在大陆的情况。</li>
+<li>从国民党在抗战中艰苦办学、之后的抢救学人计划，可以看出国民党政府对知识分子还是相当重视的；</li>
+<li>抗战时期国民政府的腐败还是有目共睹的，孔氏家族大发国难财，孔二小姐把抢救学人的飞机用来拉私物，甚至把国民党大佬赶下飞机。</li>
+<li>抗战时期，从北平、辗转长沙、昆明、四川李庄的学生、教授；</li>
+<li>西南联大时期，斗士闻一多之死，记得闻一多有七八个小孩，上有老，死后这么一大家子人怎么办，想想就觉得心酸…..</li>
+<li>一生未婚的曾昭橘在文革中从灵骨塔上一跃而下….</li>
+<li>在文革中化学家曾昭抡也被斗死，这位是参与了国民党原子弹建造计划的人,为后续原子弹的爆炸提供了很多资料</li>
+<li>叶企孙在文革中也被斗死，在23位获得“两弹一星功勋奖章”的科学家中，有9位是他的学生，两位是他学生的学生！<del>~</del></li>
+<li>李政道与杨振宁的分道扬镳，对于这两个人谁对谁错，我更相信沉默者;</li>
+<li>穆氏家族一大票知名人物，最为人所知的就是穆旦和金庸，金庸倒是不错，可惜的是穆旦，从国外学成归来，抱着对祖国的期望，在回国后的20年间没有过上一天好日子，最终死于文革。</li>
+<li>文革中的陈梦家、 赵萝蕤夫妇，一个死、一个精神失常；</li>
+<li>《伤离别》中所讲述的傅斯年、胡适、李济、梅贻琦、吴晗、陈寅恪、金岳霖、林徽因、梁思成、穆旦之死，相当令人感伤，同时，不得不承认，文革是相当可怕的！~~<br>文革十年，“大师之后再无大师 ”这句话也不是没有道理的！  </li>
+</ul>
+<p>&emsp;&emsp;写了这么多，各中体会，无法表达，如人饮水，冷暖自知，总的来说收获颇丰，值得一读。  </p>
+<p>其它阅读记录：<br>《南渡北归.离别》  </p>
+<ul>
+<li><p>我没有什么心愿了，唯一让我遗憾的是没能再见一下我的恩师金岳霖先生。50年了，我很想念他。你们将来有机会去大陆，请替我问候一下，就说他的学生殷福生很想念他。”  </p>
+</li>
+<li><p>知名学人傅斯年归骨于田横之岛，按岳南的文章所写，文革期间留着大陆的傅氏家族惨遭“灭亡”之患，儿子在美国一生未娶，并不如意。抱着多了解一些事实的态度google了一下，发现并不像作者所写的那样。以此，独立之精神的必要性，妄不可贸然听信一家之言，应小心谨慎、多方求证之后方可做出自己的判断，切忌听信一家之言与鼓动之后影响自己的情绪与判断而做出错误的举动。</p>
+</li>
+<li><p>胡适对人多次提起自己曾说过不止一遍的话：“吴晗可惜，走错了路。” 此话传入吴晗耳中，吴颇不以为然，认为这位前老师脑子灌水，老糊涂了。当北平地覆天翻，半壁江山易主，蛰伏在西柏坡一间黑屋里的吴晗露出头来，在乍暖还寒的阳光照耀下，以接收大员的特殊身份，气宇轩昂地接管、掌控了北大、清华局势时，大有飘飘然羽化登仙之感。</p>
+</li>
+<li><p>由文革期间知识分子的惨痛遭遇，以及吴晗一家的遭遇，可见文革是多么的可怕。文革中消灭掉了太多的知识分子与有识之士，期间人人自危。重庆从打黑到唱红歌，如果再这样发展下去，后续的情况就很难说了，在网上看到有人说可能再来一次文革并不是危言耸听！~~  </p>
+</li>
+<li><p>而冯友兰则指斥胡适处于对中国共产党建立新政权的恐惧，胡说什么**”汉帝国的创立者都是平民，刘邦是个不事生产的无赖，萧何是个刀笔吏，樊哙是个屠狗的。……其中只有极少数的人，如张良、陈平是受过教育的”；”这一班乡下人统治下的政治，确实有点可怕”**。</p>
+</li>
+</ul>
+<p>批胡运动：<br> &emsp;&emsp;一些“极左地区”的胡姓青年失去了当兵入伍和进工厂做工的资格，而正处于找对象年龄的胡姓青年，许多因自己姓胡而遭到对方讥讽并最终告吹。对飘荡于社会各阶层，看不见却能清晰感受到的恐怖气氛，有的胡姓人家在大骂胡适、胡风与胡汉三等胡氏宗族不肖子孙的同时，一并发出了**”但愿来生不姓胡”<strong>的激愤之语。<br>   &emsp;&emsp;1949年以后多阶段、多波次、多形式、多阶层“批胡运动”影响面之大难以想象，高压下人人自危，造成一大批人，包括大多数上层知识分子“识时务为俊杰”的跟风、表态，人性的阴暗面尽显。由此可见，大多数在一些情况下也不一定是对的，应该建立在自由的环境，已经拥有独立思想、客观、公正的大多数上。从这里可以引申出，网上大家天天喊的民主并实现起来并没有那么简单，不仅需要上层政治上的开放，还需要一大批、广泛的有独立思想的人民大众做支撑，民主的路还很长！<br>   &emsp;&emsp;胡适在致杨杏佛的信中曾这样说过：</strong>“记得五六年前曾与周豫才先生兄弟闲谈，我说，《西游记》的‘八十一难’，最不能令人满意，应该这样改作：唐僧取了经回到通天河边，梦见黄风大王等妖魔向他索命，唐僧醒来，叫三个徒弟驾云把经卷送回唐土去讫，他自己却念动真言，把当日想吃唐僧一块肉延寿三千年的一切冤魂都召请来，他自己动手，把身上的肉割下来布施给他们吃，一切冤魂吃了唐僧的肉，都得超生极乐世界，唐僧的肉布施完了，他也成了正果。如此结束，最合佛教精神。”**<br>    &emsp;&emsp;接下来，胡适拿这个例子喻自己的经历：**“我受了十余年的骂，从来不怨恨骂我的人。有时他们骂的不中肯，我反替他们着急。有时他们骂的太过火了，反损骂者自己的人格，我更替他们不安。如果骂我而使骂者有益，便是我间接于他有恩了，我自然很情愿挨骂。如果有人说，吃胡适一块肉可以延寿一年半年，我也一定情愿自己割下来送给他，并且祝福他。”  **</p>
+<p>&emsp;&emsp;在那样的历史背景上，个人命运跌宕起伏，不值一提，被历史洪流推动着快步往前走！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/22/%E3%80%8A%E5%8D%97%E6%B8%A1%E5%8C%97%E5%BD%92%E3%80%8B/" data-id="cm5tqeetq000uwayp4rwd8dfs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Markdown中嵌入优酷视频" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/22/Markdown%E4%B8%AD%E5%B5%8C%E5%85%A5%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91/" class="article-date">
+  <time datetime="2016-08-22T14:58:22.000Z" itemprop="datePublished">2016-08-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/22/Markdown%E4%B8%AD%E5%B5%8C%E5%85%A5%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91/">Markdown中嵌入优酷视频</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;翻了很多篇帖子都是说直接使用iframe就好了，结果试了又试一直不行（也不是不行，就是直接跳转到了优酷页面，而不是在页面上内嵌一个视频窗口）。<br>&emsp;&emsp;最后终于找到了原因：<code>不是填浏览器地址栏的url！</code>、<code>不是填浏览器地址栏的url！</code>、<code>不是填浏览器地址栏的url！</code></p>
+<p>直接拷贝这里的放到Markdown上：  </p>
+<img src="/2016/08/22/Markdown%E4%B8%AD%E5%B5%8C%E5%85%A5%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91/%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%9C%B0%E5%9D%80.jpg" class="" title="优酷视频播放地址">
+
+
+<h3 align = "center">短片《一维》</h3>
+
+<iframe height=498 width=510 src="http://player.youku.com/embed/XNTk1Nzg4MzEy" frameborder=0 allowfullscreen></iframe>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/22/Markdown%E4%B8%AD%E5%B5%8C%E5%85%A5%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91/" data-id="cm5tqeetp000pwaypgli2gxc8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-HTTP连接管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2016-08-20T09:27:00.000Z" itemprop="datePublished">2016-08-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/">HTTP连接管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>&emsp;&emsp;曾经有同事给我说有客户问她我们的产品是否支持长连接，听到这问题，我告诉她长连接可以通过websocket来实现，考虑到目前的浏览器兼容性，大部分时候采用客户端轮询来曲线救国。当了解到HTTP的keep-alive时，不禁回想起这件事，当初我的回答可能并不是客户想要的的答案！</p>
+</blockquote>
+<p>&emsp;&emsp;下面，分享一下HTTP连接的一些情况，所有的截图均来自《HTTP权威指南》。想更详细了解的可以直接去看这本书的第四章，更深入的可以去翻翻RFC文档以及TCP/IP协议。有大部头恐惧症，以及只希望能有个初步以及概要性的了解的，接下来的内容很适合您!</p>
+<h3 id="一、HTTP连接的过程"><a href="#一、HTTP连接的过程" class="headerlink" title="一、HTTP连接的过程"></a>一、HTTP连接的过程</h3><img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/1.jpg" class="" title="HTTP连接的过程">
+
+<blockquote>
+<p> &emsp;&emsp;上图为从客户端-服务器端-客户端交互的整个过程。接下来介绍在这个交互过程中影响性能因素的几个关键点。</p>
+</blockquote>
+<h3 id="二、连接中的性能聚焦区域"><a href="#二、连接中的性能聚焦区域" class="headerlink" title="二、连接中的性能聚焦区域"></a>二、连接中的性能聚焦区域</h3><h4 id="HTTP事务的时延"><a href="#HTTP事务的时延" class="headerlink" title="HTTP事务的时延"></a>HTTP事务的时延</h4><img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/2.jpg" class="" title="HTTP 事务主要的连接、 传输以及处理时延">
+
+<p>HTTP 事务的时延有以下几种主要原因：  </p>
+<ol>
+<li>客户端首先需要根据URI确定Web服务器的IP地址和端口号。</li>
+<li>接下来，客户端会向服务器发送一条 TCP 连接请求， 并等待服务器回送一个请求接受应答。</li>
+<li>一旦连接建立起来了，客户端就会通过新建立的 TCP 管道来发送 HTTP 请求。</li>
+<li>最后，Web 服务器会回送 HTTP 响应。</li>
+</ol>
+<blockquote>
+<p> &emsp;&emsp;这些TCP网络时延的大小取决于硬件速度、网络和服务器的负载，请求和响应报文的尺寸，以及客户端和服务器之间的距离。</p>
+</blockquote>
+<h4 id="TCP连接的握手时延"><a href="#TCP连接的握手时延" class="headerlink" title="TCP连接的握手时延"></a>TCP连接的握手时延</h4><p>&emsp;&emsp;TCP连接的握手时延对应于上图的建立连接部分。发送任意数据，当新建立一条TCP连接时，都会走一下如下握手过程。如果连接只用来传送少量数据，这些握手过程就会严重降低 HTTP 的性能。</p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/3.jpg" class="" title="TCP连接的握手时延">
+
+<p>TCP 连接握手需要经过以下几个步骤：  </p>
+<ol>
+<li>请求新的 TCP 连接时， 客户端要向服务器发送一个小的 TCP 分组（ 通常是 40 ～60 个字节）。 这个分组中设置了一个特殊的 SYN 标记，说明这是一个连接请求。（a部分）</li>
+<li>如果服务器接受了连接，就会对一些连接参数进行计算，并向客户端回送一个TCP 分组，这个分组中的 SYN 和 ACK 标记都被置位，说明连接请求已被接受。（b部分）</li>
+<li>最后， 客户端向服务器回送一条确认信息， 通知它连接已成功建立（c部分）</li>
+</ol>
+<blockquote>
+<p>这部分对用户不可见</p>
+</blockquote>
+<h4 id="TCP慢启动"><a href="#TCP慢启动" class="headerlink" title="TCP慢启动"></a>TCP慢启动</h4><p>&emsp;&emsp;TCP 连接会随着时间进行自我“ 调谐”， 起初会限制连接的最大速度， 如果数据成功传输， 会随着时间的推移提高传输的速度。 这种调谐被称为 TCP 慢启动（ slow start）， 用于防止因特网的突然过载和拥塞。<br>&emsp;&emsp;由于存在这种拥塞控制特性， 所以新连接的传输速度会比已经交换过一定量数据的、“ 已调谐” 连接慢一些。</p>
+<h3 id="三、HTTP连接的处理"><a href="#三、HTTP连接的处理" class="headerlink" title="三、HTTP连接的处理"></a>三、HTTP连接的处理</h3><h4 id="1-并行连接"><a href="#1-并行连接" class="headerlink" title="1.并行连接"></a>1.并行连接</h4><p> &emsp;&emsp;试想，当浏览器加载一个页面时，如果一个个HTTP请求都串行执行，那显示出这个页面将会奇慢无比。</p>
+<p>下面用两个图来做个对比：  </p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/4.jpg" class="" title="4个事务（串行）">
+
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/5.jpg" class="" title="4个事务（并行）">
+
+<p>&emsp;&emsp;打开大量连接会消耗很多内存资源，从而引发自身的性能问题。复杂的Web页面可能会有数十或数百个内嵌对象。客户端可能可以打开数百个连接，但 Web 服务器通常要同时处理很多其他用户的请求， 所以很少有 Web 服务器希望出现这样的情况。 一百个用户同时发出申请， 每个用户打开 100 个连接， 服务器就要负责处理10000个连接。 这会造成服务器性能的严重下降。</p>
+<blockquote>
+<p> &emsp;&emsp;实际上，浏览器确实使用了并行连接,但它们会将并行连接的总数限制为一个较小的值（通常是4个）。之前看baidu的webuploader的设计文档，经过测试，当文件分片上传时，建议开始的线程为3个。<br>&emsp;&emsp;地址在<a href="http://fex.baidu.com/blog/2014/04/html5-uploader/?qq-pf-to=pcqq.c2c" target="_blank">这里</a>,更详细的在<a href="https://github.com/fex-team/webuploader/tree/research/experiment" target="_blank">这里</a>，上面的目录里也还有一些</p>
+</blockquote>
+<h4 id="2-持久连接"><a href="#2-持久连接" class="headerlink" title="2.持久连接"></a>2.持久连接</h4><p>&emsp;&emsp;HTTP/1.1（以及 HTTP/1.0 的各种增强版本）允许 HTTP 设备在事务处理结束之后将 TCP 连接保持在打开状态， 以便为未来的 HTTP 请求重用现存的连接。 在事务处理结束之后仍然保持在打开状态的 TCP 连接被称为持久连接。 非持久连接会在每个事务结束之后关闭。持久连接会在不同事务之间保持打开状态， 直到客户端或服务器决定将其关闭为止。<br>&emsp;&emsp;持久连接降低了时延和连接建立的开销，将连接保持在已调谐状态， 而且减少了打开连接的潜在数量。</p>
+<p>持久连接有两种类型：</p>
+<ol>
+<li>HTTP/1.0+ “keep-alive”连接</li>
+<li>HTTP/1.1 “persistent”连接</li>
+</ol>
+<h5 id="HTTP-1-0-keep-alive连接"><a href="#HTTP-1-0-keep-alive连接" class="headerlink" title="HTTP/1.0+ keep-alive连接"></a>HTTP/1.0+ keep-alive连接</h5><p> &emsp;&emsp;实现 HTTP/1.0 keep-alive 连接的客户端可以通过包含 <code>Connection: Keep-Alive</code>首部请求将一条连接保持在打开状态。<br>&emsp;&emsp;如果服务器愿意为下一条请求将连接保持在打开状态，就在响应中包含相同的首部。如果响应中没有 Connection: Keep-Alive 首部， 客户端就认为服务器不支持 keep-alive， 会在发回响应报文之后关闭连接。</p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/6.jpg" class="" title="串行与持久连接">
+
+<blockquote>
+<p> &emsp;&emsp;上图中将在串行连接上实现 4 个HTTP 事务的时间线与在一条持久连接上实现同样事务所需的时间线进行了比较。由于去除了进行连接和关闭连接的开销， 所以时间线有所缩减。</p>
+</blockquote>
+<h6 id="keep-alive选项："><a href="#keep-alive选项：" class="headerlink" title="keep-alive选项："></a>keep-alive选项：</h6><p>例如：<code>Keep-Alive: max=5, timeout=120</code>  </p>
+<ol>
+<li>参数 timeout 是在 Keep-Alive 响应首部发送的。 它估计了服务器希望将连接保持在活跃状态的时间。 这并不是一个承诺值。</li>
+<li>参数 max 是在 Keep-Alive 响应首部发送的。 它估计了服务器还希望为多少个事务保持此连接的活跃状态。 这并不是一个承诺值。</li>
+<li>Keep-Alive 首部还可支持任意未经处理的属性， 这些属性主要用于诊断和调试。语法为 name [=value]。</li>
+</ol>
+<blockquote>
+<p> &emsp;&emsp;在 HTTP/1.0 中，keep-alive 并不是默认使用的。客户端必须发送一个<code>Connection: Keep-Alive</code>请求首部来激活 keep-alive 连接。</p>
+</blockquote>
+<h5 id="HTTP-1-1-persistent连接"><a href="#HTTP-1-1-persistent连接" class="headerlink" title="HTTP/1.1 persistent连接"></a>HTTP/1.1 persistent连接</h5><p>&emsp;&emsp;HTTP/1.1 逐渐停止了对 keep-alive 连接的支持， 用一种名为持久连接（persistent connection） 的改进型设计取代了它。<br>&emsp;&emsp;与 HTTP/1.0+ 的 keep-alive 连接不同， HTTP/1.1 持久连接在默认情况下是激活的。 除非特别指明， 否则 HTTP/1.1 假定所有连接都是持久的。 要在事务处理结束之后将连接关闭， HTTP/1.1 应用程序必须向报文中显式地添加一个<code>Connection:close</code>首部。 这是与以前的 HTTP 协议版本很重要的区别， 在以前的版本中， keep-alive 连接要么是可选的，要么根本就不支持.<br>&emsp;&emsp;这种连接相当于是在HTTP/1.1之上默认开启keep-alive</p>
+<h4 id="3-管道化连接"><a href="#3-管道化连接" class="headerlink" title="3.管道化连接"></a>3.管道化连接</h4><p>&emsp;&emsp;HTTP/1.1 允许在持久连接上可选地使用请求管道。 这是相对于 keep-alive 连接的又一性能优化。 在响应到达之前， 可以将多条请求放入队列。当第一条请求通过网络流向地球另一端的服务器时， 第二条和第三条请求也可以开始发送了。 在高时延网络条件下， 这样做可以降低网络的环回时间，提高性能。  </p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/7.jpg" class="" title="性能对比">
+
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>&emsp;&emsp;随着HTTP协议版本以及浏览器版本的不断升级更新，以上这些针对HTTP连接性能优化的选项基本上都实现了自动化、智能化。所以，大家了解了解就好，被人问到避免出现我之前的尴尬境况。<br>&emsp;&emsp;把这块弄清楚并整理出来后，强迫症减轻了不少……</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/" data-id="cm5tqeeto000mwayp9uu93cj0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-HTTP状态码详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2016-08-20T06:31:14.000Z" itemprop="datePublished">2016-08-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/">HTTP状态码详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>触发整理这篇资料的初心为在工作中，经常看到不规范的HTTP状态码使用，实际的问题原因与应有的原因范围不符，很容易对人造成误解。</p>
+</blockquote>
+<h3 id="一、状态码分类"><a href="#一、状态码分类" class="headerlink" title="一、状态码分类"></a>一、状态码分类</h3><blockquote>
+<p>HTTP状态码分为如下5类</p>
+</blockquote>
+<p>总体范围 | 已定义范围 | 类别<br>—-|——|<br>100<del>199 | 100</del>101 | 信息<br>200<del>299 | 200</del>206 | 成功<br>300<del>399 | 300</del>305 | 重定向<br>400<del>499 | 400</del>417 | 客户端错误<br>500<del>599 | 500</del>505 | 服务器错误</p>
+<h3 id="二、状态码详细说明"><a href="#二、状态码详细说明" class="headerlink" title="二、状态码详细说明"></a>二、状态码详细说明</h3><h4 id="100199（已定义：100101）"><a href="#100199（已定义：100101）" class="headerlink" title="100199（已定义：100101）"></a>100<del>199（已定义：100</del>101）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>100 | Continue（ 继续） | 收到了请求的起始部分， 客户端应该继续请求<br>101 | Switching Protocols（ 切换协议） | 服务器正根据客户端的指示将协议切换成 Update首部列出的协议</p>
+<h4 id="200299（已定义：200206）"><a href="#200299（已定义：200206）" class="headerlink" title="200299（已定义：200206）"></a>200<del>299（已定义：200</del>206）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>200 | OK | 服务器已成功处理请求<br>201 | Created（ 已创建） | 对那些要服务器创建对象的请求来说， 资源已创建完毕<br>202 | Accepted（ 已接受） | 请求已接受， 但服务器尚未处理<br>203 | Non-Authoritative Information（ 非权威信息）| 服务器已将事务成功处理， 只是实体首部包含的信息不是来自原始服务器， 而是来自资源的副本<br>204 | No Content（ 没有内容） | 响应报文包含一些首部和一个状态行， 但不包含实体的主体内容<br>205 | Reset Content（ 重置内容）| 另一个主要用于浏览器的代码。 意思是浏览器应该重置当前页面上所有的 HTML 表单<br>206 | Partial Content（ 部分内容） |部分请求成功</p>
+<h4 id="300399（已定义300307）"><a href="#300399（已定义300307）" class="headerlink" title="300399（已定义300307）"></a>300<del>399（已定义300</del>307）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>300 | Multiple Choices（ 多项选择） | 客户端请求了实际指向多个资源的 URL。 这个代码是和一个选项列表一起返回的， 然后用户就可以选择他希望使用的选项了<br>301 | Moved Permanently（ 永久搬离） | 请求的 URL 已移走。 响应中应该包含一个 LocationURL， 说明资源现在所处的位置<br>302 | Found（ 已找到） | 与状态码 301 类似， 但这里的搬离是临时的。 客户端应该用 Location 首部给出的 URL 对资源进行临时定位<br>303 | See Other（ 参见其他） | 告诉客户端应该用另一个 URL 获取资源。 这个新的URL 位于响应报文的 Location 首部<br>304 | Not Modified（ 未修改）| 客户端可以通过它们所包含的请求首部发起条件请求。 这个代码说明资源未发生过变化<br>305 | Use Proxy（ 使用代理） | 必须通过代理访问资源， 代理的位置是在 Location首部中给出的<br>306 |（ 未用） | 这个状态码当前并未使用<br>307 | Temporary Redirect（ 临时重定向） | 和状态码 301 类似。 但客户端应该用 Location 首部给出的 URL对资源进行临时定位</p>
+<h4 id="400499（已定义400417）"><a href="#400499（已定义400417）" class="headerlink" title="400499（已定义400417）"></a>400<del>499（已定义400</del>417）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>400 | Bad request（ 坏请求） | 告诉客户端它发送了一条异常请求<br>401 | Unauthorized（ 未授权） | 与适当的首部一起返回， 在客户端获得资源访问权之前， 请它进行身份认证<br>402 | Payment Required（ 要求付款） | 当前此状态码并未使用， 是为未来使用预留的<br>403 | Forbidden（ 禁止） | 服务器拒绝了请求<br>404 | Not Found（ 未找到） | 服务器无法找到所请求的 URL<br>405 | Method Not Allowed（ 不允许使用的方法）| 请求中有一个所请求的 URI 不支持的方法。 响应中应该包含一个 Allow 首部，以告知客户端所请求的资源支持使用哪些方法<br>406 | Not Acceptable（ 无法接受） | 客户端可以指定一些参数来说明希望接受哪些类型的实体。 服务器没有资源与客户端可接受的 URL 相匹配时可使用此代码<br>407 | Proxy Authentication Required（ 要求进行代理认证）| 和状态码 401 类似， 但用于需要进行资源认证的代理服务器<br>408 | Request Timeout（ 请求超时） | 如果客户端完成其请求时花费的时间太长， 服务器可以回送这个状态码并关闭连接<br>409 | Conflict（ 冲突） | 发出的请求在资源上造成了一些冲突<br>410 | Gone（ 消失了） | 除了服务器曾持有这些资源之外， 与状态码 404 类似<br>411 | Length Required（ 要求长度指示） | 服务器要求在请求报文中包含Content-Length首部时会使用这个代码。发起的请求中若没有Content-Length 首部， 服务器是不会接受此资源请求的<br>412 | Precondition Failed（ 先决条件失败） | 如果客户端发起了一个条件请求， 如果服务器无法满足其中的某个条件， 就返回这个响应码<br>413 | Request Entity Too Large（ 请求实体太大）| 客户端发送的实体主体部分比服务器能够或者希望处理的要大<br>414 | Request URI Too Long（请 求 URI太长）| 客户端发送的请求所携带的请求 URL 超过了服务器能够或者希望处理的长度<br>415 | Unsupported Media Type（ 不支持的媒体类型）| 服务器无法理解或不支持客户端所发送的实体的内容类型<br>416 | Requested Range Not Satisfiable（ 所请求的范围未得到满足） | 请求报文请求的是某范围内的指定资源， 但那个范围无效，或者未得到满足<br>417 | Expectation Failed（ 无法满足期望） | 请求的 Expect 首部包含了一个预期内容， 但服务器无法满足</p>
+<h4 id="500599（已定义500505）"><a href="#500599（已定义500505）" class="headerlink" title="500599（已定义500505）"></a>500<del>599（已定义500</del>505）</h4><p>状态码 | 原因短语 | 含义<br>—-|——|<br>500 | Internal Server Error（ 内 部 服 务 器错误）| 服务器遇到了一个错误， 使其无法为请求提供服务<br>501 | Not Implemented（ 未实现） | 服务器无法满足客户端请求的某个功能<br>502 | Bad Gateway（ 网关故障） | 作为代理或网关使用的服务器遇到了来自响应链中上游的无效响应<br>503 | Service Unavailable（未提供此服务） | 服务器目前无法为请求提供服务， 但过一段时间就可以恢复服务<br>504 | Gateway Timeout（ 网关超时） | 与状态码 408 类似， 但是响应来自网关或代理， 此网关或代理在等待另一台服务器的响应时出现了超时<br>505 | HTTP Version Not Supported（ 不支持的 HTTP 版本）| 服务器收到的请求是以它不支持或不愿支持的协议版本表示的</p>
+<blockquote>
+<p>以上资料来自于《HTTP权威指南》，看了一下百度百科，发现有几个新的，后续可能还会增加，所以就不补充进来了，可以查阅百度百科的<a href="http://baike.baidu.com/link?url=rOqqmW08lpN2g6oY7pvcMBWwDlsn7-FOXFqd0oHVu8gZKZcAxHkMzUYfiD963Cnc-n8AfY4rIKH2ubYn64vuR_" target="_blank">HTTP状态码</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/" data-id="cm5tqeetn000iwayp8ic1fa2b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-HTTP缓存详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2016-08-18T04:18:46.000Z" itemprop="datePublished">2016-08-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/">HTTP缓存详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文对我目前所了解的HTTP缓存知识做一个分享，希望能通过本文能让大家对HTTP缓存的基础知识有所了解。</p>
+</blockquote>
+<p>使用缓存有如下几个好处：</p>
+<ul>
+<li>缓存减少了冗余的数据传输， 节省了你的网络费用。</li>
+<li>缓存缓解了网络瓶颈的问题。 不需要更多的带宽就能够更快地加载页面。</li>
+<li>缓存降低了对原始服务器的要求。 服务器可以更快地响应，避免过载的出现。</li>
+<li>缓存降低了距离时延， 因为从较远的地方加载页面会更慢一些。</li>
+</ul>
+<h3 id="一、HTTP请求的过程"><a href="#一、HTTP请求的过程" class="headerlink" title="一、HTTP请求的过程"></a>一、HTTP请求的过程</h3><img src="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/1.jpg" class="" title="浏览器-源服务器请求过程">
+
+<p>&emsp;&emsp;我们可以知道，从在浏览器地址栏敲入域名-DNS解析-实际IP-（中间可能多个代理服务器分发）- 源服务器，请求抵达源服务器后，在服务器上找到请求的资源，再通过代理服务器一层层的返回数据到浏览器端。</p>
+<p>&emsp;&emsp;缓存要解决的核心问题为减少客户端对源服务器的HTTP请求，提升性能。试想，像jquery、bootstrap这种更新不频繁的资源当然没有必要每次都从源服务器上获取。</p>
+<blockquote>
+<p>实际上大部分静态文件在下一次内容更新之前都没有必要再走一遍网络从源服务器获取</p>
+</blockquote>
+<h3 id="二、服务器控制缓存的能力"><a href="#二、服务器控制缓存的能力" class="headerlink" title="二、服务器控制缓存的能力"></a>二、服务器控制缓存的能力</h3><blockquote>
+<p>当客户端<code>第一次</code>请求服务器端的资源时，服务器端可以通过如下几种方式控制资源的缓存能力。</p>
+</blockquote>
+<ol>
+<li><code>Cache-Control:no-store</code>,禁止缓存对响应进行复制。</li>
+<li><code>Cache-Control:no-cache</code>,以前老认为这个是不缓存的意思，下面从《HTTP权威指南》摘录一段解释：标识为 no-cache 的响应实际上是可以存储在本地缓存区中的。 只是在与原始服务器进行新鲜度再验证之前，缓存不能将其提供给客户端使用。这个首部使用 donot-serve-from-cache-without-revalidation 这个名字会更恰当一些。</li>
+<li><code>Cache-Control: must-revalidate</code>,在事先没有跟原始服务器进行再验证的情况下，不能提供这个对象的陈旧副本。 缓存仍然可以随意提供新鲜的副本。如果在缓存进行 must-revalidate 新鲜度检查时，原始服务器不可用，缓存就必须返回一条 504 Gateway Timeout 错误。</li>
+<li><code>Cache-Control: max-age=3600</code>,从服务器将文档传来之时起， 可以认为此文档处于新鲜状态的秒数。</li>
+<li><code>Expires: Fri, 05 Jul 2002, 05:00:00 GMT</code>,实际的过期日期,不推荐使用。</li>
+<li><code>不附加过期信息，让缓存确定自己的过期日期</code>,如果响应中没有 Cache-Control: max-age 首部， 也没有 Expires 首部， 缓存可以计算出一个试探性最大使用期。 可以使用任意算法， 但如果得到的最大使用期大于 24 小时， 就应该向响应首部添加一个 Heuristic Expiration Warning（ 试探性过期警告， 警告 13） 首部。LM-Factor 算法是一种很常用的试探性过期算法。</li>
+</ol>
+<h3 id="三、强缓存"><a href="#三、强缓存" class="headerlink" title="三、强缓存"></a>三、强缓存</h3><blockquote>
+<p>浏览器强缓存什么意思呢，就是说当请求一个资源时，直接从本地的浏览器缓存中读取，不发起HTTP请求，对于源服务器来讲，好爽！~~  </p>
+</blockquote>
+<p>下面是京东首页的截图  </p>
+<img src="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/2.jpg" class="" title="浏览器强缓存">
+
+<blockquote>
+<p>像这种显示<code>from cache</code>的就是直接读取的浏览器本地缓存，那么HTTP是如何控制直接读取本地缓存的呢？有如下两种方式。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expires</td>
+<td>响应失效的日期和时间。类似于：<code>Expires:Sat, 20 Aug 2016 01:40:57 GMT</code>，绝对值，告诉客户端在这个时间点之后资源过期，需要重新从服务器取。</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>类似于：<code>Cache-Control:max-age=315360000</code>，相对值，在多久后过期</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>通过上面两种方式，当资源的缓存还在有效期时，浏览器直接从本地缓存中取资源，而不是发起HTTP请求从源服务器取。由于客户端与服务器端存在时间差，Expires并不是那么的靠谱，所以建议使用max-age</p>
+</blockquote>
+<h3 id="四、协商缓存"><a href="#四、协商缓存" class="headerlink" title="四、协商缓存"></a>四、协商缓存</h3><blockquote>
+<p>当浏览器强缓存过期后，就会触发协商缓存机制。这个时候需向服务器发送一个http请求，带上如下列表中的头部信息，如果符合规则（即服务器跟客户端资源一致），直接返回304,不再返回资源内容；否则，返回状态码200与资源内容；最后，更新缓存头信息。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>If-Modified-Since</td>
+<td>告诉服务器只要服务器在这个时间之后又对资源做了修改则发送该资源</td>
+</tr>
+<tr>
+<td>If-None-Match与ETag</td>
+<td>根据资源内容是否变更来判断是否继续使用本地缓存。第一次请求资源时，服务器在response头信息中设置ETag，当资源过期后再次向服务器请求时用<code>If-None-Match:ETag</code>去验证资源是否变更</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>从《HTTP权威指南》中截个图来说明If-None-Match与ETag如何使用的  </p>
+</blockquote>
+<img src="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/3.jpg" class="" title="If-None-Match与ETag">
+
+<p>&emsp;&emsp;当本地缓存过期后，客户端如何知到该使用上述哪种方式呢？其实，在客户端第一次请求资源时，服务器需要带上<code>Last-Modified</code>与<code>ETag</code>，然后缓存起来，当缓存失效重新进行新鲜度检查时，这两个头部就可以派上用场了。一般来说，<code>ETag</code>的优先级高于<code>Last-Modified</code>。</p>
+<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>&emsp;&emsp;上面分享了缓存的基础知识，在实际情景中，最理想的情况我们当然希望所有静态资源都使用强缓存，当第一次使用资源后，下一次就不再从源服务器取，而是直接从本地获取，这样一来就大大减轻了服务器的压力。But！如果这样的话，那当下一版本发布，用户如何拿到我的更新呢？</p>
+<p>&emsp;&emsp;这里已经有一个讲得<a href="https://www.zhihu.com/question/20790576" target="_bank">通熟易懂的轮子</a>了，我就不再重新造了。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/" data-id="cm5tqeetm000gwayp9y6kbfby" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-哈佛大学公开课《死亡》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/" class="article-date">
+  <time datetime="2016-08-17T15:41:25.000Z" itemprop="datePublished">2016-08-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/">哈佛大学公开课《死亡》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/1.png" class="" title="Professor">
+
+<p>下载地址：<a target="_blank" rel="noopener" href="http://data.movie.kankan.com/movie/65382">http://data.movie.kankan.com/movie/65382</a><br>目录：  </p>
+<img src="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/2.png" class="">
+
+<p>笔记：  </p>
+<ul>
+<li><p>1、二元论，首先身体（body）和灵魂（soul）有一定的互动，如果身体的死亡可以描述为b1-bn，那么伴随着b1-bn会不会也存在S1-Sn呢？即灵魂跟身体一起死亡。</p>
+</li>
+<li><p>2、当我们在电视机里看到曼哈顿的新闻，我们可能会认为我们就在曼哈顿，因为身体而戴上有色眼镜，那么soul是否也有可能在别处？</p>
+</li>
+<li><p>3、描述死亡，首先得对死亡下定义，给“存在”下定义，对于我是谁这个问题，就得首先找出对于我有哪些属性，去掉这些属性呢？</p>
+</li>
+<li><p>4、a smile是为了表述肉体具有微笑的能力，是对一系列事件的综合描述，并不是代表smile是存在的某一事物，那soul呢？</p>
+</li>
+<li><p>5、一元论认为，心灵并不代表大脑，而只是身体具有一系列属性的整体描述而已，就跟smile一样。</p>
+</li>
+<li><p>6、看不见的病毒造成我们生病，而不是魔鬼，这种属于“最佳解释”，b1-bn导致s1-sn呢？</p>
+</li>
+<li><p>7、二元论反驳认为，人会不会是上帝创造的机器人，是先注入soul，自由意识是否也属于上帝所划分的范围之内？</p>
+</li>
+<li><p>8、通过对象棋程序的拟人话，是否能说明任何存物理对象都不能真正又有信念和欲望呢？信念和欲望只是我们强加的一个词汇而已</p>
+</li>
+<li><p>9、free will 自由意志</p>
+</li>
+<li><p>推论：</p>
+<blockquote>
+<p>1.我们有自由意识<br>2.任何服从决定论的系统都没有自由意识<br>3.所有纯物理系统的准守决定论<br>4.我们不仅仅是纯物理系统</p>
+</blockquote>
+</li>
+<li><p>10、柏拉图认为，对于像数字加减这种，数字是不存在的，身体无法掌握，必然需要soul</p>
+</li>
+<li><p>推论：</p>
+<blockquote>
+<p>1.理念或者型向是永恒的 是非现实的<br>2.永恒和非现实的事物只能被永恒和非现实的事物所认知<br>3.能认知理念或型向的事物必须是永恒和非现实的<br>非物理的—not the body</p>
+</blockquote>
+</li>
+<li><p>11、苏格拉底的回忆论认为灵魂出现在我们之前，举个简单的例子，当看到一张相片，我们必须对相片上的人之前认识或熟悉才能认识这张相片，对于圆形之类的东西，肯定是我们的前世有所认知，才能够在现在能认知</p>
+</li>
+<li><p>12、越简单越无懈可击</p>
+</li>
+<li><p>柏拉图的推论：</p>
+<blockquote>
+<p>1.只有合成的事物才能被摧毁<br>2.只有会改变的事物才是合成的<br>3.无形的事物不会被改变<br>4.无形的事物不会被摧毁<br>5.灵魂是无形的<br>6.so 灵魂无法被摧毁<br>赛贝斯：以上论点并不能说明soul不朽，也有可能经过几世不断泯灭</p>
+</blockquote>
+</li>
+<li><p>研究哲学的经常在自己画的圈里找出口</p>
+</li>
+<li><p>13、灵魂理论，即使活下去也没多大意义.who cares？ so what ？ 那又怎样呢   重要的不是活下去，而是带着相同的人格活下去</p>
+</li>
+<li><p>14、 we are die alone.</p>
+</li>
+<li><p>15、当我们存在时，死亡还未降临，当死亡来临时，我们已不复存在</p>
+</li>
+<li><p>16、剥夺说从一个方面解释了我们害怕死亡的原因</p>
+</li>
+<li><p>17、对于不朽，没有任何生活对于一个人永远有吸引力</p>
+</li>
+<li><p>18、如果从死亡可以解除年老时带来的一些痛苦，那么死亡并不是一件坏事</p>
+</li>
+<li><p>19、如果你陷入永生的怪圈，那么你想过一种怎么样的生活？</p>
+</li>
+<li><p>20、正因为生活中包含无数的意外以及相对负面的东西才使生活充满了乐趣以及无限的可能，产生不同的人生体验，同时包含完美与不完美的世界才能称得上是完美的</p>
+</li>
+<li><p>21、“上帝制作了泥人，上帝烦了。所以上帝对一些泥人说，‘站起来。看我创造的一切。高山，大海，天空，星辰。’我就是那种坐起来环顾四周的泥人。幸福的我，幸福的泥人。我，一个泥人坐了起来，看见了上帝创造的奇迹。你太棒了，上帝！世界上只有您上帝才能做到这一切！我当然不能。和您相比，我感到自己十分渺小。一想到还有许多泥人未能做起来环顾四周，我便感到自己还有一点重要。我已经得到这么多，而大多数泥人却一无所获。谢谢您的垂顾！现在泥人又躺下睡了，泥人又多少值得回忆的事啊！我曾和多少有趣的坐起来的泥人见过面啊！我爱我看见过的一切。”</p>
+</li>
+</ul>
+<p>摘自 库尔特·冯内古特《猫的摇篮》</p>
+<blockquote>
+<p>“God made mud. God got lonesome. So God said to some of the mud, ‘Sit up.See all I’ve made,’ Said God. ‘The hills, the sea, the sky, the stars.’ And I, with some of the mud, had got to sit up and look around. Lucky me, lucky mud. I, mud, sat up and saw what a nice job God had done. Nice going God! Nobody but you could have done it God! I certainly couldn’t have. I feel very unimportant compared to You. The only way I can feel the least bit important is to think of all the mud that didn’t even get to sit up and look around. I got so much, and most mud got so little. Thank you for the honor! Now mud lies down again and goes to sleep. What memories for mud to have! What interesting other kinds of sitting-up mud I met! I loved everything i saw.”</p>
+</blockquote>
+<p>from Kurt Vonnegut &lt;Cat’s Cradle&gt;</p>
+<ul>
+<li>22、应当为成为坐起来的泥人而感到幸运</li>
+<li>23、我们对失去生命无能为力，唯一能做的是让它更有价值，让有限的人生更饱满</li>
+<li>24、在合理条件下，自杀也有其合理性</li>
+<li>25、我们只是这个世界的过客，we are on this earth for a while,and then we’re not anymore!</li>
+<li>26、There is no soul,we are just machines.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/" data-id="cm5tqeetl000cwayp8b70drc7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-真、善、美" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/16/%E7%9C%9F%E3%80%81%E5%96%84%E3%80%81%E7%BE%8E/" class="article-date">
+  <time datetime="2016-08-16T15:10:41.000Z" itemprop="datePublished">2016-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/16/%E7%9C%9F%E3%80%81%E5%96%84%E3%80%81%E7%BE%8E/">真、善、美</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;很小的时候从书本上就听说了这几个字，到真正理解这几个字的含义之前，姑且只能算作是认识而已，给我的感觉就是普普通通，平平凡凡，没有什么特别的含义。  </p>
+<p>&emsp;&emsp;谈到我对这几个字的理解，要从一本书开始，这本书叫做《晚霞消失的时候》，看完这本书后，可以说是对我影响很大，对野蛮与文明，对真善美的理解真的是重重的hit my heart！让我对这几个字有了深刻的认识，当我再次见到这几个字的时候脑中不再空洞无物。  </p>
+<p>&emsp;&emsp;用自己的话来讲，数学，万事万物不变的逻辑，一杯水、一个苹果，这些实实在在的东西，这是“真”；看到一幅画、一片风景、一株小花而生出的情愫、“我见青山多妩媚，料青山见我应如是”、听到一首歌而莫名的感动，这是“美”；如今我把知道的花时间写出来，助人为乐、舍己为人、这是“善”。读了这么多的书，发现所有的宗教，不管是佛教、基督教、道教都有一个共通的地方，那便是“善”。  </p>
+<p>&emsp;&emsp;这几个字在我眼中变得不再平凡后，我发现我自己也莫名其妙的有了一些变化。突然间有了一种向往真善美，追求真善美的劲儿，感觉这是一股能给我力量的劲儿，推动着我去感受真善美、接近真善美。  </p>
+<p>&emsp;&emsp;比如以前对字画书法不感冒，现在莫名喜欢上了字画书法所透露出来的那一股美感，逛历史古迹比以前多留意了一些碑刻、字画、书法、从一些对联中体会到文字的美；通过文字透露出来的美与真（哲理），从而感觉跟古人有了一次亲密接触，深深体会到老子、庄子、孔子为什么值得人崇拜，为什么大师称之为大师，这些人在我的脑子中也不再是仅仅一个名字那么简单，而是异常丰满，让人敬仰。对于宗教，让我意识到为什么要拜释迦摩尼，不是因为有所求，而是因为深深的敬仰、佩服！<del>被他的思想深深的折服那种佩服、感动、感激！</del>对于音乐而言，经常听着听着好像走进了创作者的内心世界，跟着创作者一起喜怒哀乐，这种感觉真是妙不可言，一个不注意就会让人泪流满面。理解了在《久石让在武道馆》中，演奏完一曲，久石让转过身向观众鞠躬，抬起头来一脸笑容，让人不解的是一脸笑容的同时居然满眼泪水，我想，他的眼泪应当是沉浸在音乐中被音乐之美而感动所留下来的眼泪，怪不得久石让的音乐那么好听，原来他跟上帝有过亲密接触! 终于也理解了什么叫做“感动得哭了”，什么叫做“喜极而泣”，理解了“念天地之悠悠，独怆然而涕下”的真正意境，理解了佛学中“空”，道家中的“道”的真正含义。  </p>
+<p>&emsp;&emsp;总结起来就这么一句话，追求真的，是科学，追求美的，是艺术，追求善的，这就是宗教。  </p>
+<p>&emsp;&emsp;不管是谁，都有一颗追求真善美的心，只有对真善美的追求与感受才能使人的精神不再空虚与空洞，感谢上帝让世间存在“真善美”！没有它们，我想人类的精神世界将会是一片荒芜！  </p>
+<p>&emsp;&emsp;把这些文字写下来，希望看到它的人能够因此而能够蜕变，这也算是功德一件吧，”善”哉！~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/16/%E7%9C%9F%E3%80%81%E5%96%84%E3%80%81%E7%BE%8E/" data-id="cm5tqeetk000awaypg7548ior" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-《失控》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/16/%E3%80%8A%E5%A4%B1%E6%8E%A7%E3%80%8B/" class="article-date">
+  <time datetime="2016-08-15T16:19:35.000Z" itemprop="datePublished">2016-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/16/%E3%80%8A%E5%A4%B1%E6%8E%A7%E3%80%8B/">《失控》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这本书因为种种原因断断续续读了一年才读完，把整本书中觉得有价值的东西以及读书过程中记录的笔记整理出来也花了不少时间，不想去看砖头的可以通过下文了解到整本书到底讲了些什么。对于书中的各种脑洞，欢迎探讨。</p>
+</blockquote>
+<h3 id="第一章-人造与天生"><a href="#第一章-人造与天生" class="headerlink" title="第一章 人造与天生"></a>第一章 人造与天生</h3><p>　　 1.1 新生物文明<br>　　 1.2 生物逻辑的胜利<br>　　 1.3 学会向我们的创造物低头<br>Notes and Thinking：  </p>
+<ol>
+<li>自然不仅仅是一个储量丰富的生物基因库，还是一个“文化基因库”</li>
+<li>文化基因（meme）：也称弥母，文化传播的最小单位，通过模仿等非遗传途径而得以代代相传。</li>
+<li><code>相对于机械系统，生物系统更具优势，从生物系统角度看，Person just a machine.</code></li>
+<li>我们的未来是技术性的，但这并不意味着未来的世界一定会是灰色冰冷的钢铁世界。相反，我们的技术所引导的未来，朝向的正是一种新生物文明。</li>
+<li>在将生命的力量释放到我们所创造的机器中的同时，我们就丧失了对他们的控制。他们获得了野性，并因野性而获得一些意外和惊喜。之后，就是所有造物主都必须面对的两难窘境：他们将不再完全拥有自己最得意的创造物。</li>
+</ol>
+<h3 id="第二章-蜂群思维"><a href="#第二章-蜂群思维" class="headerlink" title="第二章 蜂群思维"></a>第二章 蜂群思维</h3><p>　　 2.1 蜜蜂之道：分布式管理<br>　　 2.2 群氓的集体智慧<br>　　 2.3 非匀质的看不见的手<br>　　 2.4 认知行为的分散记忆<br>　　 2.5 从量变到质变<br>　　 2.6 群集的利与弊<br>　　 2.7 网络是二十一世纪的图标<br>Notes and Thinking：  </p>
+<ol>
+<li>蜂群是彻底的母权制，蜜蜂群体分为蜂后，少量雄蜂，大量工蜂。工蜂最可怜，出生时蜂王浆吃得少（如果连吃5天蜂王浆则会发育为蜂后，即每只工蜂都有机会成为蜂后），羽翼未丰时照管和饲养幼虫，能分泌蜂胶时筑巢，没办法分泌蜂胶后就白天采蜜、晚上酿蜜，直至死亡，平均生命时间为45天。当蜜蜂蜇人后，由于毒针跟内脏相连，所以自己也会死亡，完全是以命相搏！</li>
+<li>群氓可以涌现出集体智慧，<code>人的思维、智慧也有可能是集体涌现的结果</code></li>
+<li>“蜂群思维”的神奇在于，没有一只蜜蜂在控制它，但是有一只看不见的手，一只从大量愚钝的成员中涌现出来的手，控制着整个群体。</li>
+<li>动听的音乐从和弦中涌现出来，波浪也是一种涌现</li>
+<li><code>汽车由很多零件组成，人也一样，“人”跟“汽车”其实都是一个组成体的简称，同理，“我”也一样。</code></li>
+<li><code>“上帝”可以理解为一只无形的看不见的自然之手，道家之谓“道”，佛家之谓“不可说”。</code></li>
+<li><code>我是谁？我从哪里来？要到哪里去？迎刃而解</code></li>
+<li><code>当重现某一段经历时，实际上是重新进行了组合，且每次回忆起来都会重新进行组合。每次组合即印象加深，并留存下来，重组得越少，则不被保存下来的几率越大。</code></li>
+<li>我们的意识正是通过许许多多散布在记忆中的线索创造了现在。</li>
+<li><code>强调重要的东西，忽略不重要的东西，这种选择过程实际上就是感知。</code></li>
+<li>稀疏分布记忆</li>
+<li>漩涡是一种涌现的事物——如同群一样，它的能量及结构蕴涵于群体而非单个水分子的能量和特性之中。不论你多么确切地了解H2O（水的分子式）的化学特征，它都不会告诉你任何有关漩涡的特征。</li>
+<li>群聚的个体孕育出必要的复杂性，足以产生涌现的事物。随着成员数目的增加，两个或更多成员之间可能的相互作用呈指数级增长。当连接度高且成员数目大时，就产生了群体行为的动态特性。——量变引起质变。</li>
+<li>网络在哪里出现，哪里就会出现对抗人类控制的反叛者。</li>
+<li>网络不断孕育着小的故障，以此来避免大故障的频繁发生。正是其容纳错误而非杜绝错误的能力，使分布式存在成为学习、适应和进化的沃土。</li>
+<li>由真正多元化的部件所组成的群体只有在网络中才能相安无事。其它结构——链状、金字塔状、树状、圆形、星形——都无法包容真正的多元化、以一个整体的形式运行。这就是为什么网络差不多与民主和市场意义等同的原因。</li>
+<li>为已经拥堵的网络增加线路只会使其运行速度更慢，称其为布拉斯悖论。</li>
+<li>群体的利：可适应、可进化、弹性、无限性、新颖性；缺陷：非最优、不可控、不可预测、不可知、非即刻；</li>
+</ol>
+<h3 id="第三章-有心智的机器"><a href="#第三章-有心智的机器" class="headerlink" title="第三章 有心智的机器"></a>第三章 有心智的机器</h3><p>　　 3.1 取悦有身体的机器<br>　　 3.2 快速、廉价、失控<br>　　 3.3 众愚成智<br>　　 3.4 嵌套层级的优点<br>　　 3.5 利用现实世界的反馈实现交流<br>　　 3.6 无躯体则无意识<br>　　 3.7 心智/躯体的黑盲性精神错乱<br>Notes and Thinking：  </p>
+<ol>
+<li>任何机器人只要能够做到独立行走和独立生存，就会更上层楼。</li>
+<li>一直以来主流的机器人研发、人造生物、人工智能走的都是中枢指挥的套路</li>
+<li>意识的各种功能，比如思考，都来自不司职思考的部分。爬虫似的移动机器人所具有的半意识，就是动物和人类意识的极好样本。意思也是一个组合体的概念</li>
+<li>即使给定一个起点，其结果也并非命中注定。没有可重复的结局，有的只是随机而生的结果。某个特定念头的涌现，都需要借助一点点运气。</li>
+<li>”我“是我们内心世界的一个笼统外延，我们以此来区分自己和他人。一旦”我“失去了”我“，就会忙不迭地创设一个”我“。明斯基说，我们正是这么做的。世上本无”我“，庸人自设之。它就如同亿万个水分子汇成的瞬间的漩涡，指尖轻轻一碰，便即销饵无形。然而须臾之际，那些分布在低层的乌合之众又搅起了漩涡。这个漩涡是新象，抑或是旧影？你有过濒死体验吗？是感觉浴火重生呢，还是历经沧桑？如果本书的章节打乱次序，还会是原来这本书吗？想想吧，想到白头愁未解，你就明白什么是分布式系统了。</li>
+<li>自上而下的控制就如同将乘积分解成因子一样困难，而用因子来得乘积则非常容易。</li>
+<li>底层的活动较快，上层的活动较慢</li>
+<li>利用现实世界的反馈实现交流——-程序中的监听和回调</li>
+<li><code>意识从愚笨的身体中生长出来，思考即行动，行动即思考</code></li>
+<li>到了1968年，脑死亡已经成为判断临床死亡的依据。无意识则无生命。</li>
+<li>黑盲性精神错乱—–   一些人在极度无聊的时候会出现诡异的幻觉</li>
+<li>自然进化强调我们是猿类；而人工进化则强调我们是有心智的机器。</li>
+</ol>
+<h3 id="第四章-组装复杂性"><a href="#第四章-组装复杂性" class="headerlink" title="第四章 组装复杂性"></a>第四章 组装复杂性</h3><p>　　 4.1 生物——机器的未来<br>　　 4.2 用火和软体种子恢复草原<br>　　 4.3 通往稳定生态系统的随机路线<br>　　 4.4 如何同时做好一切<br>　　 4.5 艰巨的“拼蛋壳”任务<br>Notes and Thinking：  </p>
+<ol>
+<li>火使草原有效地运转。它使那些需要浴火重生的种子得以发芽，将那些入侵的树苗一笔抹去，让那些经不起考验的“城里人”望而却步。</li>
+<li>浴火重生的种子：某些硬壳类植物种子，非火烧去外壳不能发芽。比如澳洲桉树的种子有厚厚的木质外壳，借助大火把它的木质外壳烤裂，便于生根发芽。因此桉树林就像凤凰，大火过后不仅能获得新生，而且会长得更好。</li>
+<li>借助拇指的抓握，灵巧的手使人类的智能更进一步，具备了制造工具的能力。但是一旦智能建立，手就没那么重要了。</li>
+<li>只要所有的碎片都还存在，我们就能将其还原。只是，不知道我们能否还能得到所有的碎片。也许陪伴生态系统早期发展的某些物种——正如助推智能发展的拇指——在附近已不复存在了</li>
+</ol>
+<h3 id="第五章：共同进化"><a href="#第五章：共同进化" class="headerlink" title="第五章：共同进化"></a>第五章：共同进化</h3><p>　　 5.1 放在镜子上的变色龙是什么颜色的？<br>　　 5.2 生命之无法理喻之处<br>　　 5.3. 在持久的摇摇欲坠状态中保持平衡<br>　　 5.4. 岩石乃节奏缓慢的生命<br>　　 5.5. 不讲交情或无远见的合作<br>Notes and Thinking：  </p>
+<ol>
+<li><code>每个消费者都将成为反射镜像与反射体，既是因，也是果。</code></li>
+<li>而蜥蜴-镜子系统展示的是一种完全不同的逻辑——一种网状的因果循环。相对于佛家的因果循环，此种循环在社会中更合理。</li>
+<li>物质世界中，一件事对另一件事的影响随两者之间的时间或空间距离的增大而衰减。</li>
+<li>事物的推演不像箭那样直线行进，而是像风一样四散开来。</li>
+<li>为了防止蝴蝶幼虫完全吞噬自己的茎叶，马利筋步步设防，迫使黑脉金斑蝶“改变颜色”－－想法子绕过植物的防线。这种相互投映仿佛两条贴着肚皮跳舞的变色龙。马利筋如此投入地进行自我保护，以抗拒黑脉金斑蝶的侵袭，结果反而变得与蝴蝶难舍难分。反之亦然。任何长期敌对的关系似乎都包容这样的相互依存。1952年，关注机器如何学习的控制论专家罗斯?艾希比写道：“［生物的基因模式］并没有具体规定小猫如何抓老鼠，但是提供了学习机制和游戏的旨趣，因此是老鼠将捕鼠的要领教给了小猫。”</li>
+<li>二战之后的核军备竞赛让我们同样有种愚蠢地追赶自我倒影的感觉。</li>
+<li>物种的进化与其所处环境的演变密不可分</li>
+<li>任何有生命的星球，都会展现奇特的不稳定的化学性质。有益生命的大气层不一定富含氧气，但应该突破规范的平衡。那只看不见的手就是共同进化的生命。</li>
+<li>大气层像一个高空悬索上摇摇摆摆的杂技演员，而且几百万年来一直保持着那个欲跌还休的姿势。她永不坠落，也永远摆脱不了坠落的趋势，始终处于摇摇欲坠的状态。</li>
+<li>进化的不只是生物或物种，而是物种加环境的整个系统。没有生命，地球的脸面就会失去表情，变得像月球般木然。生命是最具威力的地质力量</li>
+<li><code>引入少许的随机因素（如差错、缺陷）反而能够在共同进化的世界里缔造出长久的稳定</code></li>
+<li>人们常用零和游戏的观点看世界，其实他们本不该这样。他们常说：“我比别人做得好，所以我就该发达。”而在非零和游戏里，尽管你比别人做得好，你也可能和他一样潦倒</li>
+</ol>
+<h3 id="第六章-自然之流变"><a href="#第六章-自然之流变" class="headerlink" title="第六章 自然之流变"></a>第六章 自然之流变</h3><p>　　 6.1 均衡即死亡<br>　　 6.2 谁先出现，稳定性还是多样性？<br>　　 6.3 生态系统：超有机体，抑或是身份作坊？<br>　　 6.4 变化的起源<br>　　 6.5 生生不息的生命<br>　　 6.6 负熵<br>　　 6.7 第四个间断：生成之环<br>Notes and Thinking：  </p>
+<ol>
+<li>这些“小联邦”之间保持着动态的平衡，它们相互间自我维持的姿态持续保持着将跌未跌的状态，就像春天溪流中的驻波。</li>
+<li>振动频率、振幅和传播速度相同而传播方向相反的两列波叠加时，就产生驻波。</li>
+<li>生态学家偏爱自然界中的各种均衡状态，其主要原因和经济学家偏爱经济中的各种均衡状态相同：均衡态可以用数学模型来表达，你可以为一个过程写出你能够求解的方程。但如果你说这个系统永远处于非均衡状态，你就是在说它的模型是无法求解的，也就无从探究。那就相当于你几乎什么都没说。</li>
+<li>不稳定的自然力量是多样性产生的根源</li>
+<li>与简单的系统相比，复杂的系统更有可能不稳定</li>
+<li>当食物链越长，环境破坏带来的影响就会使得互相作用的食物链网越不稳定</li>
+<li>由许多成员组成的系统成员彼此之间的联系会很弱，而成员很少的系统其成员彼此间的联系会很紧密</li>
+<li>连接性守恒：意指由连接数量和连接强度组成的某种形式的合量保持不变，即连接数量增加时，强度降低；反之亦然。</li>
+<li>群落演替的最终阶段是顶级群落</li>
+<li>若依普通的物理度量，无论是质量还是能量，松鸡在一英亩的土地生态系统中仅是沧海一粟。但是若从系统里拿走松鸡，整个系统也就停转了</li>
+<li>生态系统更应是身份作坊</li>
+<li>身份作坊：进化到某处，自然而然地涌现出来的，因而是漫无目的的、作坊式的、细敲碎打的。</li>
+<li>从控制论的角度看，象蝌蚪这样的有机体和淡水沼泽这样的生态系统之间控制方式的不同在于，单个有机体受到严格紧密的束缚，而生态系统则宽松自由，不受束缚</li>
+<li>想要得到和生命真正类似的行为，不是设法创造出真正复杂的生物，而是给简单的生物提供一个极其丰饶的变异环境</li>
+<li><code>每个人的出生情况都大致相同，每一例死亡却不相同</code></li>
+<li>活系统的复杂性越高，里面栖息的生命力就可能越多</li>
+<li>热寂和熵减的关系：本书作者在2008年的一次访谈中说道：“人们都说，没有什么能逃脱冷酷的热力学第二定律，宇宙的最后归宿是一片热死寂。但这不是故事的全部，宇宙在沉寂的同时，也在热闹起来，从旧物中带来新生、增加复杂性的新层次。宇宙充满了无尽的创造力。熵和进化，两者就象两支时间之矢，一头在拖拽着我们退入无穷的黑暗，一头在拉扯着我们走向永恒的光明。”</li>
+<li>最大化扩张的属性是活物与生俱来的，就如同热从温度较高的物体传到温度较低的物体，可溶性物质溶入溶剂，以及气体扩散到空间。</li>
+<li>假如我们这个物种不走在前头，别的物种就会带头，也许已经走在前头了。假如我们这个物种灭绝，其它物种会更聪明更幸运。</li>
+<li>哥白尼排除了地球和物理宇宙其他部分之间的间断。接着，达尔文排除了人类和有机世界其他部分之间的间断，最后，弗洛伊德排除了自我的理性世界和无意识的非理性世界之间的间断。但是正如历史学家和心理学家布鲁斯?马兹利士所指出的，我们依然面对着第四个间断，人类和机器之间的间断。</li>
+<li>我们正在跨越这第四个间断。我们不必在生物或机械间选择了，因为区别不再有意义。确实，这个即将到来的世纪里最有意义的发现一定是对即将融为一体的技术和生命的赞美、探索与开发利用。</li>
+</ol>
+<h3 id="第七章-控制的兴起"><a href="#第七章-控制的兴起" class="headerlink" title="第七章 控制的兴起"></a>第七章 控制的兴起</h3><p>　　 7.1 古希腊的第一个人工自我<br>　　 7.2 机械自我的成熟<br>　　 7.3 抽水马桶：套套逻辑的原型<br>　　 7.4 自我能动派<br>Notes and Thinking：  </p>
+<ol>
+<li>机械控制、人类可控制，电路自动化。由蒸汽机所引发的能量控制是第一阶段。而对物质的精确控制，就是控制体制的第二阶段。控制革命的第三阶段，是对信息本身的控制。</li>
+<li>反馈回路，A引发B，B引发C，C又引发A。以一种直白的悖论形式来说：A既是原因，又是结果。</li>
+<li><code>3种语言互编译，组成圈，完美的语言。道生一，一生二，二生三，三生万物。</code></li>
+<li><code>三方机构、民主、活系统</code></li>
+<li><code>如果有什么东西既是因又是果的话，那么所谓的理性，岂非对任何人来说都是唾手可得之物？</code></li>
+<li>自我从何而来？控制论给出了这样让人摸不着头脑的答案：它是从它自己那里涌现出来的。而且没有别的法子。</li>
+<li><code>我是谁？我就是我！</code></li>
+<li>衔尾蛇是人类灵魂在永恒概念上的最经典的投影之一。</li>
+<li>一个活系统就是一个“缓慢地进行自我复原的同义反复。”</li>
+<li>自动化的历史，就是一条从人类控制到自动控制的单向通道。其结果就是从人类的自我到第二类自我的不可逆转的转移。而这些第二类自我是在我们控制之外的，是失控的。</li>
+<li>要想获得有智能的控制，唯一的办法就是给机器自由。</li>
+</ol>
+<h3 id="第八章-封闭系统"><a href="#第八章-封闭系统" class="headerlink" title="第八章 封闭系统"></a>第八章 封闭系统</h3><p>　　 8.1 密封的瓶装生命<br>　　 8.2 邮购盖亚<br>　　 8.3 人与绿藻息息相关<br>　　 8.4 巨大的生态技术玻璃球<br>　　 8.5 在持久的混沌中进行的实验<br>　　 8.6 另外一种合成生态系统<br>Notes and Thinking：  </p>
+<ol>
+<li>地球在物质上是一个封闭系统。而另一方面，从能量/信息的角度来看，地球又是开放的：阳光照射着地球，信息则来来去去。</li>
+<li>无论能够生存多长时间，这些瓶装系统都需要一个启动阶段，一个大概会持续60到100天的波动危险期，在此期间任何意外都可能发生。复杂性的开端植根于混沌之中。不过，如果复杂系统能够在一段时间的互相迁就之后获得共同的平衡，那么之后就再没有什么能够让它脱离轨道了。</li>
+<li><code>地球的启动阶段如何来？</code></li>
+<li>那些引起我们注意的生物，那些需要我们照料的生物，就环境而言，可能仅仅是一些点缀性的、装饰性的东西。正是哺乳动物肠道中的微生物，还有黏附在树根上的微生物，使树木和哺乳动物在包括地球在内的封闭系统中有了价值。</li>
+<li>生态球</li>
+<li>生态球越大，达到稳定所需时间就越长，破坏它也就越困难。</li>
+<li>一个完美的生态球，就是一个完善的自循环系统，可以称之为一个新的世界。</li>
+<li><code>多样性保证了稳定性</code></li>
+<li>设计一个生态群系，实际上是一个像上帝一样去思考的机会</li>
+<li>作为一个上帝，能够从无中生出某种有来。你可以创造出某些东西——某些奇妙的、合成的、活生生的生态系统——但是对于其中到底会进化出什么，你是控制不了的。</li>
+<li>生物圈二号的结局：在经过两年半的实验后，生物圈二号宣告其长期维持八个人生存的努力失败。原因主要有化学元素循环平衡失调、物种关系失调、水循环失调、食物短缺等。2005年该工程被出售，现在已用于观光和社区建设。</li>
+</ol>
+<h3 id="第九章-“冒出”的生态圈"><a href="#第九章-“冒出”的生态圈" class="headerlink" title="第九章 “冒出”的生态圈"></a>第九章 “冒出”的生态圈</h3><p>　　 9.1 一亿美元玻璃方舟的副驾驶<br>　　 9.2 城市野草<br>　　 9.3 有意的季节调配<br>　　 9.4 生命科学的回旋加速器<br>　　 9.5 终极技术<br>Notes and Thinking：  </p>
+<ol>
+<li>生物圈二号是一个试验工作台，用来揭示环境如何统治浸入其中的生物，以及生物如何反过来支配环境。大气是极为重要的环境因素，大气产生生命，而生命也产生大气。结果表明，生物圈二号这个透明的玻璃容器是观察大气和生命交互作用的理想场所。</li>
+<li>大气中的二氧化碳含量每天都呈周期性变化</li>
+<li>生物圈二号的管理机构SBV寄望于从该项目中剥离出一种潜在的盈利技术——精密的环境监控技术</li>
+<li>生物圈二号是生命科学的回旋加速器</li>
+<li>表面上为人类搭建的生物圈，实际上代表的是行星尺度内的生物系统的复制……</li>
+<li>如果我们真想在太空中过人类一样的生活，那么我们就必须学会如何建立生态圈</li>
+<li>生命就是技术。生命是终极技术。机器技术只不过是生命技术的临时替代品而已。</li>
+<li>总有一天，机器和生物间的差别会很难区分</li>
+</ol>
+<h3 id="第十章-工业生态学"><a href="#第十章-工业生态学" class="headerlink" title="第十章 工业生态学"></a>第十章 工业生态学</h3><p>　　 10.1 全天候、全方位的接入<br>　　 10.2 看不见的智能<br>　　 10.3 咬人的房间与不咬人的房间<br>　　 10.4 规划一个共同体<br>　　 10.5 闭环制造<br>　　 10.5 适应的技术<br>Notes and Thinking：  </p>
+<ol>
+<li><code>接口化、数据总线</code></li>
+<li>音量往往要么过大，要么过小；大家都像投票似地使用自己口袋里的控制器。声音最终定格在一个平均值上</li>
+<li>虚拟现实的出发点是将自己置身于电脑世界，与之相反的，你将被电脑的智慧所包围</li>
+<li><code>当人们处在电脑智能环境中时，权限如何设计？隐私如何保障？</code></li>
+<li>机器不能完全依靠自己而发展，但它们会变得更能意识到其它机器的存在</li>
+<li>在共同体的海量数据中，单一数据是没有任何作用的，但是可以进行大数据分析，比如结果分析后的推荐引擎</li>
+<li>闭环制造：一道工序的排出物…..成为下一道工序的原料，尽量做到无废弃制造，制造的成品可回收</li>
+<li>工业生态：将自然环境的模式作为解决环境问题的模板</li>
+<li>在拉动式系统中，由客户订单拉动生产，再拉动原料和配件采购，从而实现零库存</li>
+<li>其实从燃料中获 得的真正能量并不是来自碳氢化合物中的碳， 而是它的氢</li>
+<li>下个世纪中引领 风骚的并非大家所鼓吹的硅，而是生物：老 鼠，病毒，基因，生态学，进化，生命。</li>
+<li>下个纪元的特色是新生物学而不是仿生学</li>
+<li>生物学是一个必然——近 于数学的必然——所有复杂性归向的必然。它 是一个欧米茄点</li>
+</ol>
+<h3 id="第十一章-网络经济学"><a href="#第十一章-网络经济学" class="headerlink" title="第十一章 网络经济学"></a>第十一章 网络经济学</h3><p>　　 11.1 脱离实体<br>　　 11.2 以联结取代计算<br>　　 11.3 信息工厂<br>　　 11.4 与错误打交道<br>　　 11.5 联通所有的一切<br>Notes and Thinking：  </p>
+<ol>
+<li>《黑客帝国》电影中的matrix就是一个赛博空间 的极端形式，人类自从出生便被接入（jiack-in），醉 生梦死在这个虚拟空间内而不能自拔。</li>
+<li><code>决定当季流行色的就不再 是时尚专家，而是那些收款机</code></li>
+<li>用很短的时间先设计出一个样式，然后少量地生产和投放，再根据反馈快速地进行修改，一旦成功则迅速增加 产量</li>
+<li>通过网络，以及计算机的智能分析，用户反馈就会 直接影响到生产线上应该生产什么东西、以及 如何生产这些东西</li>
+<li>一个纯粹 网络化的公司，应该具有以下几个特点：分布 式、去中心化、协作以及可适应性。</li>
+<li>通过分包实现去中心化的做 法，被称为“外包”。网络使得外 包成为一个具备可行性、可盈利性、且具有竞 争力的选择</li>
+<li>生产带有主动微 型芯片而不是被动条形码的小东西，就意味着 在一家有数以千计的货架的折扣店里，每个货 架上都摆放着数百个智力迟钝的小东西</li>
+<li>一 个产品还可以记住你是否在看了一眼标价后就 走开了——这可是店主和制造商很感兴趣的信息。无论如何，广告商可以吹嘘说：至少你抬眼看了。这就迸发出完全不同的经济形态。</li>
+<li>计算机软件、分布式网络以及绝大多数的 活系统都是非连续的系统。对于非连续性系统不能通过抽样的方式来对系统进行测试</li>
+<li>对于开发工具，普通的防错设计为“语法检查”，顶尖的研发工具可以对程序的逻辑进行分析和评价</li>
+<li>你可以去生产零缺陷的产品。但问题在于你是否能够以一种有利可图的方式来生产它？这种经济的本质就是bug是无法杜绝的。</li>
+<li>结盟、伙伴 关系、协作——哪怕是暂时的甚至是矛盾的 ——成为行业根本和规范。</li>
+<li>批量化的制造、共同进化的消费者、以知识为基础、收益递增、隐性经济、数字货币</li>
+<li>产品随着消费者的不断使用而得到不断的改进和进化，一 家公司如果不能教育和培训消费者，也就无法从消费者那里学习。</li>
+<li>从网络文化中还会涌现出一种全球意识</li>
+<li>我们人类将无从得知这种全球意识在想什么。这并不是因为我们不够聪明，而是因为意 识本身就不允许其部分能够理解整体</li>
+<li>网络经济所哺育的将是一种新的灵魂</li>
+<li>要理解由网络文化形成的全球意识，最主要的困难在于，它没有一个中心的 “我” 可以让我们去诉求</li>
+</ol>
+<h3 id="第十二章-电子货币"><a href="#第十二章-电子货币" class="headerlink" title="第十二章 电子货币"></a>第十二章 电子货币</h3><p>　　 12.1 密码无政府状态：加密永胜<br>　　 12.2 传真机效应和收益递增定律<br>　　 12.3 超级传播<br>　　 12.4 带电荷的东西就可用于电子货币充值<br>　　 12.5 点对点金融与超级小钱<br>　　 12.6 对隐密经济的恐惧<br>Notes and Thinking：  </p>
+<ol>
+<li>在网络中要阻止信息的越界流动是一件毫无希望的事情</li>
+<li>密码无政府状态：加密，数字货币，匿名网络，数字假名，零知识，信誉，信息市场，黑市，政府倒台</li>
+<li>当游戏参与者不是只进行一次博弈，而是在同一局面下反复博弈时，收益会有所变化；在反复博弈所形成的关系中，信誉至关重要。</li>
+<li>经济活动是驱动社会前进的一种力量。加密技术加剧了失控状态。</li>
+<li>加密技术是经济学。加密始终是可能的，就是很贵</li>
+<li>网络经济奖励那些“较多者”，而不是那些“较少者”——你可以通过免费传播这些工具而从一开始就为这个“较多者”播撒下种子。</li>
+<li>在所有的东西都相互联结在一起的世界，联结、信息还有知识都非常便宜，贵重的反而是那些隔离、反信息和零知识</li>
+<li>加密系统及其同类都是隔离的技术。它们在某种程度上令网络那种无差别的联结和发送信息的固有倾向得到抑制。</li>
+<li>观念或弥母（即文化基因）在人群中的传播与基因在种群中的传播非常相似。基因和“文化基因”都依赖于一个由复制机器组成的网络——细胞、大脑或者电脑终端。</li>
+<li>如果收费机制是以监控计算机里面软件的使用为基础的话，那么卖主们就可以完全省去版权保护了。</li>
+</ol>
+<h3 id="第十三章-上帝的游戏"><a href="#第十三章-上帝的游戏" class="headerlink" title="第十三章 上帝的游戏"></a>第十三章 上帝的游戏</h3><p>　　 13.1 电子神格<br>　　 13.2 有交互界面的理论<br>　　 13.3 “神”临其境<br>　　 13.4 拟像的传送<br>　　 13.5 数字之战<br>　　 13.6 无缝分布的军队<br>　　 13.7 一个万千碎片的超真实<br>　　 13.8 两厢情愿的文字超级有机体<br>　　 13.9 放手则赢<br>Notes and Thinking：  </p>
+<ol>
+<li>这种超现实性被一再强调，最终《华尔街日报》用“电子迷幻药”这个大标题来形容虚拟现实。</li>
+<li>帝国的地图绘制师们绘制了一幅极其详尽的地图，与帝国的领地分毫不差。但随之帝国的衰败也见证着这幅地图逐渐变得破损，最后完全毁掉，只剩下几缕残丝在沙漠中依稀可辨……</li>
+<li><code>not perfect；满招损，谦受益；</code></li>
+<li>“由观众驾驭”的电视传输方法。媒体实验室的一个主要研究目标就是允许消费者对信息的呈现进行个性化</li>
+<li>模型而非内容的传输，内容是接受者从模型中演绎出来的东西。（<code>视频传输先缓存模型，再传输基于模型产生的实时数据</code>）</li>
+<li>五角大楼要求所有军官趁着美国尚能控制这块地盘并且对于战斗的记忆仍未消退时，重新回到“东距73战役”的战场上。军方准备重建起整个战役的三维仿真实现，以便未来军校的任何学员都可以进入并从头经历那场战斗。“一本活的历史书”，他们如此称它。一个战争的拟像。</li>
+<li>如果没有提出“如果”的能力，这个“东距73战役”的仿真就只不过是一个非常昂贵的引人入胜的纪录片而已</li>
+<li>《安德的游戏》（<code>游戏和真实之间还是有很大区别的，在不知情的真实游戏中可避免人的一系列感情影响，让人更理性，从而做出更有益的决定</code>）</li>
+<li>所谓真实，首先指的是共同进化的动力，其次才是什么六百万像素。</li>
+<li>网络游戏中游戏玩家共同进化，联系越紧密，真实感越强，越容易沉迷其中</li>
+<li>诺斯洛普公司的“仿真优先”方法则把重新设计的部件比例降到了3%。（<code>利用计算机仿真模型，节省了建造实际模型的成本</code>）</li>
+<li>分布式智能是未来的趋势。（<code>面相接口，每台主机提供独立服务，由多个人碎片组成一个完整的整体</code>）</li>
+<li>你所需要的只不过是一个多用户的聚会地点。一个可以让大家在线上群集的地方。（<code>现实世界中能聚集人气的活动同样能搬到网上</code>）</li>
+<li>真实生活和虚拟生活之间模糊不清的界限，正是“泥巴”吸引人的主要地方之一，尤其对那些正纠结于自我认同的青少年来说更是如此。（<code>沉迷的关键点</code>）</li>
+<li>这种融合在某个点上就会诞生出终极版的上帝游戏。在我的想象中，这是一个广阔的世界，遵从几条精心选择过的规则而运动。居于其间的是无数自治的活物，以及其他人类玩家的拟像。随着时间的推移，角色们一个个登场，彼此交织缠绵在一起。</li>
+<li>自由意志和创造性带来一个开放而无限制的世界。任何事情都可以想象，任何事情都可能实现。这就意味着，人这种东西，既可能创造令人痛恨之物，又可能创造为人所爱之事。</li>
+<li>要想成为上帝——至少是有创造性的上帝——你就必须放弃控制，拥抱不确定性。绝对的控制也就是绝对的无趣。要想诞生出新的、出乎意料的、真正不同的东西——也就是真正让自己惊讶的东西——你就必须放弃自己主宰一切的王位，让位于那些底层的群氓。</li>
+</ol>
+<h3 id="第十四章-在形式的图书馆中"><a href="#第十四章-在形式的图书馆中" class="headerlink" title="第十四章 在形式的图书馆中"></a>第十四章 在形式的图书馆中</h3><p>　　 14.1 “大千”图书馆之旅<br>　　 14.2 一切可能图像之空间<br>　　 14.3 倘佯在生物形态王国<br>　　 14.4 御变异体而行<br>　　 14.5 形式库中也有性<br>　　 14.6 三步轻松繁育艺术杰作<br>　　 14.7 穿越随机性<br>Notes and Thinking：  </p>
+<ol>
+<li>所有的书，不管它们如何千差万别，都是由相同的要素构成的：空格，句号，逗号，字母表上的二十二个字母。</li>
+<li>当下往往不为我们所见。（注：<code>我们往往回忆过去，寄希望于将来</code>）</li>
+<li>人工进化 （<code>不断选优，在选优的基础上迭代，循环往复</code>）</li>
+<li>每段文本都沉睡在这座虚拟图书馆的某个虚拟书架上的指定位置上。当被选中时，神奇的硅芯片就给这本书的虚拟本体注入了形式  （<code>注入形式即赋予意义，创造出实体，好比由木头组成的东西我们赋予桌子、椅子的名称</code>）</li>
+<li>进化的创造力是无穷的。它能够超过人类的设计能力</li>
+<li>生物的胚胎发育限制了它们变异的可能性</li>
+<li>限定在一个更有意思的方向上，你就更有可能碰到有意义的东西。</li>
+</ol>
+<h3 id="第十五章-人工进化"><a href="#第十五章-人工进化" class="headerlink" title="第十五章 人工进化"></a>第十五章 人工进化</h3><p>　　 15.1 汤姆•雷的电进化机<br>　　 15.2 你力所不逮的，进化能行<br>　　 15.3 并行实施的盲目行为<br>　　 15.4 计算中的军备竞赛<br>　　 15.5 驾驭野性的进化<br>　　 15.6 进化聪明分子的愚钝科学家<br>　　 15.7 死亡是最好的老师<br>　　 15.8 蚂蚁的算法天赋<br>　　 15.9 工程霸权的终结<br>Notes and Thinking：  </p>
+<ol>
+<li>“我们知道，只有两种方法能制造出结构极其复杂的东西，”希利斯说，“一个是依靠工程学，另一个是通过进化。（注：<code>通过进化更省力</code>）</li>
+<li>寄生虫式的军备竞赛也许很丑陋，但它们大大加快了进化的速度。（注：<code>要想创造出真正的人工智能，这种方法值得一试</code>）</li>
+<li>这种被称为“合理化药物设计”的逻辑方法，实际上已经撞上了工程方法所能处理的复杂性的极限。（注：<code>进化系统，优胜劣汰来解决</code>）</li>
+<li>这种有缺陷、无能力的替代品就是所谓的疫苗。因而，疫苗也可以通过非工程的方法进化出来.<code>非理性设计的产物</code></li>
+<li>对个体而言最好的，对物种而言却不一定。<code>没有缺憾的完美也是不完美的</code></li>
+<li>生物意义上的生命是与特殊的硬件绑定在一起的，这就是以碳为基础的DNA分子。</li>
+<li>求多个质数的乘积极其容易，但分解质因素则异常困难。<code>可用于加密算法</code></li>
+<li>最聪明的拉马克个体比最聪明的达尔文个体聪明得多。<code>父代可以把突变的基因遗传给子代，并通过优胜劣汰来进行选择</code></li>
+<li>如果进化的对象不局限于分子的话，也许会有更有效的进化方式和搜索方法。<code>人工智能的进化速度可能会远远超过人们的想象</code></li>
+<li>路径越短的话，信息素挥发得越少。而信息素的信号越强，循迹而来的蚂蚁就越多。那些较短的路径由此得到自我强化。运行5000回合之后，蚂蚁的群体思维就会进化出一条相当理想的路径。<code>旅行商问题</code></li>
+<li>除了能够创造我们制造不出来的东西以外，进化还有一点值得夸耀：它能造出来缺陷更少的东西。</li>
+<li>随着软件越来越大，生存变得越重要，同时也越来越困难。<code>模块化，可插拔</code></li>
+<li>人工进化是工程霸权的终结。</li>
+<li>进化的代价就是——失控。<code>这种失控是目前大部分人观念上无法接受的，人类还是喜欢强有力的控制，从而从中获得安全感</code></li>
+<li><code>在巨大的变化面前，‘正确’将被‘生存能力’所取代。</code></li>
+<li>我们舍控制而取力量。对我们这些执着于控制的家伙来说，这无异于魔鬼的交易。<code>人工智能也具有两面性，即可能是天使，也可能是魔鬼！</code></li>
+</ol>
+<h3 id="第十六章-控制的未来"><a href="#第十六章-控制的未来" class="headerlink" title="第十六章 控制的未来"></a>第十六章 控制的未来</h3><p>　　 16.1 玩具世界的卡通物理学<br>　　 16.2 合成角色的诞生<br>　　 16.3 没有实体的机器人<br>　　 16.4 行为学架构中的代理<br>　　 16.5 给自由意志强加宿命<br>　　 16.6 米老鼠重装上阵<br>　　 16.7 寻求协同控制<br>Notes and Thinking：  </p>
+<ol>
+<li>一个动画形象即使按照人类的正确顺序来行动，如果它甩膀掀胯的相对速度跟不上节奏，仍会显得很机械。人类大脑能够轻易地识别出这种赝品。所以说，时机的掌握是动作的又一个复杂面。</li>
+<li>我可以储存不同的手部动作，但难办的是不知道什么东西支配着这些动作。</li>
+<li>为了创造出不仅仅会走路的生物，动画师们（还有机器人研究者们）需要找出办法来培育出所有类型的自然行为。<code>让这些行为通过简单元素自然的进化出来或者涌现出来</code></li>
+<li>如何组织一个既允许一定偏离又围绕着既定结局的故事？</li>
+<li>怎样在不剥夺人工生命角色自由的情况下，给它设定某种结局？<code>定律、规则、细思极恐！</code></li>
+<li>控制的未来是：伙伴关系，协同控制，人机混合控制。所有这些都意味着，创造者必须和他的创造物一起共享控制权，而且要同呼吸共命运。</li>
+</ol>
+<h3 id="第十七章-开放的宇宙"><a href="#第十七章-开放的宇宙" class="headerlink" title="第十七章 开放的宇宙"></a>第十七章 开放的宇宙</h3><p>　　 17.1 拓展生存的空间<br>　　 17.2 生成图像的基元组<br>　　 17.3 无心插柳柳成荫<br>　　 17.4 打破规则求生存<br>　　 17.5 掌握进化工具<br>　　 17.6 从滑翔意外到生命游戏<br>　　 17.7 生命的动词<br>　　 17.8 在超生命的国度中安家落户<br>Notes and Thinking：  </p>
+<ol>
+<li>对逻辑单元而不是数字位元做进化，最根本的优势还在于它能马上将系统引上通往开放宇宙的大道。</li>
+<li>大自然并不会只为了优雅而简化</li>
+<li>人类的智慧有一个近乎神秘的盲点。我们不能凭直觉理解概率、横向因果关系及同步逻辑方面的各种概念。它们完全不符合我们的思维方式。我们的思维退而求其次地选择了串行叙述——线性描述。那正是最早的计算机使用冯·诺依曼串行设计方案的原因：因为人类就是这样进行思考的。</li>
+<li>他大脑深层的功能一个接一个地重现。朗顿记得那灵光一现的刹那，他的本体感受——那种在一具躯体之中的感知——复原了。他为一种“强烈的发自内心深处的直觉”所震撼</li>
+<li>胚细胞只不过是经过伪装的机器人。</li>
+</ol>
+<h3 id="第十八章-有组织的变化之架构"><a href="#第十八章-有组织的变化之架构" class="headerlink" title="第十八章 有组织的变化之架构"></a>第十八章 有组织的变化之架构</h3><p>　　 18.1 日常进化的革命<br>　　 18.2 绕开中心法则<br>　　 18.3 学习和进化之间的区别<br>　　 18.4 进化的进化<br>　　 18.5 进化解释一切<br>Notes and Thinking：  </p>
+<ol>
+<li>大自然就是一个有序变化的王国。</li>
+<li>迄今为止的无序变化正是技术的真实写照。无序变化的极致是“革命”</li>
+<li>基因中没有管理信息交通的中央管理局。基因组就是极致的分权系统——蔓生的冗余片断，大规模并行处理，没有主管，无人监察各个事务。</li>
+<li>生物所进行的探索式学习实质上是一个对确定问题的随机搜索算法</li>
+<li>人类历史就是一个文化传承的过程。随着社会的发展，人类的学习与传授技能与生物学意义上继承的记忆与能力是遥相呼应的。<code>弥母</code></li>
+<li>先前的人类所获得的每一个文化进步（刀耕、火种、书写），都为人类心智和躯体的转变预备了“可能的空间”，从而使昔日的生物行为转化为日后的文化行为。</li>
+<li>如果我们把文化看作是一个自组织系统——一个具有自己的日程和生存压力的系统——那么，人类的历史就会显得更有意思了。</li>
+<li>揭示深度进化的内在本质之时，也即是触动我们灵魂之日。</li>
+</ol>
+<h3 id="第十九章-后达尔文主义"><a href="#第十九章-后达尔文主义" class="headerlink" title="第十九章 后达尔文主义"></a>第十九章 后达尔文主义</h3><p>　　 19.1 达尔文进化论不完备之处<br>　　 19.2 只有自然选择还不够<br>　　 19.3 生命之树上的连理枝<br>　　 19.4 非随机突变的前提<br>　　 19.5 怪亦有道<br>　　 19.6 化抽象为具象<br>　　 19.7 物以类聚<br>　　 19.8 DNA并不能给所有东西编码<br>　　 19.9 不确定的生物搜索空间密度<br>　　 19.10 自然选择之数学原理<br>Notes and Thinking：</p>
+<ol>
+<li>他想不出一个没有晶状体与之配套的视网膜，或者反过来，没有视网膜与之配套的晶状体能对它的拥有者有什么用处。而既然生物不会囤积它的发明（“嘿，等熬到白垩纪这东西就有用了！”），那每个阶段的物种进步就都得是马上就能用上、能产生效果的。每次突破，都必须首演即获成功。</li>
+<li>由一个细胞系继承而来、负责运送氧气的经过验证的系统，可能和另一个细胞系中负责气体交换的现存系统紧密结合在一起。双方共生相连，就有可能形成一个呼吸系统，而这一发育过程未必是累进的。<code>达尔文进化论的补充，进化可能是并行的</code></li>
+<li>处于交互关系中的进化过程可以跃过个体的上百万年反复试错的时间。<code>并行进化过程</code></li>
+<li>自然选择是编辑，而不是作者.<code>那么谁才是真正的创造者？</code></li>
+<li>进化是物质与信息相互混合的过程，遗传逻辑不能违背其所栖身的物质世界的规律。</li>
+<li>进化过程是跳跃式前进的。发育早期的小变化会导致成熟期的大变化，从而诞生一个怪物。尽管多数极端变异都会夭折，但偶尔也会有些大的变化能融入整体，于是诞生某种“有前途”的怪物。这个有前途的怪物可能会长出一对完整的翅膀；而按照达尔文理论则需要有一种半翅的中间态。生物体也许能够一步到位实现最终形态，那些所谓中间形态的物种也许从未出现过。这种有前途怪物的出现，也能解释为什么化石中找不到过渡形态的物种。</li>
+<li>进化应该是既有宽度，又有纵深的。</li>
+</ol>
+<h3 id="第二十章-沉睡的蝴蝶"><a href="#第二十章-沉睡的蝴蝶" class="headerlink" title="第二十章 沉睡的蝴蝶"></a>第二十章 沉睡的蝴蝶</h3><p>　　 20.1 无序之有序<br>　　 20.2 反直觉的网络数学<br>　　 20.3 迭坐，喷涌，自催化<br>　　 20.4 值得一问的问题<br>　　 20.5 自调节的活系统<br>Notes and Thinking：  </p>
+<ol>
+<li>闭环控制系统.<code>互为因果关系，自洽系统</code></li>
+<li>宇宙自己为自己制订规则，并脱胎于一个自洽的系统</li>
+<li>任何系统寻求的首要目标都是生存。其次是保证系统最大灵活度的理想参数。而最令人兴奋的是第三个层级的目标：寻找系统在进化过程中不断增强自调节的策略和反馈机制。</li>
+</ol>
+<h3 id="第二十一章-水往高处流"><a href="#第二十一章-水往高处流" class="headerlink" title="第二十一章 水往高处流"></a>第二十一章 水往高处流</h3><p>　　 21.1 四十亿年的庞氏骗局<br>　　 21.2 进化的目的是什么<br>　　 21.3 超进化的七个趋势<br>　　 21.4 土狼般的自我进化<br>Notes and Thinking：  </p>
+<ol>
+<li>不可逆性、递增的复杂性、递增的多样性、递增的个体数量、递增的专业性、递增的相互依存关系，以及递增的进化力。</li>
+<li>社会化的加深正是生命递增的相依共生关系的另一种形式。人类正是一个越来越依赖生命而不是非生物的极端例子</li>
+<li>仅仅依靠不断地积累越来越多的新知识，心智不能真正很好地成长。它还必须开发出更新更好地运用已有知识的方法.<code>必须归纳总结，灵活运用。心理发育的关键一步</code></li>
+<li>一个进化系统是稳定的，因为它会不断回归到最优进化力的状态。但是因为这个最优点是变化的——就像镜子上变色龙的颜色——这个系统又永远处在非均衡状态。</li>
+<li>群选择.<code>自然选择不仅以个体为单位，而且以群为单位。甚至文化也属于进化的一部分</code></li>
+</ol>
+<h3 id="第二十二章-预言机"><a href="#第二十二章-预言机" class="headerlink" title="第二十二章 预言机"></a>第二十二章 预言机</h3><p>　　 22.1 接球的大脑<br>　　 22.2 混沌的另一面<br>　　 22.3 具有正面意义的短视<br>　　 22.4 从可预测性范围里挣大钱<br>　　 22.5 前瞻：内视行动<br>　　 22.6 预测的多样性<br>　　 22.7 以万变求不变<br>　　 22.8 系统存在的目的就是揭示未来<br>　　 22.9 全球模型的诸多问题<br>　　 22.10 舵手是大家<br>Notes and Thinking：</p>
+<ol>
+<li>在混沌中存在着秩序.<code>经济体，股票市场，短期趋势</code></li>
+<li>与其花费数年的时间去搞一本预测一切可能发生状况的公司员工手册——它在付印之际就过时了——不如采用那种有正面意义的短视</li>
+<li>在一个股票市场中，成功会激发起强烈的、自我取消的反馈流</li>
+<li>适应性，就是利用信息来应付环境的不确定性</li>
+<li>“适应就是以万变求不变。”一个系统（根据定义是不变的）适应（变化）的目的就是为了存续（不变）。</li>
+<li>学习就意味着生存。</li>
+</ol>
+<h3 id="第二十三章-整体，空洞，以及空间"><a href="#第二十三章-整体，空洞，以及空间" class="headerlink" title="第二十三章 整体，空洞，以及空间"></a>第二十三章 整体，空洞，以及空间</h3><p>　　 23.1 控制论怎么了？<br>　　 23.2 科学知识网之缺口<br>　　 23.3 令人惊讶的琐碎小事<br>　　 23.4 超文本：权威的终结<br>　　 23.5 新的思考空间<br>Notes and Thinking：</p>
+<ol>
+<li>大片无知的荒漠中横亘着一个个自成体系的知识山峰。</li>
+<li>宇宙运行的规律也会进化吗？如果主宰宇宙运行的规律是宇宙自行生成的，它会受到宇宙自我调节力的影响吗？也许维持所有理性规律的特殊的基本规律都处于不断变动中。我们是否在玩一场所有规则都在被不断重写的游戏？</li>
+<li>我们组织写作空间的方式，也就是我们组织思想的方式</li>
+</ol>
+<h3 id="第二十四章-九律"><a href="#第二十四章-九律" class="headerlink" title="第二十四章 九律"></a>第二十四章 九律</h3><p>　　 4.1 如何无中生有<br>　　 24.2 将宇宙据为己有<br>Notes and Thinking：</p>
+<ol>
+<li>工业时代的标志是机械设计能力的登峰造极；而新生物文明的标志则是使设计再次回归自然。</li>
+<li>无中生有.<code>涌现</code></li>
+</ol>
+<h3 id="“失控”的协作与进化——翻译后记"><a href="#“失控”的协作与进化——翻译后记" class="headerlink" title="“失控”的协作与进化——翻译后记 "></a>“失控”的协作与进化——翻译后记 </h3><p>如何既不抹杀创造性和进化空间又能保证产品和服务的质量？<br>答案就是层级架构，而且往往只需要两个层级就足够了：下层是充满活力的“蜂群”式协作，上层则对产品或服务的最终质量进行把控。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div> 
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/16/%E3%80%8A%E5%A4%B1%E6%8E%A7%E3%80%8B/" data-id="cm5tqeetj0006wayp3zh7bh8b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-远程访问RESTFull API设计" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/15/%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AERESTFull%20API%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time datetime="2016-08-15T13:59:06.000Z" itemprop="datePublished">2016-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/15/%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AERESTFull%20API%E8%AE%BE%E8%AE%A1/">远程访问API设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>如果启用HTTPS，基本上就不用考虑传输的安全问题，只需要考虑身份认证问题</p>
+</blockquote>
+<h3 id="一、开始之前"><a href="#一、开始之前" class="headerlink" title="一、开始之前"></a>一、开始之前</h3><p>&emsp;&emsp;在平时的工作中，经常会碰到跟第三方系统做集成的需求，常用的技术手段有webservice，现在要给大家分享的是如何设计一个安全的可供远程访问API。<br>提供两种调用方式：<br>1.前端ajax调用（当然前提是解决了跨域问题）<br>2.后端发起HTTP请求调用</p>
+<h3 id="二、整体结构"><a href="#二、整体结构" class="headerlink" title="二、整体结构"></a>二、整体结构</h3><p><img src="/images/20160815/RemoteAPI1.jpg" alt="整体结构"></p>
+<h4 id="简要说明"><a href="#简要说明" class="headerlink" title="简要说明"></a>简要说明</h4><ul>
+<li>服务器端提供给请求端key与secret密钥，这里可以增加IP过滤，如果带上key请求的请求端IP跟服务器上配置的IP不相符则返回401</li>
+<li>请求端拿到key与secret密钥后，发起请求时，直接把key放到header中，然后用数据摘要算法（如md5，sha512）对请求数据生成数字签名sign（其实就是一个字符串），一起放到header中</li>
+<li>服务器端的第一个过滤器首先过滤远程API（可以考虑远程API都用api/前缀打头），在这里首先验证key在系统中有没有，可选验证IP；如果待用sign，则意味着带请求数据，这个时候用服务器存着的secret对数据进行数字签名，与客户端传过来的进行对比（防数据篡改），一切都通过后再把这个key对应的user放session上</li>
+<li>顺利通过session登录验证过滤器</li>
+<li>URL ACL权限验证过滤器一般是控制哪些人、角色、群组能访问这个URL</li>
+<li>所有权限验证通过后到action-service顺利取到数据并返回</li>
+</ul>
+<blockquote>
+<p>总的来说，远程API访问在于开一个口供HTTP请求交互数据，核心在于<code>权限的控制</code></p>
+</blockquote>
+<h3 id="三、安全设计"><a href="#三、安全设计" class="headerlink" title="三、安全设计"></a>三、安全设计</h3><h4 id="防篡改"><a href="#防篡改" class="headerlink" title="防篡改"></a>防篡改</h4><blockquote>
+<p>防篡改的意思为防止数据在网络传输过程中被恶意篡改，比如在客户端-服务器端之间有个代理服务器（客户端-代理服务器-服务器），这个时候就可以在代理服务器在对数据动手脚，雁过拔毛</p>
+</blockquote>
+<p>&emsp;&emsp;数据防篡改的核心原理在于对传输的数据进行数字签名。客户端发起请求钱，用服务器端拿到的密钥对数据进行前面，然后把签名与数据一起发送给服务器端，服务器端再用自己的密钥对收到的数据进行数字签名，与传过来的签名对比是否一致<br>下面是一些相关java代码：  </p>
+<h5 id="1-服务器端生成密钥并保存到数据库中"><a href="#1-服务器端生成密钥并保存到数据库中" class="headerlink" title="1. 服务器端生成密钥并保存到数据库中"></a>1. 服务器端生成密钥并保存到数据库中</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 产生HmacSHA512摘要算法的密钥</span></span><br><span class="line"><span class="comment"> * 密钥可以为任意字符串，使用它来生成密钥可以获得更高的安全性</span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">byte</span>[] initHmacSHA512Key() <span class="keyword">throws</span> NoSuchAlgorithmException &#123;  </span><br><span class="line">    <span class="comment">// 初始化HmacMD5摘要算法的密钥产生器  </span></span><br><span class="line">    KeyGenerator generator = KeyGenerator.getInstance(<span class="string">&quot;HmacSHA512&quot;</span>);  </span><br><span class="line">    <span class="comment">// 产生密钥  </span></span><br><span class="line">    SecretKey secretKey = generator.generateKey();  </span><br><span class="line">    <span class="comment">// 获得密钥  </span></span><br><span class="line">    <span class="keyword">byte</span>[] key = secretKey.getEncoded();  </span><br><span class="line">    <span class="keyword">return</span> key;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//把byte数组转为为字符串方便存入数据库</span></span><br><span class="line">String secret = <span class="keyword">new</span> BigInteger(<span class="number">1</span>, initHmacSHA512Key()).toString(<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-客户端-服务器端对传输的数据计算摘要"><a href="#2-客户端-服务器端对传输的数据计算摘要" class="headerlink" title="2. 客户端/服务器端对传输的数据计算摘要"></a>2. 客户端/服务器端对传输的数据计算摘要</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//还原密钥字符串为byte数组</span></span><br><span class="line"><span class="keyword">byte</span>[] secret = <span class="keyword">new</span> BigInteger(config.get(key).getConnectSecret(),<span class="number">16</span>).toByteArray();</span><br><span class="line">String sign = Tools.encodeHmacSHA512(postData.getBytes(), secret);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * HmacSHA512摘要算法</span></span><br><span class="line"><span class="comment"> * 对于给定生成的不同密钥，得到的摘要消息会不同，所以在实际应用中，要保存我们的密钥</span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">encodeHmacSHA512</span><span class="params">(<span class="keyword">byte</span>[] data, <span class="keyword">byte</span>[] key)</span> <span class="keyword">throws</span> Exception </span>&#123;  </span><br><span class="line">    <span class="comment">// 还原密钥  </span></span><br><span class="line">    SecretKey secretKey = <span class="keyword">new</span> SecretKeySpec(key, <span class="string">&quot;HmacSHA512&quot;</span>);  </span><br><span class="line">    <span class="comment">// 实例化Mac  </span></span><br><span class="line">    Mac mac = Mac.getInstance(secretKey.getAlgorithm());  </span><br><span class="line">    <span class="comment">//初始化mac  </span></span><br><span class="line">    mac.init(secretKey);  </span><br><span class="line">    <span class="comment">//执行消息摘要  </span></span><br><span class="line">    <span class="keyword">byte</span>[] digest = mac.doFinal(data);  </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HexBinaryAdapter().marshal(digest);<span class="comment">//转为十六进制的字符串  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其实这里的密钥可以为任意字符串，这里之所以用生成的方式原因为这样长度更长，更安全，不易破解</p>
+</blockquote>
+<h4 id="防重放"><a href="#防重放" class="headerlink" title="防重放"></a>防重放</h4><blockquote>
+<p>防重放的意思这样的，假如请求链为客户端-代理-服务器，那么不法分子可以在代理上把整个整个请求拷贝下来，然后再很遥远的未来用拷贝下来的请求重新请求服务器获取数据。很多时候我们是通过cookie信息来让服务器确认客户端的身份，这种情况就相当于走了一趟别人的通道，然后身份被窃取了。</p>
+</blockquote>
+<p>&emsp;&emsp;有两种方式解决重放攻击问题，一种为随机数办法，第二种为TOTP算法（google的动态验证码就使用这种算法，另外还有很多银行的动态密钥）</p>
+<h5 id="1-随机数办法"><a href="#1-随机数办法" class="headerlink" title="1.随机数办法"></a>1.随机数办法</h5><blockquote>
+<p>《HTTP权威指南》中的13章讲得很清楚，可以看看这章。直接从书中截个图开始讲</p>
+</blockquote>
+<p><img src="/images/20160815/RemoteAPI2.jpg" alt="请求逻辑"><br>&emsp;&emsp;图中的(a)部分为未改进方式，(b)为性能改进方式。从图a中可以看出，每次<code>真正请求</code>前都必须发起一次质询请求拿到授权授权码（随机数），然后再发起真正请求，在真正请求中带上这个授权码，服务器接收到请求后先验证授权码是否存在，不存在则意味着不合法，如果存在，则删除旧的授权码。<code>相当每次请求都必须带上授权码，且一个授权码只能使用一次</code>。图(b)是做的一个改进，不用每次请求前都请求一次，只需要请求一次即可，每次正式请求成功后都返回下一次的授权码。</p>
+<blockquote>
+<p>实际中的问题：需要考虑http请求的并发特性，在并发情况下妥善生成与删除授权码</p>
+</blockquote>
+<h4 id="2-TOTP算法"><a href="#2-TOTP算法" class="headerlink" title="2.TOTP算法"></a>2.TOTP算法</h4><p>&emsp;&emsp;这种算法跟google的动态验证码一样，客户端与服务器端通过相同的密钥与时间生成授权码（在一段时间内有效，需保证服务器端与客户端无时间差异，或差异很小）<br>算法说明：  </p>
+<blockquote>
+<p>google动态验证码原理：服务器端通过特定算法随机生成一个密钥，并且把这个密钥保存在数据库中。根据生成的密钥在页面上生成一个二维码，内容是一个 URI 地址。用户通过扫描二维码，把密钥保存在客户端。 客户端每 30 秒使用密钥和时间戳通过一种算法生成一个 6 位数字的一次性 密码。服务器端使用保存在数据库中的密钥和时间戳通过同一种算法生成一个 6 位数字的一次性密码， 用户登陆时输入一次性密码与服务器端进行验证，如果一 样，就登录成功了。<br>资料：<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20462696">谷歌验证 (Google Authenticator) 的实现原理是什么？</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/15/%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AERESTFull%20API%E8%AE%BE%E8%AE%A1/" data-id="cm5tqeetj0005wayphbvj2ajf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/16/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/18/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

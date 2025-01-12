@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>一个由line-height引发的血案与思考 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="爆炸&amp;emsp;&amp;emsp;最近UI走查，发现页面中所有包含文字区块的高度与设计稿中的高度完全不一致，然后UI妹子就爆炸了! &amp;emsp;&amp;emsp;找了一下原因，发现是由于UI设计稿中设计的文字大部分是font-size:24px;line-height:24px,代码实现时为了不至于每处都写一遍字体大小，故直接在根节点上统一设置字体与字体大小为24px，小部分不一致的地方再单独设置字体大小，从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个由line-height引发的血案与思考">
+<meta property="og:url" content="http://muchstudy.com/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="爆炸&amp;emsp;&amp;emsp;最近UI走查，发现页面中所有包含文字区块的高度与设计稿中的高度完全不一致，然后UI妹子就爆炸了! &amp;emsp;&amp;emsp;找了一下原因，发现是由于UI设计稿中设计的文字大部分是font-size:24px;line-height:24px,代码实现时为了不至于每处都写一遍字体大小，故直接在根节点上统一设置字体与字体大小为24px，小部分不一致的地方再单独设置字体大小，从">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/1.jpg">
+<meta property="og:image" content="http://muchstudy.com/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/2.jpg">
+<meta property="og:image" content="http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif">
+<meta property="article:published_time" content="2018-05-06T11:32:32.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.742Z">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-一个由line-height引发的血案与思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2018-05-06T11:32:32.000Z" itemprop="datePublished">2018-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一个由line-height引发的血案与思考
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="爆炸"><a href="#爆炸" class="headerlink" title="爆炸"></a>爆炸</h2><p>&emsp;&emsp;最近UI走查，发现页面中所有包含文字区块的高度与设计稿中的高度完全不一致，然后UI妹子就爆炸了!</p>
+<p>&emsp;&emsp;找了一下原因，发现是由于UI设计稿中设计的文字大部分是<code>font-size:24px;line-height:24px</code>,代码实现时为了不至于每处都写一遍字体大小，故直接在根节点上统一设置字体与字体大小为24px，小部分不一致的地方再单独设置字体大小，从而忽略了设置<code>line-height</code>为字体的高度。造成的结果就是文字所在的行的行高高于设计稿中的行高。</p>
+<h2 id="为什么文字行高与字体大小不相等呢？"><a href="#为什么文字行高与字体大小不相等呢？" class="headerlink" title="为什么文字行高与字体大小不相等呢？"></a>为什么文字行高与字体大小不相等呢？</h2><p>&emsp;&emsp;翻了一下line-height的<a target="_blank" rel="noopener" href='https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height'>官方说明</a>，如下所示：</p>
+<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/1.jpg" class=""><div>
+
+<p>&emsp;&emsp;文档里说line-height的默认值为<code>normal</code>,给<code>normal</code>的推荐设置值为<code>1.0到1.2之间</code>。相当于如果设置了字体的大小而不设置line-height,那么行高默认就为字体的1.0-1.2之间的一个倍数。</p>
+<p>&emsp;&emsp;<strong>那么，这个倍数到底具体是多少呢？</strong></p>
+<p>&emsp;&emsp;在chrome的控制台里跟踪了一下，看到项目中引入了<code>normalize.css</code>来初始化浏览器的默认css样式。其中，就设置html的<code>line-height</code>为<code>1.15</code>。</p>
+<h2 id="为什么normalize-css设置line-height默认为1-15？"><a href="#为什么normalize-css设置line-height默认为1-15？" class="headerlink" title="为什么normalize.css设置line-height默认为1.15？"></a>为什么normalize.css设置line-height默认为1.15？</h2><p>&emsp;&emsp;翻了一下github中normalize.css的issues,在593号issues里找到了答案，地址在<a target="_blank" rel="noopener" href='https://github.com/necolas/normalize.css/issues/593'>这里</a>。</p>
+<p>&emsp;&emsp;大致过程是这样的，有人发现相同字体与大小的文字在不同环境中line-height的值是不一致的，接着，就有人在crossbrowsertesting上做了个测试，得出的结论就是这个问题的的确确存在，而且差异还特别大</p>
+<blockquote>
+<p>When the font size was 100px, the most common line height was 115px. However, results varied from 101px on Mac Firefox to 136px on Android Chrome.</p>
+</blockquote>
+<p>&emsp;&emsp;最终，由于大部分的行高都为115px,所以，为了解决不同环境中相同字体与字号的文字行高不一致的问题，推荐设置默认<code>line-height</code>为1.15</p>
+<p>&emsp;&emsp;看到这里，想到一个问题，既然显示设置line-height为1.15是为了解决环境兼容的问题。那么，<strong>为什么不设置<code>line-height:1</code>即解决兼容问题，又解决由于行高放大与UI设计稿不符的问题？</strong> 。</p>
+<h2 id="设置overflow-hidden字体显示不全的问题"><a href="#设置overflow-hidden字体显示不全的问题" class="headerlink" title="设置overflow:hidden字体显示不全的问题"></a>设置overflow:hidden字体显示不全的问题</h2><p>&emsp;&emsp;当设置文字<code>line-height:1</code>后，再设置文字所在的容器<code>overflow:hidden</code>很容易复现文字显示不全的问题，比如下面：</p>
+<p><span style="font-size:100px;line-height:1;overflow:hidden;border:1px solid #ddd;display:inline-block">dphyTxg</span></p>
+<p>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">font-size:100px;</span></span></span><br><span class="line"><span class="tag"><span class="string">line-height:1;</span></span></span><br><span class="line"><span class="tag"><span class="string">overflow:hidden;</span></span></span><br><span class="line"><span class="tag"><span class="string">border:1px solid #ddd;</span></span></span><br><span class="line"><span class="tag"><span class="string">display:inline-block&quot;</span>&gt;</span>dphyTxg<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注：这里可以使用div演示，然后去掉display:inline-block。使用div发现不知道为毛markdown里的样例乱了…</p>
+<h2 id="为什么设置行高与字体大小一致文字会显示不全？"><a href="#为什么设置行高与字体大小一致文字会显示不全？" class="headerlink" title="为什么设置行高与字体大小一致文字会显示不全？"></a>为什么设置行高与字体大小一致文字会显示不全？</h2><p>&emsp;&emsp;到这里，才真正进入到深层次的原因探究。</p>
+<p>&emsp;&emsp;对于这个问题，需要先了解字体度量，引用一下其它的文章说明，如下所示：</p>
+<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/2.jpg" class=""><div>
+
+<ol>
+<li><a target="_blank" rel="noopener" href='https://zhuanlan.zhihu.com/p/25808995'>原文地址</a></li>
+<li><a target="_blank" rel="noopener" href='http://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align'>Deep dive CSS: font metrics, line-height and vertical-align</a></li>
+<li><a target="_blank" rel="noopener" href='http://designwithfontforge.com/zh-CN/The_EM_Square.html'>EM Square</a></li>
+<li><a target="_blank" rel="noopener" href='https://fontforge.github.io/en-US/'>FontForge</a></li>
+</ol>
+<p>简要解释为如下几点：</p>
+<ol>
+<li>我们设置<code>font-size</code>的高度实际上是对应字体的<code>EM square</code>部分</li>
+<li>字体在设计时可以超出<code>EM square</code>部分</li>
+<li>字体实际设计与<code>EM square</code>部分一致时，<code>line-height:normal</code>与<code>line-height:1</code>相等</li>
+<li>从上图中可以看到，<code>ascender+descender&gt;Em Size</code> 即<code>1100+540&gt;1000</code>,此时<code>line-height:1.64</code>,所以100px的文字默认的行高为164px</li>
+</ol>
+<h2 id="样例分析"><a href="#样例分析" class="headerlink" title="样例分析"></a>样例分析</h2><p>&emsp;&emsp;下面就以window环境下的默认字体微软雅黑为例实际看看line-height的计算。</p>
+<h1 id="font" style="line-height:normal;font-size: 100px;font-family: 微软雅黑">h1</h1>
+<p>line-height: <code id="o1" style="font-size: 50px"></code></p>
+<script>
+  document.getElementById('o1').textContent = window.getComputedStyle(document.getElementById('font')).height;
+</script>
+
+<p>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;font&quot;</span> <span class="attr">style</span>=<span class="string">&quot;line-height:normal;font-size: 100px;font-family: 微软雅黑&quot;</span>&gt;</span>h1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>line-height: <span class="tag">&lt;<span class="name">code</span> <span class="attr">id</span>=<span class="string">&quot;o1&quot;</span> <span class="attr">style</span>=<span class="string">&quot;font-size: 50px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.getElementById(<span class="string">&#x27;o1&#x27;</span>).textContent = <span class="built_in">window</span>.getComputedStyle(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;font&#x27;</span>)).height;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从上面可以看到微软雅黑100px情况在，在windows下行高显示为132px。通过FontForge来核对一下看看是不是这样的。</p>
+<div style='text-align:center'>&#123;% asset_img 3.jpg %&#125;<div>
+
+<p>&emsp;&emsp;从上图中可以看到，使用<code>（ascender+descender)/Em Size</code>,即<code>(2167+536)/2048≈1.32</code>，也就是line-height为1.32.</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li><code>line-height:normal</code>的值跟字体有关系，相同字体在不同环境也不一样</li>
+<li>当line-height设置的值小于默认的值时就会存在显示不全的问题</li>
+<li>normalize.css设置line-height默认为1.15，当字体line-height的normal大于1.15就会存在文字显示不全的问题</li>
+<li>要解决字体在不同平台line-height不一致的问题，需根据具体字体，选择normal在不同平台上的最大值设置</li>
+</ol>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/" data-id="cm5tqeevo0072waypbtw93vmn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/13/Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Gitlab 8.x runner安装与配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/21/30/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">30</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

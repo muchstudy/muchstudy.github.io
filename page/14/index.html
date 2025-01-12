@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/14/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-设计模式系列之十迭代器模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-20T13:50:54.000Z" itemprop="datePublished">2016-12-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>迭代器模式：</strong>提供一种方法顺序访问一个聚合对象中的各个元素，而又不暴露其内部的表示。</p>
+</blockquote>
+<p>&emsp;&emsp;有这样的一个需求。一家集团公司在北京和上海分别有一家子公司，每家公司内部有自己的部门，且自己提供了打印部门的方法。其中一个子公司以数组来保存部门列表，另外一个以ArrayList来保存。现在需要打印所有的部门。</p>
+<h2 id="一、原始实现"><a href="#一、原始实现" class="headerlink" title="一、原始实现"></a>一、原始实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//部门对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dept</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Dept</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name= name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//北京分公司</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BJBranch</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BJBranch</span><span class="params">()</span></span>&#123;</span><br><span class="line">		depts = <span class="keyword">new</span> ArrayList&lt;Dept&gt;();</span><br><span class="line">		<span class="comment">//添加部门</span></span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-财务部&quot;</span>));</span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-研发部&quot;</span>));</span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-开发部&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ArrayList&lt;Dept&gt; <span class="title">getDepts</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> depts;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//上海分公司</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SHBranch</span> </span>&#123;</span><br><span class="line">	Dept[] depts;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SHBranch</span><span class="params">()</span></span>&#123;</span><br><span class="line">		depts = <span class="keyword">new</span> Dept[<span class="number">3</span>];</span><br><span class="line">		<span class="comment">//添加部门</span></span><br><span class="line">		depts[<span class="number">0</span>] = <span class="keyword">new</span> Dept(<span class="string">&quot;上海-财务部&quot;</span>);</span><br><span class="line">		depts[<span class="number">1</span>] = <span class="keyword">new</span> Dept(<span class="string">&quot;上海-研发部&quot;</span>);</span><br><span class="line">		depts[<span class="number">2</span>] = <span class="keyword">new</span> Dept(<span class="string">&quot;上海-开发部&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> Dept[] getDepts()&#123;</span><br><span class="line">		<span class="keyword">return</span> depts;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestOld</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		BJBranch BJ 			= <span class="keyword">new</span> BJBranch();</span><br><span class="line">		ArrayList&lt;Dept&gt; BJDepts = BJ.getDepts();</span><br><span class="line">		SHBranch SH 	= <span class="keyword">new</span> SHBranch();</span><br><span class="line">		Dept[] SHDepts 	= SH.getDepts();</span><br><span class="line">		<span class="comment">//遍历两家子公司的所有部门</span></span><br><span class="line">		<span class="comment">/** 由于类型不同，需要两次循环 **/</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;BJDepts.size();i++)&#123;</span><br><span class="line">			System.out.println(BJDepts.get(i).getName());</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;SHDepts.length;i++)&#123;</span><br><span class="line">			System.out.println(SHDepts[<span class="number">0</span>].getName());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码中可以看出，由于两家子公司的实现方式不一样，造成循环遍历时自能使用对应的方式来遍历，造成相当大的不便。</p>
+<h2 id="二、使用迭代器模式来解决问题"><a href="#二、使用迭代器模式来解决问题" class="headerlink" title="二、使用迭代器模式来解决问题"></a>二、使用迭代器模式来解决问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//迭代器接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function">Object <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//北京分公司的部门迭代器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BJBranchIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span></span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line">	<span class="keyword">int</span> position	= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BJBranchIterator</span><span class="params">(ArrayList&lt;Dept&gt; depts)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.depts = depts;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(position&gt;=depts.size() || depts.get(position)==<span class="keyword">null</span>)&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Dept dept = depts.get(position);</span><br><span class="line">		position  = position + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> dept;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//改造后的北京分公司</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BJBranch</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BJBranch</span><span class="params">()</span></span>&#123;</span><br><span class="line">		depts = <span class="keyword">new</span> ArrayList&lt;Dept&gt;();</span><br><span class="line">		<span class="comment">//添加部门</span></span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-财务部&quot;</span>));</span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-研发部&quot;</span>));</span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-开发部&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*public ArrayList&lt;Dept&gt; getDepts()&#123;</span></span><br><span class="line"><span class="comment">		return depts;</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//改造为返回Iterator对象，而不是ArrayList</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterator <span class="title">createrIterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> BJBranchIterator(depts);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//上海分公司的部门迭代器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SHBranchIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span></span>&#123;</span><br><span class="line">	Dept[] depts;</span><br><span class="line">	<span class="keyword">int</span> position	= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SHBranchIterator</span><span class="params">(Dept[] depts)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.depts = depts;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(position&gt;=depts.length|| depts[position]==<span class="keyword">null</span>)&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Dept dept = depts[position];</span><br><span class="line">		position  = position + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> dept;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//改造后的上海分公司</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SHBranch</span> </span>&#123;</span><br><span class="line">	Dept[] depts;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SHBranch</span><span class="params">()</span></span>&#123;</span><br><span class="line">		depts = <span class="keyword">new</span> Dept[<span class="number">3</span>];</span><br><span class="line">		<span class="comment">//添加部门</span></span><br><span class="line">		depts[<span class="number">0</span>] = <span class="keyword">new</span> Dept(<span class="string">&quot;上海-财务部&quot;</span>);</span><br><span class="line">		depts[<span class="number">1</span>] = <span class="keyword">new</span> Dept(<span class="string">&quot;上海-研发部&quot;</span>);</span><br><span class="line">		depts[<span class="number">2</span>] = <span class="keyword">new</span> Dept(<span class="string">&quot;上海-开发部&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*public Dept[] getDepts()&#123;</span></span><br><span class="line"><span class="comment">		return depts;</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//改造为返回Iterator对象，而不是数组</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterator <span class="title">createrIterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> SHBranchIterator(depts);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用迭代器模式后的代码实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestNew</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Iterator BJ = <span class="keyword">new</span> BJBranch().createrIterator();</span><br><span class="line">		Iterator SH = <span class="keyword">new</span> SHBranch().createrIterator();</span><br><span class="line"></span><br><span class="line">		printDeptName(BJ);</span><br><span class="line">		printDeptName(SH);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printDeptName</span><span class="params">(Iterator iterator)</span></span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">			Dept dept = (Dept) iterator.next();</span><br><span class="line">			System.out.println(dept.getName());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从改造后的代码中可以看出，使用迭代器模式改造后，成功的屏蔽了北京与上海分公司遍历的差异。</p>
+<p>&emsp;&emsp;在Java中使用<code>Iterator</code>去遍历<code>ArrayList</code>应该大部分人都知道,实际上这个<code>Iterator</code>就是迭代器模式的实现。如果不使用迭代器模式，可以试想一下<code>HasTable</code>、<code>HashSet</code>、<code>HashMap</code>等类型，每一个都得按对应的方式去循环遍历，相当的不方便。</p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">设计模式系列之十一组合模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeuk003swaypbwp3bkrs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-坚持一年背英语单词的总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/18/%E5%9D%9A%E6%8C%81%E4%B8%80%E5%B9%B4%E8%83%8C%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2016-12-18T04:49:12.000Z" itemprop="datePublished">2016-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/18/%E5%9D%9A%E6%8C%81%E4%B8%80%E5%B9%B4%E8%83%8C%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E6%80%BB%E7%BB%93/">坚持一年背英语单词的总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p align="center">
+<img src="/2016/12/18/%E5%9D%9A%E6%8C%81%E4%B8%80%E5%B9%B4%E8%83%8C%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E6%80%BB%E7%BB%93/%E6%89%93%E5%8D%A1%E6%97%A5%E5%8E%86.jpg" class="">
+</p>
+
+<p>&emsp;&emsp;上图为前几天百词斩给我推送的本年度的年终总结。看完这个总结，感觉有必要把在这个过程中的所思所想整理分享出来。</p>
+<h2 id="01-为什么要学英语"><a href="#01-为什么要学英语" class="headerlink" title="01 为什么要学英语"></a>01 为什么要学英语</h2><p>&emsp;&emsp;作为一个已经离开大学很多年的人，平时工作中也是地道的中文环境。年近三十，不禁要问，在这个年纪为什么还要学英文？</p>
+<p>&emsp;&emsp;在知乎上看到过这样一个问题：“知乎跟Quora的区别是怎样的？”，有一个答案是这样回答的：“如果把知乎比喻为一个小水潭，那么Quora就是一片汪洋大海”。在这里解释一下，知乎是国内的一个问答社区，用户基本为国内用户。Quora是国外的一个问答社区，他们的模式基本一样，唯一的区别是Quora的用户分布在世界各地，相互之间以英文沟通交流，在Quora上经常可以看到不同地区、不同语言、不同文化环境之间的语言交锋。</p>
+<p>&emsp;&emsp;我希望通过对英语的掌握，开启另外一扇窗。<strong>世界那么大，我想去看看</strong>。  </p>
+<h2 id="02-关于英语学习的感悟"><a href="#02-关于英语学习的感悟" class="headerlink" title="02 关于英语学习的感悟"></a>02 关于英语学习的感悟</h2><p>&emsp;&emsp;英语一向是我的弱项，上学时的英语成绩也一向是在及格线上挣扎。坚持完一年后，关于英语的学习有一些自己的感受。</p>
+<p>&emsp;&emsp;关于单词的拼写。曾经记不住几个单词，正确的拼写出完整的单词相当的困难。现在，发现拼写单词相当的简单。很多复杂的单词往往都是由简单的单词构成，只需要记住简单单词的拼写即可。另外，记住一个单词的正确发音后，通过正确的发音也能帮助单词的拼写。</p>
+<p>&emsp;&emsp;关于单词的发音。曾经见到生僻的单词基本不知道怎么念，怕念。现在，基本上能根据单词的拼写知道单词该如何念，虽然经常出错，但是已经有了念的底气。</p>
+<p>&emsp;&emsp;当单词量到一定程度，发现语感、语法变得尤为的重要。双十一打折在一堆技术书籍中夹杂了一本《英语语法实践指南》第九版，这是一本高中的复习用书，当把到货的书单发到朋友圈后，很多人感到很诧异……</p>
+<p>&emsp;&emsp;对于这一块，我觉得量变引起了质变。当认识的单词数量上来了之后，所有的一切在不知不觉间似乎变得容易了许多。</p>
+<h2 id="03-关于坚持"><a href="#03-关于坚持" class="headerlink" title="03 关于坚持"></a>03 关于坚持</h2><p>&emsp;&emsp;今年一整年大概背了200多天的单词，每天15个。可能有人认为我是一个有毅力的人，可惜，错了。</p>
+<p>&emsp;&emsp;曾经看到过一个故事，说的是一个大学生在大学里生活相当有计划，每天都准时准点的按照计划执行，相当的有毅力。很多人都以为他生活中也是这样一个人。可是一到暑假，他的节奏完全被打乱了，跟在学校时的他判若两人。可能很多人在上学时都有过这样的经历，每个周末放假前就计划好周末要看什么书，要复习哪些功课。然后，就带了很厚一摞书回家。到了周一上学的路上，一顿悔恨，感觉这一堆书都白带了，因为根本就没有看！~</p>
+<p>&emsp;&emsp;从打卡日历中可以看到，没有圈的部分大多集中在非工作日。所以，周末魔咒对于我也是适用的。</p>
+<p>&emsp;&emsp;在这里，我不想引出周末魔咒这一个话题。恰恰相反，我想分享的是<strong>为什么在工作日的时候能一直坚持下去？</strong></p>
+<p>&emsp;&emsp;**原因在于”习惯”**。从家到公司大概一个多小时，每天到地铁准备上地铁时戴上耳塞准备背单词，到下地铁时刚好背完。我觉得在工作日能一直不间断坚持下去的原因在于每天都有一个上班的一小时，而且养成了在这一小时里背单词的习惯。</p>
+<p>&emsp;&emsp;所以，我认为对于坚持干一件事毅力固然重要，而习惯的养成也起很大的作用。每天上地铁时固定的提醒，每天雷打不动的地铁一小时为坚持营造了良好的条件。</p>
+<p>&emsp;&emsp;最后，我还想说的是这一条件是可以创造的。比如下班回家的一小时可以用来在kindle中看书；比如中饭到下午上班之间的时间可以用来扫订阅的RSS；比如晚饭后到睡觉这一段时间可以用来看电影；<strong>开吃晚饭就同时触发电视的开关，这样一种习惯相比于毅力来得更加的轻松自然。</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/18/%E5%9D%9A%E6%8C%81%E4%B8%80%E5%B9%B4%E8%83%8C%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E6%80%BB%E7%BB%93/" data-id="cm5tqeeui003mwayp7wo9bfp8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之九模板方法模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-17T09:23:23.000Z" itemprop="datePublished">2016-12-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>模板方法模式：</strong>在一个方法中定义一个算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤。</p>
+</blockquote>
+<p>&emsp;&emsp;有一个泡茶和冲咖啡的业务，他们都有差不多相似的流程。</p>
+<h2 id="一、不使用设计模式"><a href="#一、不使用设计模式" class="headerlink" title="一、不使用设计模式"></a>一、不使用设计模式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tea</span> </span>&#123;</span><br><span class="line">	<span class="comment">//泡茶流程</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		boilWater();</span><br><span class="line">		steepTeaBag();</span><br><span class="line">		pourInCup();</span><br><span class="line">		addLemon();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">steepTeaBag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;泡茶&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addLemon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加柠檬&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Coffee</span> </span>&#123;</span><br><span class="line">	<span class="comment">//冲咖啡流程</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		boilWater();</span><br><span class="line">		brewCoffeeGrinds();</span><br><span class="line">		pourInCup();</span><br><span class="line">		addSugarAndMilk();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brewCoffeeGrinds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;冲咖啡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addSugarAndMilk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加牛奶和糖&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、模板方法模式的使用"><a href="#二、模板方法模式的使用" class="headerlink" title="二、模板方法模式的使用"></a>二、模板方法模式的使用</h2><p>&emsp;&emsp;下面以一个代码样例来说明模板方法模式的使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义模板方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line">	<span class="comment">//冲咖啡和泡茶的模板，注意这里的final,意味着该方法不可修改，即模板中方法的先后顺序被固定</span></span><br><span class="line">	<span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">template</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//烧水</span></span><br><span class="line">		boilWater();</span><br><span class="line">		<span class="comment">//冲泡：用沸水&quot;浸泡&quot;茶叶/用沸水&quot;冲泡&quot;咖啡</span></span><br><span class="line">		brew();</span><br><span class="line">		<span class="comment">//把泡好的饮料倒进杯子</span></span><br><span class="line">		pourInCup();</span><br><span class="line">		<span class="comment">//加调料</span></span><br><span class="line">		addCondiments();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**这两个方法交给子类去实现**/</span></span><br><span class="line">	<span class="comment">//茶应该&quot;浸泡&quot;，咖啡应该&quot;冲泡&quot;</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//茶加柠檬，咖啡加牛奶和糖</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**这两个方法属于公用方法**/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tea</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;浸泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加柠檬&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Coffee</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;冲泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加糖和牛奶&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Tea tea = <span class="keyword">new</span> Tea();</span><br><span class="line">		Coffee coffee = <span class="keyword">new</span> Coffee();</span><br><span class="line">		<span class="comment">//泡茶</span></span><br><span class="line">		tea.template();</span><br><span class="line">		<span class="comment">//冲咖啡</span></span><br><span class="line">		coffee.template();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、使用钩子-hook-来做一些其它操作"><a href="#三、使用钩子-hook-来做一些其它操作" class="headerlink" title="三、使用钩子(hook)来做一些其它操作"></a>三、使用钩子(hook)来做一些其它操作</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义模板方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplateMethodWithHook</span> </span>&#123;</span><br><span class="line">	<span class="comment">//冲咖啡和泡茶的模板，注意这里的final,意味着该方法不可修改，即模板中方法的先后顺序被固定</span></span><br><span class="line">	<span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">template</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//烧水</span></span><br><span class="line">		boilWater();</span><br><span class="line">		<span class="comment">//冲泡：用沸水&quot;浸泡&quot;茶叶/用沸水&quot;冲泡&quot;咖啡</span></span><br><span class="line">		brew();</span><br><span class="line">		<span class="comment">//把泡好的饮料倒进杯子</span></span><br><span class="line">		pourInCup();</span><br><span class="line">		<span class="comment">//加调料</span></span><br><span class="line">		<span class="keyword">if</span> (customerWantsCondiments()) &#123;</span><br><span class="line">			addCondiments();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**这两个方法交给子类去实现**/</span></span><br><span class="line">	<span class="comment">//茶应该&quot;浸泡&quot;，咖啡应该&quot;冲泡&quot;</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//茶加柠檬，咖啡加牛奶和糖</span></span><br><span class="line">	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**这两个方法属于公用方法**/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">boilWater</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;烧水&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pourInCup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;倒进杯子&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里是个钩子，子类可决定是否需要加调料。也就是说子类可通过这个hook控制模板定义的逻辑</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">customerWantsCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TeaWithHook</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;浸泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加柠檬&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">customerWantsCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//不需要加柠檬</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CoffeeWithHook</span> <span class="keyword">extends</span> <span class="title">TemplateMethod</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">brew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;冲泡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;加糖和牛奶&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">customerWantsCondiments</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//需要加糖和牛奶</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHook</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		TeaWithHook teaHook = <span class="keyword">new</span> TeaWithHook();</span><br><span class="line">		CoffeeWithHook coffeeHook = <span class="keyword">new</span> CoffeeWithHook();</span><br><span class="line">		<span class="comment">//泡茶，不加柠檬</span></span><br><span class="line">		teaHook.template();</span><br><span class="line">		<span class="comment">//冲咖啡，加糖和牛奶</span></span><br><span class="line">		coffeeHook.template();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、比较"><a href="#四、比较" class="headerlink" title="四、比较"></a>四、比较</h2><table>
+<thead>
+<tr>
+<th>不使用设计模式</th>
+<th align="center">使用模板方法模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coffee和Tea主导一切；它们控制了算法</td>
+<td align="center">TemplateMethod控制了一切，它拥有算法，并且<strong>保护这个算法</strong></td>
+</tr>
+<tr>
+<td>Coffee和Tea之间存在着重复的代码</td>
+<td align="center">通过TemplateMethod类实现了代码的复用</td>
+</tr>
+<tr>
+<td>如果算法变了，需要修改Coffee和Tea类</td>
+<td align="center">新增算法或调整顺序只需要修改TemplateMethod类</td>
+</tr>
+<tr>
+<td>由于类的组织不具有弹性，新加入第三种类型时需要完全重写一份</td>
+<td align="center">由于有模板存在，只需要实现差异化的逻辑即可</td>
+</tr>
+<tr>
+<td>算法的知识和它的实现会分散在许多类中</td>
+<td align="center">TemplateMethod类专注在算法本身，而由子类提供完整的实现</td>
+</tr>
+</tbody></table>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeuh003iwayp4gdm974t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之八外观模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-17T07:46:21.000Z" itemprop="datePublished">2016-12-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>外观模式：</strong>提供了一个统一的接口，用来访问子系统的一群接口。外观定义了一个高层接口，让子系统更容易使用。</p>
+</blockquote>
+<p>&emsp;&emsp;下面通过一个图来说明外观模式的使用，此图来自于《Head First设计模式》一书。</p>
+<img src="/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F.jpg" class="">
+
+<p>&emsp;&emsp;从上图中可以看到，通过一个统一的Facade来调用复杂的子系统的类。</p>
+<p>&emsp;&emsp;按我的理解，外观模式实际上就是抽取一些公共的业务逻辑封装起来，以统一的方法来调用。使代码结构更加清晰，易于维护，避免流水代码。</p>
+<p>&emsp;&emsp;举一个简单的例子，下班回家三件事：开门、开灯、开电视。上班出门要干三件事：关电视、关灯、关门。</p>
+<h3 id="流水线似的写法"><a href="#流水线似的写法" class="headerlink" title="流水线似的写法"></a>流水线似的写法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Door</span> </span>&#123;</span><br><span class="line">	<span class="comment">//开门</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//关门</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Light</span> </span>&#123;</span><br><span class="line">	<span class="comment">//开灯</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">on</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//关灯</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">off</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TV</span> </span>&#123;</span><br><span class="line">	<span class="comment">//开电视</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">on</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//关电视</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">off</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestOld</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		Light light = <span class="keyword">new</span> Light();</span><br><span class="line">		Door door 	= <span class="keyword">new</span> Door();</span><br><span class="line">		TV tv 		= <span class="keyword">new</span> TV();</span><br><span class="line">		<span class="comment">//回家的业务逻辑</span></span><br><span class="line">		door.open();</span><br><span class="line">		light.on();</span><br><span class="line">		tv.on();</span><br><span class="line">		<span class="comment">//出门的业务逻辑</span></span><br><span class="line">		tv.off();</span><br><span class="line">		light.off();</span><br><span class="line">		door.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用外观模式进行封装"><a href="#使用外观模式进行封装" class="headerlink" title="使用外观模式进行封装"></a>使用外观模式进行封装</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//外观模式的实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</span><br><span class="line">	TV tv;</span><br><span class="line">	Light light;</span><br><span class="line">	Door door;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Facade</span><span class="params">(Door door,Light light,TV tv)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.tv	= tv;</span><br><span class="line">		<span class="keyword">this</span>.light = light;</span><br><span class="line">		<span class="keyword">this</span>.door = door;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//封装回家的业务逻辑</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">goHome</span><span class="params">()</span></span>&#123;</span><br><span class="line">		door.open();</span><br><span class="line">		light.on();</span><br><span class="line">		tv.on();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//封装出门的业务逻辑</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">goOut</span><span class="params">()</span></span>&#123;</span><br><span class="line">		tv.off();</span><br><span class="line">		light.off();</span><br><span class="line">		door.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestNew</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		Light light = <span class="keyword">new</span> Light();</span><br><span class="line">		Door door 	= <span class="keyword">new</span> Door();</span><br><span class="line">		TV tv 		= <span class="keyword">new</span> TV();</span><br><span class="line">		Facade facade = <span class="keyword">new</span> Facade(door,light,tv);</span><br><span class="line">		<span class="comment">/* 1.对于后期的运维人员，只需要知道这两个方法要干的事情即可，而不需要点开看里面的具体实现逻辑</span></span><br><span class="line"><span class="comment">		 * 2.如果是流水线的写法，则需要完完整整的把所有逻辑从头看到尾</span></span><br><span class="line"><span class="comment">		 * 3.这样的写法让代码结构更清晰</span></span><br><span class="line"><span class="comment">		 * 4.如果业务逻辑有变更，只需要修改对应的封装即可，而不需要去修改散落着各处的代码</span></span><br><span class="line"><span class="comment">		 * */</span></span><br><span class="line">		<span class="comment">//回家逻辑</span></span><br><span class="line">		facade.goHome();</span><br><span class="line">		<span class="comment">//出门逻辑</span></span><br><span class="line">		facade.goOut();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上一篇：<a href="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeuj003pwaypfohh0fgs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-文章推荐-《独家回应-陈天桥与加州理工的1亿美元》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/16/%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/" class="article-date">
+  <time datetime="2016-12-16T04:48:12.000Z" itemprop="datePublished">2016-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/16/%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/">文章推荐:《独家回应:陈天桥与加州理工的1亿美元》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;在微信公众号<strong>知识分子</strong>上看到了这篇文章，对文中的这一段印象深刻。</p>
+<p>&emsp;&emsp;在一次访谈中陈天桥被问到“<strong>为什么会产生支持脑科学研究的想法？</strong>”</p>
+<p>他给出的答案如下：</p>
+<blockquote>
+<p>&emsp;&emsp;十七年前我们创立第一个游戏式虚拟社区，五年后就已经有千万人同时在线，十七年的商业运营让我们积累了财富，积累了对世界的认知，也积累了迷思，比如<strong>为什么虚拟世界的种种虚拟成就或痛苦会如同真实世界一样深刻地影响每个参与者，甚至促使其做出种种匪夷所思的决定等等。</strong>对于这些迷思，过去这么多年我们试图从哲学、宗教、科学多个角度来解释，但思考的结果往往是带来更多的迷惑。</p>
+</blockquote>
+<blockquote>
+<p>&emsp;&emsp;这些问题既重大、严肃又充满无尽的想象空间。它吸引我们如同回到十七年前创业之初一样，从零开始研究各个可投入的社会领域，从零开始构画各种发展策略。所幸的是，我们比起十七年前拥有更多智慧而坦诚的朋友和师长。他们鼓励并支持我们以最大的勇气和最坚定的信念来继续探寻上述我们包括所有人都迷惑的问题。因此我们把<strong>这个理想定义为——全力支持人类在对大脑认知领域的无尽探索。</strong></p>
+</blockquote>
+<blockquote>
+<p>&emsp;&emsp;脑科学作为人类现有知识体系里最为复杂而困难的课题之一，既充满魅力又让人望而却步。我们深知支持脑科学研究的决定将带来两个必然的挑战：巨大的付出和漫长的等待。对于前者，<strong>我们的回答是：全力以赴，对于后者，我们的回答是：永不止步。</strong></p>
+</blockquote>
+<p>&emsp;&emsp;看完这个回答，给我也带来了无尽的迷思……另外，有益于全人类的理想以及面对困难的全力以赴与永不止步使人由.衷的敬佩。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/16/%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-%E3%80%8A%E7%8B%AC%E5%AE%B6%E5%9B%9E%E5%BA%94-%E9%99%88%E5%A4%A9%E6%A1%A5%E4%B8%8E%E5%8A%A0%E5%B7%9E%E7%90%86%E5%B7%A5%E7%9A%841%E4%BA%BF%E7%BE%8E%E5%85%83%E3%80%8B/" data-id="cm5tqeeug003fwayp2p9ue3lc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之七适配器模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-14T13:37:23.000Z" itemprop="datePublished">2016-12-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>适配器模式：</strong>将一个类的接口，转换成客户期望的另一个接口。适配器让原本接口不兼容的类可以合作无间。</p>
+</blockquote>
+<p>&emsp;&emsp;对于适配器模式，实际上就是一个转接口的概念。比如iphone7的耳塞必须通过转接才能适配，比如水货笔记本的插头必须通过一个转接口才能适配国内的插座等。下面通过代码来具体认识一下适配器模式。</p>
+<h3 id="原始接口"><a href="#原始接口" class="headerlink" title="原始接口"></a>原始接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原始接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OldInterface</span> </span>&#123;</span><br><span class="line">	<span class="comment">//原始方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">oldWay</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OldWay</span> <span class="keyword">implements</span> <span class="title">OldInterface</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">oldWay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		System.out.println(<span class="string">&quot;This is old way.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="新接口"><a href="#新接口" class="headerlink" title="新接口"></a>新接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//目前的新接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NewInterface</span> </span>&#123;</span><br><span class="line">	<span class="comment">//以新方法去干一件事情</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">newWay</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用适配器适配原始接口"><a href="#使用适配器适配原始接口" class="headerlink" title="使用适配器适配原始接口"></a>使用适配器适配原始接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过适配器，使用新接口去调用老接口的方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adapter</span> <span class="keyword">implements</span> <span class="title">NewInterface</span></span>&#123;</span><br><span class="line">	OldInterface old;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Adapter</span><span class="params">(OldInterface old)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.old = old;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">newWay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		old.oldWay();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		OldWay old = <span class="keyword">new</span> OldWay();</span><br><span class="line">		<span class="comment">//通过适配，使用新接口去调用老接口</span></span><br><span class="line">		Adapter adapter = <span class="keyword">new</span> Adapter(old);</span><br><span class="line">		<span class="comment">//打印：This is old way.</span></span><br><span class="line">		adapter.newWay();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;通过上述代码，可以很清晰的理解适配器模式的核心思想。适配器模式大量存在与新旧代码兼容，以及如今的前后端分离中的数据接口对接部分。</p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeuf003awaypfawmb53s" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-读《巨流河》有感" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/" class="article-date">
+  <time datetime="2016-12-12T14:42:38.000Z" itemprop="datePublished">2016-12-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/">读《巨流河》有感</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/%E5%B7%A8%E6%B5%81%E6%B2%B3.gif" class="" title="《巨流河》-齐邦媛">
+
+<p>&emsp;&emsp;这本书是一位八十多岁的老太太所写的自传。从小学、初中、高中一直到大学的抗战时期到横渡海峡后的台湾时期。以一个历史见证人的角度，徐徐讲述了在那波澜壮阔的历史背景下，她所遇见的人与经历的事。通过本书，可以深切体会到作为一个解放后迁往台湾的异乡人那种复杂的感情。本书十分值得一读，尤其是<strong>台版</strong>。</p>
+<h2 id="关于国家"><a href="#关于国家" class="headerlink" title="关于国家"></a>关于国家</h2><p>&emsp;&emsp;《巨流河》的开篇写道“献给──所有为国家献身的人。”，看了作者讲述的张大飞以及作者的父亲的一生，算是真正理解了这句话的含义。</p>
+<p>&emsp;&emsp;父母被日本人所杀的张大飞刚满十八岁即参军，为了保卫国家成为一名飞行员。抗战胜利前夕壮烈牺牲，二十多岁正值青春年华即走完自己的一生。对比如今的和平时代，跟他年龄相仿的人估计才刚刚大学毕业，懵懵懂懂的进入社会，一些人可能还在啃老。而张大飞为了保家卫国，此时已在蓝天中与日本人的战斗机战斗了无数个回合。而这一切，是真实发生在距今六七十年前的事。</p>
+<p>&emsp;&emsp;齐邦媛的父亲留学德国，回国后参加郭松龄的改革兵变失败而被迫流亡。而后，抗日战争爆发，积极与日本人做斗争。在这之前，只知道那时的国民党腐败横行，各种无能。看完了齐邦媛讲述父亲的事迹，发现不能一概而论。她的父亲为了整个国家民族，为了东北，为了沦陷区的父老乡亲而呕心沥血。在那个时代背景下的人们，同仇敌忾，把民族大义放在首位，不计个人得失共同抵御外敌。</p>
+<p>&emsp;&emsp;站在国家的角度，应当摒弃政党的偏见，像这些为了国家而牺牲的人不应被遗忘，值得永远铭记。</p>
+<h2 id="关于文学"><a href="#关于文学" class="headerlink" title="关于文学"></a>关于文学</h2><p>&emsp;&emsp;大学时，齐邦媛原本选择的是哲学，后来转为英语文学，师从朱光潜。书中有两个关于朱光潜的轶事。</p>
+<p>&emsp;&emsp;其一：“一日，一学生见朱光潜的院子里满地落叶，相帮老师打扫一下，朱老师立刻阻止他说，我等了好久才存了这么多层落叶，晚上在书房看书，可以听见雨落下来，风卷起的声音。这个记忆，比赞许多秋天境界的诗更为生动、深刻。”；</p>
+<p>&emsp;&emsp;其二：“朱老师读到”the fowls of heaven have wings，……chains tie us down by land and sea”（天上的鸟儿有翅膀，链紧我们的是大地和海洋），说中国古诗有相似的风云有鸟路，江汉限无梁”之句，此时竟然语带便咽，稍微停顿又继续念下去，念“if any chance to heave a sign”（若有人为我叹息，）“they pity me，and not my grief.”（他们怜悯的是我,不是我的悲苦。）老师取下了眼镜，眼泪流下双颊，突然把书合上，快步走出教室，留下满室愕然，却无人开口说话。也许，在那样一个艰困的时代，坦率表现感情是一件奢侈的事，对于仍然崇拜偶的大学三年级学生来说，这是一件难于评论的意外，甚至是感到荣幸的事，能看到文学名师至情的眼泪。”</p>
+<p>&emsp;&emsp;上面的轶事中，文学的美让一位老师在众目睽睽之下而流泪。有这样一位老师，沉浸在文学的海洋中应当有无穷的乐趣。</p>
+<p>&emsp;&emsp;书中讲到了英诗，知道了雪莱的《云雀之歌》、济慈的《夜莺颂》，通过作者的介绍而真切感受到了英诗的美妙。后来作者到美国进修，那种对知识的渴望，对文学的追求令人心生敬佩。</p>
+<h2 id="关于人生"><a href="#关于人生" class="headerlink" title="关于人生"></a>关于人生</h2><p>&emsp;&emsp;看完了《巨流河》，只觉得人生是何其的短暂。</p>
+<p>&emsp;&emsp;作者在八十岁高龄时回忆起少年往事恍若隔世。两岸开放探亲后，相隔半个世纪回到大陆。见到曾经的大学同学，印象中个个花枝招展，此时此刻都变成了老太太。大家都变了模样，各自经历了自己的人生而到了暮年。慢慢的，收到曾经大学同学一个个去逝的消息，半个世纪相隔两岸没有交集，只依稀记得同学时期的故事，给人一种快速来到这个世界上然后又快速离开的错觉。</p>
+<p>&emsp;&emsp;人生短暂，更显得每一天、每时每刻都更加珍贵。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/12/%E8%AF%BB%E3%80%8A%E5%B7%A8%E6%B5%81%E6%B2%B3%E3%80%8B%E6%9C%89%E6%84%9F/" data-id="cm5tqeeue0038waypdsrphnov" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jQuery-validator-addMethod-动态提示信息" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/12/jQuery-validator-addMethod-%E5%8A%A8%E6%80%81%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF/" class="article-date">
+  <time datetime="2016-12-12T07:22:19.000Z" itemprop="datePublished">2016-12-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/FrontEnd/">FrontEnd</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/12/jQuery-validator-addMethod-%E5%8A%A8%E6%80%81%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF/">jQuery validator addMethod 动态提示信息</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于jQuery validator addMethod自定义验证规则网络上大部分都是这样写的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.validator.addMethod(<span class="string">&#x27;PD_password&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = value.length;</span><br><span class="line">    <span class="keyword">if</span>(len&lt;<span class="number">6</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(len&gt;<span class="number">15</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;, <span class="string">&quot;密码必须在6-15位之间&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;现在，我想要更具体的提示信息，即能准确的提示到底是大于15位还是小于6位。在中文网页搜了一圈都没找到答案，最后在stackoverflow上找到了答案。想了想，感觉有必要把如何实现该需求分享一下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$.validator.addMethod(<span class="string">&#x27;PD_password&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">value, element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = value.length;</span><br><span class="line">    <span class="keyword">if</span>(len&lt;<span class="number">6</span>)&#123;</span><br><span class="line">        $(element).data(<span class="string">&#x27;error-msg&#x27;</span>,<span class="string">&#x27;长度不能少于6位&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(len&gt;<span class="number">15</span>)&#123;</span><br><span class="line">        $(element).data(<span class="string">&#x27;error-msg&#x27;</span>,<span class="string">&#x27;长度不能大于15位&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">params, element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $(element).data(<span class="string">&#x27;error-msg&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/12/jQuery-validator-addMethod-%E5%8A%A8%E6%80%81%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF/" data-id="cm5tqeeud0034wayp63vpc82x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Gulp合并requirejs并MD5文件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/" class="article-date">
+  <time datetime="2016-12-11T08:46:51.000Z" itemprop="datePublished">2016-12-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/FrontEnd/">FrontEnd</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/">Gulp合并requirejs并MD5文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="项目目录结构"><a href="#项目目录结构" class="headerlink" title="项目目录结构"></a>项目目录结构</h2><img src="/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg" class="" title="目录结构">
+
+<p>可以从<a target="_blank" rel="noopener" href="https://github.com/muchstudy/GulpDemo">https://github.com/muchstudy/GulpDemo</a> 这里下载样例代码，求Star!  </p>
+<p>说明：  </p>
+<ol>
+<li>js的的依赖关系为<code>main.build.js</code>–&gt;<code>three.js</code>–&gt;<code>two.js</code>–&gt;<code>one.js</code></li>
+<li><code>main-build.js</code>为构建的入口</li>
+<li>从github上拿下来的项目是可以直接运行的。可执行<code>gulp clean</code>与<code>gulp</code>观察结果。</li>
+</ol>
+<h2 id="文件合并"><a href="#文件合并" class="headerlink" title="文件合并"></a>文件合并</h2><ol>
+<li>在requirejs目录下运行<code>npm init</code>，初始化package.json</li>
+<li>运行<code>npm install gulp --save-dev</code>、<code>npm install gulp-requirejs-optimize --save-dev</code>、``npm install gulp-rename –save-dev`</li>
+</ol>
+<p>文件合并代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp            = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> reqOptimize     = <span class="built_in">require</span>(<span class="string">&#x27;gulp-requirejs-optimize&#x27;</span>);   <span class="comment">//- requireJs文件合并所需模块，选择该模块的原因为相对于其它模块活跃度较高</span></span><br><span class="line"><span class="keyword">var</span> rename          = <span class="built_in">require</span>(<span class="string">&quot;gulp-rename&quot;</span>);               <span class="comment">//- 文件重命名</span></span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;optimize&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">&quot;app/main-build.js&quot;</span>)</span><br><span class="line">        .pipe(reqOptimize(&#123;</span><br><span class="line">            optimize:<span class="string">&quot;none&quot;</span>,                                <span class="comment">//- none为不压缩资源</span></span><br><span class="line">            <span class="comment">//findNestedDependencies: true,                 //- 解析嵌套中的require</span></span><br><span class="line">            paths:&#123;</span><br><span class="line">                <span class="string">&quot;PDAppDir&quot;</span>:<span class="string">&quot;&quot;</span>,                              <span class="comment">//- 所有文件的路径都相对于main-build.js，所以这里为空即可</span></span><br><span class="line">                <span class="string">&quot;jquery&quot;</span>:<span class="string">&quot;empty:&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(rename(<span class="string">&quot;main.min.js&quot;</span>))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;app&#x27;</span>));                            <span class="comment">//- 映射文件输出目录</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>说明：  </p>
+<ol>
+<li>运行<code>gulp optimize</code>即可把<code>main-build.js</code>所依赖的文件合并到<code>main.min.js</code>中。</li>
+<li>在代码中有一个<code>findNestedDependencies</code>参数，意思是代码中如果是使用<code>require</code>方式而不是<code>define</code>方式依赖文件，默认不解析</li>
+<li><code>:empty</code>代表忽略该文件</li>
+<li>reqOptimize的详细参数见requirejs的<a target="_blank" rel="noopener" href="https://github.com/requirejs/r.js/blob/master/build/example.build.js">官方文档</a></li>
+</ol>
+<h2 id="文件md5"><a href="#文件md5" class="headerlink" title="文件md5"></a>文件md5</h2><p>运行：<code>npm install gulp-rev --save-dev</code></p>
+<h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>文件MD5代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">&quot;md5&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">&quot;app/main-build.js&quot;</span>)</span><br><span class="line">        .pipe(reqOptimize(&#123;</span><br><span class="line">            optimize:<span class="string">&quot;none&quot;</span>,                                <span class="comment">//- none为不压缩资源</span></span><br><span class="line">            <span class="comment">//findNestedDependencies: true,                 //- 解析嵌套中的require</span></span><br><span class="line">            paths:&#123;</span><br><span class="line">                <span class="string">&quot;PDAppDir&quot;</span>:<span class="string">&quot;&quot;</span>,                              <span class="comment">//- 所有文件的路径都相对于main-build.js，所以这里为空即可</span></span><br><span class="line">                <span class="string">&quot;jquery&quot;</span>:<span class="string">&quot;empty:&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(rev())                                        <span class="comment">//- 文件名加MD5后缀</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&quot;app&quot;</span>))                             <span class="comment">//- 生成MD5后的文件</span></span><br><span class="line">        .pipe(rev.manifest(&#123;<span class="attr">merge</span>:<span class="literal">true</span>&#125;))                   <span class="comment">//- 生成一个rev-manifest.json</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))                                <span class="comment">//- 映射文件输出目录</span></span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>运行<code>gulp md5</code>，此时就会生成类似于这样的文件<code>main-min-c144065c18.js</code>。现在问题就来了，文件名变了，就需要动态替换首页上的引用文件名。</p>
+<h3 id="路径替换"><a href="#路径替换" class="headerlink" title="路径替换"></a>路径替换</h3><p>运行：<code>mpn install gulp-rev-collector --save-dev</code>、<code>npm install through2 --save-dev</code><br>代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">modify</span>(<span class="params">modifier</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> through2.obj(<span class="function"><span class="keyword">function</span>(<span class="params">file, encoding, done</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> content = modifier(<span class="built_in">String</span>(file.contents));</span><br><span class="line">        file.contents = <span class="keyword">new</span> Buffer(content);</span><br><span class="line">        <span class="built_in">this</span>.push(file);</span><br><span class="line">        done();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replaceSuffix</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> data.replace(<span class="regexp">/\.js/gmi</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//去掉.js后缀，因为requirejs的引用一般都不带后缀</span></span><br><span class="line">gulp.task(<span class="string">&quot;replaceSuffix&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src([<span class="string">&#x27;rev-manifest.json&#x27;</span>])</span><br><span class="line">        .pipe(modify(replaceSuffix))            <span class="comment">//- 去掉.js后缀</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&quot;replaceHomePath&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    gulp.src([<span class="string">&#x27;rev-manifest.json&#x27;</span>, <span class="string">&#x27;index-build.html&#x27;</span>])</span><br><span class="line">        .pipe(revCollector())                   <span class="comment">//- 替换为MD5后的文件名</span></span><br><span class="line">        .pipe(rename(<span class="string">&quot;index.html&quot;</span>))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        .on(<span class="string">&#x27;end&#x27;</span>, cb);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>依次运行<code>gulp replaceSuffix</code>、<code>gulp replaceHomePath</code>即可生成可运行的首页。相对于原始首页，依赖的文件路径为md5后的路径。</p>
+<h2 id="整合"><a href="#整合" class="headerlink" title="整合"></a>整合</h2><p>从上面可以看到，这一套下来需要运行一系列的task，而且这些task的运行还有先后顺序。下面尝试使用一个task来完成整个任务。由于gulp的task都是异步运行的，所以需要使用到<code>run-sequence</code><br>安装<code>npm install gulp-clean --save-dev</code>、<code>npm install run-sequence --save-dev</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除掉上一次构建时创建的资源</span></span><br><span class="line">gulp.task(<span class="string">&quot;clean&quot;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src([</span><br><span class="line">        <span class="string">&#x27;rev-manifest.json&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;**/*-build-*.js&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;index.html&#x27;</span></span><br><span class="line">    ]).pipe(clean());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建总入口</span></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    runSequence(</span><br><span class="line">        <span class="string">&quot;clean&quot;</span>,                <span class="comment">//- 上一次构建的结果清空</span></span><br><span class="line">        <span class="string">&quot;md5&quot;</span>,                  <span class="comment">//- 文件合并与md5</span></span><br><span class="line">        <span class="string">&quot;replaceSuffix&quot;</span>,        <span class="comment">//- 替换.js后缀</span></span><br><span class="line">        <span class="string">&quot;replaceHomePath&quot;</span>,      <span class="comment">//- 首页路径替换为md5后的路径</span></span><br><span class="line">        callback);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>说明:  </p>
+<ol>
+<li>可以看到上面的task中最后都有一句<code>.on(&#39;end&#39;, cb)</code>这个是为了解决task任务异步运行的问题</li>
+<li>此时，只需要运行<code>gulp</code>即可完成所有的构建任务。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/11/Gulp%E5%90%88%E5%B9%B6requirejs%E5%B9%B6MD5%E6%96%87%E4%BB%B6/" data-id="cm5tqeeuc0031wayp7kme2gue" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之六命令模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-10T02:50:54.000Z" itemprop="datePublished">2016-12-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>命令模式：</strong>将“请求”封装成对象，以便使用不同的请求、队列或者日志来参数化其他对象。命令模式也可支持可撤销的操作。</p>
+</blockquote>
+<p>&emsp;&emsp;有一个这样的业务逻辑，在客厅的进门处有一个开关面板，该面板上有两个开关，第一个开关是打开客厅的灯，第二个开关是打开客厅的电视。下面就来具体实现一下。  </p>
+<p>首先实现电视与灯:  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Light</span> </span>&#123;</span><br><span class="line">	String location = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Light</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.location = location;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">on</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;打开&quot;</span>+location+<span class="string">&quot;的灯&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">off</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;关闭&quot;</span>+location+<span class="string">&quot;的灯&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Television</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;打开电视&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;关闭电视&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="硬编码的方式实现开关面板功能"><a href="#硬编码的方式实现开关面板功能" class="headerlink" title="硬编码的方式实现开关面板功能"></a>硬编码的方式实现开关面板功能</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开关控制器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwitchControlOld</span> </span>&#123;</span><br><span class="line">	Light light = <span class="keyword">new</span> Light(<span class="string">&quot;客厅&quot;</span>);</span><br><span class="line">	Television television = <span class="keyword">new</span> Television();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//打开第一个开关</span></span><br><span class="line">		<span class="keyword">if</span>(solt==<span class="number">0</span>)&#123;</span><br><span class="line">			light.on();</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(solt==<span class="number">1</span>)&#123;</span><br><span class="line">			television.open();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">offButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//关闭第一个开关</span></span><br><span class="line">		<span class="keyword">if</span>(solt==<span class="number">0</span>)&#123;</span><br><span class="line">			light.off();</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(solt==<span class="number">1</span>)&#123;</span><br><span class="line">			television.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从上面可以看到，实现得十分的不友好，如果开关面板上再加个开关按钮就必须得再加一组判断。而且，开关控制面板跟具体的电器开关逻辑强耦合。</p>
+<h3 id="使用命令模式重新实现该逻辑"><a href="#使用命令模式重新实现该逻辑" class="headerlink" title="使用命令模式重新实现该逻辑"></a>使用命令模式重新实现该逻辑</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可以理解为这里为转接口的定义</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	<span class="comment">//运行</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//回退</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开灯命令</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LightOnCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Light light;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LightOnCommand</span><span class="params">(Light light)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.light = light;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		light.on();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		light.off();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//关灯命令</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LightOffCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Light light;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LightOffCommand</span><span class="params">(Light light)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.light = light;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		light.off();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		light.on();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打开电视</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TelevisionOnCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Television television;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TelevisionOnCommand</span><span class="params">(Television television)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.television = television;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.open();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//关闭电视</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TelevisionOffCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">	Television television;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TelevisionOffCommand</span><span class="params">(Television television)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.television = television;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.close();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		television.open();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用命令模式实现的开关控制器"><a href="#使用命令模式实现的开关控制器" class="headerlink" title="使用命令模式实现的开关控制器"></a>使用命令模式实现的开关控制器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开关控制器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwitchControl</span> </span>&#123;</span><br><span class="line">	Command[] onCommands = <span class="keyword">new</span> Command[<span class="number">2</span>];</span><br><span class="line">	Command[] offCommands = <span class="keyword">new</span> Command[<span class="number">2</span>];</span><br><span class="line">	<span class="comment">//把开关与具体要干的事情关联起来</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCommand</span><span class="params">(<span class="keyword">int</span> solt,Command onCommand,Command offCommand)</span> </span>&#123;</span><br><span class="line">		onCommands[solt] = onCommand;</span><br><span class="line">		offCommands[solt] = offCommand;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//按下开关</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		onCommands[solt].execute();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//回退</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">offButtonWasPressed</span><span class="params">(<span class="keyword">int</span> solt)</span> </span>&#123;</span><br><span class="line">		onCommands[solt].undo();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//有两个开关的开关控制器</span></span><br><span class="line">		SwitchControl control = <span class="keyword">new</span> SwitchControl();</span><br><span class="line">		<span class="comment">//把电灯逻辑绑定到第一个开关上</span></span><br><span class="line">		Light light = <span class="keyword">new</span> Light(<span class="string">&quot;客厅&quot;</span>);</span><br><span class="line">		control.setCommand(<span class="number">0</span>,<span class="keyword">new</span> LightOnCommand(light),<span class="keyword">new</span> LightOffCommand(light));</span><br><span class="line">		control.onButtonWasPressed(<span class="number">0</span>);		<span class="comment">//- 打印：打开客厅的灯</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//把电视逻辑绑定到第二个开关上</span></span><br><span class="line">		Television television = <span class="keyword">new</span> Television();</span><br><span class="line">		control.setCommand(<span class="number">1</span>,<span class="keyword">new</span> TelevisionOnCommand(television),<span class="keyword">new</span> TelevisionOffCommand(television));</span><br><span class="line">		control.onButtonWasPressed(<span class="number">1</span>);		<span class="comment">//- 打印：打开电视</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码中可以看到，对于开关控制面板来讲，它只需要按下开关并执行命令的<code>execute</code>方法，不需要知道每个电器的具体实现。  </p>
+<p>&emsp;&emsp;通过使用命令模式对代码的改造，让开关控制器跟具体电器的开/关彻底的解耦。如果想要在控制器上增加新的按钮，可以很方便的增加上去。使得代码更加清晰，易于扩展与维护。</p>
+<p>&emsp;&emsp;从命令模式的特性中可以看出，如果此时的需求变为按下一个开关需要同时打开灯与电视，那么只需要一个<code>command数组</code>即可。把<code>LightOnCommand</code>和<code>TelevisionOnCommand</code>放入其中，遍历调用<code>execute</code>。</p>
+<p>&emsp;&emsp;另外，在队列请求中大量的用到了命令模式。一个个的请求依次而来，接收端不需要知道每个请求的具体逻辑，只需要依次调用请求的<code>execute</code>方法即可完成请求的处理。  </p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">设计模式系列之五工厂模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeuc002zwaypa3og8wlw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/13/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/15/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

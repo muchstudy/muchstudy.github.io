@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>HTTP缓存详解 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文对我目前所了解的HTTP缓存知识做一个分享，希望能通过本文能让大家对HTTP缓存的基础知识有所了解。  使用缓存有如下几个好处：  缓存减少了冗余的数据传输， 节省了你的网络费用。 缓存缓解了网络瓶颈的问题。 不需要更多的带宽就能够更快地加载页面。 缓存降低了对原始服务器的要求。 服务器可以更快地响应，避免过载的出现。 缓存降低了距离时延， 因为从较远的地方加载页面会更慢一些。  一、HTT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP缓存详解">
+<meta property="og:url" content="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="本文对我目前所了解的HTTP缓存知识做一个分享，希望能通过本文能让大家对HTTP缓存的基础知识有所了解。  使用缓存有如下几个好处：  缓存减少了冗余的数据传输， 节省了你的网络费用。 缓存缓解了网络瓶颈的问题。 不需要更多的带宽就能够更快地加载页面。 缓存降低了对原始服务器的要求。 服务器可以更快地响应，避免过载的出现。 缓存降低了距离时延， 因为从较远的地方加载页面会更慢一些。  一、HTT">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/1.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/2.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/3.jpg">
+<meta property="og:image" content="http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif">
+<meta property="article:published_time" content="2016-08-18T04:18:46.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.571Z">
+<meta property="article:author" content="YiYing">
+<meta property="article:tag" content="缓存">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HTTP缓存详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2016-08-18T04:18:46.000Z" itemprop="datePublished">2016-08-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTTP缓存详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文对我目前所了解的HTTP缓存知识做一个分享，希望能通过本文能让大家对HTTP缓存的基础知识有所了解。</p>
+</blockquote>
+<p>使用缓存有如下几个好处：</p>
+<ul>
+<li>缓存减少了冗余的数据传输， 节省了你的网络费用。</li>
+<li>缓存缓解了网络瓶颈的问题。 不需要更多的带宽就能够更快地加载页面。</li>
+<li>缓存降低了对原始服务器的要求。 服务器可以更快地响应，避免过载的出现。</li>
+<li>缓存降低了距离时延， 因为从较远的地方加载页面会更慢一些。</li>
+</ul>
+<h3 id="一、HTTP请求的过程"><a href="#一、HTTP请求的过程" class="headerlink" title="一、HTTP请求的过程"></a>一、HTTP请求的过程</h3><img src="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/1.jpg" class="" title="浏览器-源服务器请求过程">
+
+<p>&emsp;&emsp;我们可以知道，从在浏览器地址栏敲入域名-DNS解析-实际IP-（中间可能多个代理服务器分发）- 源服务器，请求抵达源服务器后，在服务器上找到请求的资源，再通过代理服务器一层层的返回数据到浏览器端。</p>
+<p>&emsp;&emsp;缓存要解决的核心问题为减少客户端对源服务器的HTTP请求，提升性能。试想，像jquery、bootstrap这种更新不频繁的资源当然没有必要每次都从源服务器上获取。</p>
+<blockquote>
+<p>实际上大部分静态文件在下一次内容更新之前都没有必要再走一遍网络从源服务器获取</p>
+</blockquote>
+<h3 id="二、服务器控制缓存的能力"><a href="#二、服务器控制缓存的能力" class="headerlink" title="二、服务器控制缓存的能力"></a>二、服务器控制缓存的能力</h3><blockquote>
+<p>当客户端<code>第一次</code>请求服务器端的资源时，服务器端可以通过如下几种方式控制资源的缓存能力。</p>
+</blockquote>
+<ol>
+<li><code>Cache-Control:no-store</code>,禁止缓存对响应进行复制。</li>
+<li><code>Cache-Control:no-cache</code>,以前老认为这个是不缓存的意思，下面从《HTTP权威指南》摘录一段解释：标识为 no-cache 的响应实际上是可以存储在本地缓存区中的。 只是在与原始服务器进行新鲜度再验证之前，缓存不能将其提供给客户端使用。这个首部使用 donot-serve-from-cache-without-revalidation 这个名字会更恰当一些。</li>
+<li><code>Cache-Control: must-revalidate</code>,在事先没有跟原始服务器进行再验证的情况下，不能提供这个对象的陈旧副本。 缓存仍然可以随意提供新鲜的副本。如果在缓存进行 must-revalidate 新鲜度检查时，原始服务器不可用，缓存就必须返回一条 504 Gateway Timeout 错误。</li>
+<li><code>Cache-Control: max-age=3600</code>,从服务器将文档传来之时起， 可以认为此文档处于新鲜状态的秒数。</li>
+<li><code>Expires: Fri, 05 Jul 2002, 05:00:00 GMT</code>,实际的过期日期,不推荐使用。</li>
+<li><code>不附加过期信息，让缓存确定自己的过期日期</code>,如果响应中没有 Cache-Control: max-age 首部， 也没有 Expires 首部， 缓存可以计算出一个试探性最大使用期。 可以使用任意算法， 但如果得到的最大使用期大于 24 小时， 就应该向响应首部添加一个 Heuristic Expiration Warning（ 试探性过期警告， 警告 13） 首部。LM-Factor 算法是一种很常用的试探性过期算法。</li>
+</ol>
+<h3 id="三、强缓存"><a href="#三、强缓存" class="headerlink" title="三、强缓存"></a>三、强缓存</h3><blockquote>
+<p>浏览器强缓存什么意思呢，就是说当请求一个资源时，直接从本地的浏览器缓存中读取，不发起HTTP请求，对于源服务器来讲，好爽！~~  </p>
+</blockquote>
+<p>下面是京东首页的截图  </p>
+<img src="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/2.jpg" class="" title="浏览器强缓存">
+
+<blockquote>
+<p>像这种显示<code>from cache</code>的就是直接读取的浏览器本地缓存，那么HTTP是如何控制直接读取本地缓存的呢？有如下两种方式。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expires</td>
+<td>响应失效的日期和时间。类似于：<code>Expires:Sat, 20 Aug 2016 01:40:57 GMT</code>，绝对值，告诉客户端在这个时间点之后资源过期，需要重新从服务器取。</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>类似于：<code>Cache-Control:max-age=315360000</code>，相对值，在多久后过期</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>通过上面两种方式，当资源的缓存还在有效期时，浏览器直接从本地缓存中取资源，而不是发起HTTP请求从源服务器取。由于客户端与服务器端存在时间差，Expires并不是那么的靠谱，所以建议使用max-age</p>
+</blockquote>
+<h3 id="四、协商缓存"><a href="#四、协商缓存" class="headerlink" title="四、协商缓存"></a>四、协商缓存</h3><blockquote>
+<p>当浏览器强缓存过期后，就会触发协商缓存机制。这个时候需向服务器发送一个http请求，带上如下列表中的头部信息，如果符合规则（即服务器跟客户端资源一致），直接返回304,不再返回资源内容；否则，返回状态码200与资源内容；最后，更新缓存头信息。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>If-Modified-Since</td>
+<td>告诉服务器只要服务器在这个时间之后又对资源做了修改则发送该资源</td>
+</tr>
+<tr>
+<td>If-None-Match与ETag</td>
+<td>根据资源内容是否变更来判断是否继续使用本地缓存。第一次请求资源时，服务器在response头信息中设置ETag，当资源过期后再次向服务器请求时用<code>If-None-Match:ETag</code>去验证资源是否变更</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>从《HTTP权威指南》中截个图来说明If-None-Match与ETag如何使用的  </p>
+</blockquote>
+<img src="/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/3.jpg" class="" title="If-None-Match与ETag">
+
+<p>&emsp;&emsp;当本地缓存过期后，客户端如何知到该使用上述哪种方式呢？其实，在客户端第一次请求资源时，服务器需要带上<code>Last-Modified</code>与<code>ETag</code>，然后缓存起来，当缓存失效重新进行新鲜度检查时，这两个头部就可以派上用场了。一般来说，<code>ETag</code>的优先级高于<code>Last-Modified</code>。</p>
+<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>&emsp;&emsp;上面分享了缓存的基础知识，在实际情景中，最理想的情况我们当然希望所有静态资源都使用强缓存，当第一次使用资源后，下一次就不再从源服务器取，而是直接从本地获取，这样一来就大大减轻了服务器的压力。But！如果这样的话，那当下一版本发布，用户如何拿到我的更新呢？</p>
+<p>&emsp;&emsp;这里已经有一个讲得<a href="https://www.zhihu.com/question/20790576" target="_bank">通熟易懂的轮子</a>了，我就不再重新造了。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/" data-id="cm5tqeetm000gwayp9y6kbfby" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          HTTP状态码详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/17/%E5%93%88%E4%BD%9B%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE%E3%80%8A%E6%AD%BB%E4%BA%A1%E3%80%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">哈佛大学公开课《死亡》</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

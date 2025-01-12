@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>排序算法08：优先队列与堆排序 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;emsp;&amp;emsp;堆排序一种是基于二叉堆的排序。本文将从优先队列讲起，循序渐进的实现堆排序。这也是《算法》第四版上讲解堆排序的大致章节结构。另外，本文所有的图都来自于此书。 优先队列&amp;emsp;&amp;emsp;普通队列是一种先进先出的数据结构，先放进队列的元素取值时优先被取出来。而优先队列是一种具有最高优先级元素先出的数据结构，比如每次取值都取最大的元素。 &amp;emsp;&amp;emsp;优先队列有两个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法08：优先队列与堆排序">
+<meta property="og:url" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;堆排序一种是基于二叉堆的排序。本文将从优先队列讲起，循序渐进的实现堆排序。这也是《算法》第四版上讲解堆排序的大致章节结构。另外，本文所有的图都来自于此书。 优先队列&amp;emsp;&amp;emsp;普通队列是一种先进先出的数据结构，先放进队列的元素取值时优先被取出来。而优先队列是一种具有最高优先级元素先出的数据结构，比如每次取值都取最大的元素。 &amp;emsp;&amp;emsp;优先队列有两个">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%AF%B9%E6%AF%94%E4%B8%8E%E6%BC%94%E7%A4%BA.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E7%9A%84%E8%A1%A8%E7%A4%BA.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%9C%89%E5%BA%8F%E5%8C%96.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E7%9A%84%E6%93%8D%E4%BD%9C.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E4%B8%8A%E7%9A%84%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E6%93%8D%E4%BD%9C.jpg">
+<meta property="og:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%8E%92%E5%BA%8F.jpg">
+<meta property="article:published_time" content="2017-05-01T15:20:45.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.657Z">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%AF%B9%E6%AF%94%E4%B8%8E%E6%BC%94%E7%A4%BA.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-排序算法08：优先队列与堆排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-05-01T15:20:45.000Z" itemprop="datePublished">2017-05-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      排序算法08：优先队列与堆排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;堆排序一种是基于二叉堆的排序。本文将从优先队列讲起，循序渐进的实现堆排序。这也是《算法》第四版上讲解堆排序的大致章节结构。另外，本文所有的图都来自于此书。</p>
+<h2 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h2><p>&emsp;&emsp;<strong>普通队列</strong>是一种先进先出的数据结构，先放进队列的元素取值时优先被取出来。而<strong>优先队列</strong>是一种具有最高优先级元素先出的数据结构，比如每次取值都取最大的元素。</p>
+<p>&emsp;&emsp;优先队列有两个核心方法，一个是<code>insert(val)</code>向队列中添加元素，另外一个是<code>delMax()</code>删除最大元素（优先级最高的）并返回。可以考虑使用数组来存储优先队列的数据。</p>
+<p><strong>优先队列有如下三种实现方式：</strong></p>
+<ol>
+<li>有序数组(调用insert方法时使用类似插入排序把新增元素放到正确位置，调用delMax方法时直接取数组最后一个元素，因为此时元素已经是有序状态)</li>
+<li>无序数组（调用insert方法时直接把元素放到数组中，调用dexMax方法时使用类似选择排序的方法从数组中找出最大元素，删除并返回）</li>
+<li>堆</li>
+</ol>
+<img src="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%AF%B9%E6%AF%94%E4%B8%8E%E6%BC%94%E7%A4%BA.jpg" class="" title="优先队列时间复杂度对比与演示">
+
+
+<h2 id="堆的算法"><a href="#堆的算法" class="headerlink" title="堆的算法"></a>堆的算法</h2><p>&emsp;&emsp;优先队列可以使用一棵堆有序的二叉树来解决。什么叫做堆有序呢？<strong>当一棵二叉树的每个几点都大于它的两个子节点时，它被称为堆有序。</strong>那么，根节点就是堆有序的二叉树中的最大节点。</p>
+<p>&emsp;&emsp;二叉堆可以使用数组来存储。为了方便起见，根节点放在位置1处（<strong>位置0不使用</strong>），它的两个子节点分别放在位置2和位置3。同理可知，在一个堆中，位置k的节点的父节点的位置为k/2，而它的两个子节点的位置则分别为2k和2k+1.我们就可以这样在树的上下移动：访问a[k]节点的上一层就令k等于k/2，向下一层就令k等于2k或2k+1.</p>
+<p><strong>如下图所示：</strong></p>
+<img src="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E7%9A%84%E8%A1%A8%E7%A4%BA.jpg" class="" title="堆的表示">
+
+<p>&emsp;&emsp;使用二叉堆，我们就能实现对数级别的插入元素和删除最大元素。</p>
+<h3 id="由下自上的堆有序化（上浮）"><a href="#由下自上的堆有序化（上浮）" class="headerlink" title="由下自上的堆有序化（上浮）"></a>由下自上的堆有序化（上浮）</h3><p>&emsp;&emsp;当调用优先队列的<code>insert</code>方法时，我们首先把元素放置到数组的结尾，然后再把该元素上浮到正确的节点，最终形成堆有序状态。</p>
+<p><strong>代码如下：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下标为k的元素上浮到正确位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">swim</span>(<span class="params">arr,k</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(k&gt;<span class="number">1</span> &amp;&amp; less(arr,<span class="built_in">parseInt</span>(k/<span class="number">2</span>),k))&#123;</span><br><span class="line">        <span class="comment">//父节点索引</span></span><br><span class="line">        <span class="keyword">var</span> parentNode = <span class="built_in">parseInt</span>(k/<span class="number">2</span>);</span><br><span class="line">        exch(arr,parentNode,k);</span><br><span class="line">        k = parentNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="由上至下的堆有序化（下沉）"><a href="#由上至下的堆有序化（下沉）" class="headerlink" title="由上至下的堆有序化（下沉）"></a>由上至下的堆有序化（下沉）</h3><p>&emsp;&emsp;当调用优先队列的<code>delMax</code>方法时，我们下标为1的元素（最大元素）和数组最后一个元素交换，返回最大元素，数组长度减去1，即删除最后一个元素。此时的位置1元素不一定是最大元素，就需要下沉到正确位置，重新构造有序堆。</p>
+<p><strong>代码如下：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下标为k的元素下沉到正确位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sink</span>(<span class="params">arr,k,len</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = len ||arr.length;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">2</span>*k &lt;= len)&#123;</span><br><span class="line">        <span class="keyword">var</span> j = <span class="number">2</span>*k;</span><br><span class="line">        <span class="keyword">if</span>(j&lt;len &amp;&amp; less(arr,j,j+<span class="number">1</span>)) j++;</span><br><span class="line">        <span class="keyword">if</span>(!less(arr,k,j)) <span class="keyword">break</span>;</span><br><span class="line">        exch(arr,k,j);</span><br><span class="line">        k = j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>堆有序化示例图：</strong></p>
+<img src="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%9C%89%E5%BA%8F%E5%8C%96.jpg" class="" title="堆有序化">
+
+<p><strong>堆的操作示例图：</strong></p>
+<img src="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E7%9A%84%E6%93%8D%E4%BD%9C.jpg" class="" title="堆的操作">
+
+
+<h2 id="优先队列实现"><a href="#优先队列实现" class="headerlink" title="优先队列实现"></a>优先队列实现</h2><p>&emsp;&emsp;理解了实现堆有序的上浮和下沉两种方法，优先队列的实现就轻而易举了，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 优先队列</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@constructor</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MaxQueue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.queue = [];                <span class="comment">//- 存储基于堆的完全二叉树</span></span><br><span class="line">    <span class="built_in">this</span>.len   = <span class="number">0</span>;                 <span class="comment">//- 存储于queue[1..len]中，queue[0]未使用</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 向优先队列中插入元素</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">val</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">MaxQueue.prototype.insert = <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.queue[++<span class="built_in">this</span>.len] = val;    <span class="comment">//- 从索引1开始添加元素</span></span><br><span class="line">    <span class="comment">//使新增元素上浮到树的正确位置</span></span><br><span class="line">    swim(<span class="built_in">this</span>.queue,<span class="built_in">this</span>.len);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 删除优先队列中的最大元素，并返回该元素</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">MaxQueue.prototype.delMax = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> max = <span class="built_in">this</span>.queue[<span class="number">1</span>];        <span class="comment">//- 从根节点得到最大元素</span></span><br><span class="line">    exch(<span class="built_in">this</span>.queue,<span class="number">1</span>,<span class="built_in">this</span>.len--);  <span class="comment">//- 把最后一个节点放到根节点上，并且让长度索引减一</span></span><br><span class="line">    <span class="built_in">this</span>.queue.length = <span class="built_in">this</span>.len+<span class="number">1</span>; <span class="comment">//- 删除最后一个节点</span></span><br><span class="line">    sink(<span class="built_in">this</span>.queue,<span class="number">1</span>);             <span class="comment">//- 下沉根节点，恢复堆的有序性</span></span><br><span class="line">    <span class="keyword">return</span> max;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MaxQueue.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.queue);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MaxQueue.prototype.isEmpty = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.len==<span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例图：</strong></p>
+<img src="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E4%B8%8A%E7%9A%84%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E6%93%8D%E4%BD%9C.jpg" class="" title="堆上的优先队列操作">
+
+
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>&emsp;&emsp;理解了优先队列，堆排序的逻辑十分简单。第一步：让数组形成堆有序状态；第二步：把堆顶的元素放到数组最末尾，末尾的放到堆顶，在剩下的元素中下沉到正确位置，重复操作即可。</p>
+<p><strong>代码如下：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 堆排序算法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@constructor</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">HeapSort</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">HeapSort.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="comment">//由于arr[0]不使用，放到最后使得能够被排序</span></span><br><span class="line">    <span class="comment">//注意：也可在less和exch中解决，见后面的Java完整代码实现。这里为了对应位置1的元素不使用，方便对照看代码与样例图。</span></span><br><span class="line">    arr[len] = arr[<span class="number">0</span>];</span><br><span class="line">    <span class="comment">//使用下沉来构造二叉堆</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> k=<span class="built_in">parseInt</span>(len/<span class="number">2</span>);k&gt;=<span class="number">1</span>;k--)&#123;</span><br><span class="line">        sink(arr,k,len);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//不断把最大的arr[1]交换到最后，然后让新的arr[1]元素下沉到堆有序状态</span></span><br><span class="line">    <span class="keyword">while</span> (len&gt;<span class="number">1</span>)&#123;</span><br><span class="line">        exch(arr,<span class="number">1</span>,len--);</span><br><span class="line">        sink(arr,<span class="number">1</span>,len);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//删除未使用的arr[0]（也可在less和exch中解决，见Java代码实现）</span></span><br><span class="line">    arr.splice(<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例图：</strong></p>
+<img src="/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/%E5%A0%86%E6%8E%92%E5%BA%8F.jpg" class="" title="堆排序">
+
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><h3 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/5/2.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 优先队列</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@constructor</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">MaxQueue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.queue = [];                <span class="comment">//- 存储基于堆的完全二叉树</span></span><br><span class="line">        <span class="built_in">this</span>.len   = <span class="number">0</span>;                 <span class="comment">//- 存储于queue[1..len]中，queue[0]未使用</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向优先队列中插入元素</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">val</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    MaxQueue.prototype.insert = <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.queue[++<span class="built_in">this</span>.len] = val;    <span class="comment">//- 从索引1开始添加元素</span></span><br><span class="line">        <span class="comment">//使新增元素上浮到树的正确位置</span></span><br><span class="line">        swim(<span class="built_in">this</span>.queue,<span class="built_in">this</span>.len);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除优先队列中的最大元素，并返回该元素</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    MaxQueue.prototype.delMax = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> max = <span class="built_in">this</span>.queue[<span class="number">1</span>];        <span class="comment">//- 从根节点得到最大元素</span></span><br><span class="line">        exch(<span class="built_in">this</span>.queue,<span class="number">1</span>,<span class="built_in">this</span>.len--);  <span class="comment">//- 把最后一个节点放到根节点上，并且让长度索引减一</span></span><br><span class="line">        <span class="built_in">this</span>.queue.length = <span class="built_in">this</span>.len+<span class="number">1</span>; <span class="comment">//- 删除最后一个节点</span></span><br><span class="line">        sink(<span class="built_in">this</span>.queue,<span class="number">1</span>);             <span class="comment">//- 下沉根节点，恢复堆的有序性</span></span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    MaxQueue.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.queue);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    MaxQueue.prototype.isEmpty = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.len==<span class="number">0</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.MaxQueue = MaxQueue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 堆排序算法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@constructor</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">HeapSort</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    HeapSort.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = arr.length;</span><br><span class="line">        <span class="comment">//由于arr[0]不使用，放到最后使得能够被排序</span></span><br><span class="line">        <span class="comment">//注意：也可在less和exch中解决，见后面的Java完整代码实现。这里为了对应位置1的元素不使用，方便对照看代码与样例图。</span></span><br><span class="line">        arr[len] = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="comment">//使用下沉来构造二叉堆</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> k=<span class="built_in">parseInt</span>(len/<span class="number">2</span>);k&gt;=<span class="number">1</span>;k--)&#123;</span><br><span class="line">            sink(arr,k,len);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//不断把最大的arr[1]交换到最后，然后让新的arr[1]元素下沉到堆有序状态</span></span><br><span class="line">        <span class="keyword">while</span> (len&gt;<span class="number">1</span>)&#123;</span><br><span class="line">            exch(arr,<span class="number">1</span>,len--);</span><br><span class="line">            sink(arr,<span class="number">1</span>,len);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//删除未使用的arr[0]（也可在less和exch中解决，见Java代码实现）</span></span><br><span class="line">        arr.splice(<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.HeapSort = HeapSort;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//下标为k的元素上浮到正确位置</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">swim</span>(<span class="params">arr,k</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(k&gt;<span class="number">1</span> &amp;&amp; less(arr,<span class="built_in">parseInt</span>(k/<span class="number">2</span>),k))&#123;</span><br><span class="line">            <span class="comment">//父节点索引</span></span><br><span class="line">            <span class="keyword">var</span> parentNode = <span class="built_in">parseInt</span>(k/<span class="number">2</span>);</span><br><span class="line">            exch(arr,parentNode,k);</span><br><span class="line">            k = parentNode;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//下标为k的元素下沉到正确位置</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">sink</span>(<span class="params">arr,k,len</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = len ||arr.length;</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">2</span>*k &lt;= len)&#123;</span><br><span class="line">            <span class="keyword">var</span> j = <span class="number">2</span>*k;</span><br><span class="line">            <span class="keyword">if</span>(j&lt;len &amp;&amp; less(arr,j,j+<span class="number">1</span>)) j++;</span><br><span class="line">            <span class="keyword">if</span>(!less(arr,k,j)) <span class="keyword">break</span>;</span><br><span class="line">            exch(arr,k,j);</span><br><span class="line">            k = j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">less</span>(<span class="params">arr,m,n</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可根据不同的数据类型设置比对规则，比如json。这里适用于数字与字符串。</span></span><br><span class="line">        <span class="keyword">return</span> arr[m]&lt;arr[n];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组arr中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exch</span>(<span class="params">arr,m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = arr[m];</span><br><span class="line">        arr[m]      = arr[n];</span><br><span class="line">        arr[n]      = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//优先队列测试，依次从大到小输出元素</span></span><br><span class="line">    <span class="keyword">var</span> q = <span class="keyword">new</span> MaxQueue();</span><br><span class="line">    q.insert(<span class="number">3</span>);</span><br><span class="line">    q.insert(<span class="number">33</span>);</span><br><span class="line">    q.insert(<span class="number">9</span>);</span><br><span class="line">    q.insert(<span class="number">21</span>);</span><br><span class="line">    <span class="keyword">while</span> (!q.isEmpty())&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(q.delMax())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//堆排序测试代码</span></span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">new</span> HeapSort().sort(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Heap</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 堆排序</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> pq</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] pq)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = pq.length;</span><br><span class="line">        <span class="comment">//构造堆结构</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = n/<span class="number">2</span>; k &gt;= <span class="number">1</span>; k--)</span><br><span class="line">            sink(pq, k, n);</span><br><span class="line">        <span class="comment">//排序数组</span></span><br><span class="line">        <span class="keyword">while</span> (n &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            exch(pq, <span class="number">1</span>, n--);</span><br><span class="line">            sink(pq, <span class="number">1</span>, n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//下沉元素</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(Comparable[] pq, <span class="keyword">int</span> k, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="number">2</span>*k &lt;= n) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = <span class="number">2</span>*k;</span><br><span class="line">            <span class="keyword">if</span> (j &lt; n &amp;&amp; less(pq, j, j+<span class="number">1</span>)) j++;</span><br><span class="line">            <span class="keyword">if</span> (!less(pq, k, j)) <span class="keyword">break</span>;</span><br><span class="line">            exch(pq, k, j);</span><br><span class="line">            k = j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//注意这里i和j都减去1</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(Comparable[] pq, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> pq[i-<span class="number">1</span>].compareTo(pq[j-<span class="number">1</span>]) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//注意这里i和j都减去1</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exch</span><span class="params">(Object[] pq, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        Object swap = pq[i-<span class="number">1</span>];</span><br><span class="line">        pq[i-<span class="number">1</span>] = pq[j-<span class="number">1</span>];</span><br><span class="line">        pq[j-<span class="number">1</span>] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(Comparable[] a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.out.println(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		String[] a = &#123;<span class="string">&quot;S&quot;</span>,<span class="string">&quot;O&quot;</span>,<span class="string">&quot;R&quot;</span>,<span class="string">&quot;T&quot;</span>,<span class="string">&quot;E&quot;</span>,<span class="string">&quot;X&quot;</span>,<span class="string">&quot;A&quot;</span>,<span class="string">&quot;M&quot;</span>,<span class="string">&quot;P&quot;</span>,<span class="string">&quot;L&quot;</span>,<span class="string">&quot;E&quot;</span>&#125;;</span><br><span class="line">        Heap.sort(a);</span><br><span class="line">        show(a);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>不稳定。</li>
+<li>原地排序。</li>
+<li>时间复杂度为NlogN</li>
+<li>空间复杂度为l</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/30/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法07：三向快速排序</a><br>下一篇：<a href="http://muchstudy.com/2017/05/04/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9509%EF%BC%9A%E6%80%BB%E7%BB%93/">排序算法09：总结</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/05/01/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9508%EF%BC%9A%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F/" data-id="cm5tqeeva005xwayp3mkvbhmb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/04/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9509%EF%BC%9A%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          排序算法09：总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/30/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9507%EF%BC%9A%E4%B8%89%E5%90%91%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">排序算法07：三向快速排序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

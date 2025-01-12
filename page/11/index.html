@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/11/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-排序算法05：归并排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-04-29T02:51:38.000Z" itemprop="datePublished">2017-04-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">排序算法05：归并排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;归并排序的算法逻辑为把两个有序的数组归并为一个有序的数组。</p>
+<p>举个例子，对于一个长度为8的数组，有两种归并方式</p>
+<p>自顶向下的归并:</p>
+<ol>
+<li>先分为[0-3],[4-7],左右有序后再归并到一起就变成一个完整的有序数组了</li>
+<li>让[0-3]有序又可以分为[0-1]、[2-3]有序，递归下去，最终归并为[0-3]有序</li>
+</ol>
+<p>自底向上的归并：</p>
+<ol>
+<li>先让[0-1],[2-3],[4-5],[6-7]有序</li>
+<li>再让[0-3],[4-7]有序</li>
+<li>最终归并[0-7],让整个数组有序</li>
+</ol>
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" class="" title="归并排序示意图">
+
+<h2 id="归并实现"><a href="#归并实现" class="headerlink" title="归并实现"></a>归并实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 原地归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">mid</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">arr,start,mid,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i=start,j=mid+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> temp = [];</span><br><span class="line">    <span class="comment">//数据复制一份将a[start..end]复制到temp[start..end],start不一定为0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> m=start;m&lt;=end;m++)&#123;</span><br><span class="line">        temp[m] = arr[m];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> n=start;n&lt;=end;n++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;mid)&#123;</span><br><span class="line">            <span class="comment">//左边用尽（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(j&gt;end)&#123;</span><br><span class="line">            <span class="comment">//右边用尽（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(temp[j]&lt;temp[i])&#123;</span><br><span class="line">            <span class="comment">//右半边的元素小于左半边的元素（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//右半边的元素大于左半边的元素（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面这张原地归并轨迹的样例图来自于《算法》第四版，左侧为arr，右侧为temp数组</p>
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/%E5%8E%9F%E5%9C%B0%E5%BD%92%E5%B9%B6%E7%9A%84%E8%BD%A8%E8%BF%B9.jpg" class="" title="原地归并的轨迹">
+
+
+<h2 id="自顶向下的归并"><a href="#自顶向下的归并" class="headerlink" title="自顶向下的归并"></a>自顶向下的归并</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自顶向下的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortDown</span>(<span class="params">arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//将数组arr[start..end]排序，这里的start并不一定是0</span></span><br><span class="line">    <span class="keyword">if</span>(end&lt;=start) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> mid = start + <span class="built_in">parseInt</span>((end-start)/<span class="number">2</span>);</span><br><span class="line">    sortDown(arr,start,mid);        <span class="comment">//- 将左半边排序</span></span><br><span class="line">    sortDown(arr,mid+<span class="number">1</span>,end);        <span class="comment">//- 将右半边排序</span></span><br><span class="line">    merge(arr,start,mid,end);       <span class="comment">//- 归并结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/%E4%BE%9D%E8%B5%96%E6%A0%91.jpg" class="" title="依赖树">
+
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E7%9A%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%AD%E5%BD%92%E5%B9%B6%E7%BB%93%E6%9E%9C%E7%9A%84%E8%BD%A8%E8%BF%B9.jpg" class="" title="自顶向下的归并排序中归并结果的轨迹">
+
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E5%BD%92%E5%B9%B6%E7%9A%84%E8%B0%83%E7%94%A8%E8%BD%A8%E8%BF%B9.jpg" class="" title="自顶向下归并的调用轨迹">
+
+<h2 id="自底向上的归并"><a href="#自底向上的归并" class="headerlink" title="自底向上的归并"></a>自底向上的归并</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自底向上的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortUp</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> sz=<span class="number">1</span>;sz&lt;len;sz=<span class="number">2</span>*sz)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> start=<span class="number">0</span>;start&lt;len-sz;start=start+<span class="number">2</span>*sz)&#123;</span><br><span class="line">            merge(arr,start,start+sz-<span class="number">1</span>,<span class="built_in">Math</span>.min(start+<span class="number">2</span>*sz-<span class="number">1</span>,len-<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E7%9A%84%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BD%92%E5%B9%B6%E7%BB%93%E6%9E%9C.jpg" class="" title="自底向上的归并排序的归并结果">
+
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><h3 id="javascript实现"><a href="#javascript实现" class="headerlink" title="javascript实现"></a>javascript实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/29.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 原地归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">mid</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">arr,start,mid,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i=start,j=mid+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> temp = [];</span><br><span class="line">    <span class="comment">//数据复制一份将a[start..end]复制到temp[start..end],start不一定为0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> m=start;m&lt;=end;m++)&#123;</span><br><span class="line">        temp[m] = arr[m];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> n=start;n&lt;=end;n++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;mid)&#123;</span><br><span class="line">            <span class="comment">//左边用尽（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(j&gt;end)&#123;</span><br><span class="line">            <span class="comment">//右边用尽（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(temp[j]&lt;temp[i])&#123;</span><br><span class="line">            <span class="comment">//右半边的元素小于左半边的元素（取右半边的元素）</span></span><br><span class="line">            arr[n] = temp[j++];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//右半边的元素大于左半边的元素（取左半边的元素）</span></span><br><span class="line">            arr[n] = temp[i++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自顶向下的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortDown</span>(<span class="params">arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//将数组arr[start..end]排序，这里的start并不一定是0</span></span><br><span class="line">    <span class="keyword">if</span>(end&lt;=start) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> mid = start + <span class="built_in">parseInt</span>((end-start)/<span class="number">2</span>);</span><br><span class="line">    sortDown(arr,start,mid);        <span class="comment">//- 将左半边排序</span></span><br><span class="line">    sortDown(arr,mid+<span class="number">1</span>,end);        <span class="comment">//- 将右半边排序</span></span><br><span class="line">    merge(arr,start,mid,end);       <span class="comment">//- 归并结果</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自底向上的归并</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortUp</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> sz=<span class="number">1</span>;sz&lt;len;sz=<span class="number">2</span>*sz)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> start=<span class="number">0</span>;start&lt;len-sz;start=start+<span class="number">2</span>*sz)&#123;</span><br><span class="line">            merge(arr,start,start+sz-<span class="number">1</span>,<span class="built_in">Math</span>.min(start+<span class="number">2</span>*sz-<span class="number">1</span>,len-<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr1 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(arr1);</span><br><span class="line">    sortDown(arr1,<span class="number">0</span>,arr1.length-<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(arr1);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;----------------&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> arr2 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(arr2);</span><br><span class="line">    sortUp(arr2);</span><br><span class="line">    <span class="built_in">console</span>.log(arr2);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="java实现"><a href="#java实现" class="headerlink" title="java实现"></a>java实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Merge</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span>[] temp,<span class="keyword">int</span> start,<span class="keyword">int</span> mid,<span class="keyword">int</span> end)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i=start,j=mid+<span class="number">1</span>;</span><br><span class="line">		<span class="comment">//避免每次都创建数组对象</span></span><br><span class="line">		<span class="comment">//int[] temp = new int[arr.length];</span></span><br><span class="line">		<span class="comment">//数据复制一份将a[start..end]复制到temp[start..end],start不一定为0</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> m=start;m&lt;=end;m++)&#123;</span><br><span class="line">			temp[m] = arr[m];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> n=start;n&lt;=end;n++)&#123;</span><br><span class="line">	        <span class="keyword">if</span>(i&gt;mid)&#123;</span><br><span class="line">	            <span class="comment">//左边用尽（取右半边的元素）</span></span><br><span class="line">	            arr[n] = temp[j++];</span><br><span class="line">	        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(j&gt;end)&#123;</span><br><span class="line">	            <span class="comment">//右边用尽（取左半边的元素）</span></span><br><span class="line">	            arr[n] = temp[i++];</span><br><span class="line">	        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(temp[j]&lt;temp[i])&#123;</span><br><span class="line">	            <span class="comment">//右半边的元素小于左半边的元素（取右半边的元素）</span></span><br><span class="line">	            arr[n] = temp[j++];</span><br><span class="line">	        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	            <span class="comment">//右半边的元素大于左半边的元素（取左半边的元素）</span></span><br><span class="line">	            arr[n] = temp[i++];</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sortDown</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span>[] temp,<span class="keyword">int</span> start,<span class="keyword">int</span> end)</span></span>&#123;</span><br><span class="line">		<span class="comment">//将数组arr[start..end]排序，这里的start并不一定是0</span></span><br><span class="line">	    <span class="keyword">if</span>(end&lt;=start) <span class="keyword">return</span>;</span><br><span class="line">	    <span class="keyword">int</span> mid = start + (end-start)/<span class="number">2</span>;</span><br><span class="line">	    sortDown(arr,temp,start,mid);        <span class="comment">//- 将左半边排序</span></span><br><span class="line">	    sortDown(arr,temp,mid+<span class="number">1</span>,end);        <span class="comment">//- 将右半边排序</span></span><br><span class="line">	    merge(arr,temp,start,mid,end);       <span class="comment">//- 归并结果</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sortUp</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span>[] temp)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> sz=<span class="number">1</span>;sz&lt;len;sz=<span class="number">2</span>*sz)&#123;</span><br><span class="line">	        <span class="keyword">for</span>(<span class="keyword">int</span> start=<span class="number">0</span>;start&lt;len-sz;start=start+<span class="number">2</span>*sz)&#123;</span><br><span class="line">	            merge(arr,temp,start,start+sz-<span class="number">1</span>,Math.min(start+<span class="number">2</span>*sz-<span class="number">1</span>,len-<span class="number">1</span>));</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span>[] arr1  = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">		<span class="keyword">int</span>[] temp1 = <span class="keyword">new</span> <span class="keyword">int</span>[arr1.length];</span><br><span class="line">	    sortDown(arr1,temp1,<span class="number">0</span>,arr1.length-<span class="number">1</span>);</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> m:arr1)&#123;</span><br><span class="line">	    	System.out.print(m+<span class="string">&quot; &quot;</span>);</span><br><span class="line">	    &#125;</span><br><span class="line"></span><br><span class="line">	    System.out.println();</span><br><span class="line">	    System.out.println(<span class="string">&quot;----------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">int</span>[] arr2  = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">	    <span class="keyword">int</span>[] temp2 = <span class="keyword">new</span> <span class="keyword">int</span>[arr2.length];</span><br><span class="line">	    sortUp(arr2,temp2);</span><br><span class="line">	    <span class="keyword">for</span>(<span class="keyword">int</span> n:arr2)&#123;</span><br><span class="line">	    	System.out.print(n+<span class="string">&quot; &quot;</span>);</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>稳定。</li>
+<li>非原地排序。</li>
+<li>时间复杂度为NlogN</li>
+<li>空间复杂度为N</li>
+<li>归并排序的主要缺点是辅助数组所使用的额外空间和N的大小成正比</li>
+<li>归并排序的递归使小规模问题中方法的调用过于频繁。使用插入排序处理小规模的子数组（比如长度小于15）一般可以将归并排序的运行时间缩短10%-15%</li>
+<li>当数组长度为2的幂时，自顶向下和自底向上的归并排序所用的比较次数和数组的访问次数正好相同，只是顺序不同。其它时候，两种方法的比较和数组的访问次序会有所不同</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">排序算法04：希尔排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9506%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">排序算法06：快速排序</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" data-id="cm5tqeev9005rwaypczrg54vp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-排序算法04：希尔排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-04-23T12:33:41.000Z" itemprop="datePublished">2017-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">排序算法04：希尔排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;从上一篇<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">《插入排序》</a>可以知道，当最小元素恰好在最后一个时，需要移动的次数为N-1。当一个从大到小排列的数组使用插入排序变成从小到大排列时，需要比乱序状态下耗费更多的时间。原因为插入排序是从后往前一位一位的往前交换，如果能把靠后的较小元素只交换（移动）一次就插入到靠前位置，则能有效的缩短排序时间。希尔排序就是这样一种算法。</p>
+<p>&emsp;&emsp;希尔排序通过一个序列让靠后的元素一次性移动到前面，最后使用插入排序让数组变成有序状态。</p>
+<p>&emsp;&emsp;举个例子。长度为100的数组，挑选出[1,10,20,50]这么一个序列，这个数列的含义就是每次元素移动的间隔。</p>
+<ol>
+<li>让间隔50的数据相对有序（arr[0]&lt;arr[49]&lt;arr[99]）</li>
+<li>让间隔20的数据相对有序（arr[0]&lt;arr[19]&lt;arr[39]&lt;arr[59]&lt;arr[79]&lt;arr[99]）</li>
+<li>让间隔10的数据相对有序（arr[0]&lt;arr[9]&lt;arr[19]&lt;arr[29]&lt;arr[39]……）</li>
+<li>让间隔1的数据现对有序(步长为1实际上就是插入排序)</li>
+</ol>
+<p>下图为《算法》第四版上希尔排序排序轨迹样例：</p>
+<img src="/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F.jpg" class="" title="排序轨迹">
+
+<p>这张图是对SHELLSORTEXAMPLE字符序列排序，序列为13、4、1。</p>
+<p>可视化效果：<a href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html" target="_blank">这里</a></p>
+<h2 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/22.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Shell</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.arr = arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 冒泡排序算法实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Shell.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">var</span> h   = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//自动生成序列。步长序列为1、4、13、40、121、364、1093......</span></span><br><span class="line">        <span class="keyword">while</span>(h&lt;<span class="built_in">parseInt</span>(len/<span class="number">3</span>))&#123;</span><br><span class="line">            h = h*<span class="number">3</span>+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(h&gt;=<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i=h;i&lt;len;i++)&#123;</span><br><span class="line">                <span class="comment">//当h&gt;1时，实际上是把后面的一次性移动到前面。最后h为1时实际上就是对arr进行插入排序</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">var</span> j=i;j&gt;=h &amp;&amp; <span class="built_in">this</span>.less(j,j-h);j=j-h)&#123;</span><br><span class="line">                    <span class="built_in">this</span>.exchange(j,j-h);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//每执行一次，步长依次递减，最终步长递减为1。</span></span><br><span class="line">            h = <span class="built_in">parseInt</span>(h/<span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断m是否小于n</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Shell.prototype.less = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可根据不同的数据类型设置比对规则，比如json。这里适用于数字与字符串。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.arr[m]&lt;<span class="built_in">this</span>.arr[n];</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Shell.prototype.exchange = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = <span class="built_in">this</span>.arr[m];</span><br><span class="line">        <span class="built_in">this</span>.arr[m] = <span class="built_in">this</span>.arr[n];</span><br><span class="line">        <span class="built_in">this</span>.arr[n] = swap;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 打印排序后的数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Shell.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.arr);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是否已排序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Shell.prototype.isSorted = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.less(i,i-<span class="number">1</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.Shell = Shell;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> shell = <span class="keyword">new</span> Shell(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序前：&quot;</span>+shell.isSorted());</span><br><span class="line">    shell.sort();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序后：&quot;</span>+shell.isSorted());</span><br><span class="line">    shell.show();</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Shell</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 希尔排序实现逻辑</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> h	= <span class="number">1</span>;</span><br><span class="line">		<span class="comment">//自动生成序列。步长序列为1、4、13、40、121、364、1093......</span></span><br><span class="line">		<span class="keyword">while</span>(h&lt;len/<span class="number">3</span>)&#123;</span><br><span class="line">			h = <span class="number">3</span>*h+<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">while</span>(h&gt;=<span class="number">1</span>)&#123;</span><br><span class="line">        	<span class="keyword">for</span>(<span class="keyword">int</span> i=h;i&lt;len;i++)&#123;</span><br><span class="line">        		<span class="comment">//当h&gt;1时，实际上是把后面的一次性移动到前面。最后h为1时实际上就是对arr进行插入排序</span></span><br><span class="line">        		<span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&gt;=h &amp;&amp; less(arr[j],arr[j-h]);j -= h)&#123;</span><br><span class="line">        			exchange(arr,j,j-h);</span><br><span class="line">        		&#125;</span><br><span class="line">        	&#125;</span><br><span class="line">        	<span class="comment">//每执行一次，步长依次递减，最终步长递减为1。</span></span><br><span class="line">        	h = h/<span class="number">3</span>;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 比较m是否小于n</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(<span class="keyword">int</span> m,<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m &lt; n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换m与n的位置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> a</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exchange</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> swap = a[m];</span><br><span class="line">        a[m] = a[n];</span><br><span class="line">        a[n] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span>[] a)</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.out.print(a[i]+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span>[] arr = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">		Shell.sort(arr);</span><br><span class="line">		Shell.show(arr);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>不稳定。</li>
+<li>原地排序。</li>
+<li>时间复杂度为：目前无法准确评估时间复杂度。但是肯定小于平方级别，大于线性对数级别。详细可见《算法》第四版P162</li>
+<li>空间复杂度为：常数级别。</li>
+<li>希尔排序比插入排序、选择排序更快。且数组越大，优势越大。</li>
+<li>对于递增序列可以随意选择，目前无法证明某个序列是最优的。</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">排序算法03：插入排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/29/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9505%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">排序算法05：归并排序</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/" data-id="cm5tqeev8005pwayp41rx283i" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-排序算法03：插入排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-04-22T14:34:18.000Z" itemprop="datePublished">2017-04-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">排序算法03：插入排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><blockquote>
+<p>步骤：</p>
+</blockquote>
+<ol>
+<li>从第一个元素开始，该元素可以认为已经被排序</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描</li>
+<li>如果被扫描的元素（已排序）大于新元素，将该元素后移一位</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置</li>
+<li>将新元素插入到该位置后</li>
+<li>重复步骤2~5</li>
+</ol>
+<p>排序演示：</p>
+<img src="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F.gif" class="" title="插入排序">
+
+<p>可视化效果：<a href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html" target="_blank">这里</a></p>
+<h2 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/22.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Insertion</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.arr = arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 插入排序算法实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Insertion.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="comment">//在已经有序之中，从后往前比对，依次交换，直到插入到正确的位置即可</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> j=i;j&gt;<span class="number">0</span>&amp;&amp;<span class="built_in">this</span>.less(j,j-<span class="number">1</span>);j--)&#123;</span><br><span class="line">                <span class="built_in">this</span>.exchange(j,j-<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断m是否小于n</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Insertion.prototype.less = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可根据不同的数据类型设置比对规则，比如json。这里适用于数字与字符串。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.arr[m]&lt;<span class="built_in">this</span>.arr[n];</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Insertion.prototype.exchange = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = <span class="built_in">this</span>.arr[m];</span><br><span class="line">        <span class="built_in">this</span>.arr[m] = <span class="built_in">this</span>.arr[n];</span><br><span class="line">        <span class="built_in">this</span>.arr[n] = swap;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 打印排序后的数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Insertion.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.arr);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是否已排序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Insertion.prototype.isSorted = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.less(i,i-<span class="number">1</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.Insertion = Insertion;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> insertion = <span class="keyword">new</span> Insertion(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序前：&quot;</span>+insertion.isSorted());</span><br><span class="line">    insertion.sort();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序后：&quot;</span>+insertion.isSorted());</span><br><span class="line">    insertion.show();</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Insertion</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 插入排序实现逻辑</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">        	<span class="comment">//在已经有序之中，从后往前比对，依次交换，直到插入到正确的位置即可</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j&gt;<span class="number">0</span>&amp;&amp;less(arr[j], arr[j-<span class="number">1</span>]); j--) &#123;</span><br><span class="line">                exchange(arr, j, j-<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 比较m是否小于n</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(<span class="keyword">int</span> m,<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m &lt; n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换m与n的位置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> a</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exchange</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> swap = a[m];</span><br><span class="line">        a[m] = a[n];</span><br><span class="line">        a[n] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span>[] a)</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.out.print(a[i]+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span>[] arr = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">		Insertion.sort(arr);</span><br><span class="line">		Insertion.show(arr);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>实验证明（《算法》第四版P160），插入排序比选择排序更快。</li>
+<li>稳定。相同元素排序后能保持排序前的相对顺序。</li>
+<li>原地排序。</li>
+<li>时间复杂度为：介于线性级别与平方级别之间。取决于输入元素的排列情况。</li>
+<li>空间复杂度为：常数级别。</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">排序算法02：选择排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9504%EF%BC%9A%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">排序算法04：希尔排序</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/" data-id="cm5tqeev7005nwaypdick45ip" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-排序算法02：选择排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-04-22T09:22:17.000Z" itemprop="datePublished">2017-04-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">排序算法02：选择排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><p>&emsp;&emsp;首先，从[0,len]中找到数组中最小的元素，让它与第一个元素交换。接着从[1,len]中找出最小的元素，让它与第二个元素交换。循环往复，最终使得数组从小到大排序。</p>
+<p>可视化效果：<a href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html" target="_blank">这里</a></p>
+<h2 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/22.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Selection</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.arr = arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 选择排序算法实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> min = i;</span><br><span class="line">            <span class="comment">//找出最小元素</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> j=i+<span class="number">1</span>;j&lt;len;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">this</span>.less(j,min))&#123;</span><br><span class="line">                    min = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//把最小元素放到最前面</span></span><br><span class="line">            <span class="built_in">this</span>.exchange(i,min);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断m是否小于n</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.less = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可根据不同的数据类型设置比对规则，比如json。这里适用于数字与字符串。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.arr[m]&lt;<span class="built_in">this</span>.arr[n];</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.exchange = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = <span class="built_in">this</span>.arr[m];</span><br><span class="line">        <span class="built_in">this</span>.arr[m] = <span class="built_in">this</span>.arr[n];</span><br><span class="line">        <span class="built_in">this</span>.arr[n] = swap;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 打印排序后的数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.arr);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是否已排序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Selection.prototype.isSorted = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.less(i,i-<span class="number">1</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.Selection = Selection;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> selection = <span class="keyword">new</span> Selection(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序前：&quot;</span>+selection.isSorted());</span><br><span class="line">    selection.sort();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序后：&quot;</span>+selection.isSorted());</span><br><span class="line">    selection.show();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.algs;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Selection</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 插入排序实现逻辑</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = arr.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> min = i;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; len; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (less(arr[j], arr[min])) min = j;</span><br><span class="line">            &#125;</span><br><span class="line">            exchange(arr, i, min);</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 比较m是否小于n</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(<span class="keyword">int</span> m,<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m &lt; n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 交换m与n的位置</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> a</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">exchange</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> swap = a[m];</span><br><span class="line">        a[m] = a[n];</span><br><span class="line">        a[n] = swap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span>[] a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.out.print(a[i]+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">    Selection.sort(arr);</span><br><span class="line">    Selection.show(arr);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>运行时间和输入无关。</p>
+<blockquote>
+<p>为了找出最小元素而扫描一遍数组并不能为下一遍扫描提供信息。长度一致，一个有序的数组或值全部相当的数组和一个无序的数组排序所需的时间一致。</p>
+</blockquote>
+</li>
+<li><p>数据移动是最少的。</p>
+<blockquote>
+<p>一个长度为N的数组只需要N次交换即可完成排序。</p>
+</blockquote>
+</li>
+<li><p>不稳定。</p>
+<blockquote>
+<p>无法保证排序前与排序后<strong>重复元素</strong>的相对顺序一致。举例：序列[5,8,5,2,9]，第一遍选择第1个元素5会和2交换，那么原序列中两个5的相对前后顺序就被破坏了，所以选择排序不是一个稳定的排序算法。</p>
+</blockquote>
+</li>
+<li><p>原地排序。</p>
+</li>
+<li><p>时间复杂度为：平方级别。</p>
+</li>
+<li><p>空间复杂度为：常数级别。</p>
+</li>
+</ul>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9501%EF%BC%9A%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">排序算法01：冒泡排序</a><br>下一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9503%EF%BC%9A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">排序算法03：插入排序</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" data-id="cm5tqeev7005lwaypde74baq1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-排序算法01：冒泡排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9501%EF%BC%9A%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2017-04-22T03:11:20.000Z" itemprop="datePublished">2017-04-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9501%EF%BC%9A%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">排序算法01：冒泡排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><blockquote>
+<p>步骤：</p>
+</blockquote>
+<ol>
+<li>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</li>
+<li>对第0个到第n-1个数据做同样的工作。这时，最大的数就“浮”到了数组最后的位置上。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
+</ol>
+<p>可视化效果：<a href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html" target="_blank">这里</a></p>
+<h2 id="Javascript实现"><a href="#Javascript实现" class="headerlink" title="Javascript实现"></a>Javascript实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by YiYing on 2017/4/22.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Bubble</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.arr = arr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 冒泡排序算法实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Bubble.prototype.sort = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="comment">//将最大的元素不断的沉到底部</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> j=<span class="number">0</span>;j&lt;len-i-<span class="number">1</span>;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">this</span>.less(j+<span class="number">1</span>,j))&#123;</span><br><span class="line">                    <span class="built_in">this</span>.exchange(j+<span class="number">1</span>,j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断m是否小于n</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Bubble.prototype.less = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可根据不同的数据类型设置比对规则，比如json。这里适用于数字与字符串。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.arr[m]&lt;<span class="built_in">this</span>.arr[n];</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换数组中m与n的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">m</span></span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param <span class="variable">n</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Bubble.prototype.exchange = <span class="function"><span class="keyword">function</span> (<span class="params">m,n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> swap    = <span class="built_in">this</span>.arr[m];</span><br><span class="line">        <span class="built_in">this</span>.arr[m] = <span class="built_in">this</span>.arr[n];</span><br><span class="line">        <span class="built_in">this</span>.arr[n] = swap;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 打印排序后的数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Bubble.prototype.show = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.arr);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是否已排序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Bubble.prototype.isSorted = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> len = <span class="built_in">this</span>.arr.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">this</span>.less(i,i-<span class="number">1</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    W.Bubble = Bubble;</span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">21</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> bubble = <span class="keyword">new</span> Bubble(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序前：&quot;</span>+bubble.isSorted());</span><br><span class="line">    bubble.sort();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;排序后：&quot;</span>+bubble.isSorted());</span><br><span class="line">    bubble.show();</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>稳定。相同元素排序后能保持排序前的相对顺序。</li>
+<li>原地排序。</li>
+<li>时间复杂度为：平方级别。</li>
+<li>空间复杂度为：常数级别。</li>
+</ol>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/AlbertKnag/algs-practice">https://github.com/AlbertKnag/algs-practice</a></p>
+<p>下一篇：<a href="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9502%EF%BC%9A%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">排序算法02：选择排序</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%9501%EF%BC%9A%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" data-id="cm5tqeev6005jwaypb71sa8ki" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-循环删除数组元素的几种姿势" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/" class="article-date">
+  <time datetime="2017-04-07T03:16:54.000Z" itemprop="datePublished">2017-04-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Programmer/">Programmer</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/">循环删除数组元素的几种姿势</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;在码代码的过程中，经常会遇到在循环中移除指定元素的需求。按照常规的思路，直接一个for循环，然后在循环里面来个if判断，在判断中删除掉指定元素即可。但是实际情况往往不会像预想的那样顺利运行。下面以一段Javascript代码为例演示这一过程。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="comment">//打印数组中的情况，便于跟踪数组中数据的变化</span></span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="comment">//删除掉所有为2的元素</span></span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            arr.splice(i,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<img src="/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4.jpg" class="">
+
+<p>&emsp;&emsp;从最终的结果可以看到实际上只删除掉了匹配的其中一个元素，而另外一个元素还存在。</p>
+<p>&emsp;&emsp;从打印出的运行过程不难发现，原因为当删除掉了一个元素后，数组的索引发生的变化，造成了程序的异常。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>找到了问题的原因，就不难解决问题了。</p>
+<h3 id="姿势一"><a href="#姿势一" class="headerlink" title="姿势一"></a>姿势一</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> len = arr.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="comment">//打印数组中的情况，便于跟踪数组中数据的变化</span></span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="comment">//删除掉所有为2的元素</span></span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="comment">//注意对比这行代码：删除元素后调整i的值</span></span><br><span class="line">            arr.splice(i--,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码看起来不大好理解，有没有看起来更易于理解的代码呢？请看下面</p>
+<h3 id="姿势二"><a href="#姿势二" class="headerlink" title="姿势二"></a>姿势二</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> len = arr.length-<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//start from the top</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=len;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            arr.splice(i,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>从后往前遍历可以有效解决问题，也容易理解，那么还有没有跟简洁的实现呢？接着看下面代码</p>
+<h3 id="姿势三"><a href="#姿势三" class="headerlink" title="姿势三"></a>姿势三</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">var</span> i = arr.length;</span><br><span class="line">    <span class="keyword">while</span>(i--)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i+<span class="string">&quot;=&quot;</span>+arr[i]);</span><br><span class="line">        <span class="keyword">if</span>(arr[i]==<span class="number">2</span>)&#123;</span><br><span class="line">            arr.splice(i,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>while(i--)</code>,i为数组下标，个人觉得这是最简洁、高效的代码实现了。</p>
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/04/07/%E5%BE%AA%E7%8E%AF%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E5%87%A0%E7%A7%8D%E5%A7%BF%E5%8A%BF/" data-id="cm5tqeev6005hwaypgr7qgd6n" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-电商业务梳理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/29/%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E6%A2%B3%E7%90%86/" class="article-date">
+  <time datetime="2017-03-29T02:33:14.000Z" itemprop="datePublished">2017-03-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/29/%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E6%A2%B3%E7%90%86/">自营电商平台业务梳理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;目前的电商越来越深入人心，一些有自家产品的企业也跃跃欲试，希望能建立自己的网上销售平台，不再满足于借助第三方系统，比如天猫旗舰店等。希望 “All Control”。</p>
+<p>&emsp;&emsp;针对这样的需求，对自营电商平台的业务做了一个简单的梳理，整理出如下这张图。</p>
+<img src="/2017/03/29/%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E6%A2%B3%E7%90%86/%E7%94%B5%E5%95%86.png" class="" title="电商业务梳理">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/03/29/%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E6%A2%B3%E7%90%86/" data-id="cm5tqeev5005fwayp78lk1fqo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nginx-tomcat-memcached配置session共享" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/17/nginx-tomcat-memcached%E9%85%8D%E7%BD%AEsession%E5%85%B1%E4%BA%AB/" class="article-date">
+  <time datetime="2017-03-17T08:05:43.000Z" itemprop="datePublished">2017-03-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/17/nginx-tomcat-memcached%E9%85%8D%E7%BD%AEsession%E5%85%B1%E4%BA%AB/">nginx+tomcat+memcached配置session共享</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>&emsp;&emsp;两台tomcat，通过nginx来实现负载均衡，使用memcached来解决session共享问题。</p>
+<h2 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h2><h3 id="分别拷贝jar包到tomcatA、tomcatB的lib目录下"><a href="#分别拷贝jar包到tomcatA、tomcatB的lib目录下" class="headerlink" title="分别拷贝jar包到tomcatA、tomcatB的lib目录下"></a>分别拷贝jar包到tomcatA、tomcatB的lib目录下</h3><p>包含如下这些jar包，从<a href="/2017/03/17/nginx-tomcat-memcached%E9%85%8D%E7%BD%AEsession%E5%85%B1%E4%BA%AB/lib.rar" title="这里下载">这里下载</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">asm-3.2.jar</span><br><span class="line">kryo-1.04.jar</span><br><span class="line">kryo-serializers-0.11.jar</span><br><span class="line">memcached-session-manager-1.7.0.jar</span><br><span class="line">memcached-session-manager-tc7-1.8.1.jar</span><br><span class="line">minlog-1.2.jar</span><br><span class="line">msm-kryo-serializer-1.7.0.jar</span><br><span class="line">reflectasm-1.01.jar</span><br><span class="line">spymemcached-2.7.3.jar</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置context-xml"><a href="#配置context-xml" class="headerlink" title="配置context.xml"></a>配置context.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">&quot;de.javakaffee.web.msm.MemcachedBackupSessionManager&quot;</span></span></span><br><span class="line"><span class="tag">	   <span class="attr">memcachedNodes</span>=<span class="string">&quot;n1:127.0.0.1:11211&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">lockingMode</span>=<span class="string">&quot;auto&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">sticky</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">requestUriIgnorePattern</span>= <span class="string">&quot;.*\.(png|gif|jpg|css|js)$&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">sessionBackupAsync</span>= <span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">sessionBackupTimeout</span>= <span class="string">&quot;100&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">copyCollectionsForSerialization</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">transcoderFactoryClass</span>=<span class="string">&quot;de.javakaffee.web.msm.serializer.kryo.KryoTranscoderFactory&quot;</span></span></span><br><span class="line"><span class="tag">		/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">user  nobody;  </span><br><span class="line">worker_processes  4;  </span><br><span class="line">error_log  logs&#x2F;error.log;  </span><br><span class="line">events &#123;  </span><br><span class="line">    worker_connections  1024;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">http &#123;  </span><br><span class="line">    include       mime.types;  </span><br><span class="line">    default_type  application&#x2F;octet-stream;  </span><br><span class="line">    sendfile        on;  </span><br><span class="line">    keepalive_timeout  65;  </span><br><span class="line">    gzip  on;  </span><br><span class="line">    upstream  myserver   &#123;  </span><br><span class="line">              server   127.0.0.1:8080;  </span><br><span class="line">              server   127.0.0.1:8081;  </span><br><span class="line">    &#125;  </span><br><span class="line">    server &#123;  </span><br><span class="line">        listen       80;  </span><br><span class="line">        server_name  127.0.0.2;  </span><br><span class="line">        charset utf-8;  </span><br><span class="line">        location &#x2F; &#123;  </span><br><span class="line">            root   html;  </span><br><span class="line">            index  index.html index.htm;  </span><br><span class="line">            proxy_pass        http:&#x2F;&#x2F;myserver;  </span><br><span class="line">            proxy_set_header  X-Real-IP  $remote_addr;  </span><br><span class="line">            client_max_body_size  100m;  </span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        location ~ ^&#x2F;(WEB-INF)&#x2F; &#123;</span><br><span class="line">            deny all;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        error_page   500 502 503 504  &#x2F;50x.html;  </span><br><span class="line">        location &#x3D; &#x2F;50x.html &#123;  </span><br><span class="line">            root   html;  </span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ol>
+<li>tomcatA的地址为127.0.0.1:8080</li>
+<li>tomcatB的地址为127.0.0.1:8081</li>
+<li>通过在浏览器上输入127.0.0.2，请求会动态分配到A和B上</li>
+</ol>
+<h2 id="验证Session共享是否配置成功"><a href="#验证Session共享是否配置成功" class="headerlink" title="验证Session共享是否配置成功"></a>验证Session共享是否配置成功</h2><p>1.在tomcatA的webapp下新增test.jsp页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language&#x3D;&quot;java&quot; contentType&#x3D;&quot;text&#x2F;html; charset&#x3D;ISO-8859-1&quot;</span><br><span class="line">	pageEncoding&#x3D;&quot;ISO-8859-1&quot;%&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD HTML 4.01 Transitional&#x2F;&#x2F;EN&quot; &quot;http:&#x2F;&#x2F;www.w3.org&#x2F;TR&#x2F;html4&#x2F;loose.dtd&quot;&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;ISO-8859-1&quot;&gt;</span><br><span class="line">&lt;title&gt;tomcatA&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">	SessionID:&lt;%&#x3D;session.getId()%&gt;</span><br><span class="line">	&lt;%</span><br><span class="line">		out.println(&quot;tomcatA&quot;);</span><br><span class="line">	%&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.在tomcatB的webapp下新增test.jsp页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language&#x3D;&quot;java&quot; contentType&#x3D;&quot;text&#x2F;html; charset&#x3D;ISO-8859-1&quot;</span><br><span class="line">  pageEncoding&#x3D;&quot;ISO-8859-1&quot;%&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD HTML 4.01 Transitional&#x2F;&#x2F;EN&quot; &quot;http:&#x2F;&#x2F;www.w3.org&#x2F;TR&#x2F;html4&#x2F;loose.dtd&quot;&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;ISO-8859-1&quot;&gt;</span><br><span class="line">&lt;title&gt;tomcatB&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  SessionID:&lt;%&#x3D;session.getId()%&gt;</span><br><span class="line">  &lt;%</span><br><span class="line">    out.println(&quot;tomcatB&quot;);</span><br><span class="line">  %&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;浏览器请求127.0.0.2/projectName/test.jsp，多刷新几下，如果seseionID一直不变，而不断切换A和B，则证明配置成功。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/03/17/nginx-tomcat-memcached%E9%85%8D%E7%BD%AEsession%E5%85%B1%E4%BA%AB/" data-id="cm5tqeev4005dwayp6iji2xuc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JavaScript数组倒序算法与性能对比" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/" class="article-date">
+  <time datetime="2017-03-14T03:38:53.000Z" itemprop="datePublished">2017-03-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/">JavaScript数组倒序算法与性能对比</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;最近正在撸算法第四版，关于JS中数组的倒序，想到如下几种实现方式。</p>
+<h2 id="for-push"><a href="#for-push" class="headerlink" title="for push"></a>for push</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = [],len=arr.length-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> right=len;right&gt;=<span class="number">0</span>;right--)&#123;</span><br><span class="line">        result.push(arr[right])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(result.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="for-swap-half"><a href="#for-swap-half" class="headerlink" title="for swap half"></a>for swap half</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> left = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> right = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> length = array.length;</span><br><span class="line">    <span class="keyword">for</span> (left = <span class="number">0</span>; left &lt; length / <span class="number">2</span>; left += <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        right = length - <span class="number">1</span> - left;</span><br><span class="line">        <span class="keyword">var</span> temporary = array[left];</span><br><span class="line">        array[left] = array[right];</span><br><span class="line">        array[right] = temporary;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(array.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="native-reverse"><a href="#native-reverse" class="headerlink" title="native reverse"></a>native reverse</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = arr.reverse();</span><br><span class="line">    <span class="built_in">console</span>.log(result.join(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;)(<span class="string">&quot;字符倒序测试.&quot;</span>.split(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><p>&emsp;&emsp;本来想再写一个性能测试的样例，在写之前感觉应该已经有人做过这件事了，所以Google了一下，找到Stackoverflow上<a   target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5276953/what-is-the-most-efficient-way-to-reverse-an-array-in-javascript"><strong>这篇答案</strong></a>，循着找到一个很全面的性能测试样例，点击<a target="_blank" rel="noopener" href="https://jsperf.com/js-array-reverse-vs-while-loop/66"><strong>这里</strong></a>。点击<strong>Run tests</strong>即能在对应的测试环境下测试各种算法的性能情况。</p>
+<p>在我本地环境（Testing in Chrome 56.0.2924 / Windows 10 0.0.0）的测试结果如图：</p>
+<img src="/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png" class="">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/03/14/JavaScript%E6%95%B0%E7%BB%84%E5%80%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/" data-id="cm5tqeev3005awayp7lhp0gt8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-算法的时间复杂度" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/26/%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="article-date">
+  <time datetime="2017-02-26T14:30:45.000Z" itemprop="datePublished">2017-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/26/%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">算法的时间复杂度</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;关于算法的时间复杂度经常会看到比如logN,NlogN等。之前一直觉得搞不清楚，来一个问题不知道怎么得出该算法的时间复杂度。最近在撸《算法》第四版,是时候祭出下面这张图了。</p>
+<img src="/2017/02/26/%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6.jpg" class="">
+
+<p>&emsp;&emsp;时间复杂度这个东西，其实更准确点说应该是描述一个算法在问题规模不断增大时对应的时间增长曲线。所以，这些增长数量级并不是一个准确的性能评价，可以理解为一个近似值，时间的增长近似于logN、NlogN的曲线。</p>
+<img src="/2017/02/26/%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/%E5%A2%9E%E9%95%BF%E6%9B%B2%E7%BA%BF.jpg" class="">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/02/26/%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" data-id="cm5tqeev30058waypb0i57xjw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/10/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/12/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

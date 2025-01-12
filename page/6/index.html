@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/6/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Javascript类型与类型判断" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/31/Javascript%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/" class="article-date">
+  <time datetime="2020-07-31T15:32:39.000Z" itemprop="datePublished">2020-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/31/Javascript%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/">Javascript类型与类型判断</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JS类型与类型判断是JS中的基础，有必要归纳总结整理一下。</p>
+<blockquote>
+<p>对于这样一篇文章实际上是个人资料库里的一个整理文档，一直在想这么一篇烂大街的文章分享出来是不是有水文的嫌疑？但是，转过头一想，如果大家把文章中的外链都翻过一遍，那就会觉得：<strong>一个不起眼的小点也有它的价值。</strong></p>
+</blockquote>
+<h2 id="JS类型"><a href="#JS类型" class="headerlink" title="JS类型"></a>JS类型</h2><p>JS共有8种类型，如下表所示</p>
+<p>7种<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Glossary/Primitive">基本类型</a></p>
+<ul>
+<li>Boolean</li>
+<li>Null</li>
+<li>Undefined</li>
+<li>Number</li>
+<li>BigInt</li>
+<li>String</li>
+<li>Symbol</li>
+</ul>
+<blockquote>
+<p>基本类型（基本数值、基本数据类型）是一种既非对象也无方法的数据。<br>所有基本类型的值都是不可改变的。但需要注意的是，基本类型本身和一个赋值为基本类型的变量的区别。变量会被赋予一个新值，而原值不能像数组、对象以及函数那样被改变。</p>
+</blockquote>
+<p>剩余一种</p>
+<ul>
+<li>Object</li>
+</ul>
+<blockquote>
+<p>除 Object 以外的所有类型都是不可变的（值本身无法被改变）</p>
+<p>JavaScript 数据类型和数据结构：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures</a></p>
+</blockquote>
+<h2 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h2><h3 id="基本类型判断"><a href="#基本类型判断" class="headerlink" title="基本类型判断"></a>基本类型判断</h3><ul>
+<li><p>Boolean</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span> <span class="comment">// boolean</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Number</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">1</span> <span class="comment">// number</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="string">&#x27;1&#x27;</span> <span class="comment">// string</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Undefined</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">undefined</span> <span class="comment">// undefined</span></span><br><span class="line"><span class="literal">undefined</span> === <span class="literal">undefined</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Null</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// object</span></span><br><span class="line"><span class="literal">null</span> === <span class="literal">null</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为什么<code>typeof null</code>为Object呢？答案如下：<br>在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 “object”。（参考来源）<br>曾有一个 ECMAScript 的修复提案（通过选择性加入的方式），但被拒绝了。该提案会导致 typeof null === ‘null’。</p>
+<p>Why is typeof null “object”? : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18808226/why-is-typeof-null-object">https://stackoverflow.com/questions/18808226/why-is-typeof-null-object</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof#null">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof#null</a></p>
+</blockquote>
+</li>
+<li><p>BigInt<br>可以用在一个整数字面量后面加 n 的方式定义一个 BigInt ，如：10n，或者调用函数BigInt()。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">10n</span> === <span class="string">&#x27;bigint&#x27;</span>; <span class="comment">// true</span></span><br><span class="line"><span class="number">10n</span> == <span class="number">10</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">10n</span> === <span class="number">10</span> <span class="comment">// false</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="built_in">BigInt</span>(<span class="string">&#x27;1&#x27;</span>) === <span class="string">&#x27;bigint&#x27;</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>BigInt: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt</a></p>
+</blockquote>
+</li>
+<li><p>Symbol</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="built_in">Symbol</span>() <span class="comment">// symbol</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>由上可以看出，基本类型除了null之外，都可以使用typeof判断出来具体类型.</p>
+<p>Why is typeof null “object”? : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18808226/why-is-typeof-null-object">https://stackoverflow.com/questions/18808226/why-is-typeof-null-object</a></p>
+</blockquote>
+<h3 id="Object类型判断"><a href="#Object类型判断" class="headerlink" title="Object类型判断"></a>Object类型判断</h3><ul>
+<li><p>Array</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.isArray([<span class="number">1</span>,<span class="number">2</span>]) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Function</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> (<span class="function">()=&gt;</span>&#123;&#125;) <span class="comment">// function</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>对于像Date、Math等对象，就没有很好的直接判断方式了，但是可以通过<code>Object.prototype.toString.call(obj)</code>来判断</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.call([]); <span class="comment">// [object Array]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(&#123;&#125;); <span class="comment">// [object Object]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="string">&#x27;&#x27;</span>); <span class="comment">// [object String]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>()); <span class="comment">// [object Date]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="number">1</span>); <span class="comment">// [object Number]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;); <span class="comment">// [object Function]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="regexp">/test/i</span>); <span class="comment">// [object RegExp]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">true</span>); <span class="comment">// [object Boolean]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">null</span>); <span class="comment">// [object Null]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(); <span class="comment">// [object Undefined]</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Understanding JavaScript types and reliable type checking.<br><a target="_blank" rel="noopener" href="https://ultimatecourses.com/blog/understanding-javascript-types-and-reliable-type-checking">https://ultimatecourses.com/blog/understanding-javascript-types-and-reliable-type-checking</a></p>
+</blockquote>
+<h2 id="类型判断工具类"><a href="#类型判断工具类" class="headerlink" title="类型判断工具类"></a>类型判断工具类</h2><p>通过上面的总结分析，可以考虑封装一个类型判断的工具类，下面是感觉最简洁高效的一个实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> type = (<span class="function"><span class="keyword">function</span>(<span class="params"><span class="built_in">global</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cache = &#123;&#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> key;</span><br><span class="line">        <span class="keyword">return</span> obj === <span class="literal">null</span> ? <span class="string">&#x27;null&#x27;</span> <span class="comment">// null</span></span><br><span class="line">            : obj === <span class="built_in">global</span> ? <span class="string">&#x27;global&#x27;</span> <span class="comment">// window in browser or global in nodejs</span></span><br><span class="line">            : (key = <span class="keyword">typeof</span> obj) !== <span class="string">&#x27;object&#x27;</span> ? key <span class="comment">// basic: string, boolean, number, undefined, function</span></span><br><span class="line">            : obj.nodeType ? <span class="string">&#x27;object&#x27;</span> <span class="comment">// DOM element</span></span><br><span class="line">            : cache[key = (&#123;&#125;).toString.call(obj)] <span class="comment">// cached. date, regexp, error, object, array, math</span></span><br><span class="line">            || (cache[key] = key.slice(<span class="number">8</span>, -<span class="number">1</span>).toLowerCase()); <span class="comment">// get XXXX from [object XXXX], and cache it</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;(<span class="built_in">this</span>));</span><br></pre></td></tr></table></figure>
+<p>这样使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;); <span class="comment">// -&gt; &quot;function&quot;</span></span><br><span class="line">type([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// -&gt; &quot;array&quot;</span></span><br><span class="line">type(<span class="keyword">new</span> <span class="built_in">Date</span>()); <span class="comment">// -&gt; &quot;date&quot;</span></span><br><span class="line">type(&#123;&#125;); <span class="comment">// -&gt; &quot;object&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>The most accurate way to check JS object’s type? <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7893776/the-most-accurate-way-to-check-js-objects-type">https://stackoverflow.com/questions/7893776/the-most-accurate-way-to-check-js-objects-type</a></p>
+</blockquote>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><ul>
+<li>NaN<br>注意NaN不是一种数据类型。<br>NaN是一个全局对象的属性，它表示不是一个数字（Not-A-Number）。</li>
+</ul>
+<p>NaN有如下特性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">NaN</span> <span class="comment">// number</span></span><br><span class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>) <span class="comment">// true,可以通过此种方式来判断NaN</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="built_in">Number</span>(<span class="string">&#x27;num&#x27;</span>) <span class="comment">// 此时num为NaN</span></span><br><span class="line">num === num <span class="comment">// flase</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>NaN: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN</a><br>Why does typeof NaN return ‘number’? :<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2801601/why-does-typeof-nan-return-number">https://stackoverflow.com/questions/2801601/why-does-typeof-nan-return-number</a></p>
+</blockquote>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/07/31/Javascript%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="cm5tqeew50087wayp8a84cz0p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Elasticsearch索引自动化管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2020-06-04T10:19:11.000Z" itemprop="datePublished">2020-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/">Elasticsearch索引自动化管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/%E7%B4%A2%E5%BC%95.jpg" class="">
+
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前端性能监控的日志之前为单一索引，随着日志内容的不断增多，索引文件变得越来越多大（官方建议单个索引文件不要超过20G）。</p>
+<p>在此种方案下只能定时通过<code>delete query</code>的方式删除xxx天之前的数据，此种方式删除数据时异常缓慢，而且磁盘空间不会立即释放。</p>
+<p>亟需采取新的索引方案解决该问题，比如按天生成索引，定时删除一个月之前的索引文件,直接删除索引文件的效率会高不少。</p>
+<h2 id="索引创建"><a href="#索引创建" class="headerlink" title="索引创建"></a>索引创建</h2><h3 id="索引模板"><a href="#索引模板" class="headerlink" title="索引模板"></a>索引模板</h3><p>索引模板是为了方便按天去生成相同配置的索引文件，样例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"># 创建索引模板</span><br><span class="line">PUT _template&#x2F;jz-fe-performance-log-template</span><br><span class="line">&#123;</span><br><span class="line">  &quot;index_patterns&quot; : [&quot;jz-fe-performance-log-*&quot;],</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">      &quot;index&quot; : &#123;</span><br><span class="line">        &quot;lifecycle&quot; : &#123;</span><br><span class="line">          &quot;name&quot; : &quot;jz-fe-log-15days&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;:&#123;</span><br><span class="line">      &quot;groupName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;projectName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;href&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;clientDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;serverDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;appId&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;hmsr&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;znsr&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;hmpl&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;unloadTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;redirectTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;appCacheTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;dnsTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;tcpTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;requestTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;responseTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;analysisTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;loadEventTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;connectTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;resourceTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;domReadyTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTFBTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTSRTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTDCTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTFLTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;FMPTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;uid&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;phone&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;platform&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;os&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;browser&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;version&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;userAgent&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;ip&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;networkType&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;ISP&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;region&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li><code>PUT _template/jz-fe-performance-log-template</code>创建名称为<code>jz-fe-performance-log-template</code>的索引模板</li>
+<li><code>index_patterns</code>中的<code>jz-fe-performance-log-*</code>代表索引名称为<code>jz-fe-performance-log-</code>的索引都按这个模板的配置去生成</li>
+<li><code>settings</code>中的<code>lifecycle</code>项注明以哪一个lifecycle配置来管理该索引，在后续的索引删除部分会使用到</li>
+<li><code>mappings</code>就是所有文档的配置了，<code>strict</code>表面为严格模式，索引数据只能为下面声明的字段名称，否则无法保存</li>
+</ul>
+<h3 id="数据保存"><a href="#数据保存" class="headerlink" title="数据保存"></a>数据保存</h3><p>在数据调用Node服务接口时，做如下处理，即可按天把日志保存到当天的日志文件中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; Client &#125; = <span class="built_in">require</span>(<span class="string">&#x27;@elastic/elasticsearch&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 性能数据索引</span></span><br><span class="line"><span class="keyword">const</span> PERFORMANCE_PROD_INDEX = <span class="string">&#x27;jz-fe-performance-log&#x27;</span></span><br><span class="line"><span class="keyword">const</span> PERFORMANCE_TEST_INDEX = <span class="string">&#x27;jz-fe-performance-log-test&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ES数据插入操作</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>index 索引</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>data 数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&lt;ApiResponse&lt;any&gt;&gt;&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">base</span> (<span class="params">&#123; index, data &#125;</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> client.index(&#123;</span><br><span class="line">        index: index,</span><br><span class="line">        body: data</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.error(<span class="string">&#x27;err&#x27;</span>, <span class="built_in">JSON</span>.stringify(err))</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 日期格式化</span></span><br><span class="line"><span class="comment">  * 返回 2020-6-5类型数据</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param <span class="type">&#123;日期&#125;</span> <span class="variable">date</span></span></span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dateFormat</span> (<span class="params">date</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> year = date.getFullYear()</span><br><span class="line">    <span class="keyword">const</span> month = date.getMonth() + <span class="number">1</span></span><br><span class="line">    <span class="keyword">const</span> day = date.getDate()</span><br><span class="line">    <span class="keyword">return</span> year + <span class="string">&#x27;-&#x27;</span> + month + <span class="string">&#x27;-&#x27;</span> + day</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 性能数据入库</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">body</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&lt;ApiResponse&lt;any&gt;|TResult&gt;&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">performanceAdd</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> index = tools.isTestENV() ? PERFORMANCE_TEST_INDEX : <span class="string">`<span class="subst">$&#123;PERFORMANCE_PROD_INDEX&#125;</span>-<span class="subst">$&#123;dateFormat(<span class="keyword">new</span> <span class="built_in">Date</span>())&#125;</span>`</span></span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> base(&#123; <span class="attr">index</span>: index, data &#125;)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>索引名称以<code>jz-fe-performance-log</code>打头的索引文件没有时都为以上面的模板新创建</li>
+<li>性能数据保存时，指定保存到当天的索引文件中</li>
+</ul>
+<h2 id="索引删除"><a href="#索引删除" class="headerlink" title="索引删除"></a>索引删除</h2><p>实现了索引文件按天拆分之后，下一步就需要考虑如何把索引文件管理起来。</p>
+<p>日志数据一般只保留一个月，这个时候可以考虑可以写一个程序定时去删除一个月之前的索引。</p>
+<p>Elasticsearch 6.6开始提供了一个叫<code>Index Lifecycle Management</code>的功能来管理日志。</p>
+<h3 id="ILM配置"><a href="#ILM配置" class="headerlink" title="ILM配置"></a>ILM配置</h3><p>可以通过kibana可视化的做配置，也可以通过写ES语句的方式创建</p>
+<img src="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/ES-IML-1.jpg" class="">
+
+<p>点击<code>Create policy</code>即可创建对应配置</p>
+<img src="/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/ES-IML-2.jpg" class="">
+
+<p>可通过如下方式查看刚才创建的具体配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看Index Lifecycle Manegment配置</span><br><span class="line">GET &#x2F;_ilm&#x2F;policy&#x2F;jz-fe-log-15days</span><br></pre></td></tr></table></figure>
+
+<p>返回结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;jz-fe-log-15days&quot; : &#123;</span><br><span class="line">    &quot;version&quot; : 1,</span><br><span class="line">    &quot;modified_date&quot; : &quot;2020-06-04T10:02:16.233Z&quot;,</span><br><span class="line">    &quot;policy&quot; : &#123;</span><br><span class="line">      &quot;phases&quot; : &#123;</span><br><span class="line">        &quot;hot&quot; : &#123;</span><br><span class="line">          &quot;min_age&quot; : &quot;0ms&quot;,</span><br><span class="line">          &quot;actions&quot; : &#123;</span><br><span class="line">            &quot;set_priority&quot; : &#123;</span><br><span class="line">              &quot;priority&quot; : 100</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;delete&quot; : &#123;</span><br><span class="line">          &quot;min_age&quot; : &quot;15d&quot;,</span><br><span class="line">          &quot;actions&quot; : &#123;</span><br><span class="line">            &quot;delete&quot; : &#123; &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>索引要被哪个ILM管理是在索引的<code>settings</code>的<code>lifecycle</code>处指定的</li>
+<li>ES默认10分钟执行一次检查，如果对应索引满足创建时间大于15天，则删除索引</li>
+</ul>
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><p>下面是测试验证该功能会用到的相关ES语句</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> =========索引模板相关===========</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建索引模板</span></span><br><span class="line">PUT _template/jz-fe-test-template</span><br><span class="line">&#123;</span><br><span class="line">  &quot;index_patterns&quot; : [&quot;jz-fe-test-*&quot;],</span><br><span class="line">  &quot;settings&quot; : &#123;</span><br><span class="line">      &quot;index&quot; : &#123;</span><br><span class="line">        &quot;lifecycle&quot; : &#123;</span><br><span class="line">          &quot;name&quot; : &quot;jz-fe-log-30s&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;:&#123;</span><br><span class="line">      &quot;gitGroup&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;projectName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看指定template信息</span></span><br><span class="line">GET /_template/jz-fe-test-template</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看指定前缀template信息</span></span><br><span class="line">GET /_template/jz-fe-*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除索引模板</span></span><br><span class="line">DELETE /_template/jz-fe-test-template</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 增加数据</span></span><br><span class="line">POST /jz-fe-test-2020-06-03/_doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;gitGroup&quot;:&quot;OS X&quot;,</span><br><span class="line">  &quot;projectName&quot;:&quot;iPhone2&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询数据</span></span><br><span class="line">GET jz-fe-test-2020-06-*/_search</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引详情</span></span><br><span class="line">GET /_cat/indices/jz-fe-test*?v&amp;s=index</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除测试索引</span></span><br><span class="line">DELETE /jz-fe-test-2020-06-*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> =========Index Lifecyce Management===========</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置10秒刷新1次(即定时器间隔)，生产环境10分种刷新一次</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可设置索引的保留时间为30s，每10s判断一次是否满足条件</span></span><br><span class="line">PUT _cluster/settings</span><br><span class="line">&#123;</span><br><span class="line">  &quot;persistent&quot;: &#123;</span><br><span class="line">    &quot;indices.lifecycle.poll_interval&quot;:&quot;10s&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看设置</span></span><br><span class="line">GET _cluster/settings</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看Index Lifecycle Manegment配置</span></span><br><span class="line">GET /_ilm/policy/jz-fe-log-15days</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/06/04/Elasticsearch%E7%B4%A2%E5%BC%95%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AE%A1%E7%90%86/" data-id="cm5tqeew30086wayp1voq4chk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-两个“跑路”级别BUG复盘" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/" class="article-date">
+  <time datetime="2020-06-02T13:08:36.000Z" itemprop="datePublished">2020-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/">两个“跑路”级别BUG复盘</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="自动登录越权"><a href="#自动登录越权" class="headerlink" title="自动登录越权"></a>自动登录越权</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>小程序原生跳转到webview的H5页面时，需要打通用户登录；此时需要在跳转的URL上带上临时token，通过临时token换取登录cookie。</p>
+<p>实现的方案为通过Node服务的拦截器，自动拦截小程序环境中的H5页面请求，自动设置上cookie。</p>
+<h3 id="问题-amp-原因"><a href="#问题-amp-原因" class="headerlink" title="问题&amp;原因"></a>问题&amp;原因</h3><p>自动登录相关的逻辑封装在AutoLogin类中，如下所示</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自动登录相关</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoLogin</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.ctx = <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  init (ctx) &#123;</span><br><span class="line">    <span class="built_in">this</span>.ctx = ctx</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 触发条件</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  trackRule () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 自动登录逻辑</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">res</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> autoLogin () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 自动退出登录逻辑</span></span><br><span class="line"><span class="comment">   * 备注：当实现小程序跳H5自动登录后，此时小程序退出登录，需同时保证H5页面也退出登录</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> autoLogout () &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">new</span> AutoLogin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>核心原因在于<code>this.ctx = ctx</code>这一行，这行代码意味着在内存中持有了koa的ctx对象，当并发场景，会造成第一个请求链路还未完结时，ctx被替换为第二个请求的上下文对象了，从而造成header中的cookie信息不对，权限错乱。</p>
+<h2 id="类型异常"><a href="#类型异常" class="headerlink" title="类型异常"></a>类型异常</h2><h3 id="问题-amp-原因-1"><a href="#问题-amp-原因-1" class="headerlink" title="问题&amp;原因"></a>问题&amp;原因</h3><p>问题代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Object.entries(config.proxy).map(([path, target]) &#x3D;&gt; &#123;</span><br><span class="line">        let &#123; url, login, intercept, extParams &#125; &#x3D; this.getProxyParams(target)</span><br><span class="line">        this.addRouter(&#123;</span><br><span class="line">          routerPath: &#96;$&#123;routerRoot&#125;$&#123;path&#125;&#96;,</span><br><span class="line">          target: url,</span><br><span class="line">          callback: async ctx &#x3D;&gt; &#123;</span><br><span class="line">            &#x2F;&#x2F; 支持extParams为function类型,传入ctx方便从request中获取数据</span><br><span class="line">            extParams &#x3D; Object.assign(&#123;&#125;, typeof (extParams) &#x3D;&#x3D;&#x3D; &#39;function&#39; ? extParams(ctx) : extParams)</span><br><span class="line">            &#x2F;&#x2F; 登录校验</span><br><span class="line">            if (login) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            &#x2F;&#x2F; 接口透传</span><br><span class="line">            await proxy.launch(&#123; url, reqParams &#125;, ctx)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>问题在于这一行代码<code>extParams = Object.assign(&#123;&#125;, typeof (extParams) === &#39;function&#39; ? extParams(ctx) : extParams)</code></p>
+<p>第一次请求的时候extParams为function类型，正常运行；第二次进来由于extParams已经变为了Object类型了，所以这段代码当第二个人请求进来时，永远都是运行的false逻辑，也就是第一个人ctx中的内容。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><ul>
+<li>在Node服务中，切忌保存上下文对象，尽量不要持有跟用户相关的非全局信息</li>
+<li>缺少TS的场景下，注意JS的类型</li>
+</ul>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/06/02/%E4%B8%A4%E4%B8%AA%E2%80%9C%E8%B7%91%E8%B7%AF%E2%80%9D%E7%BA%A7%E5%88%ABBUG%E5%A4%8D%E7%9B%98/" data-id="cm5tqeew20085wayp68jhbwgw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-记一次Node线上服务迁移" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/" class="article-date">
+  <time datetime="2020-05-24T11:26:16.000Z" itemprop="datePublished">2020-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/">记一次Node线上服务迁移</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB.jpeg" class="">
+
+<p>原有的Node服务，需要迁移到新的主机上，故需要准备一套新的环境，以及对应的迁移方案。</p>
+<h2 id="Node安装"><a href="#Node安装" class="headerlink" title="Node安装"></a>Node安装</h2><h3 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h3><blockquote>
+<p>下载地址： <a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a><br>选择：Linux Binaries (x64) 右键复制下载链接</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载到机器上，放在/opt目录</span></span><br><span class="line">[work@40-14-22 opt]$ wget https://nodejs.org/dist/v12.16.2/node-v12.16.2-linux-x64.tar.xz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压</span></span><br><span class="line">[work@40-14-22 opt]$ tar -xvf node-v12.16.2-linux-x64.tar.xz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 重命名</span></span><br><span class="line">[work@40-14-22 opt]$ mv node-v12.16.2-linux-x64 nodejs</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加软链让node、npm命令能够全局访问(需要 ROOT权限)</span></span><br><span class="line">[root@40-14-22 opt]# ln -s /opt/nodejs/bin/node  /usr/local/bin/</span><br><span class="line">[root@40-14-22 opt]# node -v</span><br><span class="line">v12.16.2</span><br><span class="line"></span><br><span class="line">[root@40-14-22 opt]# ln -s /opt/nodejs/bin/npm /usr/local/bin/</span><br><span class="line">[root@40-14-22 opt]# npm -v</span><br><span class="line">6.14.4</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用NVM安装"><a href="#使用NVM安装" class="headerlink" title="使用NVM安装"></a>使用NVM安装</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装NVM：https://github.com/nvm-sh/nvm</span></span><br><span class="line">wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装Node</span></span><br><span class="line">nvm install v12.16.3</span><br></pre></td></tr></table></figure>
+
+<p>使用NVM的好处在于可以管理Node版本，同一机器上可灵活切换不同Node版本，一键安装较方便</p>
+<h4 id="NVM常用命令"><a href="#NVM常用命令" class="headerlink" title="NVM常用命令"></a>NVM常用命令</h4><ul>
+<li><code>nvm install v12.16.3</code>：安装指定版本的Node</li>
+<li><code>nvm use v12.16.2</code>：使用指定版本的Node</li>
+<li><code>nvm ls</code>: 查看当前使用的Node版本</li>
+<li><code>nvm -h</code>: 查看帮助文档</li>
+</ul>
+<h2 id="运行环境准备"><a href="#运行环境准备" class="headerlink" title="运行环境准备"></a>运行环境准备</h2><h3 id="安装PM2"><a href="#安装PM2" class="headerlink" title="安装PM2"></a>安装PM2</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 全局安装</span></span><br><span class="line">[root@40-14-22 opt]# npm install pm2 -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果不支持全局使用，需配置软链</span></span><br><span class="line">[root@40-14-22 bin]# ln -s /opt/nodejs/lib/node_modules/pm2/bin/pm2 /usr/local/bin/</span><br></pre></td></tr></table></figure>
+
+<h3 id="日志分割"><a href="#日志分割" class="headerlink" title="日志分割"></a>日志分割</h3><blockquote>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/pm2-logrotate">https://www.npmjs.com/package/pm2-logrotate</a></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装pm2-logrotate</span></span><br><span class="line">[work@40-14-22 log]$ pm2 install pm2-logrotate</span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置超过1G分割</span></span><br><span class="line">pm2 set pm2-logrotate:max_size 1G</span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置最多保存200个日志文件</span></span><br><span class="line">pm2 set pm2-logrotate:retain 200</span><br><span class="line"><span class="meta">#</span><span class="bash"> 是否通过gzip压缩日志</span></span><br><span class="line">pm2 set pm2-logrotate:compress false</span><br><span class="line">pm2 set pm2-logrotate:dateFormat YYYY-MM-DD_HH-mm-ss</span><br><span class="line">pm2 set pm2-logrotate:workerInterval 30</span><br><span class="line"><span class="meta">#</span><span class="bash"> 每天晚上23:59:30分割</span></span><br><span class="line">pm2 set pm2-logrotate:rotateInterval &#x27;30 59 23 * * *&#x27;</span><br><span class="line">pm2 set pm2-logrotate:rotateModule true</span><br></pre></td></tr></table></figure>
+
+<p>设置完成后可以通过<code>pm2 conf pm2-logrotate</code>查看设置的是否正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[work@40-14-22 .pm2]$ pm2 conf pm2-logrotate</span><br><span class="line">Module: pm2-logrotate</span><br><span class="line">$ pm2 set pm2-logrotate:max_size 1G</span><br><span class="line">$ pm2 set pm2-logrotate:retain 200</span><br><span class="line">$ pm2 set pm2-logrotate:compress false</span><br><span class="line">$ pm2 set pm2-logrotate:dateFormat YYYY-MM-DD_HH-mm-ss</span><br><span class="line">$ pm2 set pm2-logrotate:workerInterval 30</span><br><span class="line">$ pm2 set pm2-logrotate:rotateInterval 0 0 * * *</span><br><span class="line">$ pm2 set pm2-logrotate:rotateModule true</span><br><span class="line">Module: module-db-v2</span><br><span class="line">$ pm2 set module-db-v2:pm2-logrotate [object Object]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>安装git是为了让pm2部署时能够从仓库中拉取代码，并部署</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@40-14-22 ~]# yum install git</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置公钥"><a href="#配置公钥" class="headerlink" title="配置公钥"></a>配置公钥</h4><p>拷贝机器的公钥串(当前用户的.ssh目录下的.pub文件内容)，粘贴到公共的gitlab下的授权下即可；目的是允许机器拉取gitlab仓库中的私有代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 生成公钥-一直回车即可</span><br><span class="line">[work@40-14-22 .ssh]$ ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>最好使用公共账号，不要使用个人账号</p>
+</blockquote>
+<p>如不配置ssh，pm2拉代码的时候会提示如下无权限错误</p>
+<img src="/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/git%E6%9D%83%E9%99%90%E6%8A%A5%E9%94%99.png" class="">
+
+<h3 id="服务器授信"><a href="#服务器授信" class="headerlink" title="服务器授信"></a>服务器授信</h3><img src="/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8E%88%E4%BF%A1.png" class="">
+
+
+<h4 id="部署机与服务器"><a href="#部署机与服务器" class="headerlink" title="部署机与服务器"></a>部署机与服务器</h4><blockquote>
+<p>目的: 部署机可免密访问目标机</p>
+</blockquote>
+<p>编辑目标机<code>.ssh</code>目录下的<code>authorized_keys</code>文件，粘贴保存部署机上<code>.ssh</code>目录下<code>.pub</code>文件内容即可</p>
+<blockquote>
+<p>vim快捷键：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/junwen5599/p/9996873.html">https://www.cnblogs.com/junwen5599/p/9996873.html</a></p>
+</blockquote>
+<h4 id="服务器与Gitlab服务器"><a href="#服务器与Gitlab服务器" class="headerlink" title="服务器与Gitlab服务器"></a>服务器与Gitlab服务器</h4><p>向服务器的<code>known_hosts</code>中新增Gitlab服务器的公钥</p>
+<p>缺少配置在部署时会报如下错误</p>
+<img src="/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/%E9%A6%96%E6%AC%A1%E8%AE%BF%E9%97%AE%E6%8A%A5%E9%94%99.jpg" class="">
+
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>查看Linux内核版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[work@37-14-42 log]$ uname -a</span><br><span class="line">Linux 37-14-42 2.6.32-573.22.1.el6.x86_64 #1 SMP Wed Mar 23 03:35:39 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span><br></pre></td></tr></table></figure>
+
+<p>查看centos版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[work@37-14-42 log]$ cat /etc/redhat-release</span><br><span class="line">CentOS release 6.5 (Final)</span><br></pre></td></tr></table></figure>
+
+<p>在centos6上安装最新的Node12会报如下错误</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[work@40-31-60 ~]$ node -v</span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.14&#x27; not found (required by node)</span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.18&#x27; not found (required by node)</span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.5&#x27; not found (required by node)</span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.15&#x27; not found (required by node)</span><br><span class="line">node: /lib64/libc.so.6: version `GLIBC_2.16&#x27; not found (required by node)</span><br><span class="line">node: /lib64/libc.so.6: version `GLIBC_2.17&#x27; not found (required by node)</span><br><span class="line">node: /lib64/libc.so.6: version `GLIBC_2.14&#x27; not found (required by node)</span><br></pre></td></tr></table></figure>
+<p>原因为gcc版本过低，要么升级gcc，要么系统升级到centos7</p>
+<p>建议不要折腾，在centos6上升级gcc版本，耗力费时，可能还会存在版本匹配问题；最好选择一步到位升级系统到centos7</p>
+<h2 id="迁移方案"><a href="#迁移方案" class="headerlink" title="迁移方案"></a>迁移方案</h2><h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><p>服务器环境准备好后，接下来就是按照线上的部署流程在新服务器上部署Node服务。</p>
+<p>此时，由于没有经过验证，不能够直接让外网流量进来；另外，线上服务环境与公司内网环境一般也是隔离的，那么如何才能请求到新的服务验证新服务是否可用呢？</p>
+<p>这种情况，可以借助部署机，部署机比较特殊，既可以访问内网的gitlab服务拉取代码，又可以把拉取到的代码部署到线上环境，可以部署机为跳板访问线上新的Node服务，在内网环境验证服务是否可用。</p>
+<p>具体可参见这篇文章：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/59x3K2zkfk9ejmZFnrXoWw">通过Nginx解决网络隔离实践记录</a></p>
+<h3 id="切流量"><a href="#切流量" class="headerlink" title="切流量"></a>切流量</h3><p>当验证完服务正常后，接下来就是切流量操作了，可以采用如下两种方案</p>
+<ul>
+<li>把线上某一台机器的流量切到新服务上</li>
+<li>把线上流量的10%切到新的服务上</li>
+</ul>
+<p>流量进来后，观察服务器的各项参数是否有异常，观察Node服务的日志监控是否有异常上报。</p>
+<p>运行一段时间无异常，再切50%，循序渐进，最终把全部流量切到新主机。</p>
+<p>最后，<strong>服务迁移繁琐复杂，容器化会是一个更好的选择</strong>。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/05/24/%E8%AE%B0%E4%B8%80%E6%AC%A1Node%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB/" data-id="cm5tqeew20084wayphj2y1j4o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Centos安装Mysql记录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/24/Centos%E5%AE%89%E8%A3%85Mysql%E8%AE%B0%E5%BD%95/" class="article-date">
+  <time datetime="2020-05-24T09:42:49.000Z" itemprop="datePublished">2020-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/24/Centos%E5%AE%89%E8%A3%85Mysql%E8%AE%B0%E5%BD%95/">Centos安装Mysql记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 下载yum源</span><br><span class="line">wget &#39;https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm&#39;</span><br><span class="line"></span><br><span class="line"># 安装yum源</span><br><span class="line">sudo rpm -Uvh mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line"></span><br><span class="line"># 查看有哪些版本可安装</span><br><span class="line">yum repolist all | grep mysql</span><br><span class="line"></span><br><span class="line"># 切换安装版本</span><br><span class="line"># 关闭5.7版本</span><br><span class="line">sudo yum-config-manager --disable mysql57-community</span><br><span class="line"># 打开5.6版本</span><br><span class="line">sudo yum-config-manager --enable mysql56-community</span><br><span class="line"></span><br><span class="line"># 安装</span><br><span class="line">sudo yum install mysql-community-server</span><br></pre></td></tr></table></figure>
+
+<p>在centos6下会报如下错误：（centos7正常）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Error: Package: mysql-community-server-5.6.48-2.el7.x86_64 (mysql56-community)</span><br><span class="line">           Requires: libc.so.6(GLIBC_2.17)(64bit)</span><br><span class="line">Error: Package: mysql-community-server-5.6.48-2.el7.x86_64 (mysql56-community)</span><br><span class="line">           Requires: systemd</span><br><span class="line">Error: Package: mysql-community-libs-5.6.48-2.el7.x86_64 (mysql56-community)</span><br><span class="line">           Requires: libc.so.6(GLIBC_2.17)(64bit)</span><br><span class="line">Error: Package: mysql-community-server-5.6.48-2.el7.x86_64 (mysql56-community)</span><br><span class="line">           Requires: libstdc++.so.6(GLIBCXX_3.4.15)(64bit)</span><br><span class="line">Error: Package: mysql-community-client-5.6.48-2.el7.x86_64 (mysql56-community)</span><br><span class="line">           Requires: libc.so.6(GLIBC_2.17)(64bit)</span><br></pre></td></tr></table></figure>
+
+<p>原因分析如下：<br><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/280385/can-not-install-mysql-server-on-centos-6-7-32bit-error-need-rpm">https://unix.stackexchange.com/questions/280385/can-not-install-mysql-server-on-centos-6-7-32bit-error-need-rpm</a></p>
+<p>在网上找了一圈，按照下面一顿操作，发现能够正常安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># cd &#x2F;etc&#x2F;yum.repos.d&#x2F;  找到mysql-56-community,将enable置为0 enable&#x3D;0</span><br><span class="line">sudo vi mysql-community.repo</span><br><span class="line"></span><br><span class="line"># 重新安装mysql   </span><br><span class="line">sudo yum install mysql-server</span><br></pre></td></tr></table></figure>
+
+<p>在centos6上安装完后，发现由于网络安全原因，机器无法开3306端口；索性换了一台centos7的机器，直接一气呵成安装MySQL8.0</p>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看mysql运行状态</span><br><span class="line">sudo service mysqld status</span><br><span class="line"># 查看端口情况</span><br><span class="line">sudo lsof -i tcp:3306</span><br><span class="line"># 启动mysql，需要加sudo，否则会报FAILED错误</span><br><span class="line">sudo service mysqld start</span><br><span class="line"># 结束服务</span><br><span class="line">sudo service mysqld stop</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h3><p>首次安装后查看默认密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[work@40-31-60 soft]$ sudo grep &#39;temporary password&#39; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br><span class="line">2020-05-21T09:56:30.576083Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: UlCbRjdoE4?a</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下Mysql是不运行远程连接的，故需要新增远程连接账户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 连接数据库（输入上面查询出来的密码）</span><br><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>修改密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 8.0下报错</span><br><span class="line">mysql&gt; set password for root@localhost &#x3D; password(&#39;root&#39;);</span><br><span class="line">ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#39;password(&#39;root&#39;)&#39; at line 1</span><br><span class="line"></span><br><span class="line"># 修改密码(数字、大小写、特殊字符)</span><br><span class="line">alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;58daojiaDJ!!&#39;;</span><br><span class="line"># 密码复杂度过低会报如下错误</span><br><span class="line">ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</span><br><span class="line"></span><br><span class="line"># 查看密码强度规则</span><br><span class="line"> mysql&gt;  SHOW VARIABLES LIKE &#39;validate_password%&#39;;</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| Variable_name                        | Value  |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| validate_password.check_user_name    | ON     |</span><br><span class="line">| validate_password.dictionary_file    |        |</span><br><span class="line">| validate_password.length             | 8      |</span><br><span class="line">| validate_password.mixed_case_count   | 1      |</span><br><span class="line">| validate_password.number_count       | 1      |</span><br><span class="line">| validate_password.policy             | MEDIUM |</span><br><span class="line">| validate_password.special_char_count | 1      |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">7 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加账户"><a href="#添加账户" class="headerlink" title="添加账户"></a>添加账户</h3><p>查看现有用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 选择数据库</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> use mysql;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 用户查询</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> select host,user from user;</span></span><br><span class="line">+-----------+------------------+</span><br><span class="line">| host      | user             |</span><br><span class="line">+-----------+------------------+</span><br><span class="line">| localhost | mysql.infoschema |</span><br><span class="line">| localhost | mysql.session    |</span><br><span class="line">| localhost | mysql.sys        |</span><br><span class="line">| localhost | root             |</span><br><span class="line">+-----------+------------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>新增允许远程连接的账户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 新增用户；[admin<span class="string">&#x27;@&#x27;</span>%]中的%号代表允许任意远程客户端连接</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> CREATE USER <span class="string">&#x27;admin&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED BY <span class="string">&#x27;58admin!!AAA&#x27;</span>;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加权限</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> GRANT ALL PRIVILEGES ON *.* TO <span class="string">&#x27;admin&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="为work账户添加sudo权限"><a href="#为work账户添加sudo权限" class="headerlink" title="为work账户添加sudo权限"></a>为work账户添加sudo权限</h3><p>root 账户键入<code>visudo</code>即可进入sudo配置<br>找到<code>root    ALL=(ALL)   ALL</code><br>在这一行下面增加<code>work ALL=(ALL)  NOPASSWD:ALL</code>即可</p>
+<h3 id="Node连接异常处理"><a href="#Node连接异常处理" class="headerlink" title="Node连接异常处理"></a>Node连接异常处理</h3><p>使用mysql包（ <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/mysql">https://www.npmjs.com/package/mysql</a> ）连接服务时报如下错误</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client</span><br></pre></td></tr></table></figure>
+
+<p>解决方案如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 选择mysql数据库</span></span><br><span class="line">use mysql;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改admin的密码，关键在于mysql_native_password关键字指定密码类型</span></span><br><span class="line">ALTER user &#x27;admin&#x27;@&#x27;%&#x27; IDENTIFIED WITH mysql_native_password by &#x27;58admin!!AAA&#x27;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 更新</span></span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行完，node端就可以连接上mysql8.0了。</p>
+<p>可以到mysql数据库中的user表中查看密码，其它的都为<code>caching_sha2_password</code>类型，修改完的这个为<code>mysql_native_password</code></p>
+<blockquote>
+<p>资料：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server">https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server</a></p>
+</blockquote>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/05/24/Centos%E5%AE%89%E8%A3%85Mysql%E8%AE%B0%E5%BD%95/" data-id="cm5tqeew20083wayp5zwih5e9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-VR：虚拟与现实" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/18/VR%EF%BC%9A%E8%99%9A%E6%8B%9F%E4%B8%8E%E7%8E%B0%E5%AE%9E/" class="article-date">
+  <time datetime="2020-05-17T16:26:56.000Z" itemprop="datePublished">2020-05-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/18/VR%EF%BC%9A%E8%99%9A%E6%8B%9F%E4%B8%8E%E7%8E%B0%E5%AE%9E/">VR：虚拟与现实</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/05/18/VR%EF%BC%9A%E8%99%9A%E6%8B%9F%E4%B8%8E%E7%8E%B0%E5%AE%9E/VR%EF%BC%9A%E8%99%9A%E6%8B%9F%E4%B8%8E%E7%8E%B0%E5%AE%9E.png" class="">
+
+<h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>周末体验了一把VR眼镜带来的不同乐趣。</p>
+<p>给我的直观感受可以用两个字来形容：”<strong>颠覆</strong>“。</p>
+<p>其中的游戏体验可以用2D到3D上升一个维度，3D再到VR再次上升一个维度来形容，完全的沉浸体验，给人身临其境的感觉。</p>
+<p>戴上VR眼镜，犹如进入了另外的一个世界，而且还是一个分外逼真的世界，你的一举一动都得在这个世界有所反馈，由此引出一个问题：”<strong>现实世界中，我们看到的一切都是真实的吗？</strong>“</p>
+<p>我相信，通过目前的VR技术，完全有能力把现实里的部分场景原封不动的搬进VR眼镜里，<strong>在这种情况下，我们该如何区分虚拟与现实？</strong></p>
+<p>会不会出现所谓的精分（精神分裂）？会不会出现《盗梦空间》里的场景，通过一个虚拟现实中的场景，来影响到我们对现实世界的认知？</p>
+<p>从我第一次接触体验的感受来讲，我觉得不久的将来极有可能变为现实。</p>
+<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>除了这些引人深思的问题，还让让我想到了另外一个词：”<strong>降维打击</strong>“。</p>
+<p>通过模拟出一个电影院的场景，戴上VR眼镜，你看到的周围环境，犹如真正置身于电影院里（此时你唯一缺少的就是让你能够舒舒服服坐下的沙发），通过软件设置，你还可以切换你喜欢的私人影院风格。</p>
+<p>此时，你不再需要去电影院，在家里就能获得去电影院里观看电影的体验，甚至体验还更好。</p>
+<p>因为，我们的感官完全来自于我们眼睛看到的内容，通过VR技术，完全有条件让眼睛信以为真。</p>
+<p>前年新房装修，专门考虑把电视墙做平，方便后续买投影放幕布，提升观影体验，在VR里体验了一把看电影的体验后，现在想想有点可笑。</p>
+<p><strong>当时的思维认知，决定了当时的思考与行动。</strong></p>
+<p>就像网上的段子说：”农民的认知里皇帝是用金锄头锄地的，实际上皇帝根本就用不着锄地!“</p>
+<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><p>前几天在知乎看到这样一个问题：”<strong>前端会有未来吗？</strong>“</p>
+<p>当时的回答是这样的：</p>
+<blockquote>
+<p>如果你把前端定位为写html、css、js那么可以预见的是没有未来的</p>
+<p>如果把前端定位为用户接受信息的一种渠道，那么前端必定还有更为广阔的未来</p>
+<p>随着技术的进步，人和信息的交互与互动会更加的多元化与场景化，这就对前端提出了更高的要求</p>
+<p>所以，各位不要再抱怨学不动了，后面还有得学…</p>
+<p>也正是因为这样，前端的未来才充满无数的挑战和机会，作为一个技术人，值得为此一搏！</p>
+</blockquote>
+<p>随着VR的不断普及，我相信跟用户相关的”前端“还会更进一步的爆炸，还会有更多的机会与挑战。</p>
+<p>目前VR的普及主要受制于硬件的制约，想想功能机到现在人手一台的智能机，短短十年间就完成了更新换代与颠覆。</p>
+<p>相信VR的春天一定不会太遥远。</p>
+<p>作为一个技术人，想想都激动呀!<del>~</del></p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/05/18/VR%EF%BC%9A%E8%99%9A%E6%8B%9F%E4%B8%8E%E7%8E%B0%E5%AE%9E/" data-id="cm5tqeew10082waypb349c3dm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-一文弄清传统软件开发与互联网软件开发的异同" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/" class="article-date">
+  <time datetime="2020-05-08T09:53:24.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/">一文弄清传统软件开发与互联网软件开发的异同</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB1.png" class="">
+
+<blockquote>
+<p> 在传统软件开发领域8年，从一线开发，到项目技术经理，再到产品研发技术负责人，一路走来，感受着互联网行业的软件越来越贴近日常生活，一直有一个疑问，那就是互联网行业中的软件开发是怎么样的？两年前，决定转行到互联网行业实际体验看一看，通过两年的观察总结以及实际亲身感受，我觉得我已经找到了答案，解除了心中的疑问，此文写给那些跟我有相同疑问的朋友。</p>
+</blockquote>
+<p>相信很多在传统软件开发领域的朋友或多或少对互联网公司的软件开发有如下疑问：<strong>开发流程是怎么样的？人员组成是怎么样的？系统架构是怎么样的？成长路线是怎么样的？是不是加班厉害？薪资福利是不是传言的那么有诱惑力？</strong></p>
+<p>而在互联网行业高压力的同学，也会问：<strong>传统软件开发公司工作会不会轻松点？会不会稳定一点？是不是在传统软件开发领域年龄没那么敏感？</strong></p>
+<p>这篇文章会一一解答上述疑问</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>首先，先来介绍一下何谓传统软件行业，何谓互联网软件行业，有如下几个明显差异点。</p>
+<h3 id="传统行业"><a href="#传统行业" class="headerlink" title="传统行业"></a>传统行业</h3><p>传统软件开发行业，也可以叫做企业软件开发行业，他的明显特征如下</p>
+<ul>
+<li><strong><em>软件：</em></strong> 比如财务系统、OA系统、CRM、ERP等业务系统，医疗、电力、智慧城市、税务等行业软件，目的为帮助公司或政府与事业单位更高效运转的业务支撑系统</li>
+<li><strong><em>目标群体：</em></strong>  <strong>客户</strong> - 软件的使用群体一般为公司内部员工、政府、事业单位职员</li>
+<li><strong><em>公司：</em></strong> 金蝶、用友、中软、东软等</li>
+</ul>
+<h3 id="互联网行业"><a href="#互联网行业" class="headerlink" title="互联网行业"></a>互联网行业</h3><ul>
+<li><strong><em>软件：</em></strong> 比如微信、QQ、baidu.com、今日头条、抖音、优酷等</li>
+<li><strong><em>目标群体：</em></strong> <strong>用户</strong> - 广大互联网用户</li>
+<li><strong><em>公司：</em></strong> 阿里、腾讯、百度、头条等  </li>
+</ul>
+<h2 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h2><p>作为码农，不论在传统行业还是互联网行业，都是做软件开发，软件开发一般都是以项目为单位。首先，就先以项目流程的角度聊一下传统软件行业与互联网软件行业的区别。</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB2.png" class="">
+
+<h3 id="传统行业-1"><a href="#传统行业-1" class="headerlink" title="传统行业"></a>传统行业</h3><p>结合上图，从如下几点说说传统软件项目的项目流程</p>
+<h4 id="需求来源"><a href="#需求来源" class="headerlink" title="需求来源"></a>需求来源</h4><blockquote>
+<p>需求来源一般为甲方客户，当一家公司慢慢成长起来时，往往需要软件来提升公司的管理与运行效率。比如所有公司无一例外都需要人事管理系统、财务管理系统、OA系统、考勤系统；一些制造行业还需要生产管理的ERP系统，医院需要病例管理系统、学校需要学生管理系统、政府需要公文管理系统等等。这些甲方客户一般都没有专门的软件开发团队，大部分只有一个叫技术中心的部门负责网络与各种系统的管理。所以，要落地这些软件，就需要专业的软件公司来实施。</p>
+</blockquote>
+<h4 id="需求收集"><a href="#需求收集" class="headerlink" title="需求收集"></a>需求收集</h4><blockquote>
+<p>有了实际的需求，要么客户主动找到软件公司，要么软件公司挖掘客户；首先入场的一般都是销售入场（主管商务事项，比如报价、签约，客户关系维护，需求挖掘，以便签约项目二期、三期…）。<br>有时还会有售前顾问支持（主管技术，比如给客户给出技术方案、初步分析出项目实施范围，方便合理报价）；需要说明的是售前顾问通常都是技术出身，项目经验丰富，不仅是技术专家，还是业务专家，对某一行业有深刻理解，能够告诉客户，怎么做才是行业最好的方案，利用行业经验帮助客户提升效率，而不是简单把客户的下线流程搬到线上。</p>
+</blockquote>
+<h4 id="需求实施"><a href="#需求实施" class="headerlink" title="需求实施"></a>需求实施</h4><blockquote>
+<p>项目签约下来后，紧接着就是项目实施团队入场。<br>项目团队包含这些人：项目经理、需求分析师、技术经理、技术开发、UI、QA<br>项目实施有时为驻场开发，有时是在公司开发好后到甲方公司去部署上线</p>
+</blockquote>
+<h4 id="需求交付"><a href="#需求交付" class="headerlink" title="需求交付"></a>需求交付</h4><blockquote>
+<p>需求通过QA测试部署后，通常会有试运行阶段，在试运行阶段，客户可提出问题点与优化点。所有功能没问题后，即完成交付，技术团队撤出，投入到下一个项目，销售收尾款。<br>偶尔客户还会购买系统运维服务，即支持系统运行期间的问题处理以及小需求迭代。</p>
+</blockquote>
+<h3 id="互联网行业-1"><a href="#互联网行业-1" class="headerlink" title="互联网行业"></a>互联网行业</h3><p>结合上图，从如下几点说说互联网软件项目的项目流程</p>
+<h4 id="需求来源-1"><a href="#需求来源-1" class="headerlink" title="需求来源"></a>需求来源</h4><p>需求来源主要在于这三个方面</p>
+<blockquote>
+<ol>
+<li>产品需求：PM发起的需求，比如要做个视频面试的新产品、要优化下单流程之类的</li>
+<li>营销需求：此类需求一般为公司运营和营销人员发起的需求，PM把需求梳理为产品文档后，交由技术团队落地</li>
+<li>内部需求：此类需求可理解为内部系统建设需求；前面两种一般称之为To C，这种叫To B  </li>
+</ol>
+</blockquote>
+<blockquote>
+<p>最后，还有一种活儿的来源，那就是技术自己发起的需求，比如系统重构，技术基础设施的建设，比如系统性能、异常监控系统、持续集成系统等</p>
+</blockquote>
+<h4 id="需求收集-1"><a href="#需求收集-1" class="headerlink" title="需求收集"></a>需求收集</h4><p>在互联网公司，所有的需求都会收集到产品经理（PM）处，技术团队原则上只从产品经理处承接需求</p>
+<blockquote>
+<p>PM会把各种需求整理成需求文档，还会附带上需求原型。通常会先期找技术初评，确认哪些功能无法实现然后调整需求文档。</p>
+</blockquote>
+<h4 id="需求实施-1"><a href="#需求实施-1" class="headerlink" title="需求实施"></a>需求实施</h4><blockquote>
+<p>需求没问题后，C端需求最先入场的是UE、UI，即交互设计与视觉设计，完事后前端FE拿到设计稿后进行开发，这期间后端开发可并行，最后接口联调、测试</p>
+</blockquote>
+<h4 id="需求交付-1"><a href="#需求交付-1" class="headerlink" title="需求交付"></a>需求交付</h4><ul>
+<li>测试完毕后，预发布、预发布没问题由QA上线</li>
+</ul>
+<p>贴一个以前端视角的大致项目流程：</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB3.png" class="">
+
+<blockquote>
+<p><strong>最明显的感受就是，传统行业的软件开发是给甲方干，在互联网行业的软件开发是给自己干！</strong></p>
+</blockquote>
+<h2 id="项目相关人员"><a href="#项目相关人员" class="headerlink" title="项目相关人员"></a>项目相关人员</h2><p>上面介绍了项目的整体流程，接着针对于项目团队的组成，即实际参与项目落地的人员以及人员分工聊一聊</p>
+<h3 id="传统软件项目"><a href="#传统软件项目" class="headerlink" title="传统软件项目"></a>传统软件项目</h3><img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB4.png" class="">
+
+<ul>
+<li><p>项目经理</p>
+<blockquote>
+<p>项目的总负责人，负责与客户对接，大部分情况参与需求的调研，把客户的线下需求转变为需求文档，给到技术人员去落地</p>
+</blockquote>
+</li>
+<li><p>技术经理</p>
+<blockquote>
+<p>项目的技术负责人，负责整个项目的关键技术把控，业务抽象、系统架构、模块划分，以及对开发工程师的工作分配与管理</p>
+</blockquote>
+</li>
+<li><p>需求分析师</p>
+<blockquote>
+<p>协助项目经理梳理需求，比较大的项目一般是项目经理整体把控，带领多个需求分析师，没人负责一块业务需求，把需求文档化。目的在于与客户对齐需求，保证开发出来的东西是客户想要的。还有一个比较重要的目的是，开发之前都需要客户确认需求，方便控制需求变更以及需求范围，避免无限制的增加需求。</p>
+</blockquote>
+</li>
+<li><p>UI设计师</p>
+<blockquote>
+<p>一般PC端系统首页，以及移动端的一些页面需要UI单独设计，后台系统一般不需要。UI属于公共资源，需项目组申请，一般不常驻项目。</p>
+</blockquote>
+</li>
+<li><p>开发工程师</p>
+<blockquote>
+<p>在传统软件开发中，很少会有专职的前端人员，大部分情况都是项目经理划分好功能模块，开发人员从数据库设计、后端业务逻辑编写，再到前端UI实现，都是同一个人。好处很明显，就是效率高；坏处就是相对于互联网行业的分工细化，质量会相对差一些。</p>
+</blockquote>
+</li>
+<li><p>测试工程师</p>
+<blockquote>
+<p>公共资源，到测试阶段入场。一般负责压力测试、性能测试、功能逻辑测试。</p>
+</blockquote>
+</li>
+<li><p>系统安全</p>
+<blockquote>
+<p>关于系统安全这块，政府或者国家级项目，甲方一般会找第三方安全厂商来做渗透测试，或者直接找国家网络安全中心来做系统的安全评估，最终给出系统的安全报告，有哪些系统漏洞会一一列出来。在经历过的项目中，私企这一块基本没有，政府与事业单位软件项目居多。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="互联网软件项目"><a href="#互联网软件项目" class="headerlink" title="互联网软件项目"></a>互联网软件项目</h3><p>下面贴一张曾经以项目经理角色负责过的项目，因为该项目较大，牵涉到的人较多，可以很清晰的看到一个项目的完整人员分工与构成。</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB5.png" class="">
+
+<ul>
+<li><p><strong>PM</strong></p>
+<blockquote>
+<p>产品经理，负责需求文档编写，以及需求上线后产品效果的跟踪</p>
+</blockquote>
+</li>
+<li><p><strong>UE</strong></p>
+<blockquote>
+<p>交互设计，跟进PM的需求，制定页面的交互逻辑</p>
+</blockquote>
+</li>
+<li><p><strong>UI</strong></p>
+<blockquote>
+<p>根据需求与交互稿设计UI图，然后注明UI图的标注，直接给到前端或者上传到蓝湖</p>
+</blockquote>
+</li>
+<li><p><strong>视觉</strong></p>
+<blockquote>
+<p>视觉与UI实际上都属于设计部门，视觉设计的主要分工为活动海报、运营活动页面，插画等的设计</p>
+</blockquote>
+</li>
+<li><p><strong>RD</strong></p>
+<blockquote>
+<p>后端开发，提供数据接口给到端上（FE、APP）</p>
+</blockquote>
+</li>
+<li><p><strong>FE</strong></p>
+<blockquote>
+<p>前端开发，负责所有H5页面、各种小程序、NodeJS层的开发。</p>
+</blockquote>
+</li>
+<li><p><strong>APP</strong></p>
+<blockquote>
+<p>一般分为两块，IOS与Android</p>
+</blockquote>
+</li>
+<li><p><strong>QA</strong></p>
+<blockquote>
+<p>测试人员，FE与RD并行开发，都开发完毕后进行接口联调，联调完成后QA介入测试</p>
+</blockquote>
+</li>
+<li><p><strong>BI</strong></p>
+<blockquote>
+<p>数据分析人员，数据一般来源于前端的埋点以及业务数据，负责根据相关数据给出数据分析报表</p>
+</blockquote>
+</li>
+<li><p><strong>安全</strong></p>
+<blockquote>
+<p>安全团队负责把控系统上线前是否有安全漏洞</p>
+</blockquote>
+</li>
+<li><p><strong>法务</strong></p>
+<blockquote>
+<p>保障新上线的项目需求无法律风险。比如一些文案的提示，活动的规则、用户协议等。</p>
+</blockquote>
+</li>
+<li><p><strong>运营</strong></p>
+<blockquote>
+<p>提出需求，营销活动规则的指定</p>
+</blockquote>
+</li>
+<li><p><strong>财务</strong></p>
+<blockquote>
+<p>营销活动类需求活动资金的控制</p>
+</blockquote>
+</li>
+</ul>
+<p>传统软件项目开发一般都会基于公司产品来做二次开发，提升开发效率。互联网软件大部分情况都是对现有线上业务的迭代，为了提升开发效率后端也有中台组、架构组支撑，前端与UI也会抽取业务组件方便开发。</p>
+<p>传统软件开发项目，由项目经理负责制，从项目最开始跟到系统上线验收；互联网公司中的项目组织相对零散，需求详设评审进入开发后基本上就没PM的事情了，这个时候一般会在FE、RD、QA中推举一位项目负责人推进项目的落地，把控项目进度。敏捷项目一般由Master来负责。</p>
+<h2 id="项目技术架构"><a href="#项目技术架构" class="headerlink" title="项目技术架构"></a>项目技术架构</h2><h3 id="传统行业-2"><a href="#传统行业-2" class="headerlink" title="传统行业"></a>传统行业</h3><blockquote>
+<p><strong>核心诉求：</strong> 在满足功能需求的情况下，<strong>怎么好维护，怎么开发成本低怎么来</strong>。机器都是甲方出，<strong>所以能通过堆机器解决的问题都不是问题</strong> （不过也需要为客户考虑项目整体成本）</p>
+</blockquote>
+<p>常见的架构是这样的：</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB6.png" class="">
+
+<p>传统行业的企业内部系统技术架构80%都是只做到读写分离、按应用拆分、分布式缓存、单独的查询服务就不再往下走了，因为再往下走，开发成本会成指数级上升。少数会做到大表拆分、负载会上LVS或F5。</p>
+<p>对于这样的技术架构，只要机器足够，性能够强，足以支撑一家上万人的公司日常正常运转了。</p>
+<p>对于那种项目金额上千万的项目，更多的也是采取多地分开部署，数据集中上报汇总的方式，避免架构复杂化带来的开发成本提升。</p>
+<h3 id="互联网行业-2"><a href="#互联网行业-2" class="headerlink" title="互联网行业"></a>互联网行业</h3><blockquote>
+<p><strong>核心诉求：</strong> 支持快速迭代、稳定、高并发。另外，机器都是自己出，多一台都是成本….</p>
+</blockquote>
+<p>为了达成上述诉求，基础配置大部分都是这样的，上不封顶</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB7.png" class="">
+
+
+<p>可以看到，对于传统行业软件技术架构，相对于互联网软件架构，<strong>最明显的区别标志就是微服务</strong></p>
+<blockquote>
+<p>这里是一篇很不错的讲述架构演进的文章：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/yZlQUZQS0Rkn_7vY7hjvHQ">https://mp.weixin.qq.com/s/yZlQUZQS0Rkn_7vY7hjvHQ</a></p>
+</blockquote>
+<h2 id="成长路线"><a href="#成长路线" class="headerlink" title="成长路线"></a>成长路线</h2><p>大部分上了规模的互联网公司都有清晰明确的职级体系；传统行业软件公司大部分职级体系较模糊。</p>
+<h3 id="传统行业-3"><a href="#传统行业-3" class="headerlink" title="传统行业"></a>传统行业</h3><p>一般分为技术路线与业务路线两种</p>
+<h4 id="技术路线"><a href="#技术路线" class="headerlink" title="技术路线"></a>技术路线</h4><p>职级从初级开发、中级开发、高级开发、资深开发、一路到系统架构师；</p>
+<p>实际工作中，做到在项目中负责整个项目的技术负责人，或者公司的产品研发负责人，技术路线基本就到头了</p>
+<p>项目技术负责人更多的要求综合能力；产品研发负责人给更多要求技术深度与从项目业务中提炼成产品的能力</p>
+<h4 id="业务路线"><a href="#业务路线" class="headerlink" title="业务路线"></a>业务路线</h4><p>大多数都会先做一两年技术，然后做项目的需求分析人员，再然后到项目经理，成为业务方面的专家；例如财务领域专家、生产制造领域业务专家、金融领域业务专家等。</p>
+<p>这条线是业务经验越丰富越值钱，需要靠一个个实际项目历练出来，无捷径可走。</p>
+<h3 id="互联网行业-3"><a href="#互联网行业-3" class="headerlink" title="互联网行业"></a>互联网行业</h3><p>上规模的互联网公司，大部分都有成体系的晋升路线图</p>
+<p>下面从网络上找到几张图，比较清晰</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E8%81%8C%E7%BA%A7%E6%B1%87%E6%80%BB.jpeg" class="">
+
+
+<p>以阿里为例，分为技术线和管理线</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E9%98%BF%E9%87%8C%E8%81%8C%E7%BA%A7.jpeg" class="">
+
+
+<p>技术线职级对应的要求如下所示</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E9%98%BF%E9%87%8C%E8%81%8C%E7%BA%A7%E8%A6%81%E6%B1%82.jpeg" class="">
+
+
+<h2 id="能力要求"><a href="#能力要求" class="headerlink" title="能力要求"></a>能力要求</h2><ul>
+<li><p><strong>传统软件开发</strong></p>
+<blockquote>
+<p>在传统软件开发中，<strong>更多的是要求技术的广度，以及综合能力，希望技术人员是多面手</strong>，要求以最快的速度，最低的成本搞定需求。开发时，更多的也是按功能模块拆分，希望开发人员能够从前到后一条龙搞定。<strong>对时间、代码质量不敏感，对项目的资源投入与收益敏感。</strong></p>
+</blockquote>
+</li>
+<li><p><strong>互联网软件开发</strong></p>
+<blockquote>
+<p>在互联网公司中，岗位拆分的很细，会<strong>更多的要求单一方向的技术深度</strong>，专门的岗位干专业的事。之所以会把岗位拆这么细，是因为这样方便模块拆分，<strong>实现更多的并行开发，尽力做到增加人员，就能加快项目开发进度，实现快速抢占市场的目的。</strong></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="行业关注点"><a href="#行业关注点" class="headerlink" title="行业关注点"></a>行业关注点</h2><ul>
+<li><p><strong>传统行业</strong></p>
+<blockquote>
+<p>更多的关心一个项目的投入与产出比，所以会在产品上多下功夫，尽量的把通用功能产品化，以更多的复用来减少开发成本。同时，更注重业务解决方案的抽取，提升核心竞争力。</p>
+</blockquote>
+</li>
+<li><p><strong>互联网行业</strong></p>
+<blockquote>
+<p>更多的关心需求的上线速度，更快的速度占领市场就会有更多的优势；所以会更多的关注模块化，实现通过不断的增加开发人员，就能明显提升开发速度，所以岗位、系统才会拆得比较细粒度。为了解决复用问题，衍生出中台概念。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="关于加班"><a href="#关于加班" class="headerlink" title="关于加班"></a>关于加班</h2><h3 id="传统软件行业"><a href="#传统软件行业" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>大部分情况是早九晚六，中午可午休，基本不加班。</p>
+<p>由于传统软件每个项目的开发周期较长,大部分都是按月计，所以紧急情况下，有足够的消化空间，很少有加班特别狠的情况。</p>
+<p>特殊情况，从业8年，甲方为日企，唯一一次连续996一个月。</p>
+<p><strong>其他：</strong> 有出差需求，因为有时需要到客户所在地驻场开发。</p>
+<h3 id="互联网软件行业"><a href="#互联网软件行业" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>公认的加班狠，什么996（早9点，晚9点，一周6天）、大小周（隔周双休）的开创者全部来源于这个行业；</p>
+<p>也有极少数公司能做到早10晚7，不过碰到上线，基本都得加班（有时上线还挺频繁的，一周至少有一半时间有需求上线）</p>
+<p><strong>其他：</strong> 基本无出差需求</p>
+<blockquote>
+<p>总的来说，传统软件行业加班时间是少数，有更多的非工作时间；互联网软件开发行业，加班是常态，不加班或少加班的公司简直是一股清流存在。</p>
+</blockquote>
+<h2 id="关于薪资福利"><a href="#关于薪资福利" class="headerlink" title="关于薪资福利"></a>关于薪资福利</h2><h3 id="传统软件行业-1"><a href="#传统软件行业-1" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>从实际待过的两家A股上市公司，以及所了解的其他头部传统行业软件公司来看，涨薪基本上靠你的直属主管觉得你应该加薪才会获得薪资的提升</p>
+<p>虽然从系统里能够查出来你的职位是助理开发还是资深架构师，但是公司没有一个相对明确的每个职位层级的薪资范围，也没有正式的述职与职位晋升一说，我的感受就是你的薪资越高，代表着你的职级越高。整体来看，同职级岗位薪资低于互联网行业一个层级，月薪30k是一个比较难达到的坎。</p>
+<p>股票、期权激励较难见到。</p>
+<h3 id="互联网软件行业-1"><a href="#互联网软件行业-1" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>互联网公司的涨薪基本上靠如下几个方面</p>
+<ul>
+<li>年度普调（发展好的公司）</li>
+<li>每年绩效不错，核心骨干（针对性涨薪）</li>
+<li>职位晋升</li>
+</ul>
+<p>薪资基本与职级挂钩，每个职级对应一个薪资范围，达到薪资范围的上限，就只有靠职位晋升来提升了。薪资范围可参见<strong>成长路线</strong>部分的贴图。</p>
+<p>股票、期权激励较常见。</p>
+<h2 id="关于稳定性"><a href="#关于稳定性" class="headerlink" title="关于稳定性"></a>关于稳定性</h2><h3 id="传统软件行业-2"><a href="#传统软件行业-2" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>传统行业相对稳定，原因有如下几点</p>
+<ul>
+<li>以项目为单位，每个项目都是独立的业务逻辑，要想摸清摸透一个方向的业务逻辑，需要花费大量的时间；即使一个业务方向熟悉了，还有下一个业务方向等着你。有效避免过早进入舒适区，导致人员的不稳定因素增加。即使不想做项目往业务方向扎根，希望多做技术，还可以转产品研发，摸透整个产品架构与细节至少又是两年过去了。</li>
+<li>行业内的公司就那么些家，可选择面不大</li>
+<li>行业内跳槽薪资涨幅有限</li>
+</ul>
+<blockquote>
+<p> 传统软件领域，很多软件系统属于用户的核心业务系统，比如ERP、财务系统等，属于刚需。所以，这一块只要有稳定的客户来源，即使是运维需求也会有一口饭吃。因为稳定性，收入也很难像互联网行业公司那样快速增长。</p>
+</blockquote>
+<h3 id="互联网软件行业-2"><a href="#互联网软件行业-2" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>业务不赚钱，即使你再努力、个人能力再强也只能走人</p>
+<p>见过上一天还在努力上班，第二天就被n+1裁掉的场景</p>
+<p>在互联网行业能够真切的感受到个人的渺小，选择大于努力。</p>
+<p>还有那句，只要在风口上，即使是猪也能飞起来的生动诠释。</p>
+<p>在互联网软件开发领域里，两三年一跳槽是常态，人员流动性较大。</p>
+<h2 id="关于年龄"><a href="#关于年龄" class="headerlink" title="关于年龄"></a>关于年龄</h2><h3 id="传统软件行业-3"><a href="#传统软件行业-3" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>由于加班没那么狠，很少有拼体力的情况，所以在传统行业软件开发领域年龄没那么敏感。</p>
+<p>曾经的同事，好多都是在这个行业干了20+year的老码农，照样干得风生水起。</p>
+<p>因为传统软件开发领域的特殊性，需要更多的与甲方客户沟通交流，外加对行业业务需求的深刻理解。年龄大，代表着更丰富的与客户打交道经验，以及更丰富的业务行业经验，更具竞争力。</p>
+<p>之前还碰到有客户指明项目实施团队必须要有10+year的带队，或者不能低于多少比例，直接写进合同那种。</p>
+<h3 id="互联网软件行业-3"><a href="#互联网软件行业-3" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>对于这个行业，崇尚一个字“<strong>快</strong>”</p>
+<p><strong>要求业务发展快、个人成长快</strong></p>
+<p>经常可以在网络或工作中听到说XXX多年轻就晋升xxx职级了</p>
+<p>网络上甚至还流传xxx大厂到了35岁还没晋升到xxx职级，就极有可能被优化掉的说法</p>
+<p>这样的氛围，对于那些想把更多时间放到生活上的人极不友好</p>
+<p>难道就不能保持低职级，拿该拿的薪资，保持work balance？</p>
+<p>no，no，no；随着年龄的增大，这种安于工作现状的人会显得跟整个团队格格不入，极易绩效背锅</p>
+<p>xxx公司对于这类员工，还发明了一个叫做“老白兔”的标签</p>
+<p>由此可见，互联网行业对于年龄的友好程度！</p>
+<blockquote>
+<p>所以，建议想再奋斗一下，再挑战一下自己的到互联网行业去，那里有更大的机遇与空间。<br>建议对技术追求没那么高，希望工作生活相对平衡，可以考虑一下传统软件行业，那里只要你做事靠谱，年龄不是问题。</p>
+</blockquote>
+<h2 id="关于转行"><a href="#关于转行" class="headerlink" title="关于转行"></a>关于转行</h2><p>首先要注意的是，得看在什么团队，什么岗位，做什么事情。</p>
+<h3 id="传统软件转互联网"><a href="#传统软件转互联网" class="headerlink" title="传统软件转互联网"></a>传统软件转互联网</h3><p>可能在传统行业公司，做的事情偏互联网公司的玩法。例如：做针对于互联网用户的系统。</p>
+<p>互联网公司做事、沟通相对open，竞争激烈，优胜劣汰；业务发展不好，能力再强努力再多也得面对裁员；所以<strong>跳槽到互联网公司一定要选对行业、选对部门；去冷门行业、边缘部门要多考虑</strong></p>
+<p><strong>优势：</strong> 技术宽度、软实力、综合能力</p>
+<h3 id="互联网转传统软件"><a href="#互联网转传统软件" class="headerlink" title="互联网转传统软件"></a>互联网转传统软件</h3><p>也可能在互联网公司，实际上做的事情跟在传统行业的软件公司差不多。例如：做公司内部的各种系统。</p>
+<p>传统软件公司相对比较稳定，企业业务系统是刚需，旱涝保收；正因如此，公司业务也很难有指数级的增长，薪资也同理；可考虑走业务专家路线。</p>
+<p><strong>优势：</strong> 技术深度、良好的自驱力、技术创新能力</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>如果用一句话来总结传统软件开发与互联网软件开发，我觉得可以用一个更“<strong>稳</strong>”，一个更“<strong>快</strong>”来概括。</p>
+<p>行业的业务形态决定了诉求点不同，由此带来工作方式、能力要求等方方面面的不同。</p>
+<p>如果要问到底从事传统软件开发好还是互联网软件开发好？</p>
+<p>我要说的是：“<strong>这个问题对于不同的人有不同的答案，没有好与不好，只有适合与不适合</strong>”。</p>
+<p><strong>如有其它相关问题，在公众号回复问题或加微信咨询，尽量知无不言言无不尽。</strong></p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/" data-id="cm5tqeew10081wayp6ytzhcql" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-通过Nginx解决网络隔离实践记录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/" class="article-date">
+  <time datetime="2020-05-01T16:39:05.000Z" itemprop="datePublished">2020-05-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/">通过Nginx解决网络隔离实践记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95.png" class="">
+
+
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>最近需要迁移Node线上服务，于是新申请了两台线上服务器；</p>
+<p>部署服务器后，需要验证服务是否正常，办公环境与线上环境网络是隔离的，无法直接访问；但是，线上服务器可通过部署服务器访问，而办公网络是可以访问部署机的；</p>
+<p>所以，可通过在部署机上配置代理的方式，办公环境请求部署机，然后把请求代理到线上服务的方式验证服务是否正常。</p>
+<p>整个网络结构如下图所示：</p>
+<img src="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%951.png" class="">
+
+
+<h2 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a>Nginx安装</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><blockquote>
+<p>下载页面: <a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a> 选择版本鼠标右键拷贝链接地址</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载</span></span><br><span class="line">[work@40-10-14 opt]$ wget http://nginx.org/download/nginx-1.18.0.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压文件</span></span><br><span class="line">[work@40-10-14 opt]$ tar -xvf nginx-1.18.0.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 默认安装：root权限进入解压后的目录，执行如下命令安装</span></span><br><span class="line">[root@40-10-14 nginx-1.18.0]# ./configure &amp;&amp; make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2.指定目录：安装到指定的/opt/nginx目录</span></span><br><span class="line">[work@40-10-14 opt]$ mkdir /opt/nginx</span><br><span class="line">[work@40-10-14 nginx-1.18.0]$ ./configure --prefix=/opt/nginx &amp;&amp; make &amp;&amp; mae install</span><br></pre></td></tr></table></figure>
+
+<p>默认安装，非root权限会报如下错误</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir: cannot create directory `/usr/local/nginx&#x27;: Permission denied</span><br><span class="line">make[1]: *** [install] Error 1</span><br><span class="line">make[1]: Leaving directory `/opt/nginx-1.18.0&#x27;</span><br><span class="line">make: *** [install] Error 2</span><br></pre></td></tr></table></figure>
+
+<p>默认安装后，查看nginx的安装目录，可以看到安装在<code>/usr/local/nginx</code>目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@40-10-14 opt]# whereis nginx</span><br><span class="line">nginx: /usr/local/nginx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.建议使用指定目录方式安装。如果切换为root权限去安装，后续修改config文件也需要root权限<br>2.或者root安装后，修改权限为普通用户可操作也行</p>
+</blockquote>
+<h3 id="添加软链"><a href="#添加软链" class="headerlink" title="添加软链"></a>添加软链</h3><p>添加软链，使得nginx命令全局能访问，每次运行就不用切换到安装目录中了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加软链</span></span><br><span class="line">[root@40-10-14 sbin]# ln -s /opt/nginx/sbin/nginx /usr/local/bin/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看版本</span></span><br><span class="line">[root@40-10-14 sbin]# nginx -v</span><br><span class="line">nginx version: nginx/1.18.0</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li>启动：<code>nginx</code></li>
+<li>停止：<code>nginx -s stop</code></li>
+<li>重启：<code>nginx -s reload</code></li>
+<li>帮助命令: <code>nginx -h</code></li>
+</ul>
+<p><strong>强制停止：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看linux进程id</span></span><br><span class="line">[root@40-10-14 ~]# ps -ef | grep nginx</span><br><span class="line">nobody   45198     1  0 16:12 ?        00:00:00 nginx: worker process</span><br><span class="line">root     51261 50692  0 17:00 pts/0    00:00:00 grep nginx</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭进程</span></span><br><span class="line">[root@40-10-14 ~]# kill 45198</span><br><span class="line"><span class="meta">#</span><span class="bash"> 之前的进程已被关闭</span></span><br><span class="line">[root@40-10-14 ~]# ps -ef | grep nginx</span><br><span class="line">root     51277 50692  0 17:00 pts/0    00:00:00 grep nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h2><p>配置两台机器的请求转发,编辑nginx安装目录下的<code>nginx/conf/nginx.conf</code>文件即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">user  nobody;</span></span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">error_log  logs/error.log;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">error_log  logs/error.log  notice;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">error_log  logs/error.log  info;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">pid        logs/nginx.pid;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">    #                  &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">    #                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    # 请求需要转发到如下两台机器上，流量平分;指定IP和端口</span><br><span class="line">    upstream  zpserver   &#123;</span><br><span class="line">              server   xx.xx.xx.22:10001;</span><br><span class="line">              server   xx.xx.xx.23:10001;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        # nginx服务端口为80</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        # /user根路径的请求才转发</span><br><span class="line">        location /user &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">            proxy_pass        http://zpserver;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    proxy_pass   http://127.0.0.1;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache&#x27;s document root</span><br><span class="line">        # concurs with nginx&#x27;s one</span><br><span class="line">        #</span><br><span class="line">        #location ~ /\.ht &#123;</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：修改完nginx的配置文件后，需要运行<code>nginx -s reload</code>才能生效</p>
+</blockquote>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>由于线上服务很多都是需要登录的，所以访问时需要使用域名访问，而不能使用IP访问，因为cookie都是跟域名绑定的</p>
+<p>解决这个问题很简单，配置本机host即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> IP为Nginx服务器IP</span></span><br><span class="line">xx.xx.xx.14 edu.daojia.com</span><br></pre></td></tr></table></figure>
+
+<p>通过上述配置，在本机浏览器上请求<code>edu.daojia.com</code>即可间接通过部署机上的Nginx访问到线上服务，以此在内网测试服务是否正确；待服务无异常后，把线上流量切过来即可。</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/" data-id="cm5tqeew00080waypeb3r87n0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-实际案例聊聊系统建模与面向对象设计" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time datetime="2020-04-19T15:16:08.000Z" itemprop="datePublished">2020-04-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/">实际案例聊聊系统建模与面向对象设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%BB%A5%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1.jpg" class="">
+
+<blockquote>
+<p>什么样的设计才是最好的设计？<br>别问，问就是自己去体会……</p>
+</blockquote>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>PM同学组织了一场关于下单流程业务系统拆分的需求评审，整体功能为可线上售卖视频课，用户买完课之后可在线学习、不同的课程还包含线下实地培训等、学习完之后在线考试，颁发合格证书。</p>
+<p>实际上，该需求可分为两个部分来看</p>
+<ul>
+<li>售卖：通过各种渠道把各种各样的商品卖出去</li>
+<li>履约：完成不同商品与之对应的履约流程</li>
+</ul>
+<h2 id="已有的实现"><a href="#已有的实现" class="headerlink" title="已有的实现"></a>已有的实现</h2><img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B.png" class="">
+
+<p>从上图可以清晰的看到，左侧为售卖的各种商品，右侧为商品与之对应的履约流程。</p>
+<p>同时，每个商品对应一条独立的履约流程，商品之间可能存在相同的履约环节。</p>
+<h2 id="有什么问题？"><a href="#有什么问题？" class="headerlink" title="有什么问题？"></a>有什么问题？</h2><p>有什么问题得看从什么角度看</p>
+<p>如果从业务的角度看当然没啥问题，因为它能满足业务需求。</p>
+<p>但是，从系统设计角度看，存在如下几个问题</p>
+<ul>
+<li>要上架售卖新品类的商品，需要定制实现对应的履约流程</li>
+<li>已有商品履约流程调整，系统也需要做对应调整</li>
+<li>履约流程中的<strong>履约环节</strong>缺少复用性</li>
+</ul>
+<h2 id="业务抽象建模"><a href="#业务抽象建模" class="headerlink" title="业务抽象建模"></a>业务抽象建模</h2><img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E4%B8%8B%E5%8D%95%E6%8A%BD%E8%B1%A1%E6%B5%81%E7%A8%8B.png" class="">
+
+<p>从上图中，可以看出如下几个改动点</p>
+<ul>
+<li>抽象了一个履约规则层，不同的商品对应不同的履约规则</li>
+<li>由<strong>履约规则</strong>串联起<strong>商品下单</strong>与<strong>订单履约</strong>，实现下单与履约的解耦</li>
+<li>订单履约模块可随意组合，以此完成履约流程</li>
+</ul>
+<p>相对与之前的设计，核心变更如下所示：</p>
+<img src="/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/%E5%AF%B9%E6%AF%94.png" class="">
+
+<h2 id="有哪些好处？"><a href="#有哪些好处？" class="headerlink" title="有哪些好处？"></a>有哪些好处？</h2><p>通过这样的调整，好处很明显，完美的解决掉之前的问题</p>
+<ul>
+<li>上架新品类商品，无需对应开发与之的履约流程，新增履约配置即可</li>
+<li>已有商品履约流程调整，系统无需对应调整，只需修改履约配置即可</li>
+<li>因为实现了解耦，下单与履约相对独立，互不影响，履约部分可提供各种各样的履约单元组合实现履约流程</li>
+</ul>
+<h2 id="聊聊面向对象设计"><a href="#聊聊面向对象设计" class="headerlink" title="聊聊面向对象设计"></a>聊聊面向对象设计</h2><h3 id="面向对象的四大特性"><a href="#面向对象的四大特性" class="headerlink" title="面向对象的四大特性"></a>面向对象的四大特性</h3><ul>
+<li><strong>封装：</strong>独立模块只暴露对外接口，封装内部实现</li>
+<li><strong>抽象：</strong>例如上面抽象出来业务需求表象之下的履约规则层</li>
+<li><strong>继承：</strong>实现通用逻辑抽取，所有子类具有父类已实现的功能</li>
+<li><strong>多态：</strong>代码易扩展的利器，基于接口而不基于实现编程</li>
+</ul>
+<h3 id="面向对象的六大设计原则"><a href="#面向对象的六大设计原则" class="headerlink" title="面向对象的六大设计原则"></a>面向对象的六大设计原则</h3><ul>
+<li><strong>SRP 单一职责原则</strong>：每一个类、模块尽量做到职责单一</li>
+<li><strong>OCP 开闭原则</strong>：对扩展开放，对修改关闭</li>
+<li><strong>LSP 里式替换原则</strong>：即子类能够替换父类对象出现的任何地方，并且保证原来程序的逻辑行为不变或者说正确性不被破坏</li>
+<li><strong>DIP 依赖倒置原则</strong>：高层模块不依赖低层模块，它们共同依赖同一个抽象。抽象不要依赖具体实现细节，具体实现细节依赖抽象</li>
+<li><strong>ISP 接口隔离原则</strong>：意思即一个类不应该被强迫依赖它不需要的接口，即接口设计的时候不应该大而全，可做好分类，多使用接口组合</li>
+<li><strong>LOD 迪米特法则</strong>：核心在于降低类的耦合；不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口。迪米特法则是希望减少类之间的耦合，让类越独立越好。每个类都应该少了解系统的其他部分。一旦发生变化，需要了解这一变化的类就会比较少。</li>
+</ul>
+<p>其他还有</p>
+<ul>
+<li><strong>DRY原则</strong>（Don’t Repeat Yourself）</li>
+<li><strong>KISS原则</strong>（Keep It Simple and Stupid）</li>
+<li><strong>YAGNI原则</strong>（You Ain’t Gonna Need It）</li>
+</ul>
+<p>最后一个，我个人喜欢叫做<strong>不要加戏</strong>原则。</p>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><p>设计模式更多的在于解决具体问题，我的体会是不要去套模式，多去思考怎么样去实现代码才会是最优解，当你这么做了之后，设计模式自然而然就会从你的代码里涌现出来。</p>
+<p>几年前翻了一遍《Head first 设计模式》一书，翻完的第一感受就是原来很多设计模式在实际代码中都用过，原来每个套路还有对应的名字…</p>
+<p>曾经整理了一个设计模式的系列文章，分别用Java与Javascript实现，在这里：</p>
+<p><a href="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">设计模式系列文章：</a><br><a href="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/</a></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>工作得越久，越会不自觉的思考，十年一线老码农相对与工作四五年的正走上轨道且精力旺盛的生力军的核，心竞争力在哪里?</p>
+<p>可能就在于系统建模能力与面向对象设计能力上？</p>
+<p>在于哪些东西技术上能行，而实际上坑很深，敢于有所为有所不为上？</p>
+<p>不在于实现一个功能的快慢，而在于后续的持续迭代与维护成本上？</p>
+<p>软件开发说简单也简单，说复杂也复杂，复杂到无法量化精确评估它的好坏！</p>
+<p>什么样的设计才是最好的设计？</p>
+<p>别问，问就是自己去体会……</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/04/19/%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%E8%81%8A%E8%81%8A%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1/" data-id="cm5tqeew0007zwaypeoyhe4ya" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-剩者为王？" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/16/%E5%89%A9%E8%80%85%E4%B8%BA%E7%8E%8B%EF%BC%9F/" class="article-date">
+  <time datetime="2020-04-16T10:06:47.000Z" itemprop="datePublished">2020-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/16/%E5%89%A9%E8%80%85%E4%B8%BA%E7%8E%8B%EF%BC%9F/">剩者为王？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/04/16/%E5%89%A9%E8%80%85%E4%B8%BA%E7%8E%8B%EF%BC%9F/%E8%A3%81%E5%91%98.png" class="">
+
+<p>在疫情寒冬下，公司开启新的一拨裁员，蓦然发现，在某一个钉钉群里由群众变为了群主！~~</p>
+<p>看着同事的离开，要说心理上没有波动，那是不可能的。</p>
+<p>但是，那又能怎么样呢，这就是社会。作为一个上了年纪的人，不论内心多波动也必须表现得无比的镇静，不然就会被认为幼稚愚蠢，这也是社会的一部分……</p>
+<p>不缩减成本，可能整个公司都会死掉，到时就是所有人被裁，没有资金，拿不出N+1，就别提好聚好散了。站在公司的角度，表示理解。</p>
+<p>但是，站在个人的角度呢？</p>
+<p>始终感觉被裁员是一件特别被动的事情，作为还没轮到的，也会想着，万一哪天裁到自己了，该怎么办？</p>
+<p>答案只有一个：早做准备！</p>
+<p>我的理解，裁员一般分为两种，一种为末尾淘汰；一种为不管你表现得有多好，业务线亏损严重看不到希望，导致整个业务线被砍掉。</p>
+<p>对于末位淘汰的情况，我觉得首先需要从自身上面找原因，多去想想为什么淘汰的是自己而不是别人？是产出低？贡献少？技术弱？不顶事？挖坑多？甚至是跟领导关系不好？跟其他人沟通不顺畅？如果不想清楚这个问题，然后做针对性的改善，相信换一个工作环境还是会遇到相同的问题。</p>
+<p>对于整个业务线砍掉这种，相信在这之前的很长一段时间就早有迹象，这种情况就需要提早准备，多做打算，考虑到最坏的情况，不要被裁得措手不及！从个人方面，时刻保持自己的竞争力，不要被温水煮青蛙，避免长期处于舒适区。</p>
+<p>最后，真心的希望离开的同学都能开启更好的下一段征程。</p>
+<p>剩者为王？凛冽的寒冬，幸存者也需要拼尽全力！</p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/04/16/%E5%89%A9%E8%80%85%E4%B8%BA%E7%8E%8B%EF%BC%9F/" data-id="cm5tqeevz007wwayp2u9l60he" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/5/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/7/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

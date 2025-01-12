@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/9/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-工作流产品模块化设计构想" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/22/%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BA%A7%E5%93%81%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%83%B3/" class="article-date">
+  <time datetime="2018-02-22T07:07:29.000Z" itemprop="datePublished">2018-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/22/%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BA%A7%E5%93%81%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%83%B3/">工作流产品模块化设计构想</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;之前做过几年工作流产品的产品研发，最近正在的做的知识管理产品，需要新增文章审批功能，实际上就是一个简单的工作流。做完这个事情后，发现市面上单纯的开源工作流引擎居多，还没有一款全功能的开源工作流产品。顿时有了自己抽空余时间折腾一个的想法，权当把之前的工作经验与想法归纳总结一下。</p>
+<p>&emsp;&emsp;在我的构思中，为了最大限度的复用，这款工作流产品应当是模块化可拆分的。你差一个流程引擎那么你用引擎部分即可，差权限控制那么你把权限控制模块拿走即可，就是说能做到各个部分松耦合，可灵活替换。</p>
+<p>&emsp;&emsp;目前，这款工作流产品会包含如下几个部分：</p>
+<ul>
+<li>流程核心引擎</li>
+<li>流程可视化模块</li>
+<li>组织与人员模块</li>
+<li>权限模块</li>
+<li>消息模块</li>
+<li>菜单模块</li>
+<li>基础的表单开发组件</li>
+<li>流程流转统计分析模块</li>
+</ul>
+<p>&emsp;&emsp;默认会把这些模块组装成一个能够RUN起来的系统，用户喜欢那一部分可以单出抽出来用哪一部分，同样的，不喜欢哪一部分可以去掉自己开发。</p>
+<p>&emsp;&emsp;2018年就找这么一件事来丰富业余生活了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/02/22/%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BA%A7%E5%93%81%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%83%B3/" data-id="cm5tqeevn006xwaypfr41ebg0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-读《恶意》有感" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/13/%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/" class="article-date">
+  <time datetime="2018-01-13T14:58:02.000Z" itemprop="datePublished">2018-01-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/13/%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/">读《恶意》有感</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2018/01/13/%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/%E6%81%B6%E6%84%8F.jpg" class="" title="《恶意》-东野圭吾">
+
+<p>&emsp;&emsp;实际上读完这本书已经有一段时间了，有几点感想需要尽快的记录下来，因为深知越往后拖就越没有记录下来的动力。</p>
+<h2 id="关于写作手法"><a href="#关于写作手法" class="headerlink" title="关于写作手法"></a>关于写作手法</h2><p>&emsp;&emsp;文章的写作手法是第一个让我惊奇的地方。全书并不是常见的从头到尾讲故事的叙述文，而是由犯罪嫌疑人和警察的笔记，以及心理活动穿插构成。笔记与心理活动相穿插，让故事与案件逻辑层层递进，不断的推进故事的发展。使得读者更容易的进入到故事当中，把笔记当作案件的记录与线索，把心理活动当作对案件的分析与不断的剥离出事实真相。这是我第一次看到这种写作手法，不由得赞叹：小说居然还能这么写！~</p>
+<h2 id="关于先入为主"><a href="#关于先入为主" class="headerlink" title="关于先入为主"></a>关于先入为主</h2><p>&emsp;&emsp;在故事的一开始，野野口修透露日高邦彦杀猫的情节给人一股深深的寒意，让读者一下子就觉得日高邦彦不会是什么好人。但是，事实却恰恰相反，这是野野口修故意设下的圈套。当得知最终的真相后，由于先入为主的观念，一个微不足道的小情节居然能带来如此巨大的影响，值得深思。</p>
+<h2 id="关于”恶意”"><a href="#关于”恶意”" class="headerlink" title="关于”恶意”"></a>关于”恶意”</h2><p>&emsp;&emsp;<strong>“也没有什么特别的原因，就是看他不爽！”</strong>这就是野野口修杀害日高邦彦的犯罪动机。这么一句毫无逻辑，毫无道理的话，让人毛骨悚然，不寒而栗。<br>&emsp;&emsp;回归到现实世界，在日常的生活与工作中，这样毫无缘由的恶意有时候也会毫无缘由的出现在你面前，当你感受到别人对你的这股恶意时，你会觉得很无力也很可怕。<br>&emsp;&emsp;希望自己永远不要成为这样的人。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/01/13/%E8%AF%BB%E3%80%8A%E6%81%B6%E6%84%8F%E3%80%8B%E6%9C%89%E6%84%9F/" data-id="cm5tqeevm006vwayp09fhd3y4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-专研精神是技术人员成长的源动力" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/08/%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/" class="article-date">
+  <time datetime="2018-01-08T07:10:20.000Z" itemprop="datePublished">2018-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/08/%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/">专研精神是技术人员成长的源动力</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;前几天，项目中的开发人员向研发组提交了这样一个问题，发现在PC中使用搜狗输入法时，输入完成敲击回车按钮无法触发输入框的查询事件。同样，另外一个组件在IOS系统中，使用IOS原生的输入法也存在该问题。</p>
+<p>&emsp;&emsp;针对该问题我跟踪了一下，发现当使用搜狗输入法时，光标虽然在input框里，但是输入的内容却在输入法提供的浮动窗口中，输入结束，敲击空格或回车，此时才把输入的内容放入input框中。</p>
+<p>&emsp;&emsp;查看了该组件的实现代码，发现该组件是监听的keyup事件，以及监听了input的回车事件来实现输入完成后的自动查询。经过分析，使用搜狗输入法输入时，由于输入法有自己的弹出框，所有事件均在这个弹出框上，输入完成敲击回车或空格时同样也是，所以无法触发组件的input框事件。对于此种情况，考虑给input框绑定onchange事件来解决该问题，但是onchange事件必须要input框失去焦点才会触发。由此看起来，似乎已经没有什么好的解决办法了，于是乎就考虑到能否在input的输入框里加一个小的查询按钮来解决该问题。</p>
+<p>&emsp;&emsp;我把该分析过程以及产品组这边暂定的解决方案告诉了相关技术人员，让他们等候产品组这边的组件更新。本来想着这件事就告一段落，他们只需要等着产品组这边的更新即可了。但是，到了第二天下午，我收到一个amazing的消息，发现该问题的开发人员告诉我说已经自行解决了该问题，并且在产品组提供的组件上修改完成并做了有效性验证！让我这边再去看一下那样修改是否合适！</p>
+<p>&emsp;&emsp;最终是解决方案是使用HTML5的<code>oninput</code>与IE专属的<code>onpropertychange</code>来解决该问题。这篇帖子已经阐述得很详细了，这里就不在详细描述了。<a href="http://www.cnblogs.com/lhb25/archive/2012/11/30/oninput-and-onpropertychange-event-for-input.html" target="_blank">在这里</a>，截图如下：</p>
+<img src="/2018/01/08/%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E.jpg" class="">
+
+<p>对于这件事有如下几点感想：</p>
+<ul>
+<li>技术人员的技术成长，不仅取决与多看书多看资料与文档，还取决于碰到问题不放弃的专研精神。同时，这股力量还会鞭策你多去了解你不懂的东西，弄懂之后发现更多的不懂，形成良好的正向循环。所以，毫不夸张的说<strong>专研精神是技术人员成长的源动力。</strong></li>
+<li>懈怠、满于现有解决方案而不更深入的去探求更完美的方案，是我这边在这个问题上没有走得更远的根本原因。</li>
+<li>团队中需要更多这样的技术人员，<strong>思想的碰撞才能产生更多的火花</strong>。同时技术人员之间需要更多的技术分享与沟通，<strong>独立的思想注定会是孤独的</strong>。</li>
+</ul>
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/01/08/%E4%B8%93%E7%A0%94%E7%B2%BE%E7%A5%9E%E6%98%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E6%88%90%E9%95%BF%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/" data-id="cm5tqeevl006twayp39i7cgip" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-人生中唯一的2017" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/31/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842017/" class="article-date">
+  <time datetime="2017-12-31T11:32:52.000Z" itemprop="datePublished">2017-12-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/31/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842017/">人生中唯一的2017</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;今天是2017的最后一天，转眼就将来到2018，很快就会迎来自己的30岁，三十而立。</p>
+<h2 id="重要事件"><a href="#重要事件" class="headerlink" title="重要事件"></a>重要事件</h2><p>&emsp;&emsp;今年是十分特别的一年，在今年升级做了父亲。在那一刻，除了激动还有感激，感激老婆怀胎十月的辛苦，生小孩儿的不容易。当升级做父亲的那一刻，突然间从心理上就感觉不一样了，这种不一样在于很多复杂的因素，能想到的词有：责任、家、顶梁柱、成熟等等。</p>
+<h2 id="收获的"><a href="#收获的" class="headerlink" title="收获的"></a>收获的</h2><ul>
+<li>读完了《禅与摩托车维修指南》《暗时间》《人类简史》《遥远的救世主》《恶意》，技术方面《算法》第四版、《Think in Java》。茅盾文学奖获奖作品《无字》看到第四章，文字絮絮叨叨的实在是没有动力看下去了。</li>
+<li>单词由百词斩换到了Anki，麦克米伦7000还剩下80%，效果很不错，润物细无声。</li>
+<li>学会了如何带娃……</li>
+</ul>
+<h2 id="留下的"><a href="#留下的" class="headerlink" title="留下的"></a>留下的</h2><ul>
+<li>完成用户中心产品的开发。</li>
+<li>今年基础开发框架产品差不多又升级了10来个版本，更加的稳定，同时也更加的陈旧。</li>
+<li>年中的时候，充分利用空挡，实现了知识管理产品的从0到1以及更多。年底公司内部正式上线，算是开始产生价值了。</li>
+<li>今年总共分享了37篇博客。博客的浏览量新增5W+。</li>
+</ul>
+<h2 id="2018"><a href="#2018" class="headerlink" title="2018"></a>2018</h2><ul>
+<li>好好带娃</li>
+<li>见缝插针多读书</li>
+<li>技术这条路坚持走下去</li>
+<li>满30之前搞定房子的装修</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/12/31/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842017/" data-id="cm5tqeevk006rwaypgsrag29q" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Tomcat启用HTTPS配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/13/Tomcat%E5%90%AF%E7%94%A8HTTPS%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2017-12-13T09:26:41.000Z" itemprop="datePublished">2017-12-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/13/Tomcat%E5%90%AF%E7%94%A8HTTPS%E9%85%8D%E7%BD%AE/">Tomcat启用HTTPS配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="获取证书"><a href="#获取证书" class="headerlink" title="获取证书"></a>获取证书</h2><p>&emsp;&emsp;可使用jdk自带的keytool开生成证书，此种方式与向第三方权威机构购买的证书的区别为，第一次请求时需要选择信任站点并继续访问，在浏览器的地址框里会显示不安全的红色提醒。</p>
+<p>&emsp;&emsp;使用<code>keytool -genkey -alias tomcat -validity 3650 -keyalg RSA -keystore D://.keystore</code>即可在D盘生成<code>.keystore</code>文件，如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\YiYing\Desktop&gt; keytool -genkey -alias tomcat -keyalg RSA -keystore D:&#x2F;&#x2F;.keystore</span><br><span class="line">输入密钥库口令:</span><br><span class="line">再次输入新口令:</span><br><span class="line">您的名字与姓氏是什么?</span><br><span class="line">  [Unknown]:  YI</span><br><span class="line">您的组织单位名称是什么?</span><br><span class="line">  [Unknown]:  CSS</span><br><span class="line">您的组织名称是什么?</span><br><span class="line">  [Unknown]:  CSS</span><br><span class="line">您所在的城市或区域名称是什么?</span><br><span class="line">  [Unknown]:  BJ</span><br><span class="line">您所在的省&#x2F;市&#x2F;自治区名称是什么?</span><br><span class="line">  [Unknown]:  BJ</span><br><span class="line">该单位的双字母国家&#x2F;地区代码是什么?</span><br><span class="line">  [Unknown]:  CHINA</span><br><span class="line">CN&#x3D;YI, OU&#x3D;CSS, O&#x3D;CSS, L&#x3D;BJ, ST&#x3D;BJ, C&#x3D;CHINA是否正确?</span><br><span class="line">  [否]:  Y</span><br><span class="line"></span><br><span class="line">输入 &lt;tomcat&gt; 的密钥口令</span><br><span class="line">        (如果和密钥库口令相同, 按回车):</span><br><span class="line">PS C:\Users\YiYing\Desktop&gt;</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>-alias为别名</li>
+<li>-validity 3650有效期为10年</li>
+<li>-keystore为生成的文件路径</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Option Defaults</span><br><span class="line">Below are the defaults for various option values.</span><br><span class="line">-alias &quot;mykey&quot;</span><br><span class="line"></span><br><span class="line">-keyalg</span><br><span class="line">    &quot;DSA&quot; (when using -genkeypair)</span><br><span class="line">    &quot;DES&quot; (when using -genseckey)</span><br><span class="line"></span><br><span class="line">-keysize</span><br><span class="line">    1024 (when using -genkeypair)</span><br><span class="line">    56 (when using -genseckey and -keyalg is &quot;DES&quot;)</span><br><span class="line">    168 (when using -genseckey and -keyalg is &quot;DESede&quot;)</span><br><span class="line"></span><br><span class="line">-validity 90</span><br><span class="line"></span><br><span class="line">-keystore the file named .keystore in the user&#x27;s home directory</span><br><span class="line"></span><br><span class="line">-storetype the value of the &quot;keystore.type&quot; property in the security properties file,</span><br><span class="line">           which is returned by the static getDefaultType method in java.security.KeyStore</span><br><span class="line"></span><br><span class="line">-file stdin if reading, stdout if writing</span><br><span class="line"></span><br><span class="line">-protected false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>文档地址：<br><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.html">https://docs.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.html</a></p>
+</blockquote>
+<h2 id="Tomcat配置"><a href="#Tomcat配置" class="headerlink" title="Tomcat配置"></a>Tomcat配置</h2><p>&emsp;&emsp;需要修改tomcat的server.xml文件，如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Define a SSL HTTP/1.1 Connector on port 8443</span></span><br><span class="line"><span class="comment">         This connector uses the BIO implementation that requires the JSSE</span></span><br><span class="line"><span class="comment">         style configuration. When using the APR/native implementation, the</span></span><br><span class="line"><span class="comment">         OpenSSL style configuration is required as described in the APR/native</span></span><br><span class="line"><span class="comment">         documentation --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Connector</span> <span class="attr">SSLEnabled</span>=<span class="string">&quot;true&quot;</span> <span class="attr">clientAuth</span>=<span class="string">&quot;false&quot;</span> <span class="attr">keystoreFile</span>=<span class="string">&quot;d://.keystore&quot;</span> <span class="attr">keystorePass</span>=<span class="string">&quot;111111&quot;</span> <span class="attr">maxThreads</span>=<span class="string">&quot;150&quot;</span> <span class="attr">port</span>=<span class="string">&quot;8443&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;org.apache.coyote.http11.Http11Protocol&quot;</span> <span class="attr">scheme</span>=<span class="string">&quot;https&quot;</span> <span class="attr">secure</span>=<span class="string">&quot;true&quot;</span> <span class="attr">sslProtocol</span>=<span class="string">&quot;TLS&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;本来这一段是注释掉的，去掉注释并增加<code>keystoreFile</code>和<code>keystorePass</code>参数即可。</p>
+<p>&emsp;&emsp;最后，启动服务器，使用<code>https://localhost:8443/</code>即可访问服务器。</p>
+<blockquote>
+<p>文档地址：</p>
+</blockquote>
+<ol>
+<li>Tomcat7:<a target="_blank" rel="noopener" href="https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html">https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html</a></li>
+<li>Tomcat8:<a target="_blank" rel="noopener" href="https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html">https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/12/13/Tomcat%E5%90%AF%E7%94%A8HTTPS%E9%85%8D%E7%BD%AE/" data-id="cm5tqeevk006pwaypeu4mgl6n" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-字符解码时加号解码为空格问题探究" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/" class="article-date">
+  <time datetime="2017-12-06T09:22:18.000Z" itemprop="datePublished">2017-12-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/">字符解码时加号解码为空格问题探究</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;最近发现一个问题，后台Java代码使用<code>new URL(url)</code>方式发起一个POST请求，模拟表单提交操作，从后台提交数据到服务器端。当客户端的数据中带加号时，服务器端的Servlet使用<code>request.getParameter(&#39;param&#39;)</code>得到的数据加号被变为了空格。比如：客户端发送的数据为<code>aa+aa</code>，服务器接收到的数据变为了<code>aa aa</code>。  </p>
+<p>简单写了几句代码验证一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">&quot;aaa+aaa aaa%2B&quot;</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;ENCODE=&quot;</span>+URLEncoder.encode(str, <span class="string">&quot;utf-8&quot;</span>));</span><br><span class="line">System.out.println(<span class="string">&quot;DECODE=&quot;</span>+URLDecoder.decode(str,<span class="string">&quot;utf-8&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENCODE=aaa%2Baaa+aaa%252B</span><br><span class="line">DECODE=aaa aaa aaa+</span><br></pre></td></tr></table></figure>
+
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>&emsp;&emsp;通过上面的代码可以看到，编码时，空格被编码成了+号，+号变成了<code>%2b</code>。当未经过编码的带+号的字符串解码时，+号直接转变为了空格。  </p>
+<p><strong>翻了一下文档是这么说的（<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/6/docs/api/java/net/URLEncoder.html">地址</a>）：</strong></p>
+<img src="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/1.jpg" class="">
+
+<p><strong>接着到application/x-www-form-urlencoded MIME format的说明处（<a target="_blank" rel="noopener" href="https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">地址</a>）：</strong></p>
+<img src="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/2.jpg" class="">
+
+<p><strong>再翻了一下servlet中<code>request.getParameter(&#39;param&#39;)</code>方法说明，如下：</strong></p>
+<img src="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/3.jpg" class="">
+
+<p><strong>接着看getParameter到底如何取数据的：</strong></p>
+<img src="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/4.jpg" class="">
+
+<p>&emsp;&emsp;从上图可以知道，当在servlet中使用<code>getParameter</code>方法来接收POST数据时，默认是会根据请求头的类型来解码的。这就证实了如果通过后端<code>new URL(url)</code>的方式模拟表单的POST，<strong>如果在POST前不对数据进行编码且数据中带有+号，那么服务器端收到的数据必然会是错误的（+号会被自动解码为空格）。</strong></p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>&emsp;&emsp;常规的表单提交content-type有两种：<code>application/x-www-form-urlencoded</code>和<code>multipart/form-data</code>,如果表单提交时不设置任何类型，默认以第一种方式提交数据；第二种属于带附件的表单提交，当表单中有附件时，必须设置表单的<code>enctype</code>为<code>multipart/form-data</code>.</p>
+<p>&emsp;&emsp;很多时候，我们用 Ajax 提交数据时，也是使用这种方式。例如 JQuery的 Ajax，Content-Type 默认值为<code>application/x-www-form-urlencoded;charset=utf-8</code>。</p>
+<h3 id="前端代码"><a href="#前端代码" class="headerlink" title="前端代码"></a>前端代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url:getServer()+<span class="string">&quot;/TestServlet&quot;</span>,</span><br><span class="line">  data:&#123;<span class="attr">yiying</span>:<span class="string">&quot;aaa+aa a&quot;</span>&#125;,</span><br><span class="line">  type:<span class="string">&#x27;post&#x27;</span>,</span><br><span class="line">  success:<span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="HTTP请求情况"><a href="#HTTP请求情况" class="headerlink" title="HTTP请求情况"></a>HTTP请求情况</h3><img src="/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/5.jpg" class="">
+
+<p>&emsp;&emsp;由于在chrome的控制台中所显示的数据被优化显示了，所以在<code>Form Date</code>部分，需要点击后面的<code>view source</code>才能看到浏览器发送数据的真实格式是怎么样的。默认优化后的显示应当为<code>yiying:aaa+aa a</code>,</p>
+<p>&emsp;&emsp;从上图中可以看到，浏览器实际上的使用<code>Content-Type:application/x-www-form-urlencoded; charset=UTF-8</code>的<a target="_blank" rel="noopener" href="https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">编码规则</a>，实际发送的数据为<code>yiying=aaa%2Baa+a</code>,其中+号变为了%2b,空格被编码为+号。</p>
+<h3 id="后端情况"><a href="#后端情况" class="headerlink" title="后端情况"></a>后端情况</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/TestServlet&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		doPost(request,response);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;===&quot;</span>+request.getParameter(<span class="string">&quot;yiying&quot;</span>)+<span class="string">&quot;===&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出值为</span></span><br><span class="line">===aaa+aa a===</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从后端的输出值可以看到，后端的servlet自动解码为原始数据。</p>
+<p><strong>关于后端中文乱码问题的特别说明：</strong></p>
+<blockquote>
+<p>后端服务器(tomcat 的server.xml)如果没有设置编码规则（URIEncoding=”utf-8”），Servlet默认会以<code>ISO-8859-1</code>来解码中文字符(Servlet规范定义)，而前端标识为utg-8,此种情况就会产生乱码，可以用如下3种办法来解决：</p>
+</blockquote>
+<ol>
+<li>在server.xml设置编码规则为utf-8</li>
+<li>在调用getParameter之前使用代码设置编码规则，<code>request.setCharacterEncoding(&quot;utf-8&quot;);</code></li>
+<li>定点处理，<code>String name = new String(request.getParameter(&quot;name&quot;).getBytes(&quot;iso-8859-1&quot;),&quot;utf-8&quot;);</code></li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>&emsp;&emsp;显而易见，如果需要在后端使用<code>new java.net.URL(url)</code>的方式POST提交数据，需要像浏览器那样先给数据编码处理，再发送数据。</p>
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/" data-id="cm5tqeevj006mwayp6l55c42v" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JSONP原理探究" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/17/JSONP%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/" class="article-date">
+  <time datetime="2017-11-17T03:13:30.000Z" itemprop="datePublished">2017-11-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/17/JSONP%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/">JSONP原理探究</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>&emsp;&emsp;JSONP是一直种解决跨域问题的方案，实现的原理来自于页面中的<code>&lt;script&gt;</code>标签能够跨域请求资源。要通过JSONP实现跨域，需要服务器端做额外支持。</p>
+<h2 id="前端代码"><a href="#前端代码" class="headerlink" title="前端代码"></a>前端代码</h2><p>&emsp;&emsp;前端部分核心在于<code>通过script标签的src告诉服务器端约定好的回调方法名</code>。代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> callbackName = <span class="string">&#x27;callbackFunc&#x27;</span>;</span><br><span class="line"><span class="built_in">window</span>[callbackName] = <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 对返回的数据做后续处理</span></span><br><span class="line">    <span class="built_in">console</span>.log(response)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">script.src = <span class="string">&#x27;http://127.0.0.1:8080/sword-room/JSONPServlet?callback=&#x27;</span>+callbackName+<span class="string">&#x27;&amp;param=JSONP&#x27;</span>;</span><br><span class="line"><span class="built_in">document</span>.body.appendChild(script);</span><br></pre></td></tr></table></figure>
+
+<h2 id="后端代码"><a href="#后端代码" class="headerlink" title="后端代码"></a>后端代码</h2><p>&emsp;&emsp;服务端部分主要为接收前端发送过来的请求参数，核心在于<code>约定好的方法名</code>。代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(&quot;/JSONPServlet&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JSONPServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">JSONPServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="comment">//请求参数</span></span><br><span class="line">		String param = request.getParameter(<span class="string">&quot;param&quot;</span>);</span><br><span class="line">		<span class="comment">//跟前端部分约定好的方法名</span></span><br><span class="line">	    String callback = request.getParameter(<span class="string">&quot;callback&quot;</span>);</span><br><span class="line">	    PrintWriter out = response.getWriter();</span><br><span class="line">	    <span class="comment">//返回JSON字符串</span></span><br><span class="line">	    response.setContentType(<span class="string">&quot;text/javascript; charset=UTF-8&quot;</span>);</span><br><span class="line">	    String jsonData = <span class="string">&quot;&#123;a:1,b:2,param:&#x27;&quot;</span>+param+<span class="string">&quot;&#x27;&#125;&quot;</span>;</span><br><span class="line">	    out.print(callback+<span class="string">&quot;(&quot;</span>+jsonData+<span class="string">&quot;);&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		 doGet(request, response);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>下图为验证结果：</p>
+<img src="/2017/11/17/JSONP%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/result.jpg" class="" title="验证结果">
+
+
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>1.前台部分jquery对jsonp的支持，只需设置<code>dataType:&quot;jsonp&quot;</code>,样例如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url:<span class="string">&quot;http://127.0.0.1:8080&quot;</span>,</span><br><span class="line">    dataType:<span class="string">&quot;jsonp&quot;</span>,</span><br><span class="line">    data:&#123;</span><br><span class="line">      userName:<span class="string">&#x27;管理员&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    success:<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>2.后台Java部分可使用fastjson来实现返回数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">import</span> com.alibaba.fastjson.JSONPObject;</span><br><span class="line"></span><br><span class="line"> JSONPObject OBJ = <span class="keyword">new</span> JSONPObject();</span><br><span class="line"> <span class="comment">//jquery ajax jsonp默认的方法参数名为callback，可使用jsonpCallback:&#x27;newcallback&#x27;自定义</span></span><br><span class="line">OBJ.setFunction(request.getParameter(<span class="string">&quot;callback&quot;</span>));</span><br><span class="line"><span class="comment">//设置返回数据</span></span><br><span class="line">OBJ.addParameter(result);</span><br><span class="line"><span class="keyword">this</span>.writeToPage(response, OBJ);</span><br></pre></td></tr></table></figure>
+
+<p>3.跨域情况下一般都牵涉到权限问题，可通过SSO或者服务器端开放匿名访问权限解决，或者token也行<br>4.使用Nginx的代理功能来解决跨域问题也是很好的一种办法</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/11/17/JSONP%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/" data-id="cm5tqeevi006kwaypdy7017ip" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MySql启动报-write-error-No-space-left-on-device问题解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/23/MySql%E5%90%AF%E5%8A%A8%E6%8A%A5-write-error-No-space-left-on-device%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time datetime="2017-10-23T03:20:54.000Z" itemprop="datePublished">2017-10-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/DBMS/">DBMS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/23/MySql%E5%90%AF%E5%8A%A8%E6%8A%A5-write-error-No-space-left-on-device%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">MySql启动报 write error: No space left on device问题解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>启动MySQL数据库时报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redmine-3.1.1-1]# .&#x2F;ctlscript.sh start</span><br><span class="line">171023 09:36:32 mysqld_safe Logging to &#39;&#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;data&#x2F;mysqld.log&#39;.</span><br><span class="line">171023 09:36:32 mysqld_safe Starting mysqld.bin daemon with databases from &#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;data</span><br><span class="line">&#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;bin&#x2F;mysqld_safe: line 128: echo: write error: No space left on device</span><br><span class="line">&#x2F;opt&#x2F;redmine-3.1.1-1&#x2F;mysql&#x2F;bin&#x2F;mysqld_safe: line 165: 16298 Killed  </span><br></pre></td></tr></table></figure>
+
+<p>其中，引人注目的就是<code>No space left on device</code>。</p>
+<p>使用<code>df -h</code>命令查看磁盘使用情况如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# df -h</span><br><span class="line">Filesystem            Size  Used Avail Use% Mounted on</span><br><span class="line">&#x2F;dev&#x2F;sda2              50G   50G     0 100% &#x2F;</span><br><span class="line">tmpfs                 3.8G  100K  3.8G   1% &#x2F;dev&#x2F;shm</span><br><span class="line">&#x2F;dev&#x2F;sda1             485M   54M  407M  12% &#x2F;boot</span><br><span class="line">&#x2F;dev&#x2F;sda5             404G  227M  383G   1% &#x2F;home</span><br></pre></td></tr></table></figure>
+<p>可以看到磁盘空间已经被完全占满。  </p>
+<p>接着，使用<code>du -sh *</code>命令查看<code>/dev/sda2</code>中的磁盘占用具体情况，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost &#x2F;]# du -sh *</span><br><span class="line">8.8M	bin</span><br><span class="line">37M	boot</span><br><span class="line">344K	dev</span><br><span class="line">34M	etc</span><br><span class="line">29M	home</span><br><span class="line">122M	lib</span><br><span class="line">27M	lib64</span><br><span class="line">4.0K	media</span><br><span class="line">0	misc</span><br><span class="line">4.0K	mnt</span><br><span class="line">0	net</span><br><span class="line">42G	opt</span><br><span class="line">2.4G	root</span><br><span class="line">19M	sbin</span><br><span class="line">4.0K	srv</span><br><span class="line">164K	tmp</span><br><span class="line"></span><br><span class="line">[root@localhost &#x2F;]# cd opt</span><br><span class="line">[root@localhost opt]# du -sh *</span><br><span class="line">15M	apache-tomcat-9.0.0.M8</span><br><span class="line">15M	ksar</span><br><span class="line">200M	nexus-3.2.0-01</span><br><span class="line">100M	nexus-3.2.0-01-unix.tar.gz</span><br><span class="line">904M	redmine-3.1.1-1</span><br><span class="line">40G	sonatype-work</span><br></pre></td></tr></table></figure>
+
+<p>逐级往下找，发现是nexus的日志文件已经有30多G了，删掉，再次启动mysql问题得到解决。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/10/23/MySql%E5%90%AF%E5%8A%A8%E6%8A%A5-write-error-No-space-left-on-device%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" data-id="cm5tqeevi006hwayp5w91fmem" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-HTTP协商缓存实践" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/18/HTTP%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E5%AE%9E%E8%B7%B5/" class="article-date">
+  <time datetime="2017-09-18T03:28:45.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/18/HTTP%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E5%AE%9E%E8%B7%B5/">HTTP协商缓存实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;从浏览器的缓存类型上来讲分为强缓存和协商缓存，之前写过一篇文章<a href="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/">《HTTP缓存详解》</a>做了详细的整理。</p>
+<p>&emsp;&emsp;目前做的知识管理产品，为了首页能够更快的加载，需要对首页请求的资源做缓存整理。通过整理分析，决定对css、js做强缓存处理；对个人头像的请求做协商缓存处理；</p>
+<p>&emsp;&emsp;为什么要头像不做强缓存处理呢？原因为目前的头像都是通过人员的ID来获取，而不是通过头像ID来获取。这样做的好处为在后台获取相关数据时，比如排行榜以人员ID作为主键，如果要带出该人员的头像信息，还得去头像表里面联查一下来获取头像ID。因此，由于后端部分的设计造成头像做协商缓存才是最优解。</p>
+<p>&emsp;&emsp;目前的逻辑为，当用户第一次进入知识管理系统，请求个人头像的URL会返回200并从服务器下载个人头像，此时服务器会在response里面设置ETAG值为头像的最后修改日期；当刷新页面时，服务器会判断请求头中的<code>If-None-Match</code>是否与当前的最后更新日期匹配，如果匹配则直接返回304（不返回数据），如果不匹配则从磁盘中取出头像。</p>
+<p><strong>相关代码如下：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 协商缓存控制</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> etag</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">cacheControl</span><span class="params">(HttpServletRequest request,HttpServletResponse response,String etag)</span></span>&#123;</span><br><span class="line">	String ifNoneMatch = request.getHeader(<span class="string">&quot;If-None-Match&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(etag.equals(ifNoneMatch))&#123;</span><br><span class="line">		response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	response.addHeader(<span class="string">&quot;ETag&quot;</span>, etag);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/09/18/HTTP%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E5%AE%9E%E8%B7%B5/" data-id="cm5tqeevh006fwayph531dgp8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Nginx代理Redmine和Maven私服Nexus3-0配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/18/Nginx%E4%BB%A3%E7%90%86Redmine%E5%92%8CMaven%E7%A7%81%E6%9C%8DNexus3-0%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2017-07-18T08:13:36.000Z" itemprop="datePublished">2017-07-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/Nginx%E4%BB%A3%E7%90%86Redmine%E5%92%8CMaven%E7%A7%81%E6%9C%8DNexus3-0%E9%85%8D%E7%BD%AE/">Nginx代理Redmine和Maven私服Nexus3.0配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>&emsp;&emsp;在这之前部门申请了一个独立IP，这个独立IP对应一台PC机，这台机器上安装了产品问题受理平台Redmine以及Maven私服。由于PC机性能有限，新找了一台双网卡的服务器接到独立IP上，为了不重新迁移环境，让PC机跟服务器组成了内网环境。在服务器上搭建Nginx来把请求转发到内网的PC机上。</p>
+<h2 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#user  nobody;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line"></span><br><span class="line">    #nexus支持</span><br><span class="line">    proxy_send_timeout 120;</span><br><span class="line">    proxy_read_timeout 300;</span><br><span class="line">    proxy_buffering    off;</span><br><span class="line">    keepalive_timeout  5 5;</span><br><span class="line">    tcp_nodelay        on;</span><br><span class="line"></span><br><span class="line">    #代理到后台服务器</span><br><span class="line">    upstream ws_redmine &#123;</span><br><span class="line">        server 192.168.100.100:8082;</span><br><span class="line">    &#125;</span><br><span class="line">    upstream ws_nexus &#123;</span><br><span class="line">        server 192.168.100.100:8083;</span><br><span class="line">    &#125;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       8082;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">            proxy_pass   http:&#x2F;&#x2F;ws_redmine;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page &#x2F;50x.html</span><br><span class="line">        error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">        location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       8083;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        # nexus支持</span><br><span class="line">        # allow large uploads of files - refer to nginx documentation</span><br><span class="line">        client_max_body_size 1G;</span><br><span class="line"></span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">            proxy_pass   http:&#x2F;&#x2F;ws_nexus;</span><br><span class="line">            # nexus支持</span><br><span class="line">            proxy_set_header Host $host:$server_port;</span><br><span class="line">            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page &#x2F;50x.html</span><br><span class="line">        error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">        location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>同时开启两个端口，分别对应redmine和nexus服务器</li>
+<li>配置nexus的转发时如果按照redmine的配置，会报400 bad request错误，之前以为是nginx的配置问题，最后翻nexus的官方文档，发现需要额外的配置。安装官方文档配置好后，发现转发时端口号缺失。查了一圈资料，原来是<a target="_blank" rel="noopener" href="https://books.sonatype.com/nexus-book/reference3/install.html#reverse-proxy">官方文档</a>错误，需要修改<code>proxy_set_header Host $host</code>，变为<code>proxy_set_header Host $host:$server_port</code>.</li>
+</ul>
+<h2 id="其它记录"><a href="#其它记录" class="headerlink" title="其它记录"></a>其它记录</h2><ul>
+<li>查看Linux端口占用情况：<code>lsof -i:80</code>,80为端口号</li>
+<li>关闭占用端口的应用进程：<code>kill -9 11071</code>，11071为上一步中显示出来的端口占用进程号</li>
+<li>Linux中启动Nginx：在nginx安装目录下运行<code>nginx -c nginx.conf</code>，不知道安装在哪儿可以使用<code>whereis nginx</code>查看</li>
+<li>Linux中关闭Nginx:<code>pkill -9 nginx</code></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/07/18/Nginx%E4%BB%A3%E7%90%86Redmine%E5%92%8CMaven%E7%A7%81%E6%9C%8DNexus3-0%E9%85%8D%E7%BD%AE/" data-id="cm5tqeevf006bwaypf7cb345f" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/8/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/10/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

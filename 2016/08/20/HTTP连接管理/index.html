@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>HTTP连接管理 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;emsp;&amp;emsp;曾经有同事给我说有客户问她我们的产品是否支持长连接，听到这问题，我告诉她长连接可以通过websocket来实现，考虑到目前的浏览器兼容性，大部分时候采用客户端轮询来曲线救国。当了解到HTTP的keep-alive时，不禁回想起这件事，当初我的回答可能并不是客户想要的的答案！  &amp;emsp;&amp;emsp;下面，分享一下HTTP连接的一些情况，所有的截图均来自《HTTP权威指南">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP连接管理">
+<meta property="og:url" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;曾经有同事给我说有客户问她我们的产品是否支持长连接，听到这问题，我告诉她长连接可以通过websocket来实现，考虑到目前的浏览器兼容性，大部分时候采用客户端轮询来曲线救国。当了解到HTTP的keep-alive时，不禁回想起这件事，当初我的回答可能并不是客户想要的的答案！  &amp;emsp;&amp;emsp;下面，分享一下HTTP连接的一些情况，所有的截图均来自《HTTP权威指南">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/1.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/2.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/3.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/4.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/5.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/6.jpg">
+<meta property="og:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/7.jpg">
+<meta property="article:published_time" content="2016-08-20T09:27:00.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.572Z">
+<meta property="article:author" content="YiYing">
+<meta property="article:tag" content="HTTP连接">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HTTP连接管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2016-08-20T09:27:00.000Z" itemprop="datePublished">2016-08-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTTP连接管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>&emsp;&emsp;曾经有同事给我说有客户问她我们的产品是否支持长连接，听到这问题，我告诉她长连接可以通过websocket来实现，考虑到目前的浏览器兼容性，大部分时候采用客户端轮询来曲线救国。当了解到HTTP的keep-alive时，不禁回想起这件事，当初我的回答可能并不是客户想要的的答案！</p>
+</blockquote>
+<p>&emsp;&emsp;下面，分享一下HTTP连接的一些情况，所有的截图均来自《HTTP权威指南》。想更详细了解的可以直接去看这本书的第四章，更深入的可以去翻翻RFC文档以及TCP/IP协议。有大部头恐惧症，以及只希望能有个初步以及概要性的了解的，接下来的内容很适合您!</p>
+<h3 id="一、HTTP连接的过程"><a href="#一、HTTP连接的过程" class="headerlink" title="一、HTTP连接的过程"></a>一、HTTP连接的过程</h3><img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/1.jpg" class="" title="HTTP连接的过程">
+
+<blockquote>
+<p> &emsp;&emsp;上图为从客户端-服务器端-客户端交互的整个过程。接下来介绍在这个交互过程中影响性能因素的几个关键点。</p>
+</blockquote>
+<h3 id="二、连接中的性能聚焦区域"><a href="#二、连接中的性能聚焦区域" class="headerlink" title="二、连接中的性能聚焦区域"></a>二、连接中的性能聚焦区域</h3><h4 id="HTTP事务的时延"><a href="#HTTP事务的时延" class="headerlink" title="HTTP事务的时延"></a>HTTP事务的时延</h4><img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/2.jpg" class="" title="HTTP 事务主要的连接、 传输以及处理时延">
+
+<p>HTTP 事务的时延有以下几种主要原因：  </p>
+<ol>
+<li>客户端首先需要根据URI确定Web服务器的IP地址和端口号。</li>
+<li>接下来，客户端会向服务器发送一条 TCP 连接请求， 并等待服务器回送一个请求接受应答。</li>
+<li>一旦连接建立起来了，客户端就会通过新建立的 TCP 管道来发送 HTTP 请求。</li>
+<li>最后，Web 服务器会回送 HTTP 响应。</li>
+</ol>
+<blockquote>
+<p> &emsp;&emsp;这些TCP网络时延的大小取决于硬件速度、网络和服务器的负载，请求和响应报文的尺寸，以及客户端和服务器之间的距离。</p>
+</blockquote>
+<h4 id="TCP连接的握手时延"><a href="#TCP连接的握手时延" class="headerlink" title="TCP连接的握手时延"></a>TCP连接的握手时延</h4><p>&emsp;&emsp;TCP连接的握手时延对应于上图的建立连接部分。发送任意数据，当新建立一条TCP连接时，都会走一下如下握手过程。如果连接只用来传送少量数据，这些握手过程就会严重降低 HTTP 的性能。</p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/3.jpg" class="" title="TCP连接的握手时延">
+
+<p>TCP 连接握手需要经过以下几个步骤：  </p>
+<ol>
+<li>请求新的 TCP 连接时， 客户端要向服务器发送一个小的 TCP 分组（ 通常是 40 ～60 个字节）。 这个分组中设置了一个特殊的 SYN 标记，说明这是一个连接请求。（a部分）</li>
+<li>如果服务器接受了连接，就会对一些连接参数进行计算，并向客户端回送一个TCP 分组，这个分组中的 SYN 和 ACK 标记都被置位，说明连接请求已被接受。（b部分）</li>
+<li>最后， 客户端向服务器回送一条确认信息， 通知它连接已成功建立（c部分）</li>
+</ol>
+<blockquote>
+<p>这部分对用户不可见</p>
+</blockquote>
+<h4 id="TCP慢启动"><a href="#TCP慢启动" class="headerlink" title="TCP慢启动"></a>TCP慢启动</h4><p>&emsp;&emsp;TCP 连接会随着时间进行自我“ 调谐”， 起初会限制连接的最大速度， 如果数据成功传输， 会随着时间的推移提高传输的速度。 这种调谐被称为 TCP 慢启动（ slow start）， 用于防止因特网的突然过载和拥塞。<br>&emsp;&emsp;由于存在这种拥塞控制特性， 所以新连接的传输速度会比已经交换过一定量数据的、“ 已调谐” 连接慢一些。</p>
+<h3 id="三、HTTP连接的处理"><a href="#三、HTTP连接的处理" class="headerlink" title="三、HTTP连接的处理"></a>三、HTTP连接的处理</h3><h4 id="1-并行连接"><a href="#1-并行连接" class="headerlink" title="1.并行连接"></a>1.并行连接</h4><p> &emsp;&emsp;试想，当浏览器加载一个页面时，如果一个个HTTP请求都串行执行，那显示出这个页面将会奇慢无比。</p>
+<p>下面用两个图来做个对比：  </p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/4.jpg" class="" title="4个事务（串行）">
+
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/5.jpg" class="" title="4个事务（并行）">
+
+<p>&emsp;&emsp;打开大量连接会消耗很多内存资源，从而引发自身的性能问题。复杂的Web页面可能会有数十或数百个内嵌对象。客户端可能可以打开数百个连接，但 Web 服务器通常要同时处理很多其他用户的请求， 所以很少有 Web 服务器希望出现这样的情况。 一百个用户同时发出申请， 每个用户打开 100 个连接， 服务器就要负责处理10000个连接。 这会造成服务器性能的严重下降。</p>
+<blockquote>
+<p> &emsp;&emsp;实际上，浏览器确实使用了并行连接,但它们会将并行连接的总数限制为一个较小的值（通常是4个）。之前看baidu的webuploader的设计文档，经过测试，当文件分片上传时，建议开始的线程为3个。<br>&emsp;&emsp;地址在<a href="http://fex.baidu.com/blog/2014/04/html5-uploader/?qq-pf-to=pcqq.c2c" target="_blank">这里</a>,更详细的在<a href="https://github.com/fex-team/webuploader/tree/research/experiment" target="_blank">这里</a>，上面的目录里也还有一些</p>
+</blockquote>
+<h4 id="2-持久连接"><a href="#2-持久连接" class="headerlink" title="2.持久连接"></a>2.持久连接</h4><p>&emsp;&emsp;HTTP/1.1（以及 HTTP/1.0 的各种增强版本）允许 HTTP 设备在事务处理结束之后将 TCP 连接保持在打开状态， 以便为未来的 HTTP 请求重用现存的连接。 在事务处理结束之后仍然保持在打开状态的 TCP 连接被称为持久连接。 非持久连接会在每个事务结束之后关闭。持久连接会在不同事务之间保持打开状态， 直到客户端或服务器决定将其关闭为止。<br>&emsp;&emsp;持久连接降低了时延和连接建立的开销，将连接保持在已调谐状态， 而且减少了打开连接的潜在数量。</p>
+<p>持久连接有两种类型：</p>
+<ol>
+<li>HTTP/1.0+ “keep-alive”连接</li>
+<li>HTTP/1.1 “persistent”连接</li>
+</ol>
+<h5 id="HTTP-1-0-keep-alive连接"><a href="#HTTP-1-0-keep-alive连接" class="headerlink" title="HTTP/1.0+ keep-alive连接"></a>HTTP/1.0+ keep-alive连接</h5><p> &emsp;&emsp;实现 HTTP/1.0 keep-alive 连接的客户端可以通过包含 <code>Connection: Keep-Alive</code>首部请求将一条连接保持在打开状态。<br>&emsp;&emsp;如果服务器愿意为下一条请求将连接保持在打开状态，就在响应中包含相同的首部。如果响应中没有 Connection: Keep-Alive 首部， 客户端就认为服务器不支持 keep-alive， 会在发回响应报文之后关闭连接。</p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/6.jpg" class="" title="串行与持久连接">
+
+<blockquote>
+<p> &emsp;&emsp;上图中将在串行连接上实现 4 个HTTP 事务的时间线与在一条持久连接上实现同样事务所需的时间线进行了比较。由于去除了进行连接和关闭连接的开销， 所以时间线有所缩减。</p>
+</blockquote>
+<h6 id="keep-alive选项："><a href="#keep-alive选项：" class="headerlink" title="keep-alive选项："></a>keep-alive选项：</h6><p>例如：<code>Keep-Alive: max=5, timeout=120</code>  </p>
+<ol>
+<li>参数 timeout 是在 Keep-Alive 响应首部发送的。 它估计了服务器希望将连接保持在活跃状态的时间。 这并不是一个承诺值。</li>
+<li>参数 max 是在 Keep-Alive 响应首部发送的。 它估计了服务器还希望为多少个事务保持此连接的活跃状态。 这并不是一个承诺值。</li>
+<li>Keep-Alive 首部还可支持任意未经处理的属性， 这些属性主要用于诊断和调试。语法为 name [=value]。</li>
+</ol>
+<blockquote>
+<p> &emsp;&emsp;在 HTTP/1.0 中，keep-alive 并不是默认使用的。客户端必须发送一个<code>Connection: Keep-Alive</code>请求首部来激活 keep-alive 连接。</p>
+</blockquote>
+<h5 id="HTTP-1-1-persistent连接"><a href="#HTTP-1-1-persistent连接" class="headerlink" title="HTTP/1.1 persistent连接"></a>HTTP/1.1 persistent连接</h5><p>&emsp;&emsp;HTTP/1.1 逐渐停止了对 keep-alive 连接的支持， 用一种名为持久连接（persistent connection） 的改进型设计取代了它。<br>&emsp;&emsp;与 HTTP/1.0+ 的 keep-alive 连接不同， HTTP/1.1 持久连接在默认情况下是激活的。 除非特别指明， 否则 HTTP/1.1 假定所有连接都是持久的。 要在事务处理结束之后将连接关闭， HTTP/1.1 应用程序必须向报文中显式地添加一个<code>Connection:close</code>首部。 这是与以前的 HTTP 协议版本很重要的区别， 在以前的版本中， keep-alive 连接要么是可选的，要么根本就不支持.<br>&emsp;&emsp;这种连接相当于是在HTTP/1.1之上默认开启keep-alive</p>
+<h4 id="3-管道化连接"><a href="#3-管道化连接" class="headerlink" title="3.管道化连接"></a>3.管道化连接</h4><p>&emsp;&emsp;HTTP/1.1 允许在持久连接上可选地使用请求管道。 这是相对于 keep-alive 连接的又一性能优化。 在响应到达之前， 可以将多条请求放入队列。当第一条请求通过网络流向地球另一端的服务器时， 第二条和第三条请求也可以开始发送了。 在高时延网络条件下， 这样做可以降低网络的环回时间，提高性能。  </p>
+<img src="/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/7.jpg" class="" title="性能对比">
+
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>&emsp;&emsp;随着HTTP协议版本以及浏览器版本的不断升级更新，以上这些针对HTTP连接性能优化的选项基本上都实现了自动化、智能化。所以，大家了解了解就好，被人问到避免出现我之前的尴尬境况。<br>&emsp;&emsp;把这块弄清楚并整理出来后，强迫症减轻了不少……</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/08/20/HTTP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86/" data-id="cm5tqeeto000mwayp9uu93cj0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/22/Markdown%E4%B8%AD%E5%B5%8C%E5%85%A5%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Markdown中嵌入优酷视频
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/20/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTTP状态码详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

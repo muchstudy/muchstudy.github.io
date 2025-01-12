@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/13/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-产品研发记录01：为什么需要基础开发框架产品" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/02/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/" class="article-date">
+  <time datetime="2017-01-02T15:18:58.000Z" itemprop="datePublished">2017-01-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/02/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/">产品研发记录01：为什么需要基础开发框架产品</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;目前负责一套基础开发框架产品的研发，从0到1开始已历经两年时间，日趋稳定。希望通过本系列文章记录下产品研发过程中的方方面面，归纳总结沉淀下来。</p>
+<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>&emsp;&emsp;传统行业，以项目为单位。在没有产品之前，所属部门所有人员打散进入一个个的项目，根据客户需求进行开发。Java体系，这个时候，各个项目基本上由各项目的技术负责人搭建项目开发环境，架构设计，模块拆分。完事后，再安排开发人员根据需求开发。之后，测试上线，最终验收，完成整个项目开发流程。之后再辗转新的项目，或者继续做该项目的下一期项目。</p>
+<p>&emsp;&emsp;这样的项目开发方式会带来如下问题：</p>
+<ul>
+<li><p><strong>大量冗余工作。</strong>比如开发环境搭建，登录、首页、菜单、权限、人员管理、系统监控等公共需求基本上在每个项目中都得重新开发一遍。</p>
+</li>
+<li><p><strong>技术债务风险。</strong>主要技术的选型往往由各个项目的技术负责人确定，一些零散的组件，比如前端常用的图表、树、弹出框等基础组件往往由实际开发人员决定。带来所用技术混乱，后期运维成本提高。</p>
+</li>
+<li><p><strong>对开发人员要求提高。</strong>项目与项目之间技术风格迥异，开发人员转项目往往得重新学习了解一套新的技术体系。从一个项目的熟手变为另一项目的生手。</p>
+</li>
+<li><p><strong>技术、经验无法沉淀。</strong>对于传统行业，技术与行业实施经验才是无价之宝。由于各项目单打独斗，项目与项目间经验无法复用，知识很难沉淀。</p>
+</li>
+</ul>
+<h2 id="二、基础开发框架产品"><a href="#二、基础开发框架产品" class="headerlink" title="二、基础开发框架产品"></a>二、基础开发框架产品</h2><p>&emsp;&emsp;为了解决上述问题，引入基础开发框架产品。所有项目的实施都以该基础框架产品为基座进行开发。该<strong>基座</strong>包含如下几点：</p>
+<ul>
+<li>整体架构前后端分离，使用RESTFULL进行前后端数据交互</li>
+<li>前后端技术体系统一</li>
+<li>由基础开发框架组负责技术选型，确定技术路线。比如React、Vue、Angular到表格组件，图表组件到底用哪个之类问题</li>
+<li>应用部分：提供登录、首页、菜单、人员管理、权限管理、字典管理、系统监控等通用模块</li>
+<li>前端部分：统一技术栈。提供通用前端开发组件，开发结构规范，提供公共的前端压缩合并以及缓存解决方案。</li>
+<li>安全：统一的XSS、CSRF、SQL注入等安全问题解决方案</li>
+<li>统一的框架级异常处理</li>
+<li>可平滑升级</li>
+<li>提供问题反馈、建议提交平台，构建正循环生态环境</li>
+<li>……</li>
+</ul>
+<p>&emsp;&emsp;总之，属于项目开发公共的部分都放入其中，随着项目的不断实施，不断的总结出新的组件，不断的完善现有基础组件。</p>
+<h2 id="三、带来的好处"><a href="#三、带来的好处" class="headerlink" title="三、带来的好处"></a>三、带来的好处</h2><ul>
+<li>开发实施效率明显提升</li>
+<li>项目后期维护成本降低</li>
+<li>技术路线统一后项目开发人员的技术学习成本降低</li>
+<li>基于同一套基础开发框架，A项目中的闪光点可直接搬到B项目中</li>
+<li>由基础开发框架组造完轮子后避免各个项目重复造轮子</li>
+<li>形成公司核心竞争力</li>
+</ul>
+<p>下一篇：<a href="http://muchstudy.com/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/">产品研发记录02：基础开发框架产品的设计哲学</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/02/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/" data-id="cm5tqeeus004gwaypbx7le7rt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-人生中唯一的2016" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/31/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842016/" class="article-date">
+  <time datetime="2016-12-31T09:11:07.000Z" itemprop="datePublished">2016-12-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/31/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842016/">人生中唯一的2016</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;在人生中的每一天都是唯一的，转眼就到了今年的最后一天。在这最后一天里，不禁想问自己，你在这一年里收获了什么？在时间长河里为这个世界留下了什么？创造了什么价值？在这一年里有哪些遗憾？接下来的一年里你有什么打算？</p>
+<h2 id="收获的"><a href="#收获的" class="headerlink" title="收获的"></a>收获的</h2><ul>
+<li><p>拿到了驾照，从三月份报考，差不多半年，每周末练车，在十月份的时候驾照终于到手。</p>
+</li>
+<li><p>读完了：《皮囊》《动物庄园》《黄金时代》《白夜行》《嫌疑人X的献身》《解忧杂货铺》《精进》《巨流河》《HTTP权威指南》《Head First设计模式》，正在读《禅与摩托车维修艺术》</p>
+</li>
+<li><p>每天上班地铁背英语单词，坚持200多天，对英语有了一些<a href="http://muchstudy.com/2016/12/18/%E5%9D%9A%E6%8C%81%E4%B8%80%E5%B9%B4%E8%83%8C%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E6%80%BB%E7%BB%93/">感想</a></p>
+</li>
+<li><p>练字，硬笔楷书，100天出头。</p>
+</li>
+<li><p>500多个随手小视频，用视频记录下2016生活中的点滴。几十年后再来看这些视频，肯定会有一番不一样的感受。</p>
+</li>
+<li><p>看了一段时间关于编译原理的视频与资料，对编译原理有了一些了解</p>
+</li>
+</ul>
+<h2 id="留下的"><a href="#留下的" class="headerlink" title="留下的"></a>留下的</h2><ul>
+<li><p>作为公司基础开发框架产品负责人，产品今年迭代了12个版本，越来越稳定，在稳定中不断的打磨脱变。通过该产品，提升了开发人员的开发效率。</p>
+</li>
+<li><p>博客开通，分享50多篇原创博客，希望能帮助到一些人。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/users/3995834/ying-yi">stackoverflow</a>从0到将近500分，算是常年在上面找到有用答案的反馈。</p>
+</li>
+</ul>
+<h2 id="其它重要事件"><a href="#其它重要事件" class="headerlink" title="其它重要事件"></a>其它重要事件</h2><ul>
+<li><p>年初跟媳妇儿以及爸妈全家人到云南自驾游一圈</p>
+</li>
+<li><p>买房，三十而立算是有了基础</p>
+</li>
+<li><p>老婆怀孕，明年等着升级，得多赚奶粉钱了</p>
+</li>
+</ul>
+<h2 id="遗憾"><a href="#遗憾" class="headerlink" title="遗憾"></a>遗憾</h2><ul>
+<li><p>书法练习未能连续坚持</p>
+</li>
+<li><p>系统架构师考试未能通过</p>
+</li>
+</ul>
+<h2 id="2017"><a href="#2017" class="headerlink" title="2017"></a>2017</h2><ul>
+<li><p>博客继续写下去</p>
+</li>
+<li><p>坚持练字</p>
+</li>
+<li><p>囤着还未看的书，希望能看掉一些：《算法》第四版、《TCP/IP》卷一、《经济学原理》-曼昆、《瓦尔登湖》、《英语语法实践指南》、《数学之美》</p>
+</li>
+<li><p>想要学习的领域：机器学习、推荐引擎</p>
+</li>
+<li><p>接受新的挑战</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/31/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842016/" data-id="cm5tqeeut004iwayp1xl1arqb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-MySQL-5-7-绿色版安装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2016-12-29T07:16:13.000Z" itemprop="datePublished">2016-12-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/DBMS/">DBMS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/">MySQL 5.7 绿色版安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>安装环境为windows2008 R2，X64</p>
+</blockquote>
+<h2 id="一、下载解压"><a href="#一、下载解压" class="headerlink" title="一、下载解压"></a>一、下载解压</h2><p>&emsp;&emsp;官网下载地址：<a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a><br>&emsp;&emsp;选择跟环境对应的版本，然后解压即可。我这里解压到<code>C:\work\mysql-5.7.17-winx64</code></p>
+<h2 id="二、-环境变量配置"><a href="#二、-环境变量配置" class="headerlink" title="二、 环境变量配置"></a>二、 环境变量配置</h2><p>&emsp;&emsp;把<code>C:\work\mysql-5.7.17-winx64\bin</code>添加到用户的环境变量<code>path</code>中</p>
+<h2 id="三、-添加配置文件"><a href="#三、-添加配置文件" class="headerlink" title="三、 添加配置文件"></a>三、 添加配置文件</h2><p>&emsp;&emsp;复制<code>my-default.ini</code>一份该文件，在当前目录下粘贴为<code>my.ini</code>，并增加如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set&#x3D;utf8</span><br><span class="line">[mysqld]</span><br><span class="line">character_set_server&#x3D;utf8</span><br><span class="line">basedir&#x3D;C:\work\mysql-5.7.17-winx64</span><br><span class="line">datadir&#x3D;C:\work\mysql-5.7.17-winx64\data</span><br><span class="line">port   &#x3D; 3306</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;修改默认的字符编码为UTF-8 解决中文乱码问题。</p>
+<h2 id="四、数据库初始化"><a href="#四、数据库初始化" class="headerlink" title="四、数据库初始化"></a>四、数据库初始化</h2><p>&emsp;&emsp;用管理员身份打开CMD，并执行如下命令：</p>
+<ul>
+<li><code>mysqld --initialize --user=mysql --console</code></li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/1.jpg" class="">
+
+<p>&emsp;&emsp;结尾部分为初始化的随机root密码，可以先从控制台上复制下来，下一步修改密码会使用</p>
+<h2 id="五、修改root密码"><a href="#五、修改root密码" class="headerlink" title="五、修改root密码"></a>五、修改root密码</h2><p>&emsp;&emsp;运行如下命令：</p>
+<ul>
+<li><code>mysql -u root -p</code> 之后会提示输入密码</li>
+<li><code>set password for root@localhost = password(&#39;root&#39;);</code>修改密码为root</li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/2.jpg" class="">
+
+<h2 id="六、创建新用户"><a href="#六、创建新用户" class="headerlink" title="六、创建新用户"></a>六、创建新用户</h2><p>&emsp;&emsp;运行如下命令：</p>
+<ul>
+<li><code>CREATE USER &#39;admin&#39;@&#39;%&#39; IDENTIFIED BY &#39;password&#39;;</code></li>
+<li><code>GRANT ALL PRIVILEGES ON *.* TO &#39;admin&#39;@&#39;%&#39;;</code></li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/3.jpg" class="">
+
+<p>&emsp;&emsp;注意<code>admin&#39;@&#39;%</code>中的百分号，这里使用百分号意味着允许任意远程客户端连接。<code>root@localhost</code>意味着只允许本地客户端连接。  </p>
+<p>&emsp;&emsp;官方文档：<a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/5.7/en/adding-users.html">http://dev.mysql.com/doc/refman/5.7/en/adding-users.html</a></p>
+<h2 id="七、添加为系统服务"><a href="#七、添加为系统服务" class="headerlink" title="七、添加为系统服务"></a>七、添加为系统服务</h2><p>&emsp;&emsp;运行如下命令：</p>
+<ul>
+<li><code>mysqld --install MySQL57</code></li>
+<li><code>net start MySQL57</code></li>
+</ul>
+<img src="/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/4.jpg" class="">
+
+<p>&emsp;&emsp;删除服务可运行<code>sc delete MySQL57</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/29/MySQL-5-7-%E7%BB%BF%E8%89%B2%E7%89%88%E5%AE%89%E8%A3%85/" data-id="cm5tqeeur004ewaypglm56tir" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2016-12-28T13:25:46.000Z" itemprop="datePublished">2016-12-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">设计模式总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;看完《Head First设计模式》一书，本篇算是对设计模式做一个简单的总结。</p>
+<h2 id="一、为什么要使用设计模式"><a href="#一、为什么要使用设计模式" class="headerlink" title="一、为什么要使用设计模式"></a>一、为什么要使用设计模式</h2><p>&emsp;&emsp;个人觉得，设计模式存在的价值既是为了解决实际的问题。在碰到实际问题，合适的场景使用设计模式会带来如下好处：</p>
+<ul>
+<li>让代码结构更加清晰</li>
+<li>使得代码易于维护</li>
+<li>利于后期功能扩展</li>
+<li>使用共同的术语方便技术人员相互交流</li>
+</ul>
+<h2 id="二、如何使用设计模式"><a href="#二、如何使用设计模式" class="headerlink" title="二、如何使用设计模式"></a>二、如何使用设计模式</h2><p>&emsp;&emsp;对于如何使用设计模式，个人觉得没必要去记住书中的设计模式使用套路，一个是的确很难记，另外就是设计模式应当是在解决实际问题中<strong>自然而然生长出来</strong>的，而不是套出来的。 但是，还是应当对设计模式有所了解，这样在解决问题时容易获得灵感。</p>
+<h2 id="三、感想"><a href="#三、感想" class="headerlink" title="三、感想"></a>三、感想</h2><p>&emsp;&emsp;在看本书之前，只熟悉常见的几个设计模式。看完之后给我最大的感受就是，虽然很多模式不知道，但是在实际的工作当中已经使用了大量的设计模式，比如装饰者、观察者、策略等模式。<br>&emsp;&emsp;当在实际工作当中，遇到需要解决的问题时，自然而然就会去想程序该怎么设计比较合理。在思考整个代码结构如何才能更优的过程中，应当忘记设计模式的使用套路，专注与问题的本质上。当以最优的方式解决问题后，这个最优解其实就是一种模式。<br>&emsp;&emsp;最后，一切应当以解决问题为导向。切记为了使用设计模式而生搬硬套的使用设计模式。<strong>代码应在解决问题的基础上以简洁、优雅、易懂为好。</strong></p>
+<h2 id="四、设计模式系列文章"><a href="#四、设计模式系列文章" class="headerlink" title="四、设计模式系列文章"></a>四、设计模式系列文章</h2><p><a href="http://muchstudy.com/2016/11/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%80%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">设计模式系列之一单例模式</a><br><a href="http://muchstudy.com/2016/11/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%8C%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">设计模式系列之二策略模式</a><br><a href="http://muchstudy.com/2016/11/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%89%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之三观察者模式</a><br><a href="http://muchstudy.com/2016/12/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%9B%9B%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之四装饰者模式</a><br><a href="http://muchstudy.com/2016/12/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">设计模式系列之五工厂模式</a><br><a href="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a><br><a href="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a><br><a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a><br><a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a><br><a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a><br><a href="http://muchstudy.com/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">设计模式系列之十一组合模式</a><br><a href="http://muchstudy.com/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a><br><a href="http://muchstudy.com/2016/12/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">设计模式系列之十三代理模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/" data-id="cm5tqeeur004cwayp3nq3bq8d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-解决正确配置Servlet-async-supported参数而不好使的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/28/%E8%A7%A3%E5%86%B3%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AEServlet-async-supported%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E5%A5%BD%E4%BD%BF%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2016-12-28T09:44:17.000Z" itemprop="datePublished">2016-12-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/28/%E8%A7%A3%E5%86%B3%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AEServlet-async-supported%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E5%A5%BD%E4%BD%BF%E7%9A%84%E9%97%AE%E9%A2%98/">解决正确配置Servlet async-supported参数报错问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、描述"><a href="#一、描述" class="headerlink" title="一、描述"></a>一、描述</h2><p>环境：</p>
+<blockquote>
+<p>JDK 1.7<br>Servlet 3.0<br>tomcat 7</p>
+</blockquote>
+<p>&emsp;&emsp;Servlet 3.0新增异步处理支持，配置servlet参数<code>&lt;async-supported&gt;true&lt;/async-supported&gt; </code>，或通过注解方式启用<code>@WebServlet(urlPatterns = &quot;/demo&quot;,asyncSupported = true) </code>。当正确配置后，发现照例报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalStateException: A filter or servlet of the current chain does not support asynchronous operations.</span><br><span class="line">	org.apache.catalina.connector.Request.startAsync(Request.java:1660)</span><br><span class="line">	org.apache.catalina.connector.Request.startAsync(Request.java:1653)</span><br><span class="line">	org.apache.catalina.connector.RequestFacade.startAsync(RequestFacade.java:1022)</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、解决办法"><a href="#二、解决办法" class="headerlink" title="二、解决办法"></a>二、解决办法</h2><p>&emsp;&emsp;找了一圈，所有的解决办法都在说可能是参数配置未配置正确，或者是需要在server.xml上配置。最后，在<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/10970829/async-servlet-exception">StackOverflow</a>上找到了如下答案</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.setAttribute(<span class="string">&quot;org.apache.catalina.ASYNC_SUPPORTED&quot;</span>, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、其它"><a href="#三、其它" class="headerlink" title="三、其它"></a>三、其它</h2><p>Servlet 3.0 新特性详解：<a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/">https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/28/%E8%A7%A3%E5%86%B3%E6%AD%A3%E7%A1%AE%E9%85%8D%E7%BD%AEServlet-async-supported%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E5%A5%BD%E4%BD%BF%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm5tqeeuq004awayp5fk3h078" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之十三代理模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-25T07:40:12.000Z" itemprop="datePublished">2016-12-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">设计模式系列之十三代理模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;代理模式可以理解为通过一个中间者来访问数据，比如我们通过代理来访问互联网，通过代理商购买游戏点卡等。这些都属于代理模式的设计思想。</p>
+<img src="/2016/12/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/proxy.png" class="">
+
+<p>&emsp;&emsp;上图为代理模式的一般数据交互逻辑。在Java后台开发中，使用RMI调用远程数据既采用了代理模式。</p>
+<p>&emsp;&emsp;在我的实际开发中，以个人开发经验，使用代理模式最主要是为了解决如下两个问题:</p>
+<blockquote>
+<ol>
+<li>封装访问远程数据的具体实现逻辑。即客户端只需调用Proxy提供的方法即可，不关心数据从哪里取，本地or远程。</li>
+<li>提供一个统一的口径实现过滤。</li>
+</ol>
+</blockquote>
+<p>&emsp;&emsp;下面分享一个使用到代理模式设计思想的代码样例。需求是这样的，前后端分离，前端统一使用<code>$.ajax</code>来请求后端提供的RESTFULL服务。需要在框架层面做到系统级的异常处理，即开发人员不需再关心系统级的异常，只需要关注业务逻辑。<br>&emsp;&emsp;针对于该需求，明显是需要一个Proxy，通过一个Proxy来转发前后端的交互。或者说叫做数据请求过滤器的东西，来劫持所有的前端数据请求。最终的实现样例代码如下所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ajax方法clone</span></span><br><span class="line">    <span class="keyword">var</span> _ajax = $.ajax;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里相当于劫持了原生的$.ajax方法，通过劫持实现对请求的过滤，系统级异常的捕获</span></span><br><span class="line">    $.ajax = <span class="function"><span class="keyword">function</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//ajax deferred promise 保持原有promise操作</span></span><br><span class="line">        <span class="keyword">var</span> promise;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> _param = $.extend(&#123;&#125;, &#123;<span class="attr">autoWrap</span> : <span class="literal">true</span>&#125;, param);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果不需要默认的封装:autoWrap = false;</span></span><br><span class="line">        <span class="keyword">if</span> (!_param.autoWrap) &#123;</span><br><span class="line">            promise = _ajax(_param);</span><br><span class="line">            <span class="comment">//直接返回</span></span><br><span class="line">            <span class="keyword">return</span> promise;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//default ajax options</span></span><br><span class="line">        <span class="keyword">var</span> defaultOpts = &#123;</span><br><span class="line">            type: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            dataType: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">            cache: <span class="literal">false</span>,</span><br><span class="line">            headers: &#123;</span><br><span class="line">                <span class="string">&quot;CSRFToken&quot;</span> : getCSRFToken()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//deep extend</span></span><br><span class="line">        _param = $.extend(<span class="literal">true</span>, defaultOpts, _param);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//add timestamp</span></span><br><span class="line">        <span class="keyword">if</span> (!_param.cache) &#123;</span><br><span class="line">            <span class="keyword">var</span> _url = _param.url || <span class="string">&quot;&quot;</span>;</span><br><span class="line">            <span class="keyword">var</span> stamp = <span class="string">&quot;T=&quot;</span>+ <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</span><br><span class="line">            (_url.indexOf(<span class="string">&quot;?&quot;</span>) == -<span class="number">1</span>) ?( _url += <span class="string">&quot;?&quot;</span>+stamp):( _url += <span class="string">&quot;&amp;&quot;</span>+stamp);</span><br><span class="line">            _param.url = _url;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_param.success) &#123;</span><br><span class="line">            _param.callback = _param.success;</span><br><span class="line">            <span class="keyword">delete</span> _param.success;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        promise = _ajax($.extend(&#123;</span><br><span class="line">            success:<span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">var</span> code = response.status || response.code || <span class="string">&quot;200&quot;</span>;</span><br><span class="line">                <span class="comment">//如果是整形，转换为字符串</span></span><br><span class="line">                <span class="keyword">typeof</span>(code)==<span class="string">&quot;number&quot;</span> &amp;&amp; (code=code+<span class="string">&quot;&quot;</span>);</span><br><span class="line">                <span class="comment">//状态码控制</span></span><br><span class="line">                <span class="keyword">switch</span>(code)&#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;200&quot;</span>:</span><br><span class="line">                        <span class="comment">//数据转发</span></span><br><span class="line">                        <span class="keyword">if</span> (_param.callback) &#123;</span><br><span class="line">                             _param.callback(response);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;401&quot;</span>:</span><br><span class="line">                        <span class="comment">//需要认证：登录超时或未登录.Session超时，弹出登陆框，登录成功后继续业务逻辑。</span></span><br><span class="line">                        ReLogin(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                            $.ajax(param);</span><br><span class="line">                        &#125;);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;400&quot;</span>:</span><br><span class="line">                        alert(<span class="string">&quot;请求异常！&quot;</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;403&quot;</span>:</span><br><span class="line">                        alert(<span class="string">&quot;请求的资源未授权！&quot;</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&quot;500&quot;</span>:</span><br><span class="line">                        alert(<span class="string">&quot;&lt;code&gt;500:&lt;/code&gt;服务器端异常,请联系管理员.&lt;br/&gt;&quot;</span>+(response.msg || response.message));</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">default</span> :</span><br><span class="line">                        alert(<span class="string">&quot;&lt;code&gt;&quot;</span>+code+<span class="string">&quot;:&lt;/code&gt;服务器端异常,请联系管理员.&lt;br/&gt;&quot;</span>+(response.msg || response.message));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            error:<span class="function"><span class="keyword">function</span>(<span class="params">XMLHttpRequest, textStatus, errorThrown</span>)</span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;ajax error:&quot;</span> + textStatus);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, _param));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> promise;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+
+<p>上一篇：<a href="http://muchstudy.com/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/25/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeup0048wayp96rzg6br" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之十二状态模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-24T03:03:28.000Z" itemprop="datePublished">2016-12-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;举一个自动取款机的场景来说明状态模式的使用。去自动提款机取钱首先得有插卡的动作，最后还会有取卡的动作。对应两个状态，一个是无卡状态，另外一个是有卡状态。</p>
+<h2 id="一、代码实现"><a href="#一、代码实现" class="headerlink" title="一、代码实现"></a>一、代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ATM</span> </span>&#123;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> NO_CARD 	= <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> HAVE_CARD  = <span class="number">1</span>;</span><br><span class="line">	<span class="comment">//提款机初始状态为无卡</span></span><br><span class="line">	<span class="keyword">int</span> state = NO_CARD;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//插卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(state==NO_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;插入卡片&quot;</span>);</span><br><span class="line">			<span class="comment">//设置状态为有卡状态</span></span><br><span class="line">			setState(HAVE_CARD);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(state==HAVE_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;已插入银行卡&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//取卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(state==NO_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;你没有插入银行卡&quot;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(state==HAVE_CARD)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;退出卡片&quot;</span>);</span><br><span class="line">			<span class="comment">//设置状态为无卡状态</span></span><br><span class="line">			setState(NO_CARD);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(<span class="keyword">int</span> state)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.state = state;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码可以预见到，如果再增加状态，那么对应的操作里面就需要增加一组if-else，越到后面代码将越来越难以维护。</p>
+<h2 id="二、使用状态模式改造"><a href="#二、使用状态模式改造" class="headerlink" title="二、使用状态模式改造"></a>二、使用状态模式改造</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//状态接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">State</span> </span>&#123;</span><br><span class="line">	<span class="comment">//插入卡片</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//取出卡片</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//无卡状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NoCard</span> <span class="keyword">implements</span> <span class="title">State</span></span>&#123;</span><br><span class="line">	NewATM atm;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NoCard</span><span class="params">(NewATM newATM)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.atm = newATM;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;插入卡片&quot;</span>);</span><br><span class="line">		atm.setState(NewATM.HAVE_CARD);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;你没有插入银行卡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//有卡状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HaveCard</span> <span class="keyword">implements</span> <span class="title">State</span></span>&#123;</span><br><span class="line">	NewATM atm;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HaveCard</span><span class="params">(NewATM newATM)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.atm = newATM;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;已插入银行卡&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;退出卡片&quot;</span>);</span><br><span class="line">		atm.setState(NewATM.NO_CARD);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用状态模式改造后的业务代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewATM</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> State  NO_CARD;</span><br><span class="line">	<span class="keyword">static</span> State HAVE_CARD;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> State state = NO_CARD;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NewATM</span><span class="params">()</span></span>&#123;</span><br><span class="line">		NO_CARD 	= <span class="keyword">new</span> NoCard(<span class="keyword">this</span>);</span><br><span class="line">		HAVE_CARD 	= <span class="keyword">new</span> HaveCard(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//插卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		state.insertCard();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//取卡</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quitCard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		state.quitCard();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(State state)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.state = state;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;经过改造，彻底干掉了繁琐的if-else状态判断。当有业务变更，或是新状态加入时可灵活的调整代码。</p>
+<p><strong>系列文章：</strong><br><a href="http://muchstudy.com/2016/11/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%80%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">设计模式系列之一单例模式</a><br><a href="http://muchstudy.com/2016/11/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%8C%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">设计模式系列之二策略模式</a><br><a href="http://muchstudy.com/2016/11/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%89%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之三观察者模式</a><br><a href="http://muchstudy.com/2016/12/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%9B%9B%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/">设计模式系列之四装饰者模式</a><br><a href="http://muchstudy.com/2016/12/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%94%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">设计模式系列之五工厂模式</a><br><a href="http://muchstudy.com/2016/12/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AD%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">设计模式系列之六命令模式</a><br><a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%85%AB%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">设计模式系列之八外观模式</a><br><a href="http://muchstudy.com/2016/12/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%83%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之七适配器模式</a><br><a href="http://muchstudy.com/2016/12/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B9%9D%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">设计模式系列之九模板方法模式</a><br><a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a><br><a href="http://muchstudy.com/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">设计模式系列之十一组合模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeuo0046waypchdmhjdo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Maven私服Nexus3-x权限配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2016-12-23T09:31:01.000Z" itemprop="datePublished">2016-12-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Maven/">Maven</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/">Maven私服Nexus3.x权限配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、禁用匿名访问权限"><a href="#一、禁用匿名访问权限" class="headerlink" title="一、禁用匿名访问权限"></a>一、禁用匿名访问权限</h2><img src="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/1.jpg" class="">
+
+<h2 id="二、角色创建"><a href="#二、角色创建" class="headerlink" title="二、角色创建"></a>二、角色创建</h2><img src="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/2.jpg" class="">
+
+<h2 id="三、人员创建"><a href="#三、人员创建" class="headerlink" title="三、人员创建"></a>三、人员创建</h2><img src="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/3.jpg" class="">
+
+<h2 id="四、代理配置"><a href="#四、代理配置" class="headerlink" title="四、代理配置"></a>四、代理配置</h2><p>&emsp;&emsp;通过该配置可以使得两个Nexus服务器相关联。</p>
+<h3 id="1-配置地址"><a href="#1-配置地址" class="headerlink" title="1.配置地址"></a>1.配置地址</h3><img src="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/4.jpg" class="">
+
+<h3 id="2-配置用户"><a href="#2-配置用户" class="headerlink" title="2.配置用户"></a>2.配置用户</h3><img src="/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/5.jpg" class="">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/23/Maven%E7%A7%81%E6%9C%8DNexus3-x%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE/" data-id="cm5tqeeun0042waypeky37573" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式系列之十一组合模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2016-12-21T12:50:20.000Z" itemprop="datePublished">2016-12-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">设计模式系列之十一组合模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>组合模式：</strong>允许将对象组合成树型结构来表现“整体/部分”层次结构。组合能让一致的方式处理个别对象以及对象组合。</p>
+</blockquote>
+<p>&emsp;&emsp;接上一篇**<a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a>**的业务逻辑，现在集团公司业务扩张，新增了湖南分公司，那么采用迭代器模式可以很方便的打印出湖南分公司的所有部门。</p>
+<h2 id="一、新需求实现"><a href="#一、新需求实现" class="headerlink" title="一、新需求实现"></a>一、新需求实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//湖南分公司</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HNBranch</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HNBranch</span><span class="params">()</span></span>&#123;</span><br><span class="line">		depts = <span class="keyword">new</span> ArrayList&lt;Dept&gt;();</span><br><span class="line">		<span class="comment">//添加部门</span></span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;湖南-财务部&quot;</span>));</span><br><span class="line">		depts.add(<span class="keyword">new</span> Dept(<span class="string">&quot;湖南-开发部&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里不再使用自定义实现的Iterator接口，而是使用Java原生集合对象的Iterator</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterator <span class="title">createrIterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> HNBranchIterator(depts);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//湖南分公司的部门迭代器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HNBranchIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span></span>&#123;</span><br><span class="line">	ArrayList&lt;Dept&gt; depts;</span><br><span class="line">	<span class="keyword">int</span> position	= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">HNBranchIterator</span><span class="params">(ArrayList&lt;Dept&gt; depts)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.depts = depts;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(position&gt;=depts.size() || depts.get(position)==<span class="keyword">null</span>)&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Dept dept = depts.get(position);</span><br><span class="line">		position  = position + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> dept;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestNew</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Iterator BJ = <span class="keyword">new</span> BJBranch().createrIterator();</span><br><span class="line">		Iterator SH = <span class="keyword">new</span> SHBranch().createrIterator();</span><br><span class="line">		Iterator HN = <span class="keyword">new</span> HNBranch().createrIterator();</span><br><span class="line"></span><br><span class="line">		printDeptName(BJ);</span><br><span class="line">		printDeptName(SH);</span><br><span class="line">		<span class="comment">//打印新设立的湖南分公司的所有部门</span></span><br><span class="line">		printDeptName(HN);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printDeptName</span><span class="params">(Iterator iterator)</span></span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">			Dept dept = (Dept) iterator.next();</span><br><span class="line">			System.out.println(dept.getName());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;依次类推，如果再设立其它省份的分公司一样的可以很快增加上去。但是，如果需要在湖南分公司下<strong>再设立下隶属于湖南分公司的长沙分公司</strong>呢？此时，整个结构变为一棵树型结构。</p>
+<img src="/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/Composite.png" class="">
+
+
+<h2 id="二、组合模式使用"><a href="#二、组合模式使用" class="headerlink" title="二、组合模式使用"></a>二、组合模式使用</h2><p>&emsp;&emsp;可使用组合模式来表现“整体/部分”层次结构。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不管是分子机构，还是分支机构下的部门对象都需要继承组件对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	<span class="comment">//不管是父节点还是叶子节点都有该方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//叶子节点可以没有该方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Component component)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//分支机构，即父节点</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Branch</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">	ArrayList&lt;Component&gt; components;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Branch</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">		components = <span class="keyword">new</span> ArrayList&lt;Component&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Component component)</span></span>&#123;</span><br><span class="line">		components.add(component);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(getName());</span><br><span class="line">		System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">		<span class="comment">//打印子节点，这里既可以是叶子节点也可以是父节点。通过这里实现了递归</span></span><br><span class="line">		<span class="keyword">for</span>(Component com:components)&#123;</span><br><span class="line">			com.print();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//机构中的部门对象，即叶子节点</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dept</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Dept</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name= name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(getName());</span><br><span class="line">		System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//下面的为同级</span></span><br><span class="line">		Component BJBranch = <span class="keyword">new</span> Branch(<span class="string">&quot;北京分公司&quot;</span>);</span><br><span class="line">		BJBranch.add(<span class="keyword">new</span> Dept(<span class="string">&quot;北京-财务部&quot;</span>));</span><br><span class="line">		Component SHBranch = <span class="keyword">new</span> Branch(<span class="string">&quot;上海分公司&quot;</span>);</span><br><span class="line">		SHBranch.add(<span class="keyword">new</span> Dept(<span class="string">&quot;上海-财务部&quot;</span>));</span><br><span class="line">		Component HNBranch = <span class="keyword">new</span> Branch(<span class="string">&quot;湖南分公司&quot;</span>);</span><br><span class="line">		HNBranch.add(<span class="keyword">new</span> Dept(<span class="string">&quot;湖南-财务部&quot;</span>));</span><br><span class="line">		<span class="comment">//下面的为子级</span></span><br><span class="line">		Component CS = <span class="keyword">new</span> Branch(<span class="string">&quot;长沙子公司&quot;</span>);</span><br><span class="line">		CS.add(<span class="keyword">new</span> Dept(<span class="string">&quot;长沙-财务部&quot;</span>));</span><br><span class="line">		HNBranch.add(CS);</span><br><span class="line"></span><br><span class="line">		Component root = <span class="keyword">new</span> Branch(<span class="string">&quot;集团公司&quot;</span>);</span><br><span class="line">		root.add(BJBranch);</span><br><span class="line">		root.add(SHBranch);</span><br><span class="line">		root.add(HNBranch);</span><br><span class="line">		<span class="comment">//这里会递归遍历下去，直至所有节点遍历完毕</span></span><br><span class="line">		root.print();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从上面的代码中可以看出，核心在于父节点与叶子节点都属于<code>Component</code>，才能组合在一起，实现递归打印。</p>
+<p>上一篇：<a href="http://muchstudy.com/2016/12/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">设计模式系列之十迭代器模式</a><br>下一篇：<a href="http://muchstudy.com/2016/12/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%BA%8C%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">设计模式系列之十二状态模式</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%81%E4%B8%80%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/" data-id="cm5tqeeum003zwayphgc8f8f4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux下搭建Maven私服Nexus3-X" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/21/Linux%E4%B8%8B%E6%90%AD%E5%BB%BAMaven%E7%A7%81%E6%9C%8DNexus3-X/" class="article-date">
+  <time datetime="2016-12-21T09:29:37.000Z" itemprop="datePublished">2016-12-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Maven/">Maven</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/21/Linux%E4%B8%8B%E6%90%AD%E5%BB%BAMaven%E7%A7%81%E6%9C%8DNexus3-X/">Linux下搭建Maven私服Nexus3.X</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;操作系统为中标麒麟6，安装的Nexus版本为<code>nexus-3.2.0-01-unix.tar.gz</code></p>
+<h2 id="一、准备"><a href="#一、准备" class="headerlink" title="一、准备"></a>一、准备</h2><ol>
+<li>从官网 <a target="_blank" rel="noopener" href="https://www.sonatype.com/download-oss-sonatype">https://www.sonatype.com/download-oss-sonatype</a> 下载最新版本的资源</li>
+<li><code>Nexus 3.x.x</code>的JDK环境要求为1.8</li>
+</ol>
+<h2 id="二、安装配置"><a href="#二、安装配置" class="headerlink" title="二、安装配置"></a>二、安装配置</h2><p>&emsp;&emsp;下载下来<code>nexus-3.2.0-01-unix.tar.gz</code>后，我使用<code>SecureFX</code>把资源上传到了<code>/opt</code>目录下。<code>SecureFX</code>是一个客户端工具，通过UI界面就能对Linux上的文件做操作。</p>
+<img src="/2016/12/21/Linux%E4%B8%8B%E6%90%AD%E5%BB%BAMaven%E7%A7%81%E6%9C%8DNexus3-X/1.jpg" class="">
+
+<p>&emsp;&emsp;接下来使用<code>SecureCRT</code>连接上Linux服务器，在命令行输入如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 切换到opt目录</span><br><span class="line">$ cd &#x2F;opt</span><br><span class="line"></span><br><span class="line"># 解压tar文件</span><br><span class="line">$ tar xvzf nexus-3.2.0-01-unix.tar.gz</span><br><span class="line"></span><br><span class="line"># 先切换到bin目录</span><br><span class="line">$ cd nexus-3.2.0-01&#x2F;bin&#x2F;</span><br><span class="line"># 启动服务器，同时还有stop，restart</span><br><span class="line">$ .&#x2F;nexus start</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;默认端口为8081，此时可通过<code>http://yourIp:8081</code>访问Nexus服务器。默认用户名与密码为<code>admin/admin123</code>.</p>
+<p>&emsp;&emsp;如果要修改默认端口，可以到安装目录下找到<code>etc/nexus-default.properties</code>，修改<code>application-port</code>项，然后restart即可。</p>
+<p>&emsp;&emsp;如果要卸载，使用<code>rm -rf nexus-3.2.0-01</code>删除掉安装目录即可。-r为子目录一起删，f为不用一一提示。</p>
+<h2 id="三、其它"><a href="#三、其它" class="headerlink" title="三、其它"></a>三、其它</h2><p>&emsp;&emsp;在安装完修改端口为8083后，在浏览器中输入地址发现无法访问。</p>
+<p>&emsp;&emsp;首先在Linux服务器上查看8083端口是否启用，通过<code>netstat -lnp</code>命令即可。</p>
+<p>&emsp;&emsp;确认端口已正在使用服务器没问题后，在客户端的CMD中通过<code>telnet yourIp 8083</code>,发现客户端无法连接。</p>
+<p>&emsp;&emsp;最后排查防火墙，在防火墙中设置允许8083端口的HTTP访问解决问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2016/12/21/Linux%E4%B8%8B%E6%90%AD%E5%BB%BAMaven%E7%A7%81%E6%9C%8DNexus3-X/" data-id="cm5tqeeul003vwayp0ui3cg4h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/12/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

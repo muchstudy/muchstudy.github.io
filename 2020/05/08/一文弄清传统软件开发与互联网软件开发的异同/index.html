@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>一文弄清传统软件开发与互联网软件开发的异同 | YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在传统软件开发领域8年，从一线开发，到项目技术经理，再到产品研发技术负责人，一路走来，感受着互联网行业的软件越来越贴近日常生活，一直有一个疑问，那就是互联网行业中的软件开发是怎么样的？两年前，决定转行到互联网行业实际体验看一看，通过两年的观察总结以及实际亲身感受，我觉得我已经找到了答案，解除了心中的疑问，此文写给那些跟我有相同疑问的朋友。  相信很多在传统软件开发领域的朋友或多或少对互联网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文弄清传统软件开发与互联网软件开发的异同">
+<meta property="og:url" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="在传统软件开发领域8年，从一线开发，到项目技术经理，再到产品研发技术负责人，一路走来，感受着互联网行业的软件越来越贴近日常生活，一直有一个疑问，那就是互联网行业中的软件开发是怎么样的？两年前，决定转行到互联网行业实际体验看一看，通过两年的观察总结以及实际亲身感受，我觉得我已经找到了答案，解除了心中的疑问，此文写给那些跟我有相同疑问的朋友。  相信很多在传统软件开发领域的朋友或多或少对互联网">
+<meta property="og:locale">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB1.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB2.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB3.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB4.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB5.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB6.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB7.png">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E8%81%8C%E7%BA%A7%E6%B1%87%E6%80%BB.jpeg">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E9%98%BF%E9%87%8C%E8%81%8C%E7%BA%A7.jpeg">
+<meta property="og:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E9%98%BF%E9%87%8C%E8%81%8C%E7%BA%A7%E8%A6%81%E6%B1%82.jpeg">
+<meta property="og:image" content="http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif">
+<meta property="article:published_time" content="2020-05-08T09:53:24.000Z">
+<meta property="article:modified_time" content="2025-01-12T14:31:06.791Z">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-一文弄清传统软件开发与互联网软件开发的异同" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/" class="article-date">
+  <time datetime="2020-05-08T09:53:24.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一文弄清传统软件开发与互联网软件开发的异同
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB1.png" class="">
+
+<blockquote>
+<p> 在传统软件开发领域8年，从一线开发，到项目技术经理，再到产品研发技术负责人，一路走来，感受着互联网行业的软件越来越贴近日常生活，一直有一个疑问，那就是互联网行业中的软件开发是怎么样的？两年前，决定转行到互联网行业实际体验看一看，通过两年的观察总结以及实际亲身感受，我觉得我已经找到了答案，解除了心中的疑问，此文写给那些跟我有相同疑问的朋友。</p>
+</blockquote>
+<p>相信很多在传统软件开发领域的朋友或多或少对互联网公司的软件开发有如下疑问：<strong>开发流程是怎么样的？人员组成是怎么样的？系统架构是怎么样的？成长路线是怎么样的？是不是加班厉害？薪资福利是不是传言的那么有诱惑力？</strong></p>
+<p>而在互联网行业高压力的同学，也会问：<strong>传统软件开发公司工作会不会轻松点？会不会稳定一点？是不是在传统软件开发领域年龄没那么敏感？</strong></p>
+<p>这篇文章会一一解答上述疑问</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>首先，先来介绍一下何谓传统软件行业，何谓互联网软件行业，有如下几个明显差异点。</p>
+<h3 id="传统行业"><a href="#传统行业" class="headerlink" title="传统行业"></a>传统行业</h3><p>传统软件开发行业，也可以叫做企业软件开发行业，他的明显特征如下</p>
+<ul>
+<li><strong><em>软件：</em></strong> 比如财务系统、OA系统、CRM、ERP等业务系统，医疗、电力、智慧城市、税务等行业软件，目的为帮助公司或政府与事业单位更高效运转的业务支撑系统</li>
+<li><strong><em>目标群体：</em></strong>  <strong>客户</strong> - 软件的使用群体一般为公司内部员工、政府、事业单位职员</li>
+<li><strong><em>公司：</em></strong> 金蝶、用友、中软、东软等</li>
+</ul>
+<h3 id="互联网行业"><a href="#互联网行业" class="headerlink" title="互联网行业"></a>互联网行业</h3><ul>
+<li><strong><em>软件：</em></strong> 比如微信、QQ、baidu.com、今日头条、抖音、优酷等</li>
+<li><strong><em>目标群体：</em></strong> <strong>用户</strong> - 广大互联网用户</li>
+<li><strong><em>公司：</em></strong> 阿里、腾讯、百度、头条等  </li>
+</ul>
+<h2 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h2><p>作为码农，不论在传统行业还是互联网行业，都是做软件开发，软件开发一般都是以项目为单位。首先，就先以项目流程的角度聊一下传统软件行业与互联网软件行业的区别。</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB2.png" class="">
+
+<h3 id="传统行业-1"><a href="#传统行业-1" class="headerlink" title="传统行业"></a>传统行业</h3><p>结合上图，从如下几点说说传统软件项目的项目流程</p>
+<h4 id="需求来源"><a href="#需求来源" class="headerlink" title="需求来源"></a>需求来源</h4><blockquote>
+<p>需求来源一般为甲方客户，当一家公司慢慢成长起来时，往往需要软件来提升公司的管理与运行效率。比如所有公司无一例外都需要人事管理系统、财务管理系统、OA系统、考勤系统；一些制造行业还需要生产管理的ERP系统，医院需要病例管理系统、学校需要学生管理系统、政府需要公文管理系统等等。这些甲方客户一般都没有专门的软件开发团队，大部分只有一个叫技术中心的部门负责网络与各种系统的管理。所以，要落地这些软件，就需要专业的软件公司来实施。</p>
+</blockquote>
+<h4 id="需求收集"><a href="#需求收集" class="headerlink" title="需求收集"></a>需求收集</h4><blockquote>
+<p>有了实际的需求，要么客户主动找到软件公司，要么软件公司挖掘客户；首先入场的一般都是销售入场（主管商务事项，比如报价、签约，客户关系维护，需求挖掘，以便签约项目二期、三期…）。<br>有时还会有售前顾问支持（主管技术，比如给客户给出技术方案、初步分析出项目实施范围，方便合理报价）；需要说明的是售前顾问通常都是技术出身，项目经验丰富，不仅是技术专家，还是业务专家，对某一行业有深刻理解，能够告诉客户，怎么做才是行业最好的方案，利用行业经验帮助客户提升效率，而不是简单把客户的下线流程搬到线上。</p>
+</blockquote>
+<h4 id="需求实施"><a href="#需求实施" class="headerlink" title="需求实施"></a>需求实施</h4><blockquote>
+<p>项目签约下来后，紧接着就是项目实施团队入场。<br>项目团队包含这些人：项目经理、需求分析师、技术经理、技术开发、UI、QA<br>项目实施有时为驻场开发，有时是在公司开发好后到甲方公司去部署上线</p>
+</blockquote>
+<h4 id="需求交付"><a href="#需求交付" class="headerlink" title="需求交付"></a>需求交付</h4><blockquote>
+<p>需求通过QA测试部署后，通常会有试运行阶段，在试运行阶段，客户可提出问题点与优化点。所有功能没问题后，即完成交付，技术团队撤出，投入到下一个项目，销售收尾款。<br>偶尔客户还会购买系统运维服务，即支持系统运行期间的问题处理以及小需求迭代。</p>
+</blockquote>
+<h3 id="互联网行业-1"><a href="#互联网行业-1" class="headerlink" title="互联网行业"></a>互联网行业</h3><p>结合上图，从如下几点说说互联网软件项目的项目流程</p>
+<h4 id="需求来源-1"><a href="#需求来源-1" class="headerlink" title="需求来源"></a>需求来源</h4><p>需求来源主要在于这三个方面</p>
+<blockquote>
+<ol>
+<li>产品需求：PM发起的需求，比如要做个视频面试的新产品、要优化下单流程之类的</li>
+<li>营销需求：此类需求一般为公司运营和营销人员发起的需求，PM把需求梳理为产品文档后，交由技术团队落地</li>
+<li>内部需求：此类需求可理解为内部系统建设需求；前面两种一般称之为To C，这种叫To B  </li>
+</ol>
+</blockquote>
+<blockquote>
+<p>最后，还有一种活儿的来源，那就是技术自己发起的需求，比如系统重构，技术基础设施的建设，比如系统性能、异常监控系统、持续集成系统等</p>
+</blockquote>
+<h4 id="需求收集-1"><a href="#需求收集-1" class="headerlink" title="需求收集"></a>需求收集</h4><p>在互联网公司，所有的需求都会收集到产品经理（PM）处，技术团队原则上只从产品经理处承接需求</p>
+<blockquote>
+<p>PM会把各种需求整理成需求文档，还会附带上需求原型。通常会先期找技术初评，确认哪些功能无法实现然后调整需求文档。</p>
+</blockquote>
+<h4 id="需求实施-1"><a href="#需求实施-1" class="headerlink" title="需求实施"></a>需求实施</h4><blockquote>
+<p>需求没问题后，C端需求最先入场的是UE、UI，即交互设计与视觉设计，完事后前端FE拿到设计稿后进行开发，这期间后端开发可并行，最后接口联调、测试</p>
+</blockquote>
+<h4 id="需求交付-1"><a href="#需求交付-1" class="headerlink" title="需求交付"></a>需求交付</h4><ul>
+<li>测试完毕后，预发布、预发布没问题由QA上线</li>
+</ul>
+<p>贴一个以前端视角的大致项目流程：</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB3.png" class="">
+
+<blockquote>
+<p><strong>最明显的感受就是，传统行业的软件开发是给甲方干，在互联网行业的软件开发是给自己干！</strong></p>
+</blockquote>
+<h2 id="项目相关人员"><a href="#项目相关人员" class="headerlink" title="项目相关人员"></a>项目相关人员</h2><p>上面介绍了项目的整体流程，接着针对于项目团队的组成，即实际参与项目落地的人员以及人员分工聊一聊</p>
+<h3 id="传统软件项目"><a href="#传统软件项目" class="headerlink" title="传统软件项目"></a>传统软件项目</h3><img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB4.png" class="">
+
+<ul>
+<li><p>项目经理</p>
+<blockquote>
+<p>项目的总负责人，负责与客户对接，大部分情况参与需求的调研，把客户的线下需求转变为需求文档，给到技术人员去落地</p>
+</blockquote>
+</li>
+<li><p>技术经理</p>
+<blockquote>
+<p>项目的技术负责人，负责整个项目的关键技术把控，业务抽象、系统架构、模块划分，以及对开发工程师的工作分配与管理</p>
+</blockquote>
+</li>
+<li><p>需求分析师</p>
+<blockquote>
+<p>协助项目经理梳理需求，比较大的项目一般是项目经理整体把控，带领多个需求分析师，没人负责一块业务需求，把需求文档化。目的在于与客户对齐需求，保证开发出来的东西是客户想要的。还有一个比较重要的目的是，开发之前都需要客户确认需求，方便控制需求变更以及需求范围，避免无限制的增加需求。</p>
+</blockquote>
+</li>
+<li><p>UI设计师</p>
+<blockquote>
+<p>一般PC端系统首页，以及移动端的一些页面需要UI单独设计，后台系统一般不需要。UI属于公共资源，需项目组申请，一般不常驻项目。</p>
+</blockquote>
+</li>
+<li><p>开发工程师</p>
+<blockquote>
+<p>在传统软件开发中，很少会有专职的前端人员，大部分情况都是项目经理划分好功能模块，开发人员从数据库设计、后端业务逻辑编写，再到前端UI实现，都是同一个人。好处很明显，就是效率高；坏处就是相对于互联网行业的分工细化，质量会相对差一些。</p>
+</blockquote>
+</li>
+<li><p>测试工程师</p>
+<blockquote>
+<p>公共资源，到测试阶段入场。一般负责压力测试、性能测试、功能逻辑测试。</p>
+</blockquote>
+</li>
+<li><p>系统安全</p>
+<blockquote>
+<p>关于系统安全这块，政府或者国家级项目，甲方一般会找第三方安全厂商来做渗透测试，或者直接找国家网络安全中心来做系统的安全评估，最终给出系统的安全报告，有哪些系统漏洞会一一列出来。在经历过的项目中，私企这一块基本没有，政府与事业单位软件项目居多。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="互联网软件项目"><a href="#互联网软件项目" class="headerlink" title="互联网软件项目"></a>互联网软件项目</h3><p>下面贴一张曾经以项目经理角色负责过的项目，因为该项目较大，牵涉到的人较多，可以很清晰的看到一个项目的完整人员分工与构成。</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB5.png" class="">
+
+<ul>
+<li><p><strong>PM</strong></p>
+<blockquote>
+<p>产品经理，负责需求文档编写，以及需求上线后产品效果的跟踪</p>
+</blockquote>
+</li>
+<li><p><strong>UE</strong></p>
+<blockquote>
+<p>交互设计，跟进PM的需求，制定页面的交互逻辑</p>
+</blockquote>
+</li>
+<li><p><strong>UI</strong></p>
+<blockquote>
+<p>根据需求与交互稿设计UI图，然后注明UI图的标注，直接给到前端或者上传到蓝湖</p>
+</blockquote>
+</li>
+<li><p><strong>视觉</strong></p>
+<blockquote>
+<p>视觉与UI实际上都属于设计部门，视觉设计的主要分工为活动海报、运营活动页面，插画等的设计</p>
+</blockquote>
+</li>
+<li><p><strong>RD</strong></p>
+<blockquote>
+<p>后端开发，提供数据接口给到端上（FE、APP）</p>
+</blockquote>
+</li>
+<li><p><strong>FE</strong></p>
+<blockquote>
+<p>前端开发，负责所有H5页面、各种小程序、NodeJS层的开发。</p>
+</blockquote>
+</li>
+<li><p><strong>APP</strong></p>
+<blockquote>
+<p>一般分为两块，IOS与Android</p>
+</blockquote>
+</li>
+<li><p><strong>QA</strong></p>
+<blockquote>
+<p>测试人员，FE与RD并行开发，都开发完毕后进行接口联调，联调完成后QA介入测试</p>
+</blockquote>
+</li>
+<li><p><strong>BI</strong></p>
+<blockquote>
+<p>数据分析人员，数据一般来源于前端的埋点以及业务数据，负责根据相关数据给出数据分析报表</p>
+</blockquote>
+</li>
+<li><p><strong>安全</strong></p>
+<blockquote>
+<p>安全团队负责把控系统上线前是否有安全漏洞</p>
+</blockquote>
+</li>
+<li><p><strong>法务</strong></p>
+<blockquote>
+<p>保障新上线的项目需求无法律风险。比如一些文案的提示，活动的规则、用户协议等。</p>
+</blockquote>
+</li>
+<li><p><strong>运营</strong></p>
+<blockquote>
+<p>提出需求，营销活动规则的指定</p>
+</blockquote>
+</li>
+<li><p><strong>财务</strong></p>
+<blockquote>
+<p>营销活动类需求活动资金的控制</p>
+</blockquote>
+</li>
+</ul>
+<p>传统软件项目开发一般都会基于公司产品来做二次开发，提升开发效率。互联网软件大部分情况都是对现有线上业务的迭代，为了提升开发效率后端也有中台组、架构组支撑，前端与UI也会抽取业务组件方便开发。</p>
+<p>传统软件开发项目，由项目经理负责制，从项目最开始跟到系统上线验收；互联网公司中的项目组织相对零散，需求详设评审进入开发后基本上就没PM的事情了，这个时候一般会在FE、RD、QA中推举一位项目负责人推进项目的落地，把控项目进度。敏捷项目一般由Master来负责。</p>
+<h2 id="项目技术架构"><a href="#项目技术架构" class="headerlink" title="项目技术架构"></a>项目技术架构</h2><h3 id="传统行业-2"><a href="#传统行业-2" class="headerlink" title="传统行业"></a>传统行业</h3><blockquote>
+<p><strong>核心诉求：</strong> 在满足功能需求的情况下，<strong>怎么好维护，怎么开发成本低怎么来</strong>。机器都是甲方出，<strong>所以能通过堆机器解决的问题都不是问题</strong> （不过也需要为客户考虑项目整体成本）</p>
+</blockquote>
+<p>常见的架构是这样的：</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB6.png" class="">
+
+<p>传统行业的企业内部系统技术架构80%都是只做到读写分离、按应用拆分、分布式缓存、单独的查询服务就不再往下走了，因为再往下走，开发成本会成指数级上升。少数会做到大表拆分、负载会上LVS或F5。</p>
+<p>对于这样的技术架构，只要机器足够，性能够强，足以支撑一家上万人的公司日常正常运转了。</p>
+<p>对于那种项目金额上千万的项目，更多的也是采取多地分开部署，数据集中上报汇总的方式，避免架构复杂化带来的开发成本提升。</p>
+<h3 id="互联网行业-2"><a href="#互联网行业-2" class="headerlink" title="互联网行业"></a>互联网行业</h3><blockquote>
+<p><strong>核心诉求：</strong> 支持快速迭代、稳定、高并发。另外，机器都是自己出，多一台都是成本….</p>
+</blockquote>
+<p>为了达成上述诉求，基础配置大部分都是这样的，上不封顶</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E4%BC%A0%E7%BB%9F%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E5%8C%BA%E5%88%AB7.png" class="">
+
+
+<p>可以看到，对于传统行业软件技术架构，相对于互联网软件架构，<strong>最明显的区别标志就是微服务</strong></p>
+<blockquote>
+<p>这里是一篇很不错的讲述架构演进的文章：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/yZlQUZQS0Rkn_7vY7hjvHQ">https://mp.weixin.qq.com/s/yZlQUZQS0Rkn_7vY7hjvHQ</a></p>
+</blockquote>
+<h2 id="成长路线"><a href="#成长路线" class="headerlink" title="成长路线"></a>成长路线</h2><p>大部分上了规模的互联网公司都有清晰明确的职级体系；传统行业软件公司大部分职级体系较模糊。</p>
+<h3 id="传统行业-3"><a href="#传统行业-3" class="headerlink" title="传统行业"></a>传统行业</h3><p>一般分为技术路线与业务路线两种</p>
+<h4 id="技术路线"><a href="#技术路线" class="headerlink" title="技术路线"></a>技术路线</h4><p>职级从初级开发、中级开发、高级开发、资深开发、一路到系统架构师；</p>
+<p>实际工作中，做到在项目中负责整个项目的技术负责人，或者公司的产品研发负责人，技术路线基本就到头了</p>
+<p>项目技术负责人更多的要求综合能力；产品研发负责人给更多要求技术深度与从项目业务中提炼成产品的能力</p>
+<h4 id="业务路线"><a href="#业务路线" class="headerlink" title="业务路线"></a>业务路线</h4><p>大多数都会先做一两年技术，然后做项目的需求分析人员，再然后到项目经理，成为业务方面的专家；例如财务领域专家、生产制造领域业务专家、金融领域业务专家等。</p>
+<p>这条线是业务经验越丰富越值钱，需要靠一个个实际项目历练出来，无捷径可走。</p>
+<h3 id="互联网行业-3"><a href="#互联网行业-3" class="headerlink" title="互联网行业"></a>互联网行业</h3><p>上规模的互联网公司，大部分都有成体系的晋升路线图</p>
+<p>下面从网络上找到几张图，比较清晰</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E8%81%8C%E7%BA%A7%E6%B1%87%E6%80%BB.jpeg" class="">
+
+
+<p>以阿里为例，分为技术线和管理线</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E9%98%BF%E9%87%8C%E8%81%8C%E7%BA%A7.jpeg" class="">
+
+
+<p>技术线职级对应的要求如下所示</p>
+<img src="/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/%E9%98%BF%E9%87%8C%E8%81%8C%E7%BA%A7%E8%A6%81%E6%B1%82.jpeg" class="">
+
+
+<h2 id="能力要求"><a href="#能力要求" class="headerlink" title="能力要求"></a>能力要求</h2><ul>
+<li><p><strong>传统软件开发</strong></p>
+<blockquote>
+<p>在传统软件开发中，<strong>更多的是要求技术的广度，以及综合能力，希望技术人员是多面手</strong>，要求以最快的速度，最低的成本搞定需求。开发时，更多的也是按功能模块拆分，希望开发人员能够从前到后一条龙搞定。<strong>对时间、代码质量不敏感，对项目的资源投入与收益敏感。</strong></p>
+</blockquote>
+</li>
+<li><p><strong>互联网软件开发</strong></p>
+<blockquote>
+<p>在互联网公司中，岗位拆分的很细，会<strong>更多的要求单一方向的技术深度</strong>，专门的岗位干专业的事。之所以会把岗位拆这么细，是因为这样方便模块拆分，<strong>实现更多的并行开发，尽力做到增加人员，就能加快项目开发进度，实现快速抢占市场的目的。</strong></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="行业关注点"><a href="#行业关注点" class="headerlink" title="行业关注点"></a>行业关注点</h2><ul>
+<li><p><strong>传统行业</strong></p>
+<blockquote>
+<p>更多的关心一个项目的投入与产出比，所以会在产品上多下功夫，尽量的把通用功能产品化，以更多的复用来减少开发成本。同时，更注重业务解决方案的抽取，提升核心竞争力。</p>
+</blockquote>
+</li>
+<li><p><strong>互联网行业</strong></p>
+<blockquote>
+<p>更多的关心需求的上线速度，更快的速度占领市场就会有更多的优势；所以会更多的关注模块化，实现通过不断的增加开发人员，就能明显提升开发速度，所以岗位、系统才会拆得比较细粒度。为了解决复用问题，衍生出中台概念。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="关于加班"><a href="#关于加班" class="headerlink" title="关于加班"></a>关于加班</h2><h3 id="传统软件行业"><a href="#传统软件行业" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>大部分情况是早九晚六，中午可午休，基本不加班。</p>
+<p>由于传统软件每个项目的开发周期较长,大部分都是按月计，所以紧急情况下，有足够的消化空间，很少有加班特别狠的情况。</p>
+<p>特殊情况，从业8年，甲方为日企，唯一一次连续996一个月。</p>
+<p><strong>其他：</strong> 有出差需求，因为有时需要到客户所在地驻场开发。</p>
+<h3 id="互联网软件行业"><a href="#互联网软件行业" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>公认的加班狠，什么996（早9点，晚9点，一周6天）、大小周（隔周双休）的开创者全部来源于这个行业；</p>
+<p>也有极少数公司能做到早10晚7，不过碰到上线，基本都得加班（有时上线还挺频繁的，一周至少有一半时间有需求上线）</p>
+<p><strong>其他：</strong> 基本无出差需求</p>
+<blockquote>
+<p>总的来说，传统软件行业加班时间是少数，有更多的非工作时间；互联网软件开发行业，加班是常态，不加班或少加班的公司简直是一股清流存在。</p>
+</blockquote>
+<h2 id="关于薪资福利"><a href="#关于薪资福利" class="headerlink" title="关于薪资福利"></a>关于薪资福利</h2><h3 id="传统软件行业-1"><a href="#传统软件行业-1" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>从实际待过的两家A股上市公司，以及所了解的其他头部传统行业软件公司来看，涨薪基本上靠你的直属主管觉得你应该加薪才会获得薪资的提升</p>
+<p>虽然从系统里能够查出来你的职位是助理开发还是资深架构师，但是公司没有一个相对明确的每个职位层级的薪资范围，也没有正式的述职与职位晋升一说，我的感受就是你的薪资越高，代表着你的职级越高。整体来看，同职级岗位薪资低于互联网行业一个层级，月薪30k是一个比较难达到的坎。</p>
+<p>股票、期权激励较难见到。</p>
+<h3 id="互联网软件行业-1"><a href="#互联网软件行业-1" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>互联网公司的涨薪基本上靠如下几个方面</p>
+<ul>
+<li>年度普调（发展好的公司）</li>
+<li>每年绩效不错，核心骨干（针对性涨薪）</li>
+<li>职位晋升</li>
+</ul>
+<p>薪资基本与职级挂钩，每个职级对应一个薪资范围，达到薪资范围的上限，就只有靠职位晋升来提升了。薪资范围可参见<strong>成长路线</strong>部分的贴图。</p>
+<p>股票、期权激励较常见。</p>
+<h2 id="关于稳定性"><a href="#关于稳定性" class="headerlink" title="关于稳定性"></a>关于稳定性</h2><h3 id="传统软件行业-2"><a href="#传统软件行业-2" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>传统行业相对稳定，原因有如下几点</p>
+<ul>
+<li>以项目为单位，每个项目都是独立的业务逻辑，要想摸清摸透一个方向的业务逻辑，需要花费大量的时间；即使一个业务方向熟悉了，还有下一个业务方向等着你。有效避免过早进入舒适区，导致人员的不稳定因素增加。即使不想做项目往业务方向扎根，希望多做技术，还可以转产品研发，摸透整个产品架构与细节至少又是两年过去了。</li>
+<li>行业内的公司就那么些家，可选择面不大</li>
+<li>行业内跳槽薪资涨幅有限</li>
+</ul>
+<blockquote>
+<p> 传统软件领域，很多软件系统属于用户的核心业务系统，比如ERP、财务系统等，属于刚需。所以，这一块只要有稳定的客户来源，即使是运维需求也会有一口饭吃。因为稳定性，收入也很难像互联网行业公司那样快速增长。</p>
+</blockquote>
+<h3 id="互联网软件行业-2"><a href="#互联网软件行业-2" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>业务不赚钱，即使你再努力、个人能力再强也只能走人</p>
+<p>见过上一天还在努力上班，第二天就被n+1裁掉的场景</p>
+<p>在互联网行业能够真切的感受到个人的渺小，选择大于努力。</p>
+<p>还有那句，只要在风口上，即使是猪也能飞起来的生动诠释。</p>
+<p>在互联网软件开发领域里，两三年一跳槽是常态，人员流动性较大。</p>
+<h2 id="关于年龄"><a href="#关于年龄" class="headerlink" title="关于年龄"></a>关于年龄</h2><h3 id="传统软件行业-3"><a href="#传统软件行业-3" class="headerlink" title="传统软件行业"></a>传统软件行业</h3><p>由于加班没那么狠，很少有拼体力的情况，所以在传统行业软件开发领域年龄没那么敏感。</p>
+<p>曾经的同事，好多都是在这个行业干了20+year的老码农，照样干得风生水起。</p>
+<p>因为传统软件开发领域的特殊性，需要更多的与甲方客户沟通交流，外加对行业业务需求的深刻理解。年龄大，代表着更丰富的与客户打交道经验，以及更丰富的业务行业经验，更具竞争力。</p>
+<p>之前还碰到有客户指明项目实施团队必须要有10+year的带队，或者不能低于多少比例，直接写进合同那种。</p>
+<h3 id="互联网软件行业-3"><a href="#互联网软件行业-3" class="headerlink" title="互联网软件行业"></a>互联网软件行业</h3><p>对于这个行业，崇尚一个字“<strong>快</strong>”</p>
+<p><strong>要求业务发展快、个人成长快</strong></p>
+<p>经常可以在网络或工作中听到说XXX多年轻就晋升xxx职级了</p>
+<p>网络上甚至还流传xxx大厂到了35岁还没晋升到xxx职级，就极有可能被优化掉的说法</p>
+<p>这样的氛围，对于那些想把更多时间放到生活上的人极不友好</p>
+<p>难道就不能保持低职级，拿该拿的薪资，保持work balance？</p>
+<p>no，no，no；随着年龄的增大，这种安于工作现状的人会显得跟整个团队格格不入，极易绩效背锅</p>
+<p>xxx公司对于这类员工，还发明了一个叫做“老白兔”的标签</p>
+<p>由此可见，互联网行业对于年龄的友好程度！</p>
+<blockquote>
+<p>所以，建议想再奋斗一下，再挑战一下自己的到互联网行业去，那里有更大的机遇与空间。<br>建议对技术追求没那么高，希望工作生活相对平衡，可以考虑一下传统软件行业，那里只要你做事靠谱，年龄不是问题。</p>
+</blockquote>
+<h2 id="关于转行"><a href="#关于转行" class="headerlink" title="关于转行"></a>关于转行</h2><p>首先要注意的是，得看在什么团队，什么岗位，做什么事情。</p>
+<h3 id="传统软件转互联网"><a href="#传统软件转互联网" class="headerlink" title="传统软件转互联网"></a>传统软件转互联网</h3><p>可能在传统行业公司，做的事情偏互联网公司的玩法。例如：做针对于互联网用户的系统。</p>
+<p>互联网公司做事、沟通相对open，竞争激烈，优胜劣汰；业务发展不好，能力再强努力再多也得面对裁员；所以<strong>跳槽到互联网公司一定要选对行业、选对部门；去冷门行业、边缘部门要多考虑</strong></p>
+<p><strong>优势：</strong> 技术宽度、软实力、综合能力</p>
+<h3 id="互联网转传统软件"><a href="#互联网转传统软件" class="headerlink" title="互联网转传统软件"></a>互联网转传统软件</h3><p>也可能在互联网公司，实际上做的事情跟在传统行业的软件公司差不多。例如：做公司内部的各种系统。</p>
+<p>传统软件公司相对比较稳定，企业业务系统是刚需，旱涝保收；正因如此，公司业务也很难有指数级的增长，薪资也同理；可考虑走业务专家路线。</p>
+<p><strong>优势：</strong> 技术深度、良好的自驱力、技术创新能力</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>如果用一句话来总结传统软件开发与互联网软件开发，我觉得可以用一个更“<strong>稳</strong>”，一个更“<strong>快</strong>”来概括。</p>
+<p>行业的业务形态决定了诉求点不同，由此带来工作方式、能力要求等方方面面的不同。</p>
+<p>如果要问到底从事传统软件开发好还是互联网软件开发好？</p>
+<p>我要说的是：“<strong>这个问题对于不同的人有不同的答案，没有好与不好，只有适合与不适合</strong>”。</p>
+<p><strong>如有其它相关问题，在公众号回复问题或加微信咨询，尽量知无不言言无不尽。</strong></p>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2020/05/08/%E4%B8%80%E6%96%87%E5%BC%84%E6%B8%85%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BA%92%E8%81%94%E7%BD%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E5%BC%82%E5%90%8C/" data-id="cm5tqeew10081wayp6ytzhcql" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/18/VR%EF%BC%9A%E8%99%9A%E6%8B%9F%E4%B8%8E%E7%8E%B0%E5%AE%9E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          VR：虚拟与现实
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/02/%E9%80%9A%E8%BF%87Nginx%E8%A7%A3%E5%86%B3%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">通过Nginx解决网络隔离实践记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

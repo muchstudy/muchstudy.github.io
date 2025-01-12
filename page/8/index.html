@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/8/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Elasticsearch常用增删改查记录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/28/Elasticsearch%E5%B8%B8%E7%94%A8%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E8%AE%B0%E5%BD%95/" class="article-date">
+  <time datetime="2019-09-28T15:25:38.000Z" itemprop="datePublished">2019-09-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/28/Elasticsearch%E5%B8%B8%E7%94%A8%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E8%AE%B0%E5%BD%95/">Elasticsearch常用增删改查记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近使用Elasticsearch来做异常监控的存储，写了不少ES的索引操作，以及对数据的增删改查操作，记录一下，以备不时之需。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br><span class="line">747</span><br><span class="line">748</span><br><span class="line">749</span><br><span class="line">750</span><br><span class="line">751</span><br><span class="line">752</span><br><span class="line">753</span><br><span class="line">754</span><br><span class="line">755</span><br><span class="line">756</span><br><span class="line">757</span><br><span class="line">758</span><br><span class="line">759</span><br><span class="line">760</span><br><span class="line">761</span><br><span class="line">762</span><br><span class="line">763</span><br><span class="line">764</span><br><span class="line">765</span><br><span class="line">766</span><br><span class="line">767</span><br><span class="line">768</span><br><span class="line">769</span><br><span class="line">770</span><br><span class="line">771</span><br><span class="line">772</span><br><span class="line">773</span><br><span class="line">774</span><br><span class="line">775</span><br><span class="line">776</span><br><span class="line">777</span><br><span class="line">778</span><br><span class="line">779</span><br><span class="line">780</span><br><span class="line">781</span><br><span class="line">782</span><br><span class="line">783</span><br><span class="line">784</span><br><span class="line">785</span><br><span class="line">786</span><br><span class="line">787</span><br><span class="line">788</span><br><span class="line">789</span><br><span class="line">790</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 列出所有索引</span></span><br><span class="line">GET _cat/indices</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看indices</span></span><br><span class="line">GET /_cat/indices/jz-fe*?v&amp;s=index</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引的文档总数</span></span><br><span class="line">GET jz-fe-http-log/_count</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除索引</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> DELETE /jz-fe-http-log</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引相关信息</span></span><br><span class="line">GET nginx-log-bjdaojiacom-2019.07.20</span><br><span class="line">GET jz-fe-http-log</span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建索引，禁止自动添加类型字段</span></span><br><span class="line">PUT /jz-fe-http-log</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;:&#123;</span><br><span class="line">      &quot;gitGroup&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;projectName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;level&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;code&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;href&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;url&quot;:&#123;</span><br><span class="line">        &quot;type&quot; : &quot;text&quot;,</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">          &quot;keyword&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;keyword&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;method&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;param&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;response&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;message&quot;:&#123;</span><br><span class="line">        &quot;type&quot;:&quot;text&quot;,</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">          &quot;keyword&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;keyword&quot;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;&#125;,</span><br><span class="line">      &quot;stack&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;clientDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;serverDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;uid&quot;: &#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;phone&quot;: &#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;os&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;platform&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;browser&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;version&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;userAgent&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;status&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;closeDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 更新索引-增加字段</span></span><br><span class="line">PUT jz-fe-http-log/_mapping</span><br><span class="line">&#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;status&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;closeDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 更新索引-修改字段</span></span><br><span class="line">PUT jz-fe-http-log/_mapping</span><br><span class="line">&#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;url&quot;:&#123;</span><br><span class="line">        &quot;type&quot;:&quot;text&quot;,</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">          &quot;keyword&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;keyword&quot;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 增加数据</span></span><br><span class="line">POST /jz-fe-http-log/_doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;os&quot;:&quot;OS X&quot;,</span><br><span class="line">  &quot;platform&quot;:&quot;iPhone&quot;,</span><br><span class="line">  &quot;browser&quot;:&quot;Safari&quot;,</span><br><span class="line">  &quot;version&quot;:&quot;11.0&quot;,</span><br><span class="line">  &quot;clientDate&quot;:&quot;2019-08-23 18:54:03&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定key查询</span></span><br><span class="line">GET /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;_id&quot;: &quot;BYG_SG0BW-qMNGXgwzPg&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按文档ID更新指定字段数据</span></span><br><span class="line">POST /jz-fe-http-log/_doc/R9Wm_mwBAl5tA0U3Hq4l/_update</span><br><span class="line">&#123;</span><br><span class="line">   &quot;doc&quot; : &#123;</span><br><span class="line">      &quot;status&quot;: 1</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按id删除数据</span></span><br><span class="line">DELETE /jz-fe-http-log/_doc/l0_772wBAl5tA0U3dpBH</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除指定查询数据 - 前缀匹配</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> POST /jz-fe-http-log/_delete_by_query</span></span><br><span class="line">POST /jz-fe-http-log/_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:5,</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">        &quot;regexp&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean-v2.+&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /jz-fe-http-log/_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:5,</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;&lt;%- 909275197+844400363 %&gt;&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 异常总数</span></span><br><span class="line">GET /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 已处理异常总数</span></span><br><span class="line">GET /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;status&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当天异常总数</span></span><br><span class="line">GET /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;serverDate&quot;: &quot;now/1d&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 今日异常数</span></span><br><span class="line">POST /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;must&quot;: [</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;serverDate&quot;: &quot;now/1d&quot; &#125;&#125;,</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;status&quot;:  &quot;1&quot; &#125;&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按照项目名称分组</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">      &quot;bool&quot;: &#123;</span><br><span class="line">          &quot;must&quot;: [</span><br><span class="line">              &#123;</span><br><span class="line">                &quot;range&quot;: &#123;</span><br><span class="line">                  &quot;serverDate&quot;: &#123;</span><br><span class="line">                    &quot;gte&quot;: &quot;2019-10-30 14:57:00&quot;,</span><br><span class="line">                    &quot;lte&quot;: &quot;2019-10-31 14:57:00&quot;</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          ]</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_projectName&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;size&quot;: 50,</span><br><span class="line">        &quot;field&quot;: &quot;projectName&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按照git group+项目名称分组</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_gitGroup&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;size&quot;: 50,</span><br><span class="line">        &quot;field&quot;: &quot;gitGroup&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;aggs&quot;: &#123;</span><br><span class="line">        &quot;group_by_projectName&quot;: &#123;</span><br><span class="line">        &quot;terms&quot;: &#123;</span><br><span class="line">          &quot;size&quot;: 50,</span><br><span class="line">          &quot;field&quot;: &quot;projectName&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定项目下，错误等级分组</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;projectName&quot;: &quot;daily-clean&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_projectName&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;level&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按天分组、计数</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_day&quot;: &#123;</span><br><span class="line">      &quot;date_histogram&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;serverDate&quot;,</span><br><span class="line">        &quot;interval&quot;: &quot;day&quot;,</span><br><span class="line">         &quot;format&quot; : &quot;yyyy-MM-dd&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 最近一周所有问题增长趋势</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;track_total_hits&quot;: 100000,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;must&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                  &quot;range&quot;: &#123;</span><br><span class="line">                    &quot;serverDate&quot;: &#123;</span><br><span class="line">                      &quot;gte&quot;: &quot;2019-10-30 14:57:00&quot;,</span><br><span class="line">                      &quot;lte&quot;: &quot;2019-10-31 14:57:00&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_hour&quot;: &#123;</span><br><span class="line">      &quot;date_histogram&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;serverDate&quot;,</span><br><span class="line">        &quot;interval&quot;: &quot;hour&quot;,</span><br><span class="line">         &quot;format&quot; : &quot;yyyy-MM-dd HH:mm:ss&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上一周指定项目的问题增长趋势</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:1,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean&quot; &#125;&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2019-10-30 14:57:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2019-10-31 14:57:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_hour&quot;: &#123;</span><br><span class="line">      &quot;date_histogram&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;serverDate&quot;,</span><br><span class="line">        &quot;min_doc_count&quot;: 0,</span><br><span class="line">        &quot;interval&quot;: &quot;hour&quot;,</span><br><span class="line">         &quot;format&quot; : &quot;yyyy-MM-dd HH:mm:ss&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定项目，按message分组</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;must&quot;: [</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;csworker&quot; &#125;&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_message&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;size&quot;: 25,</span><br><span class="line">        &quot;field&quot;: &quot;message.keyword&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按指定项目中的message分页查询</span></span><br><span class="line">POST /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:2,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;must&quot;: [</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean&quot; &#125;&#125;,</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;message.keyword&quot;:  &quot;无可用商家&quot; &#125;&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定项目+message，按url分组，查询出指定错误的url排行</span></span><br><span class="line">POST /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">        &quot;must&quot;: [</span><br><span class="line">            &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean&quot; &#125;&#125;,</span><br><span class="line">            &#123; &quot;match&quot;: &#123; &quot;message.keyword&quot;: &quot;timeout of 5000ms exceeded&quot; &#125;&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_url&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;url.keyword&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按时间降序</span></span><br><span class="line">POST /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:1,</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;must&quot;: [</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean&quot; &#125;&#125;,</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;message.keyword&quot;:  &quot;无可用商家&quot; &#125;&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;sort&quot;: [</span><br><span class="line">        &#123;&quot;serverDate&quot;: &quot;desc&quot;&#125; ,</span><br><span class="line">        &#123;&quot;_id&quot;: &quot;asc&quot;&#125;    </span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 按时间降序-searchAfter</span></span><br><span class="line">POST /jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:1,</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;must&quot;: [</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean&quot; &#125;&#125;,</span><br><span class="line">                &#123; &quot;match&quot;: &#123; &quot;message.keyword&quot;:  &quot;无可用商家&quot; &#125;&#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;search_after&quot;:[</span><br><span class="line">          1569489763000,</span><br><span class="line">          &quot;NP4pa20BFerq1YvUydLx&quot;</span><br><span class="line">        ],</span><br><span class="line">    &quot;sort&quot;: [</span><br><span class="line">        &#123;&quot;serverDate&quot;: &quot;desc&quot;&#125; ,</span><br><span class="line">        &#123;&quot;_id&quot;: &quot;asc&quot;&#125;    </span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定时间段，按项目分组</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">        &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gt&quot;: &quot;2019-09-24 09:00:00&quot;,</span><br><span class="line">              &quot;lt&quot;: &quot;2019-09-24 10:00:00&quot;,</span><br><span class="line">              &quot;format&quot;: &quot;yyyy-MM-dd HH:mm:ss&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_project&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;projectName&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询最近一小时的数据，按项目分组</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2019-10-31 12:57:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2019-10-31 13:57:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_project&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;size&quot;: 100,</span><br><span class="line">        &quot;field&quot;: &quot;projectName&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 异常查询</span></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:30,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-01-18 17:00:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-18 17:30:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_project&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;size&quot;: 100,</span><br><span class="line">        &quot;field&quot;: &quot;projectName&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean-v2&quot; &#125;&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-01-18 07:00:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-18 13:00:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;grouy_by_message&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;size&quot;: 25,</span><br><span class="line">        &quot;field&quot;: &quot;message.keyword&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET jz-fe-http-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean-v2&quot; &#125;&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-01-18 07:00:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-18 13:00:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_url&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;url.keyword&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ----------------------------------------------------------------------------</span></span><br><span class="line"><span class="meta">#</span><span class="bash">                                 性能监控相关</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ----------------------------------------------------------------------------</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引相关信息</span></span><br><span class="line">GET jz-fe-performance-log</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引的文档总数</span></span><br><span class="line">GET jz-fe-performance-log/_count</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除索引</span></span><br><span class="line">DELETE /jz-fe-performance-log</span><br><span class="line"><span class="meta">#</span><span class="bash"> 性能监控-创建索引，禁止自动添加类型字段</span></span><br><span class="line">PUT /jz-fe-performance-log</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">    &quot;properties&quot;:&#123;</span><br><span class="line">      &quot;groupName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;projectName&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;href&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;clientDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;serverDate&quot;:&#123;&quot;type&quot;:&quot;date&quot;,&quot;format&quot;:&quot;yyyy-MM-dd HH:mm:ss&quot;&#125;,</span><br><span class="line">      &quot;appId&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;hmsr&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;znsr&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;hmpl&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;unloadTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;redirectTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;appCacheTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;dnsTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;tcpTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;requestTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;responseTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;analysisTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;loadEventTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;connectTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;resourceTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;domReadyTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTFBTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTSRTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTDCTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;TTFLTime&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</span><br><span class="line">      &quot;uid&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;phone&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;platform&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;os&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;browser&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;version&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;userAgent&quot;:&#123;&quot;type&quot;:&quot;text&quot;&#125;,</span><br><span class="line">      &quot;ip&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;networkType&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;ISP&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</span><br><span class="line">      &quot;region&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询索引下的所有数据</span></span><br><span class="line">GET /jz-fe-performance-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看索引详情</span></span><br><span class="line">GET /_cat/indices/jz-fe*?v&amp;s=index</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除后释放空间</span></span><br><span class="line">POST jz-fe-performance-log/_forcemerge</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除指定时间段的数据</span></span><br><span class="line">POST jz-fe-performance-log/_delete_by_query?scroll_size=10000&amp;slices=10</span><br><span class="line">&#123;</span><br><span class="line">   &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-01 00:00:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询出指定时间段项目的平均打开时间</span></span><br><span class="line">GET jz-fe-performance-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;track_total_hits&quot;: 10000000,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-01-10 12:00:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-18 13:00:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;:&#123;</span><br><span class="line">		&quot;projectAvgTime&quot;:&#123;</span><br><span class="line">			&quot;terms&quot;:&#123;</span><br><span class="line">			  &quot;size&quot;: 50,</span><br><span class="line">				&quot;script&quot;: &quot;&#x27;【&#x27;+doc[&#x27;groupName&#x27;].value+&#x27;】&#x27;+doc[&#x27;projectName&#x27;].value&quot;,</span><br><span class="line">				&quot;order&quot;: &#123;</span><br><span class="line">				  &quot;avgTime&quot;: &quot;desc&quot;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;aggs&quot;:&#123;</span><br><span class="line">				&quot;avgTime&quot;:&#123;</span><br><span class="line">					&quot;avg&quot;:&#123;</span><br><span class="line">						&quot;field&quot;:&quot;TTFLTime&quot;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;,</span><br><span class="line">				&quot;minTime&quot;:&#123;</span><br><span class="line">					&quot;min&quot;:&#123;</span><br><span class="line">						&quot;field&quot;:&quot;TTFLTime&quot;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;,</span><br><span class="line">				&quot;maxTime&quot;:&#123;</span><br><span class="line">					&quot;max&quot;:&#123;</span><br><span class="line">						&quot;field&quot;:&quot;TTFLTime&quot;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 秒开率计算</span></span><br><span class="line">POST jz-fe-performance-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 0,</span><br><span class="line">  &quot;track_total_hits&quot;: 10000000,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;range&quot;: &#123; &quot;TTFLTime&quot;: &#123; &quot;lte&quot;: 3000 &#125; &#125; &#125;,</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;projectName&quot;: &quot;daily-clean-v2&quot; &#125;&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-01-10 12:00:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-18 13:00:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 平均首字节时间</span></span><br><span class="line">GET jz-fe-performance-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;track_total_hits&quot;: 10000000,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-01-10 12:00:00&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-01-18 13:00:00&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;:&#123;</span><br><span class="line">		&quot;avgTime&quot;:&#123;</span><br><span class="line">			&quot;avg&quot;:&#123;</span><br><span class="line">				&quot;field&quot;:&quot;TTFLTime&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;minTime&quot;:&#123;</span><br><span class="line">			&quot;min&quot;:&#123;</span><br><span class="line">				&quot;field&quot;:&quot;TTFLTime&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;maxTime&quot;:&#123;</span><br><span class="line">			&quot;max&quot;:&#123;</span><br><span class="line">				&quot;field&quot;:&quot;TTFLTime&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 性能柱状图</span></span><br><span class="line">GET jz-fe-performance-log/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;:0,</span><br><span class="line">  &quot;track_total_hits&quot;: 10000000,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;range&quot;: &#123; &quot;TTFLTime&quot;: &#123; &quot;gte&quot;: 250, &quot;lte&quot;: 349 &#125; &#125; &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;: &#123;</span><br><span class="line">            &quot;serverDate&quot;: &#123;</span><br><span class="line">              &quot;gte&quot;: &quot;2020-02-05 16:19:19&quot;,</span><br><span class="line">              &quot;lte&quot;: &quot;2020-02-06 16:19:19&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;aggs&quot;:&#123;</span><br><span class="line">		&quot;chartData&quot;:&#123;</span><br><span class="line">			&quot;terms&quot;:&#123;</span><br><span class="line">			  &quot;size&quot;: 1000,</span><br><span class="line">			  &quot;field&quot;: &quot;TTFLTime&quot;,</span><br><span class="line">				&quot;script&quot;: &quot;Math.round(_value/100)&quot;,</span><br><span class="line">				&quot;order&quot;: &#123;</span><br><span class="line">				  &quot;_key&quot;: &quot;asc&quot;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2019/09/28/Elasticsearch%E5%B8%B8%E7%94%A8%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E8%AE%B0%E5%BD%95/" data-id="cm5tqeevt007iwayp03ksfp77" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Elasticsearch7-x安装与配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/19/Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2019-08-19T15:08:35.000Z" itemprop="datePublished">2019-08-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/19/Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Elasticsearch7.x安装与配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>1.下载地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/cn/start">https://www.elastic.co/cn/start</a><br>复制下载链接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载资源</span></span><br><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压资源</span></span><br><span class="line">tar -xf elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd elasticsearch-7.3.0-linux-x86_64</span><br><span class="line"><span class="meta">#</span><span class="bash"> 显示启动elk</span></span><br><span class="line">./bin/elasticsearch</span><br><span class="line"><span class="meta">#</span><span class="bash"> 后台启动</span></span><br><span class="line">./bin/elasticsearch -d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="其它配置"><a href="#其它配置" class="headerlink" title="其它配置"></a>其它配置</h2><h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><p>当使用elasticsearch-head插件访问elk时，需要设置允许跨域访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="允许外部网络（非本地）访问9200端口"><a href="#允许外部网络（非本地）访问9200端口" class="headerlink" title="允许外部网络（非本地）访问9200端口"></a>允许外部网络（非本地）访问9200端口</h3><p>默认情况下，启动elk服务后，其它服务器是无法访问elk服务的（telnet不通），只允许本地访问。</p>
+<p>需要做如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br></pre></td></tr></table></figure>
+
+<p>此时，启动会报如下两个错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: [2] bootstrap checks failed</span><br><span class="line">[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</span><br><span class="line">[2]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</span><br></pre></td></tr></table></figure>
+
+<p>对于第一个配置，root用户权限下，增加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+
+<p>对于第二个错误，增加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim config/elasticsearch.yml</span><br><span class="line"><span class="meta">#</span><span class="bash"> 新增如下内容</span></span><br><span class="line">cluster.initial_master_nodes: [“node-1”]</span><br></pre></td></tr></table></figure>
+
+<p>作者公众号：<br><img src='http://muchstudy.com/2019/11/10/%E4%B8%80%E6%96%87%E6%90%9E%E5%AE%9AJS%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/YIYING.jpg'></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2019/08/19/Elasticsearch7-x%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" data-id="cm5tqeevt007gwayp7kjc5blt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CodeReview过程中关于JS代码性能的随想整理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/" class="article-date">
+  <time datetime="2019-03-04T14:59:48.000Z" itemprop="datePublished">2019-03-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/">CodeReview过程中关于JS代码性能的随想整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;团队中做code review有一段时间了，最近一直在思考一个问题，抛开业务逻辑，单纯从代码层面如何评价一段代码的好坏？</p>
+<p>&emsp;&emsp;好和坏都是相对的，一段不那么好的代码经过优化之后，如何标准化的给出重构前后的差异呢？</p>
+<p>&emsp;&emsp;我们所有的代码都跑在计算机上，计算机的核心是CPU和内存。从这个角度来看，效率高的代码应当占用更少的CPU时间，更少的内存空间。</p>
+<p>&emsp;&emsp;因此，问题就演变为优化一段代码，到底优化了多少CPU的使用以及内存空间的使用？</p>
+<h2 id="CPU-时间复杂度"><a href="#CPU-时间复杂度" class="headerlink" title="CPU-时间复杂度"></a>CPU-时间复杂度</h2><p>&emsp;&emsp;在数据结构与算法中，常用大O来表示算法的时间复杂度，常见的时间复杂度如下所示：（来源《算法》第四版）</p>
+<img src="/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6.jpg" class="" title="时间复杂度">
+
+<p>&emsp;&emsp;时间复杂度这个东西，是描述一个算法在问题规模不断增大时对应的时间增长曲线。所以，这些增长数量级并不是一个准确的性能评价，可以理解为一个近似值，时间的增长近似于logN、NlogN的曲线。如下图所示：</p>
+<img src="/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/%E5%A2%9E%E9%95%BF%E6%9B%B2%E7%BA%BF.jpg" class="" title="增长曲线">
+
+<p>&emsp;&emsp;上面是关于时间复杂度的解释，下面通过具体样例来看看代码的时间复杂度</p>
+<p>代码一：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">count</span>(<span class="params">arr=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>]</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> num = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;arr.length;i++)&#123;</span><br><span class="line">    <span class="keyword">let</span> item = arr[i]</span><br><span class="line">    num = num + item</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> num</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这是一段求数组中数字总和的代码，我们粗略估计上述代码在CPU中表达式运算的时间都是一样的，计为avg_time，那么我们来算一下上面的代码需要多少个avg_time.</p>
+<p>&emsp;&emsp;首先从第二行开始，表达式赋值计为1个avg_time；代码的3、4、5行分别要运行10次，其中第三行比较特殊，每次运行需要计算arr.length以及i++,所以这里需要<code>（2+1+1)*10</code> 个avg_time;总共就是<code>（2+1+1)*10+1=41</code>个avg_time</p>
+<p>&emsp;&emsp;接着，我们来对上面的代码优化一番，如下所示：<br>代码二</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">count</span>(<span class="params">arr=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>]</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> num = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> len = arr.length</span><br><span class="line">  <span class="keyword">while</span>(len--)&#123;</span><br><span class="line">    num = num + arr[len]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> num</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;不难算出，优化后的代码只耗费了<code>1+1+(1+1)*10=22</code>个avg_time,代码二相对于代码一，节约了<code>41-22=19</code>个avg_time,代码性能提升<code>19/41=46.3%</code>!</p>
+<h3 id="如何写出低时间复杂度的代码？"><a href="#如何写出低时间复杂度的代码？" class="headerlink" title="如何写出低时间复杂度的代码？"></a>如何写出低时间复杂度的代码？</h3><p><strong>1.灵活使用break、continue、return</strong></p>
+<p>&emsp;&emsp;这三个关键字一般用在减少循环次数，达到目的，立即退出。如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params">arr=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],target=<span class="number">2</span></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> len = arr.length</span><br><span class="line">  <span class="keyword">while</span>(len--)&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr[len]===target)&#123;</span><br><span class="line">      <span class="comment">// 不再继续后续循环</span></span><br><span class="line">      <span class="keyword">return</span> len</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><strong>2.空间换时间</strong>  </p>
+<p>   常见的做法是利用缓存，把上次的计算结果存起来，避免重复计算。</p>
+<p><strong>3.更优的数据结构与算法</strong></p>
+<p>  根据不同的情况选择合适的数据结构与算法，例如，如果需要频繁的从一组数据中通过关键key查询出数据，如果要从json对象和数组中选择，那么可以优先考虑使用json对象来避免数组的遍历查询。</p>
+<h2 id="内存-空间复杂度"><a href="#内存-空间复杂度" class="headerlink" title="内存-空间复杂度"></a>内存-空间复杂度</h2><p>&emsp;&emsp;评价一段代码，除了看它执行需要多少时间，还需要看看需要多少空间，谈到代码的空间占用，必须就得知道JS的内存管理</p>
+<p>&emsp;&emsp;JS的内存管理分为三部分：</p>
+<ul>
+<li><p>内存分配。<br>&emsp;&emsp;这里包含包含代码本身以及静态数据与动态数据所需要的内存，其中代码本身与静态数据会分配在stack上，可变的动态数据会分配在heap上</p>
+</li>
+<li><p>使用分配的内存。  </p>
+</li>
+<li><p>内存回收。  </p>
+</li>
+</ul>
+<p>这里，放一张JS Runtime的图</p>
+<img src="/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/runtime.png" class="" title="runtime">
+
+<h3 id="静态内存分配"><a href="#静态内存分配" class="headerlink" title="静态内存分配"></a>静态内存分配</h3><p>&emsp;&emsp;是指stack中内存的分配，基础数据类型的数据就放在stack中。另外，stack是有固定大小的，超过stack的长度，就会报错，所以必须得节约着用。</p>
+<h4 id="爆栈"><a href="#爆栈" class="headerlink" title="爆栈"></a>爆栈</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 故意来一次爆栈体验</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  foo()</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"><span class="comment">// 结果</span></span><br><span class="line">VM201:<span class="number">1</span> Uncaught <span class="built_in">RangeError</span>: Maximum call stack size exceeded</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">1</span>:<span class="number">13</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br><span class="line">    at foo (&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;我们是怎么达到爆栈目的的呢？因为所有的函数调用，在内存中都存在一个函数调用栈，我们不断无结束条件的递归调用，最终撑破了stack。</p>
+<p>如图所示：</p>
+<img src="/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/stackoverflow.png" class="" title="stackoverflow">
+
+<h4 id="函数调用栈"><a href="#函数调用栈" class="headerlink" title="函数调用栈"></a>函数调用栈</h4><p>可能你会问怎么证明函数调用栈的存在呢？请看如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">second</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&#x27;function call stack&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">first</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    second();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    first();</span><br><span class="line">&#125;</span><br><span class="line">start();</span><br><span class="line"><span class="comment">// 结果如下</span></span><br><span class="line">VM266:<span class="number">2</span> Uncaught <span class="built_in">Error</span>: <span class="function"><span class="keyword">function</span> <span class="title">call</span> <span class="title">stack</span></span></span><br><span class="line"><span class="function">    <span class="title">at</span> <span class="title">second</span> (<span class="params">&lt;anonymous&gt;:<span class="number">2</span>:<span class="number">11</span></span>)</span></span><br><span class="line"><span class="function">    <span class="title">at</span> <span class="title">first</span> (<span class="params">&lt;anonymous&gt;:<span class="number">5</span>:<span class="number">5</span></span>)</span></span><br><span class="line"><span class="function">    <span class="title">at</span> <span class="title">start</span> (<span class="params">&lt;anonymous&gt;:<span class="number">8</span>:<span class="number">5</span></span>)</span></span><br><span class="line"><span class="function">    <span class="title">at</span> &lt;<span class="title">anonymous</span>&gt;:10:1</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从上面的运行结果可以看出函数调用栈的顺序，start先入栈，接着first，最后second；打印顺序为首选打印second，最后打印start；满足栈的先进后出的数据结构特性。</p>
+<h4 id="内存占用"><a href="#内存占用" class="headerlink" title="内存占用"></a>内存占用</h4><p>&emsp;&emsp;了解上面知识点的核心目的还是在于指导我们写出更优的代码，我们知道基本数据类型都放在栈中，对象都放在堆中。另外，通过《JavaScript权威指南》第六版第三章可以知道，js中的数字都是双精度类型，占64位8个字节的空间，字符占16位2个字节的空间。</p>
+<p>&emsp;&emsp;有了这个知识，我们就可以估算出我们的代码大致占用了多少内存空间。</p>
+<p>&emsp;&emsp;这些毕竟都是理论知识，不禁要怀疑一下，的确是这样的吗？下面我们利用爆栈的原理，通过代码实际瞧瞧</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    count++</span><br><span class="line">    foo()</span><br><span class="line">  &#125;</span><br><span class="line">  foo()</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(count)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最终的打印结果为：15662</span></span><br></pre></td></tr></table></figure>
+
+<p>我们知道一个数字占8个字节，栈的大小固定；稍微变更一下代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> local = <span class="number">58</span> <span class="comment">//数字，占8个字节</span></span><br><span class="line">    count++</span><br><span class="line">    foo()</span><br><span class="line">  &#125;</span><br><span class="line">  foo()</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(count)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最终的打印结果为：13922</span></span><br></pre></td></tr></table></figure>
+<p>那么我们可以利用如下方法算一下栈的总大小</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">N &#x3D; 栈中单个元素的大小</span><br><span class="line">15662 * N &#x3D; 13922 * (N + 8) &#x2F;&#x2F; 两次函数调用，栈的总大小相等</span><br><span class="line">(15662 - 13922) * N &#x3D; 13922 * 8</span><br><span class="line">1740 * N &#x3D; 111376</span><br><span class="line">N &#x3D; 111376 &#x2F; 1740 &#x3D; 64 bytes</span><br><span class="line">Total stack size &#x3D; 15662 * 64 &#x3D; 1002368 &#x3D; 0.956 MB</span><br></pre></td></tr></table></figure>
+<p>注：不通环境可能结果不太一样</p>
+<p>接下来，我们来确定一下数字类型是否占8个字节空间</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//数字，占8个字节,这里就占16个字节</span></span><br><span class="line">    <span class="keyword">let</span> local = <span class="number">58</span></span><br><span class="line">    <span class="keyword">let</span> local2 = <span class="number">85</span></span><br><span class="line">    count++</span><br><span class="line">    foo()</span><br><span class="line">  &#125;</span><br><span class="line">  foo()</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(count)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最终的打印结果为：12530</span></span><br></pre></td></tr></table></figure>
+
+<p>计算一下Number的内存占用大小</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 总的栈内存空间&#x2F;栈中元素数量 &#x3D; 单个栈元素大小</span><br><span class="line">1002368&#x2F;12530 &#x3D; 80</span><br><span class="line">&#x2F;&#x2F; 对比不带任何额外变量的代码，单个栈元素大小是64，这里新增两个16，加起来正好为80</span><br><span class="line">80 &#x3D; 64+8+8</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>经实际验证，在Chrome、Safari、Node环境下，不论变量的值是什么类型，在stack中都占8个字节。<strong>对于字符串貌似跟预期不太一样</strong>，不论多长的字符串实践表明在stack中都占8个字节，<strong>怀疑浏览器默认把字符串转换为了对象，最终占用heap空间</strong></p>
+</blockquote>
+<h3 id="动态内存分配"><a href="#动态内存分配" class="headerlink" title="动态内存分配"></a>动态内存分配</h3><p>&emsp;&emsp;是指heap中内存的分配，所有对象都放在heap中，stack中只放对象的引用。</p>
+<p>这里有一篇数组占用多少内存空间的文章：<a target="_blank" rel="noopener" href="http://www.mattzeunert.com/2016/07/24/javascript-array-object-sizes.html">How much memory do JavaScript arrays take up in Chrome?</a></p>
+<h3 id="如何写出低内存占用的代码？"><a href="#如何写出低内存占用的代码？" class="headerlink" title="如何写出低内存占用的代码？"></a>如何写出低内存占用的代码？</h3><p>&emsp;&emsp;低内存占用，从静态内存分配方面可以考虑，尽量少的使用基础类型变量；从动态内存分配的角度，让代码更简洁、不要毫无节制的<code>new一个对象</code>、少在对象放东西；</p>
+<p>下面是一些小技巧：<br><strong>1.三目运算符</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 条件赋值</span></span><br><span class="line"><span class="keyword">if</span>(a===<span class="number">1</span>)&#123;</span><br><span class="line">  b = <span class="string">&#x27;aa&#x27;</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  b = <span class="string">&#x27;bb&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 可简化为</span></span><br><span class="line">b = a===<span class="number">1</span> ? <span class="string">&#x27;aa&#x27;</span> : <span class="string">&#x27;bb&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><strong>2.直接返回结果</strong><br> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a===<span class="number">1</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 可简化为</span></span><br><span class="line"><span class="keyword">return</span> a===<span class="number">1</span></span><br></pre></td></tr></table></figure><br>一时半会儿想不到好的样例，上面的样例至少节约了代码的空间占用!……欢迎评论补充……</p>
+<h3 id="内存回收"><a href="#内存回收" class="headerlink" title="内存回收"></a>内存回收</h3><p>&emsp;&emsp;我的理解是，当函数调用栈为空时，占用的占内存随之清空；只有堆内存中的数据才需要通过垃圾回收机制来回收。</p>
+<p>常见的垃圾回收算法如下：</p>
+<ul>
+<li><p>引用计数<br>对没有对象的引用计数，如果没有任何外部引用时，则清除该对象；引用计数算法有一个弊端就是<strong>无法清除循坏依赖的对象</strong>。</p>
+</li>
+<li><p>标记清除：<br>每次回收，从根对象开始遍历，能遍历到的对象则记为可用，不能遍历到的对象则为需要垃圾回收的对象。此种算法能够解决对象循环依赖的问题。</p>
+</li>
+<li><p>综合算法：<br>实际上垃圾回收是一个很复杂的过程，垃圾回收器会根据内存的不通情况采取不同的垃圾回收算法，来实现效率的最大化。</p>
+</li>
+</ul>
+<p>这里有一篇垃圾回收的文章：<a target="_blank" rel="noopener" href="http://www.jayconrod.com/posts/55/a-tour-of-v8-garbage-collection">A tour of V8: Garbage Collection</a> 已经被翻译为了中文，点进去就知道了。</p>
+<h3 id="如何避免内存溢出？"><a href="#如何避免内存溢出？" class="headerlink" title="如何避免内存溢出？"></a>如何避免内存溢出？</h3><p>&emsp;&emsp;从上面的垃圾回收机制不难看出，当某些情况内存无法被回收且不断增加时，内存溢出就会产生。下面是几种常见的会有内存溢出风险的代码。</p>
+<p><strong>1.控制全局变量</strong><br>从垃圾回收的原理我们可以知道，全局变量肯定是不会被回收的。所以我们应当尽量把数据绑定到全局变量上，更应该避免通过用户操作持续的增加全局变量数据的大小。<br>另外还需要特别注意意外的全局变量产生，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">    a = <span class="string">&quot;some text&quot;</span>;</span><br><span class="line">    <span class="built_in">this</span>.b = <span class="string">&quot;some text&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 会在window对象上新增a，b属性</span></span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.setInterval注意内存占用</strong><br>由于setInterval一直处于活动状态，造成它所依赖的数据一直无法回收。特别容易出现数据越积越多情况</p>
+<p><strong>3.注意闭包</strong><br>闭包里依赖了主函数的数据，为了让闭包续继访问到数据，必须避免当主函数退出时，回收闭包依赖主函数的变量所对应的数据，从而带来内存溢出风险。</p>
+<blockquote>
+<p>资料：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">JS内存管理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.sessionstack.com/how-does-javascript-actually-work-part-1-b0bacc073cf">How JavaScript works: an overview of the engine, the runtime, and the call stack</a></li>
+<li><a target="_blank" rel="noopener" href="https://glebbahmutov.com/blog/javascript-stack-size/">JavaScript stack size</a></li>
+</ol>
+</blockquote>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2019/03/04/CodeReview%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%85%B3%E4%BA%8EJS%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E7%9A%84%E9%9A%8F%E6%83%B3%E6%95%B4%E7%90%86/" data-id="cm5tqeevs007ewayp905s6jkw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-人生中唯一的2018" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/30/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842018/" class="article-date">
+  <time datetime="2018-12-30T14:53:55.000Z" itemprop="datePublished">2018-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/30/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842018/">人生中唯一的2018</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;2018年是十分重要的一年，忙碌的一年，有收获的一年。</p>
+<h3 id="重要事件"><a href="#重要事件" class="headerlink" title="重要事件"></a>重要事件</h3><p>&emsp;&emsp;今年的3.15离开奋战了将近四年的中国软件，入职一家互联网公司，开启职业生涯第三段征程。</p>
+<h3 id="收获的"><a href="#收获的" class="headerlink" title="收获的"></a>收获的</h3><ul>
+<li>读书：《潮骚》《金阁寺》《万历十五年》《雪国》《小王子》，技术方面很可惜只读了一本《深入浅出Node》，《现代操作系统》读了前面几个章节未继续完整读完</li>
+<li>从传统行业进入互联网行业，适应了互联网行业的工作与做事方式、思考方式；从连续三个季度的绩效A，看起来转型还算成功</li>
+<li>对前端技术栈有了全面的了解与实践；Vue、React、Node、小程序、Webpack、持续集成、日志监控</li>
+</ul>
+<h3 id="留下的"><a href="#留下的" class="headerlink" title="留下的"></a>留下的</h3><p>&emsp;&emsp;今年都做了些什么？头脑里第一个冒出来的就是今年工作中做的事儿，今年是转行的第一年，不敢有丝毫的怠慢，大部分精力都投入到了工作中。</p>
+<ul>
+<li>参与了团队大部分方向十余个项目的开发</li>
+<li>产出了移动端组件库V1.0版本，提供17个基础与业务组件；完整的在线文档与样例、构建与发布流程</li>
+<li>推动持续集成在团队中的全面落地</li>
+<li>产出了React开发模板、Node开发模板、统一的模板初始化CLI工具</li>
+<li>推动日志监控的落地；Node服务错误日志监控与上报、前端错误日志监控与上报、小程序日志监控</li>
+</ul>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><ul>
+<li>今年博客产出锐减，希望在2019多思考多总结</li>
+<li>英语学习中断了好长一段时间了，该坚持</li>
+</ul>
+<h3 id="2019"><a href="#2019" class="headerlink" title="2019"></a>2019</h3><ul>
+<li>焦虑，希望在技术方面能有更多的提升。</li>
+<li>多阅读、多思考，看清前路的方向。</li>
+<li>时刻做好被淘汰的准备。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/12/30/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842018/" data-id="cm5tqeevs007cwaypcqy82cvh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-每一条评论都是我继续分享下去的源动力" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/04/%E6%AF%8F%E4%B8%80%E6%9D%A1%E8%AF%84%E8%AE%BA%E9%83%BD%E6%98%AF%E6%88%91%E7%BB%A7%E7%BB%AD%E5%88%86%E4%BA%AB%E4%B8%8B%E5%8E%BB%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/" class="article-date">
+  <time datetime="2018-11-03T18:05:24.000Z" itemprop="datePublished">2018-11-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/04/%E6%AF%8F%E4%B8%80%E6%9D%A1%E8%AF%84%E8%AE%BA%E9%83%BD%E6%98%AF%E6%88%91%E7%BB%A7%E7%BB%AD%E5%88%86%E4%BA%AB%E4%B8%8B%E5%8E%BB%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/">每一条评论都是我继续分享下去的源动力</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2018/11/04/%E6%AF%8F%E4%B8%80%E6%9D%A1%E8%AF%84%E8%AE%BA%E9%83%BD%E6%98%AF%E6%88%91%E7%BB%A7%E7%BB%AD%E5%88%86%E4%BA%AB%E4%B8%8B%E5%8E%BB%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/pinglun.png" class="" title="pinglun">
+
+<p>&emsp;&emsp;近三年的时间里，断断续续的写了100多篇文章,很少有收到对文章的评论。因此，时不时总会感受到一丝丝的失落。这时，只能把它当作个人的总结归纳与成长。</p>
+<p>&emsp;&emsp;看到上面这条评论，很欣慰……</p>
+<p>&emsp;&emsp;平时自己也总读其他作者的文章，悄悄的去，然后悄悄的走。从今天开始，我觉得今后不论文章怎么样，多少都应该给原创者表示表示，留下点什么。一个赞、一个顶、一个评论，以示对作者无私分享的感激，鼓励他继续创作下去。</p>
+<p>&emsp;&emsp;在CSDN上，之前觉得应当尽量只发一些技术类的文章，个人所思所想放在自己独立博客的一亩三分地上。甚至在最近，发现CSDN不断没落下去，广告奇多，准备放弃CSDN了。但是，看到这条评论后，我觉得还是应该留下来，同时，把有价值的所思所想分享出来，以让更多人看到为目的。对于技术分享，影响的范围可能只是一个bug的解决，而思想感悟的分享，影响面则会更大。而且，封闭的思想，注定也会是孤独的……</p>
+<p>&emsp;&emsp;回想起决定写博客的初心，是想“把自己知道的东西分享出来，总会帮助到一些人”。现在看来，总会帮助到一些人这一宏大愿景，值得更坚定不移的执行下去。</p>
+<p>&emsp;&emsp;每一条评论都是我继续分享下去的源动力，Thanks！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/11/04/%E6%AF%8F%E4%B8%80%E6%9D%A1%E8%AF%84%E8%AE%BA%E9%83%BD%E6%98%AF%E6%88%91%E7%BB%A7%E7%BB%AD%E5%88%86%E4%BA%AB%E4%B8%8B%E5%8E%BB%E7%9A%84%E6%BA%90%E5%8A%A8%E5%8A%9B/" data-id="cm5tqeevr007awayph0mnej0o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-前端getTime时区问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/27/%E5%89%8D%E7%AB%AFgetTime%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2018-09-26T18:01:12.000Z" itemprop="datePublished">2018-09-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/27/%E5%89%8D%E7%AB%AFgetTime%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98/">前端getTime时区问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>&emsp;&emsp;发现客户端选择下单时间后，提交订单并查看订单，在订单上显示的之前用户之前选择的时间存在1-N小时不等的差值。<br>&emsp;&emsp;例如：在下单页选择的<code>2018-01-01 10:00</code>,下单完成后，在订单详情页上面显示为<code>2018-01-01 09:00</code>,与实际的相差1小时。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>&emsp;&emsp;结合代码分析，发现当用户选择完时间后，会把选择的时间字符串调用getTime方法转换为毫秒数传给后端，后端再转换回时间字符串，在这个转换过程中，时间出现了差值。<br>&emsp;&emsp;最终，排查出问题原因为时区问题。还是以上面的样例为范本。当客户端的时区为<code>东京</code>，服务器端的时区为<code>北京</code>就能完美复该问题。<br>&emsp;&emsp;使用getTime方法获取时间的毫秒数时，实际上的获取当前的<code>格林威治时间</code>与<code>1970年1月1日</code>之间的毫秒数。东京时间为东9区，比标准时间快9个小时，所以在东京时区下时间转毫秒数就会减去9个小时才会为标准时间。此时北京时间与标准时间为8个小时的时差，客户端用东京时间转换为毫秒数（减9个小时），服务器端再用北京时间把毫秒数转换为时间字符串（加8个小时），此时就出现了时间差。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
+<li>避免使用getTime，前后端直接使用时间字符串传输</li>
+<li>前端对时区就行修复，代码如下</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTruthTime</span> (<span class="params">time</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 服务器端时区，北京东八区（-8*60）</span></span><br><span class="line">  <span class="keyword">let</span> timezone = -<span class="number">480</span></span><br><span class="line">  <span class="comment">// 客户端实际时区(例如东京为东九区：-540)</span></span><br><span class="line">  <span class="keyword">let</span> offsetGMT = <span class="keyword">new</span> <span class="built_in">Date</span>().getTimezoneOffset()</span><br><span class="line">  <span class="comment">// 计算差值（用户在东京时区下下单，需要补回1小时）</span></span><br><span class="line">  <span class="keyword">let</span> adjust = timezone - offsetGMT</span><br><span class="line">  <span class="comment">// 需要修复的时间，支持字符串传参</span></span><br><span class="line">  <span class="keyword">let</span> nowDate = time ? <span class="keyword">new</span> <span class="built_in">Date</span>(time).getTime() : <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</span><br><span class="line">  <span class="keyword">let</span> timeStamp = <span class="keyword">new</span> <span class="built_in">Date</span>(nowDate + adjust * <span class="number">60</span> * <span class="number">1000</span>)</span><br><span class="line">  <span class="keyword">return</span> timeStamp.getTime()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/09/27/%E5%89%8D%E7%AB%AFgetTime%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98/" data-id="cm5tqeevq0078waypf3k946n2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-HTTP协议与前后端联调" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/" class="article-date">
+  <time datetime="2018-08-11T14:55:17.000Z" itemprop="datePublished">2018-08-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/">HTTP协议与前后端联调</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>&emsp;&emsp;在前后端分离的开发场景下，不可避免的会有前后端联调。在联调阶段，经常会遇到各式各样的问题，比如乱码问题、前端传的数据（字符串、数组、Json对象）后端无法正常解析等问题。<br>&emsp;&emsp;本文希望从源头着手，理清问题的根本原因，快速定位出现问题的位置，让前后端联调得心应手,让甩锅不再那么容易……</p>
+<h2 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h2><p>&emsp;&emsp;之所以这里会介绍一下HTTP协议，是因为前后端联调离不开HTTP。了解了HTTP协议，有助于更好的理解数据传输的流程，以及更好的分析出到底是在哪个环节出了问题，方便排查。</p>
+<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>&emsp;&emsp;首先，http是一个无状态的协议，即每次客户端和服务端交互都是无状态的，通常使用cookie来保持状态。<br>&emsp;&emsp;下图为http请求与响应的大致结构（本部分配图均来自于《HTTP权威指南》）：</p>
+<img src="/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/http%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%84.png" class="" title="http请求与响应结构">
+
+<blockquote>
+<p>说明：<br>&emsp;&emsp;从上图中可以看出，HTTP请求大致分为三个部分：起始行、首部、主体。在请求起始行里，表面了请求方法、请求地址以及http协议的版本。另外，首部即是我们常说的http header。</p>
+</blockquote>
+<h3 id="2-HTTP-method"><a href="#2-HTTP-method" class="headerlink" title="2. HTTP method"></a>2. HTTP method</h3><p>&emsp;&emsp;下面是常用的HTTP请求方法以及介绍：</p>
+<img src="/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/http%E6%96%B9%E6%B3%95.png" class="" title="http方法">
+
+<blockquote>
+<p>说明：</p>
+</blockquote>
+<ol>
+<li>我们常用的一般为get于post。</li>
+<li>是否包含主体的意思为请求内容是否带主体。例如，在get方式下由于不带主体，只能使用url的方式传参。</li>
+</ol>
+<h3 id="3-Content-type"><a href="#3-Content-type" class="headerlink" title="3. Content-type"></a>3. Content-type</h3><p>&emsp;&emsp;HTTP传输的内容类型与编码是由Content-Type来控制的，客户端与服务端通过它来识别与解析传输内容。</p>
+<p>常见的Content-Type：  </p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text/html</td>
+<td>html类型</td>
+</tr>
+<tr>
+<td>text/css</td>
+<td>css文件</td>
+</tr>
+<tr>
+<td>text/javascript</td>
+<td>js文件</td>
+</tr>
+<tr>
+<td>text/plain</td>
+<td>文本文件</td>
+</tr>
+<tr>
+<td>application/json</td>
+<td>json类型</td>
+</tr>
+<tr>
+<td>application/xml</td>
+<td>xml类型</td>
+</tr>
+<tr>
+<td>application/x-www-form-urlencoded</td>
+<td>表单，表单提交时的默认类型</td>
+</tr>
+<tr>
+<td>multipart/form-data</td>
+<td>附件类型，一般为表单文件上传</td>
+</tr>
+</tbody></table>
+<p>&emsp;&emsp;前面六个为常见的文件类型，后面两个为表单数据提交时类型。我们ajax提交数据时一般为<code>Content-Type:application/x-www-form-urlencoded;charset=utf-8</code>,以此声明了本次请求的数据格式与数据编码方式。需要额外说明的是，application/x-www-form-urlencoded此种类型比较特殊，数据发送时会把表单数据拼接成类似于<code>a=1&amp;b=2&amp;c=3</code>的格式，如果数据中存在空格或特殊字符，会进行转换，标准文档在<br><a target="_blank" rel="noopener" href="https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">这里</a>，更详细的在 <a target="_blank" rel="noopener" href="https://www.ietf.org/rfc/rfc1738.txt">[RFC1738]</a>可见。</p>
+<blockquote>
+<p>相关资料：</p>
+</blockquote>
+<ol>
+<li>Content-type对照表：<a target="_blank" rel="noopener" href="http://tool.oschina.net/commons">http://tool.oschina.net/commons</a></li>
+<li>Form content types：<a target="_blank" rel="noopener" href="https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">https://www.w3.org/TR/html4/interact/forms.html#h-17.13.4</a></li>
+<li>字符解码时加号解码为空格问题探究：<a href="http://muchstudy.com/2017/12/06/%E5%AD%97%E7%AC%A6%E8%A7%A3%E7%A0%81%E6%97%B6%E5%8A%A0%E5%8F%B7%E8%A7%A3%E7%A0%81%E4%B8%BA%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%E6%8E%A2%E7%A9%B6/">http://muchstudy.com/2017/12/06/字符解码时加号解码为空格问题探究/</a></li>
+<li>理解HTTP之Content-Type：<a target="_blank" rel="noopener" href="http://homeway.me/2015/07/19/understand-http-about-content-type/">http://homeway.me/2015/07/19/understand-http-about-content-type/</a></li>
+</ol>
+<h3 id="4-字符集与编码"><a href="#4-字符集与编码" class="headerlink" title="4. 字符集与编码"></a>4. 字符集与编码</h3><p>&emsp;&emsp;前后端联调之所以需要了解这部分，是因为在前后端的数据交互中，经常会碰到乱码的问题，了解了这块内容，对于解决乱码问题就手到擒来了。</p>
+<p>一图胜千言：</p>
+<img src="/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81.png" class="" title="字符编码与解码">
+
+
+<p>&emsp;&emsp;在图中，charset的值为<code>iso-8859-6</code>，详细介绍了一个文字从编码到解码，再到显示的完整过程。</p>
+<blockquote>
+<p>相关资料：</p>
+</blockquote>
+<ol>
+<li>字符集列表：<a target="_blank" rel="noopener" href="https://www.iana.org/assignments/character-sets/character-sets.xhtml">https://www.iana.org/assignments/character-sets/character-sets.xhtml</a></li>
+<li>字符编码详解:<a href="http://muchstudy.com/2016/08/26/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%A6%E8%A7%A3/">http://muchstudy.com/2016/08/26/字符编码详解/</a></li>
+</ol>
+<h2 id="前端部分"><a href="#前端部分" class="headerlink" title="前端部分"></a>前端部分</h2><p>&emsp;&emsp;前端部分负责发起HTTP请求，前端常用的HTTP请求工具类有<code>jquery</code>、<code>axios</code>、<code>fetch</code>。实际上jquery与axios的底层都是使用<code>XMLHttpRequest</code>来发起http请求的，fetch属于浏览器内置的发起http请求方法。</p>
+<p>前端ajax请求样例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/axios/dist/axios.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdnjs.cloudflare.com/ajax/libs/qs/6.5.1/qs.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>前端发起HTTP请求样例<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">h2</span>&gt;</span>使用XMLHttpRequest<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;xhrGet()&quot;</span>&gt;</span>XHR Get<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;xhrPost()&quot;</span>&gt;</span>XHR Post<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">h2</span>&gt;</span>使用axios<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;axiosGet()&quot;</span>&gt;</span>Axios Get<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;axiosPost()&quot;</span>&gt;</span>Axios Post<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">h2</span>&gt;</span>使用fetch<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;fetchGet()&quot;</span>&gt;</span>Fetch Get<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;fetchPost()&quot;</span>&gt;</span>Fetch Post<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 封装XMLHttpRequest发起ajax请求</span></span></span><br><span class="line"><span class="javascript">		<span class="keyword">let</span> Axios = <span class="function"><span class="keyword">function</span>(<span class="params">&#123;url, method, data&#125;</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">	        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">	            <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="javascript">	            xhr.open(method, url, <span class="literal">true</span>);</span></span><br><span class="line"><span class="javascript">	            xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">	                <span class="comment">// readyState == 4说明请求已完成</span></span></span><br><span class="line">	                if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) &#123;</span><br><span class="line"><span class="javascript">	                    <span class="comment">// 从服务器获得数据</span></span></span><br><span class="line">	                    resolve(xhr.responseText)</span><br><span class="line">	                &#125;</span><br><span class="line">	            &#125;;</span><br><span class="line">	            if(data)&#123;</span><br><span class="line"><span class="javascript">	            	xhr.setRequestHeader(<span class="string">&#x27;Content-type&#x27;</span>, <span class="string">&#x27;application/x-www-form-urlencoded;charset=utf-8&#x27;</span>);</span></span><br><span class="line">	            	xhr.send(Qs.stringify(data));</span><br><span class="line"><span class="javascript">	            	<span class="comment">//xhr.send(&quot;a=1&amp;b=2&quot;);</span></span></span><br><span class="line"><span class="javascript">	            	<span class="comment">//xhr.send(JSON.stringify(data));</span></span></span><br><span class="line"><span class="javascript">	            &#125;<span class="keyword">else</span>&#123;</span></span><br><span class="line">	            	xhr.send();</span><br><span class="line">	            &#125;</span><br><span class="line">	        &#125;)</span><br><span class="line">	    &#125;</span><br><span class="line"><span class="javascript">		<span class="comment">// 需要post提交的数据</span></span></span><br><span class="line"><span class="javascript">		<span class="keyword">let</span> postData = &#123;</span></span><br><span class="line"><span class="javascript">	    	firstName: <span class="string">&#x27;Fred&#x27;</span>,</span></span><br><span class="line"><span class="javascript">	    	lastName: <span class="string">&#x27;Flintstone&#x27;</span>,</span></span><br><span class="line"><span class="javascript">	    	fullName: <span class="string">&#x27;姓 名&#x27;</span>,</span></span><br><span class="line">	    	arr:[1,2,3]</span><br><span class="line">	   	&#125;</span><br><span class="line"><span class="javascript">		<span class="comment">// 请求地址</span></span></span><br><span class="line"><span class="javascript">		<span class="keyword">let</span> url = <span class="string">&#x27;DemoServlet&#x27;</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">xhrGet</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line">			Axios(&#123;</span><br><span class="line"><span class="javascript">				url: url+<span class="string">&#x27;?a=1&#x27;</span>,</span></span><br><span class="line"><span class="javascript">				method: <span class="string">&#x27;GET&#x27;</span></span></span><br><span class="line"><span class="javascript">			&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    	<span class="built_in">console</span>.log(response);</span></span><br><span class="line">		  	&#125;)</span><br><span class="line">		&#125;</span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">xhrPost</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line">			Axios(&#123;</span><br><span class="line">				url: url,</span><br><span class="line"><span class="javascript">				method: <span class="string">&#x27;POST&#x27;</span>,</span></span><br><span class="line">				data: postData</span><br><span class="line"><span class="javascript">			&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    	<span class="built_in">console</span>.log(response);</span></span><br><span class="line">		  	&#125;)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">axiosGet</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 默认Content-Type = null</span></span></span><br><span class="line">			axios.get(url, &#123;</span><br><span class="line">				params: &#123;</span><br><span class="line"><span class="javascript">		      		ID: <span class="string">&#x27;12345&#x27;</span></span></span><br><span class="line">		      	&#125;</span><br><span class="line"><span class="javascript">		  	&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    	<span class="built_in">console</span>.log(response);</span></span><br><span class="line"><span class="javascript">			&#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			    <span class="built_in">console</span>.log(error);</span></span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;</span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">axiosPost</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 默认Content-Type = application/json;charset=UTF-8</span></span></span><br><span class="line"><span class="javascript">			axios.post(url, postData).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    	<span class="built_in">console</span>.log(response);</span></span><br><span class="line"><span class="javascript">		  	&#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    	<span class="built_in">console</span>.log(error);</span></span><br><span class="line">		  	&#125;);</span><br><span class="line"><span class="javascript">		  	<span class="comment">// 默认Content-Type = application/x-www-form-urlencoded</span></span></span><br><span class="line">			axios(&#123;</span><br><span class="line"><span class="javascript">			  method: <span class="string">&#x27;post&#x27;</span>,</span></span><br><span class="line">			  url: url,</span><br><span class="line">			  data: Qs.stringify(postData)</span><br><span class="line"><span class="javascript">			&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    	<span class="built_in">console</span>.log(response);</span></span><br><span class="line">		  	&#125;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">fetchGet</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">			fetch(url+<span class="string">&#x27;?id=1&#x27;</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> res.text()).then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">				<span class="built_in">console</span>.log(data)</span></span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;</span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">fetchPost</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line">			fetch(url, &#123;</span><br><span class="line"><span class="javascript">			    method: <span class="string">&#x27;post&#x27;</span>,</span></span><br><span class="line">			    body: postData</span><br><span class="line">			  &#125;)</span><br><span class="line"><span class="javascript">			  .then(<span class="function"><span class="params">res</span> =&gt;</span> res.text())</span></span><br><span class="line"><span class="javascript">			  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			    <span class="built_in">console</span>.log(data);</span></span><br><span class="line">			  &#125;)</span><br><span class="line"><span class="javascript">			  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			    <span class="built_in">console</span>.log(<span class="string">&#x27;Request failed&#x27;</span>, error);</span></span><br><span class="line">			  &#125;);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>相关资料:  </p>
+</blockquote>
+<ol>
+<li>XMLHttpRequest Standard：<a target="_blank" rel="noopener" href="https://xhr.spec.whatwg.org/">https://xhr.spec.whatwg.org/</a></li>
+<li>Fetch Standard：<a target="_blank" rel="noopener" href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a></li>
+<li>XMLHttpRequest介绍：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest">https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest</a></li>
+<li>fetch介绍：<a target="_blank" rel="noopener" href="https://developers.google.com/web/updates/2015/03/introduction-to-fetch">https://developers.google.com/web/updates/2015/03/introduction-to-fetch</a></li>
+<li>fetch 简介: 新一代 Ajax API： <a target="_blank" rel="noopener" href="https://juejin.im/entry/574512b7c26a38006c43567c">https://juejin.im/entry/574512b7c26a38006c43567c</a></li>
+<li>axios源码：<a target="_blank" rel="noopener" href="https://github.com/axios/axios">https://github.com/axios/axios</a></li>
+</ol>
+<h2 id="后端部分"><a href="#后端部分" class="headerlink" title="后端部分"></a>后端部分</h2><p>&emsp;&emsp;这里使用Java平台为样例来介绍后端是如何接收HTTP请求的。在J2EE体系下，数据的接收与返回实际上都是通过<code>Servlet</code>来完成的。</p>
+<p>Servlet接收与返回数据样例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.demo.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Enumeration;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DemoServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;-----------------start----------------&quot;</span>);</span><br><span class="line">		System.out.println(<span class="string">&quot;Content-Type:&quot;</span> + request.getContentType());</span><br><span class="line">		<span class="comment">// 打印请求参数</span></span><br><span class="line">		System.out.println(<span class="string">&quot;=========请求参数========&quot;</span>);</span><br><span class="line">		Enumeration&lt;String&gt; em = request.getParameterNames();</span><br><span class="line">		<span class="keyword">while</span> (em.hasMoreElements()) &#123;</span><br><span class="line">			String name = (String) em.nextElement();</span><br><span class="line">			String value = request.getParameter(name);</span><br><span class="line">			System.out.println(name + <span class="string">&quot; = &quot;</span> + value);</span><br><span class="line">			response.getWriter().append(name + <span class="string">&quot; = &quot;</span> + value);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 从inputStream中获取</span></span><br><span class="line">		System.out.println(<span class="string">&quot;===========inputStream===========&quot;</span>);</span><br><span class="line">		StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">		String line = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			BufferedReader reader = request.getReader();</span><br><span class="line">			<span class="keyword">while</span> ((line = reader.readLine()) != <span class="keyword">null</span>)</span><br><span class="line">				sb.append(line);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">/* report an error */</span></span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(sb.toString());</span><br><span class="line">		System.out.println(<span class="string">&quot;-----------------end----------------&quot;</span>);</span><br><span class="line">		response.getWriter().append(sb.toString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		doGet(request, response);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>相关资料：</p>
+</blockquote>
+<ol>
+<li>servlet的本质是什么，它是如何工作的？：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/21416727">https://www.zhihu.com/question/21416727</a></li>
+<li>tomcat是如何处理http请求的？：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38182963/article/details/78660777">https://blog.csdn.net/qq_38182963/article/details/78660777</a></li>
+</ol>
+<h2 id="结果汇总"><a href="#结果汇总" class="headerlink" title="结果汇总"></a>结果汇总</h2><p>| 请求方式 | method | 请求Content-Type | 数据格式 | 后端收到的Content-Type | 能否通过getParameter获取数据 | 能否通过inputStream获取数据 | 后端接收类型 |<br>|–|<br>| XHR | Get | 未设置 | url传参 | null | 能 | 否 | 键值对 |<br>| XHR | Post | 未设置 | json字符串 | text/plain;charset=UTF-8 | 否 | 能 | 字符串 |<br>| XHR | Post | 未设置 | a=1&amp;b=2格式字符串 | text/plain;charset=UTF-8 | 否 | 能 | 字符串 |<br>| XHR | Post | application/x-www-form-urlencoded | a=1&amp;b=2格式字符串 | application/x-www-form-urlencoded | 能 | 否 | 后端收到key为a和b，值为1和2的键值对 |<br>| XHR | Post | application/x-www-form-urlencoded | json字符串 | application/x-www-form-urlencoded | 能 | 否 | 后端收到一个key为json数据，值为空的键值对 |<br>| axios | Get | 未设置 | url传参 | null | 能 | 否 | 键值对 |<br>| axios | Post | 未设置 | json对象 |  application/json;charset=UTF-8 | 否 | 能 | json字符串 |<br>| axios | Post | 未设置 | 数组 |  application/json;charset=UTF-8 | 否 | 能 | 数组字符串 |<br>| axios | Post | 未设置 | a=1&amp;b=2格式字符串 |  application/x-www-form-urlencoded | 能 | 否 | 键值对 |<br>| fetch | Get | 未设置 | url传参 | null | 能 | 否 | 键值对 |<br>| fetch | Post | 未设置 | a=1&amp;b=2格式字符串 | text/plain;charset=UTF-8 | 否 | 能 | a=1&amp;b=2字符串 |<br>| fetch | Post | 未设置 | json对象 | text/plain;charset=UTF-8 | 否 | 能 | 后端收到[object Object]字符串 |<br>| fetch | Post | application/x-www-form-urlencoded;charset=UTF-8 | a=1&amp;b=2格式字符串 | application/x-www-form-urlencoded;charset=UTF-8  | 能 | 否 | 键值对 |</p>
+<p>&emsp;&emsp;通过上面的表格内容可以发现，凡是使用get或者content-type为<code>application/x-www-form-urlencoded</code>发送数据，在后端servlet都会默认把数据转换为键值对。否则，需要从输入流中获取前端发送过来的字符串数据，再使用fastJSON等后端工具类转换为Java实体类或集合对象。</p>
+<h2 id="联调工具Postman"><a href="#联调工具Postman" class="headerlink" title="联调工具Postman"></a>联调工具Postman</h2><p>&emsp;&emsp;可以在chrome的应用商店中下载Postman插件，在浏览器中模拟HTTP请求。Postman的界面如下：</p>
+<img src="/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/postman.png" class="" title="postman">
+
+<blockquote>
+<p>说明：</p>
+</blockquote>
+<ol>
+<li>发送get请求直接在url上带上参数，接着点击send即可</li>
+<li>发送post请求，数据有三种传输方式；<code>form-data</code>、<code>x-www-form-urlencoded</code>、<code>raw</code>（未经加工的）</li>
+</ol>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>Content-Type</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>form-data</td>
+<td>Content-Type: multipart/form-data</td>
+<td>form表单的附件提交方式</td>
+</tr>
+<tr>
+<td>x-www-form-urlencoded</td>
+<td>Content-Type: application/x-www-form-urlencoded</td>
+<td>form表单的post提交方式</td>
+</tr>
+<tr>
+<td>raw</td>
+<td>Content-Type: text/plain;charset=UTF-8</td>
+<td>文本的提交方式</td>
+</tr>
+</tbody></table>
+</blockquote>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/08/11/HTTP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83/" data-id="cm5tqeevq0076wayp8ige9btu" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Gitlab-8-x-runner安装与配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/13/Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2018-07-13T10:41:31.000Z" itemprop="datePublished">2018-07-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/13/Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab 8.x runner安装与配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>&emsp;&emsp;Gitlab 8.x之后默认集成了Gitlab CI，意味着支持了持续集成相关功能。每一次集成操作都需要对应的runner来跑代码构建、测试、发布等操作。Runner实际上就是为Gitlab的持续集成指定一个环境。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>官方文档地址：<a target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/install/">https://docs.gitlab.com/runner/install/</a></p>
+</blockquote>
+<p>&emsp;&emsp;Gitlab Runner的版本需要跟Gitlab对应,<a target="_blank" rel="noopener" href='https://docs.gitlab.com/runner/'>这里</a>有一个对照表。最新的版本对照表中并没有Gitlab8.X对应的Runner版本，查了一下Gitlab8.X对应的Runner版本为<code>1.X</code>,所以这里选择<code>runner 1.11.2</code>版本。</p>
+<p>&emsp;&emsp;这里运行Gitlab与Runner的环境均为CentOS，之前尝试在windows上安装runner，对接Linux上的Gitlab，发现在Gitlab runner运行的控制台出现乱码问题。</p>
+<p>0.准备</p>
+<p>在opt下创建gitlab-runner目录并进入该目录，后续执行的操作与所有的资源都放在这个目录中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">mkdir gitlab-runner</span><br><span class="line"><span class="built_in">cd</span> gitlab-runner/</span><br></pre></td></tr></table></figure>
+
+<p>1.下载</p>
+<p>下载安装资源到gitlab-runner目录中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/v1.11.2/binaries/gitlab-ci-multi-runner-linux-386</span><br></pre></td></tr></table></figure>
+
+<p>2.添加运行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x gitlab-ci-multi-runner-linux-386</span><br></pre></td></tr></table></figure>
+
+<p>3.创建用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>4.安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./gitlab-ci-multi-runner-linux-386 install --user=gitlab-runner --working-directory=/opt/gitlab-runner</span><br><span class="line">sudo gitlab-ci-multi-runner-linux-386 start</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>&emsp;&emsp;经过上面的步骤，Runner就已经跑起来了，剩下的还需要Runner与项目对接起来。Runner的类型分为<a target="_blank" rel="noopener" href='https://docs.gitlab.com/ee/ci/runners/README.html'>Shared, specific and group Runners</a>。这里选择specific类型，即单独的项目使用。</p>
+<p>&emsp;&emsp;在Gitlab项目的setting-runner中,配置过程中会使用到<code>url</code>和<code>token</code>如下所示：</p>
+<div style='text-align:center'><img src="/2018/07/13/Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/setting.png" class=""><div>
+
+<p>1.运行register命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gitlab-ci-multi-runner-linux-386 register</span><br></pre></td></tr></table></figure>
+<p>之后就按照提示就行了</p>
+<p>2.输入url地址<br>3.输入token<br>4.输入描述，任意即可<br>5.输入标签，这里直接Enter跳过<br>6.选择Runner executor，这里选择shell  </p>
+<p>到这里就已经注册成功了，输入<code>./gitlab-ci-multi-runner-linux-386 list</code>就能看到上面的注册的条目。</p>
+<p>官方文档地址：<a target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/register/index.html">https://docs.gitlab.com/runner/register/index.html</a></p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>&emsp;&emsp;上面两个步骤做完后，此时按理说Gitlab就能调用Runner跑持续集成了，实际当中还会碰到其它问题，整理如下。</p>
+<h3 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h3><p>&emsp;&emsp;如果在Gitlab的Build控制台上报<code>无法创建文件夹</code>、<code>无法运行bash</code>等,证明创建的<code>GitLab Runner</code>权限不够。<br>此时，我这里是修改GitLab Runner的权限跟root保持一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>通过上面命令可以编辑用户对应的权限，我这里打开默认为<code>gitlab-runner:x:601:601:GitLab Runner:/home/gitlab-runner:/bin/bash</code>,权限组修改为跟root的一致<code>gitlab-runner:x:0:0:GitLab Runner:/home/gitlab-runner:/bin/bash</code>。(root的权限组名为0)</p>
+<blockquote>
+<p>这里在另外一台机器上还碰到这样修改了也不好使的问题，最终gitlab-runner install的时候，直接指定为root，而不新创建用户。</p>
+</blockquote>
+<h3 id="环境问题"><a href="#环境问题" class="headerlink" title="环境问题"></a>环境问题</h3><p>由于Runner运行需要环境支撑，比如git、node、npm等，需要在Runner所在的服务器上准备好所有的依赖。</p>
+<ul>
+<li>Linux Node安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line">wget https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz</span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -xf  node-v8.11.3-linux-x64.tar.xz</span><br><span class="line"><span class="comment"># 建立软链接，实现全局访问</span></span><br><span class="line">ln -s /opt/gitlab-runner/node-v8.11.3-linux-x64/bin/node /usr/<span class="built_in">local</span>/bin/node</span><br><span class="line">ln -s /opt/gitlab-runner/node-v8.11.3-linux-x64/bin/npm /usr/<span class="built_in">local</span>/bin/npm</span><br></pre></td></tr></table></figure>
+
+<p>此时，输入<code>node -v</code>就能看到node的版本了。</p>
+<p>使用软连接方式可能对非root用户无效，可以转而使用配置环境变量的方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改配置文件</span></span><br><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment">#set for nodejs,新增NODE_HOME并放到PATH上</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/opt/soft/java</span><br><span class="line"><span class="built_in">export</span> NODE_HOME=/opt/gitlab-runner/node-v8.11.3-linux-x64  </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$NODE_HOME</span>/bin</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在vim环境下点击i进入插入状态,编辑完成后按Esc键,然后输入 :wq 按回车保存退出。</p>
+</blockquote>
+<p>备注：内外环境还需修改NPM的镜像源，比如修改为<code>npm config set registry https://registry-npm.daojia-inc.com/</code></p>
+<h2 id="附录-部分GitLab-Runner常用命令"><a href="#附录-部分GitLab-Runner常用命令" class="headerlink" title="附录 部分GitLab-Runner常用命令"></a>附录 部分GitLab-Runner常用命令</h2><p>1.gitlab-runner帮助：gitlab-runner –help</p>
+<p>2.gitlab-runner指定命令帮助：gitlab-runner <commond> –help</p>
+<p>3.注册runner：gitlab-runner register</p>
+<p>4.注销runner：gitlab-runner unregister</p>
+<p>5.当前运行的runner：gitlab-runner list</p>
+<p>6.启动runner：gitlab-runner start</p>
+<p>7.停止runner：gitlab-runner stop</p>
+<p>8.重启runner：gitlab-runner restart</p>
+<p>9.查询runner状态：gitlab-runner status</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/07/13/Gitlab-8-x-runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" data-id="cm5tqeevp0074waypboa2fe73" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-一个由line-height引发的血案与思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2018-05-06T11:32:32.000Z" itemprop="datePublished">2018-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/">一个由line-height引发的血案与思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="爆炸"><a href="#爆炸" class="headerlink" title="爆炸"></a>爆炸</h2><p>&emsp;&emsp;最近UI走查，发现页面中所有包含文字区块的高度与设计稿中的高度完全不一致，然后UI妹子就爆炸了!</p>
+<p>&emsp;&emsp;找了一下原因，发现是由于UI设计稿中设计的文字大部分是<code>font-size:24px;line-height:24px</code>,代码实现时为了不至于每处都写一遍字体大小，故直接在根节点上统一设置字体与字体大小为24px，小部分不一致的地方再单独设置字体大小，从而忽略了设置<code>line-height</code>为字体的高度。造成的结果就是文字所在的行的行高高于设计稿中的行高。</p>
+<h2 id="为什么文字行高与字体大小不相等呢？"><a href="#为什么文字行高与字体大小不相等呢？" class="headerlink" title="为什么文字行高与字体大小不相等呢？"></a>为什么文字行高与字体大小不相等呢？</h2><p>&emsp;&emsp;翻了一下line-height的<a target="_blank" rel="noopener" href='https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height'>官方说明</a>，如下所示：</p>
+<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/1.jpg" class=""><div>
+
+<p>&emsp;&emsp;文档里说line-height的默认值为<code>normal</code>,给<code>normal</code>的推荐设置值为<code>1.0到1.2之间</code>。相当于如果设置了字体的大小而不设置line-height,那么行高默认就为字体的1.0-1.2之间的一个倍数。</p>
+<p>&emsp;&emsp;<strong>那么，这个倍数到底具体是多少呢？</strong></p>
+<p>&emsp;&emsp;在chrome的控制台里跟踪了一下，看到项目中引入了<code>normalize.css</code>来初始化浏览器的默认css样式。其中，就设置html的<code>line-height</code>为<code>1.15</code>。</p>
+<h2 id="为什么normalize-css设置line-height默认为1-15？"><a href="#为什么normalize-css设置line-height默认为1-15？" class="headerlink" title="为什么normalize.css设置line-height默认为1.15？"></a>为什么normalize.css设置line-height默认为1.15？</h2><p>&emsp;&emsp;翻了一下github中normalize.css的issues,在593号issues里找到了答案，地址在<a target="_blank" rel="noopener" href='https://github.com/necolas/normalize.css/issues/593'>这里</a>。</p>
+<p>&emsp;&emsp;大致过程是这样的，有人发现相同字体与大小的文字在不同环境中line-height的值是不一致的，接着，就有人在crossbrowsertesting上做了个测试，得出的结论就是这个问题的的确确存在，而且差异还特别大</p>
+<blockquote>
+<p>When the font size was 100px, the most common line height was 115px. However, results varied from 101px on Mac Firefox to 136px on Android Chrome.</p>
+</blockquote>
+<p>&emsp;&emsp;最终，由于大部分的行高都为115px,所以，为了解决不同环境中相同字体与字号的文字行高不一致的问题，推荐设置默认<code>line-height</code>为1.15</p>
+<p>&emsp;&emsp;看到这里，想到一个问题，既然显示设置line-height为1.15是为了解决环境兼容的问题。那么，<strong>为什么不设置<code>line-height:1</code>即解决兼容问题，又解决由于行高放大与UI设计稿不符的问题？</strong> 。</p>
+<h2 id="设置overflow-hidden字体显示不全的问题"><a href="#设置overflow-hidden字体显示不全的问题" class="headerlink" title="设置overflow:hidden字体显示不全的问题"></a>设置overflow:hidden字体显示不全的问题</h2><p>&emsp;&emsp;当设置文字<code>line-height:1</code>后，再设置文字所在的容器<code>overflow:hidden</code>很容易复现文字显示不全的问题，比如下面：</p>
+<p><span style="font-size:100px;line-height:1;overflow:hidden;border:1px solid #ddd;display:inline-block">dphyTxg</span></p>
+<p>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">font-size:100px;</span></span></span><br><span class="line"><span class="tag"><span class="string">line-height:1;</span></span></span><br><span class="line"><span class="tag"><span class="string">overflow:hidden;</span></span></span><br><span class="line"><span class="tag"><span class="string">border:1px solid #ddd;</span></span></span><br><span class="line"><span class="tag"><span class="string">display:inline-block&quot;</span>&gt;</span>dphyTxg<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注：这里可以使用div演示，然后去掉display:inline-block。使用div发现不知道为毛markdown里的样例乱了…</p>
+<h2 id="为什么设置行高与字体大小一致文字会显示不全？"><a href="#为什么设置行高与字体大小一致文字会显示不全？" class="headerlink" title="为什么设置行高与字体大小一致文字会显示不全？"></a>为什么设置行高与字体大小一致文字会显示不全？</h2><p>&emsp;&emsp;到这里，才真正进入到深层次的原因探究。</p>
+<p>&emsp;&emsp;对于这个问题，需要先了解字体度量，引用一下其它的文章说明，如下所示：</p>
+<div style='text-align:center'><img src="/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/2.jpg" class=""><div>
+
+<ol>
+<li><a target="_blank" rel="noopener" href='https://zhuanlan.zhihu.com/p/25808995'>原文地址</a></li>
+<li><a target="_blank" rel="noopener" href='http://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align'>Deep dive CSS: font metrics, line-height and vertical-align</a></li>
+<li><a target="_blank" rel="noopener" href='http://designwithfontforge.com/zh-CN/The_EM_Square.html'>EM Square</a></li>
+<li><a target="_blank" rel="noopener" href='https://fontforge.github.io/en-US/'>FontForge</a></li>
+</ol>
+<p>简要解释为如下几点：</p>
+<ol>
+<li>我们设置<code>font-size</code>的高度实际上是对应字体的<code>EM square</code>部分</li>
+<li>字体在设计时可以超出<code>EM square</code>部分</li>
+<li>字体实际设计与<code>EM square</code>部分一致时，<code>line-height:normal</code>与<code>line-height:1</code>相等</li>
+<li>从上图中可以看到，<code>ascender+descender&gt;Em Size</code> 即<code>1100+540&gt;1000</code>,此时<code>line-height:1.64</code>,所以100px的文字默认的行高为164px</li>
+</ol>
+<h2 id="样例分析"><a href="#样例分析" class="headerlink" title="样例分析"></a>样例分析</h2><p>&emsp;&emsp;下面就以window环境下的默认字体微软雅黑为例实际看看line-height的计算。</p>
+<h1 id="font" style="line-height:normal;font-size: 100px;font-family: 微软雅黑">h1</h1>
+<p>line-height: <code id="o1" style="font-size: 50px"></code></p>
+<script>
+  document.getElementById('o1').textContent = window.getComputedStyle(document.getElementById('font')).height;
+</script>
+
+<p>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;font&quot;</span> <span class="attr">style</span>=<span class="string">&quot;line-height:normal;font-size: 100px;font-family: 微软雅黑&quot;</span>&gt;</span>h1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>line-height: <span class="tag">&lt;<span class="name">code</span> <span class="attr">id</span>=<span class="string">&quot;o1&quot;</span> <span class="attr">style</span>=<span class="string">&quot;font-size: 50px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.getElementById(<span class="string">&#x27;o1&#x27;</span>).textContent = <span class="built_in">window</span>.getComputedStyle(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;font&#x27;</span>)).height;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;从上面可以看到微软雅黑100px情况在，在windows下行高显示为132px。通过FontForge来核对一下看看是不是这样的。</p>
+<div style='text-align:center'>&#123;% asset_img 3.jpg %&#125;<div>
+
+<p>&emsp;&emsp;从上图中可以看到，使用<code>（ascender+descender)/Em Size</code>,即<code>(2167+536)/2048≈1.32</code>，也就是line-height为1.32.</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li><code>line-height:normal</code>的值跟字体有关系，相同字体在不同环境也不一样</li>
+<li>当line-height设置的值小于默认的值时就会存在显示不全的问题</li>
+<li>normalize.css设置line-height默认为1.15，当字体line-height的normal大于1.15就会存在文字显示不全的问题</li>
+<li>要解决字体在不同平台line-height不一致的问题，需根据具体字体，选择normal在不同平台上的最大值设置</li>
+</ol>
+<div style="width:70%;margin:auto">
+<img src='http://muchstudy.com/2020/04/04/聊聊一线开发的基本素养/公众号二维码.gif'>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/05/06/%E4%B8%80%E4%B8%AA%E7%94%B1line-height%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88%E4%B8%8E%E6%80%9D%E8%80%83/" data-id="cm5tqeevo0072waypbtw93vmn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-30" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/21/30/" class="article-date">
+  <time datetime="2018-04-21T03:15:59.000Z" itemprop="datePublished">2018-04-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/21/30/">30</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div style='text-align:center'><img src="/2018/04/21/30/30.jpg" class=""><div>
+
+<p>&emsp;&emsp;30岁是一道坎。</p>
+<p>&emsp;&emsp;从年龄上来讲，又是一个十年。人生就这样过完了三分之一，不由得心生感慨！感慨时光如梭，感慨事业无成，感概没有了上一个十年时的锐气，就连眼神也没有了那时的干净清澈。从十年前的白面书生变成了中年油腻男，时间真的是一把杀猪刀！</p>
+<p>&emsp;&emsp;从工作与生活上来讲，三十而立。但很多人在这个时候面对着上有老下有有小往往却力不从心。需要咬紧牙关坚持下去，翻过这道坎。</p>
+<p>&emsp;&emsp;就在前几天，我也进入了而立之年。生日当天，那一整天仿佛都充满了仪式感，仿佛过完了那一天就进入到了一个新的人生阶段。当时灵感爆棚（也可能是一时冲动，人很多时候会把冲动当作灵感），希望能记下点什么，但什么都没记下……</p>
+<p>&emsp;&emsp;今年的315入职新公司，在三十岁之前从传统行业转到互联网行业。之所以转，是因为觉得在传统行业中已经到了天花板，进入了舒适区，不想温水煮青蛙，想换一种环境看看。从目前的情况来看，似乎还不错，在新的环境里有很多事情值得做，值得拼一下。似乎又回到了刚入职场的状态，这是一个之前一直期望的状态，很满意。</p>
+<p>&emsp;&emsp;30岁不仅仅是一道坎，跨过这道坎实际上是一趟新的征程。希望在这趟新的旅程中能一直坚挺下去！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2018/04/21/30/" data-id="cm5tqeevo0070wayp4wmq74pn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/7/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

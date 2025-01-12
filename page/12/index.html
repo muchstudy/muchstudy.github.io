@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>YiYing’s sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="独立之精神,自由之思想">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YiYing’s sharing">
+<meta property="og:url" content="http://muchstudy.com/page/12/index.html">
+<meta property="og:site_name" content="YiYing’s sharing">
+<meta property="og:description" content="独立之精神,自由之思想">
+<meta property="og:locale">
+<meta property="article:author" content="YiYing">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="YiYing’s sharing" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YiYing’s sharing</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muchstudy.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-JavaScript实现二分查找" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/22/JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
+  <time datetime="2017-02-21T16:59:42.000Z" itemprop="datePublished">2017-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/22/JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">JavaScript实现二分查找</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;最近撸《算法》第四版，开篇就是一个Java版本的二分查找算法，下面以JS实现一下。</p>
+<p>&emsp;&emsp;二分查找的前提为：数组、有序。逻辑为：优先和数组的中间元素比较，如果等于中间元素，则直接返回。如果不等于则取半继续查找。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 二分查找，递归实现。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">start</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">end</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr,start,end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( start &gt; end)&#123;<span class="keyword">return</span> -<span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> start   = start || <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> end     = end || arr.length-<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> mid = <span class="built_in">parseInt</span>(start+(end-start)/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span>(target==arr[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;arr[mid])&#123;</span><br><span class="line">        <span class="keyword">return</span> binarySearch(target,arr,mid+<span class="number">1</span>,end);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> binarySearch(target,arr,start,mid-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 有序的二分查找，返回-1或存在的数组下标。不使用递归实现。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;*&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> start   = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> end     = arr.length-<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (start&lt;=end)&#123;</span><br><span class="line">        <span class="keyword">var</span> mid = <span class="built_in">parseInt</span>(start+(end-start)/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span>(target==arr[mid])&#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;arr[mid])&#123;</span><br><span class="line">            start   = mid+<span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            end     = mid-<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>&emsp;&emsp;写完有序，自然而然的想到了无序的情况如何使用二分查找呢？马上想到先使用快排分组，分好组再二分。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无序的二分查找。返回true/false</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="variable">arr</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;boolean&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">binarySearch</span>(<span class="params">target,arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (arr.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//使用快速排序。以mid为中心划分大小，左边小，右边大。</span></span><br><span class="line">        <span class="keyword">var</span> left    = [];</span><br><span class="line">        <span class="keyword">var</span> right   = [];</span><br><span class="line">        <span class="comment">//选择第一个元素作为基准元素(基准元素可以为任意一个元素)</span></span><br><span class="line">        <span class="keyword">var</span> pivot   = arr[<span class="number">0</span>];</span><br><span class="line">        <span class="comment">//由于取了第一个元素，所以从第二个元素开始循环</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;arr.length;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> item = arr[i];</span><br><span class="line">            <span class="comment">//大于基准的放右边，小于基准的放左边</span></span><br><span class="line">            item&gt;pivot ? right.push(item) : left.push(item);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//得到经过排序的新数组</span></span><br><span class="line">        <span class="keyword">if</span>(target==pivot)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(target&gt;pivot)&#123;</span><br><span class="line">            arr     = right;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            arr     = left;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;写完用快速排序实现的无序二分查找，仔细想了一下该算法的时间复杂度，发现还不如直接一个for循环来得快……囧</p>
+<hr>
+<p>&emsp;&emsp;睡完一觉起来感觉也不是一无是处，这是一个用时间换空间的好办法，大规模问题下有助于节省内存开销。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/02/22/JavaScript%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="cm5tqeev20056waypbdtoduv7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-怎样全面了解应聘者的实力" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/12/%E6%80%8E%E6%A0%B7%E5%85%A8%E9%9D%A2%E4%BA%86%E8%A7%A3%E5%BA%94%E8%81%98%E8%80%85%E7%9A%84%E5%AE%9E%E5%8A%9B/" class="article-date">
+  <time datetime="2017-02-12T02:44:46.000Z" itemprop="datePublished">2017-02-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Thinking/">Thinking</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/12/%E6%80%8E%E6%A0%B7%E5%85%A8%E9%9D%A2%E4%BA%86%E8%A7%A3%E5%BA%94%E8%81%98%E8%80%85%E7%9A%84%E5%AE%9E%E5%8A%9B/">怎样全面了解应聘者的实力</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;怎样在有限的时间内了解应聘者的综合实力是一件值得思考的问题。针对这一问题，来聊一聊我认为可行的办法。</p>
+<h2 id="一份有针对性的试题"><a href="#一份有针对性的试题" class="headerlink" title="一份有针对性的试题"></a>一份有针对性的试题</h2><blockquote>
+<p>技术点的考察</p>
+</blockquote>
+<p>&emsp;&emsp;一份好的试题能够判断出技术人员基础技术知识掌握的情况，不耽搁面试者时间即能筛选出符合基础门槛的求职者。</p>
+<p>&emsp;&emsp;这套试题个人认为应当着重考察基础，不应当炫技。反感一些头脑风暴，一些在工作当中基本不会用到的技术怪异用法等。不应该为了“考”面试者而出题，这样就有些变味儿了。所有试题始终贯穿目的、初心，实在最好。</p>
+<h2 id="多问开放性问题"><a href="#多问开放性问题" class="headerlink" title="多问开放性问题"></a>多问开放性问题</h2><blockquote>
+<p>技术面与深度的考察</p>
+</blockquote>
+<p>&emsp;&emsp;<strong>开放性的问题更能全面的了解一个人的技术水平。</strong>对于前端职位面试，比如我会问下面这些问题：</p>
+<ul>
+<li>说说你了解的盒模型，定位与浮动</li>
+<li>说说你对HTTP缓存的理解</li>
+<li>说说你对前端模块化开发的理解</li>
+<li>说说你了解的前端性能优化手段</li>
+<li>你用过哪些MV*框架，为什么要用？</li>
+</ul>
+<p>&emsp;&emsp;之所以要问开放性的问题，就是要避免让应聘者跟着面试官的思路走，给予面试者最大的发挥空间。能力强者对于这类开放性的问题有无限的发挥空间，与之相反，发挥空间就很窄了。</p>
+<p>&emsp;&emsp;这类问题不仅能看出应聘者的技术宽度，还能看出技术深度。</p>
+<p>&emsp;&emsp;不过，对于此类开放性的问题，面试官应当做好控场，避免跑火车，引导面试者更深入的阐述问题。</p>
+<h2 id="了解过往工作经历"><a href="#了解过往工作经历" class="headerlink" title="了解过往工作经历"></a>了解过往工作经历</h2><blockquote>
+<p>更加立体的考察</p>
+</blockquote>
+<p>&emsp;&emsp;<strong>了解面试者的过往工作经历与细节可以更立体的了解一个人综合能力。</strong>比如我会问下面这些问题：</p>
+<ul>
+<li>谈一谈目前你的工作内容</li>
+<li>哪些参与的项目让你印象深刻？你在当中充当什么角色？有些什么收获？</li>
+<li>举例说一说你写过的有成就感的前端代码</li>
+</ul>
+<p>&emsp;&emsp;通过对过往经历的了解，一个直观的画像就呈现了出来，可以大致评估出应聘者目前的<strong>综合能力</strong>处于什么阶段，如果招聘过来可以安排些什么工作。</p>
+<h2 id="了解工作之外对技术的投入"><a href="#了解工作之外对技术的投入" class="headerlink" title="了解工作之外对技术的投入"></a>了解工作之外对技术的投入</h2><blockquote>
+<p>成长潜力的考察</p>
+</blockquote>
+<p>&emsp;&emsp;<strong>了解工作之外的技术投入可以了解到应聘者的技术热情、成长潜力。</strong>针对这一部分，我会通过如下问题来了解：</p>
+<ul>
+<li>平时通过什么途径，从哪些地方了解与学习新技术、了解技术前沿</li>
+<li>有没有个人博客，有没有Github、stackoverflow账号</li>
+<li>平时有参与过技术沙龙吗？</li>
+<li>在工作之外，有没有利用技术鼓捣一点儿东西</li>
+<li>最近有没有在学习、了解一些技术方面的东西</li>
+<li>你是如何沉淀工作中的收获，沉淀学习到的新技术</li>
+</ul>
+<p>&emsp;&emsp;如果有个人博客，可以通过博客内容看出应聘者的成长路线，通过Github中的代码可以看出代码水平如何。</p>
+<p>&emsp;&emsp;通过上述这些问题，基本上能确定应聘者是否是一个有进取心的人。<strong>进取心与追求卓越是技术人员成长的钥匙。</strong></p>
+<p>&emsp;&emsp;如果应聘者目前的技术能力并不强，但有强烈的进取心、知道如何去补齐短板，这样的人我相信技术不是障碍。因为技术就摆在那儿，只要你愿意去拿就总会拿到的。</p>
+<p>&emsp;&emsp;强烈进取心、追求卓越、踏实、靠谱、有责任心、容易沟通，这些特质相对于技术是很难学得来的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/02/12/%E6%80%8E%E6%A0%B7%E5%85%A8%E9%9D%A2%E4%BA%86%E8%A7%A3%E5%BA%94%E8%81%98%E8%80%85%E7%9A%84%E5%AE%9E%E5%8A%9B/" data-id="cm5tqeev10053wayp5dzwavjj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-关于公司招聘的一些思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/11/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%8F%B8%E6%8B%9B%E8%81%98%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2017-02-11T08:55:55.000Z" itemprop="datePublished">2017-02-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Thinking/">Thinking</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/11/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%8F%B8%E6%8B%9B%E8%81%98%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">关于公司招聘的一些思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;过完年，陆陆续续的招聘启动了，新年上班第一周就面了几个前来应聘前端岗的技术人员，面完后，一些思考不得不一吐为快。</p>
+<h2 id="关于技术人员"><a href="#关于技术人员" class="headerlink" title="关于技术人员"></a>关于技术人员</h2><p>&emsp;&emsp;通过对技术人员的面试，发现相同工作经验的技术人员间能力差异巨大。一些工作好几年的技术人员的技术实力明显还徘徊在入门水平。面对如此现状，不由得引发思考，是何种原因造成了如此结果？</p>
+<p>&emsp;&emsp;接触得越来越多之后，发现这些人都有如下这些公共特点：</p>
+<ul>
+<li><p><strong>长期呆在舒适区中。</strong>一份工作可能第一年收获很多，之后便处于舒适区中一年一年的重复做着相同的事情。</p>
+</li>
+<li><p><strong>缺乏思考。</strong>即使是做重复的事情并不会去思考如何把重复变得不再重复。</p>
+</li>
+<li><p><strong>对技术缺乏热情。</strong>跟这些人聊技术，会明显感觉到十分生硬，没有生机活力。而另外一些人则是滔滔不绝，一谈到技术就有说不完的东西。</p>
+</li>
+<li><p><strong>呆在自己的小圈子中。</strong>这些人技术的提升完全依靠曾经所做的项目。在我的面试问题中最后有这么一个问题：“你通过哪些途径学习了解技术？”。这些人的回答往往是生硬的说看书和看一些资料。而另外一些人的回答则丰富很多，比如牛人的博客、技术论坛、各类技术网站、通过RSS长期订阅技术资源、参加技术沙龙等。</p>
+</li>
+<li><p><strong>缺乏进取心。</strong>不会主动积极的去了解新技术，新事物。业余时间很少投入到技术之中。</p>
+</li>
+<li><p><strong>无紧迫感。</strong>干一天算一天，无短期、长期规划与期望。</p>
+</li>
+</ul>
+<h2 id="关于公司与团队影响力"><a href="#关于公司与团队影响力" class="headerlink" title="关于公司与团队影响力"></a>关于公司与团队影响力</h2><p>&emsp;&emsp;通过招聘，越来越感受到公司与团队在技术圈子中影响力的重要。</p>
+<p>&emsp;&emsp;显然，影响力大的团队更容易吸引优秀技术人员的加入。一个团队在技术社区中的影响力离不开对社区的贡献。在我看来，对技术的分享是一件共赢的事情。对于分享者来说，是工作的总结与技术的沉淀，同时增加影响力。对接收者来说，是一个不错的经验学习与探讨的机会。</p>
+<p>&emsp;&emsp;对于一个产品研发团队来讲，基础通用组件的开源、技术研究的总结、技术选型的结论、产品研发过程中的各种方法思路的改进都是一些值得沉淀与分享的东西。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/02/11/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%8F%B8%E6%8B%9B%E8%81%98%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" data-id="cm5tqeev10051wayp8r4he0ac" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-产品研发记录05：产品研发人员需要具有的特质" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/10/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/" class="article-date">
+  <time datetime="2017-02-10T13:47:45.000Z" itemprop="datePublished">2017-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/10/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/">产品研发记录05：产品研发人员应当具备的特质</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2017/02/10/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E5%BA%94%E5%BD%93%E5%85%B7%E5%A4%87%E7%9A%84%E7%89%B9%E8%B4%A8.jpg" class="">
+
+
+<p>&emsp;&emsp;目前负责一款基础开发框架产品的研发，该产品的受众群体为所有的项目开发人员。该基础开发框架产品的核心价值在与提升开发效率、统一技术路线、沉淀技术积累。</p>
+<p>&emsp;&emsp;领导一直在说要补充人员到基础开发框架产品组里面，可惜一直找不到合适的人员补充进来。</p>
+<p>&emsp;&emsp;对于什么样的人员才<strong>“合适”</strong>，我的理解如下：</p>
+<h2 id="一定的技术深度与广度"><a href="#一定的技术深度与广度" class="headerlink" title="一定的技术深度与广度"></a>一定的技术深度与广度</h2><p>&emsp;&emsp;对于技术深度，保证了代码的高质量。这里的质量包含了代码的逻辑清晰，结构优雅，性能强劲。至少能保证不让挑剔的开发人员吐槽产品研发人员的代码问题。</p>
+<p>&emsp;&emsp;对于技术广度，保证在产品的新功能开发时能够选择最优的技术方案。如果广度不够，那么在做功能开发时，往往会以最熟悉的方式仅仅完成功能需求而已，而很难考虑到怎么样做才是最好的。</p>
+<h2 id="丰富的项目开发经验"><a href="#丰富的项目开发经验" class="headerlink" title="丰富的项目开发经验"></a>丰富的项目开发经验</h2><p>&emsp;&emsp;对于用于提升项目开发效率与质量的基础开发框架，本来就是为了实际业务项目而生。如果没有实际的项目开发经验，就很难设身处地的考虑问题，很难去思考如何去设计基础开发框架来解决项目开发中的问题。另外，对于项目开发人员提出来的问题，很难换位去体会开发人员在产品使用中的痛苦，从而更好优化基础开发框架产品。</p>
+<p>&emsp;&emsp;另外，丰富的项目开发经验有助于总结提炼出项目开发中的通用部分，抽取到产品当中来，以统一的解决方案来解决相同的问题。</p>
+<p>&emsp;&emsp;对于产品功能而言，应当尽量避免鸡肋的功能，不能解决项目开发痛点的功能。</p>
+<h2 id="好奇心"><a href="#好奇心" class="headerlink" title="好奇心"></a>好奇心</h2><p>&emsp;&emsp;好奇心有助于技术人员去探寻问题的本质，从而从根本上解决问题。最烦躁遇到问题不深究其中的原因，而是从表面上打补丁，一个又一个，跟电线杆上的牛皮癣一样让人十分不舒服。</p>
+<p>&emsp;&emsp;好奇心还有助于技术人员去接收学习新的技能与知识点。</p>
+<p>&emsp;&emsp;我希望团队中的每个人都是能够不断成长的，成长带来工作效率的提升，接着带来更多的物质回报，从而形成正向循环。</p>
+<h2 id="追求卓越"><a href="#追求卓越" class="headerlink" title="追求卓越"></a>追求卓越</h2><p>&emsp;&emsp;始终觉得产品研发人员应当是一拨追求卓越的人。</p>
+<p>&emsp;&emsp;只有具备一颗追求卓越的心，才能像工匠一样不断的打磨产品，让产品更加优秀，让产品像一件工艺品、艺术品。</p>
+<p>&emsp;&emsp;一款好的产品就像一个好的技术人员一样，不应该长期保持平庸状态。</p>
+<p>上一篇：<a href="http://muchstudy.com/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">产品研发记录04：关于开源组件选择与技术方案选择的总结</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/02/10/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/" data-id="cm5tqeev0004zwaypbsk02s5w" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-读《禅与摩托车维修艺术》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/21/%E8%AF%BB%E3%80%8A%E7%A6%85%E4%B8%8E%E6%91%A9%E6%89%98%E8%BD%A6%E7%BB%B4%E4%BF%AE%E8%89%BA%E6%9C%AF%E3%80%8B/" class="article-date">
+  <time datetime="2017-01-21T10:21:15.000Z" itemprop="datePublished">2017-01-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Life/">Life</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/21/%E8%AF%BB%E3%80%8A%E7%A6%85%E4%B8%8E%E6%91%A9%E6%89%98%E8%BD%A6%E7%BB%B4%E4%BF%AE%E8%89%BA%E6%9C%AF%E3%80%8B/">读《禅与摩托车维修艺术》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/2017/01/21/%E8%AF%BB%E3%80%8A%E7%A6%85%E4%B8%8E%E6%91%A9%E6%89%98%E8%BD%A6%E7%BB%B4%E4%BF%AE%E8%89%BA%E6%9C%AF%E3%80%8B/%E7%A6%85%E4%B8%8E%E6%91%A9%E6%89%98%E8%BD%A6%E7%BB%B4%E4%BF%AE%E8%89%BA%E6%9C%AF.jpg" class="" title="《禅与摩托车维修艺术》">
+
+<p>&emsp;&emsp;看到这本书的书名，千万不要认为这是一本讲解摩托车维修的书。实际上，把书名转换为“禅与代码编写的艺术”也是毫无违和感的。</p>
+<p>&emsp;&emsp;实际上这是一本哲学书籍。作者不断的叩问自己，在人迹罕至的心灵高原地带找寻能够囊括万物的终极答案。俗话说人与人斗其乐无穷，通过作者的经历，自己与自己斗才是真正的勇士！</p>
+<p>&emsp;&emsp;读完了全书，对书中所讲述的思想的鬼魂、分析的刀子、心灵的高原地带、理性教会、溶液结晶、公牛两角的两难问题等印象深刻。作者是一位真正的思想者。</p>
+<p>&emsp;&emsp;在很早之前，对中国哲学有所了解。佛家讲万法皆空，独一个“空”字；道家讲道法自然，独一个“道”字。书中的“良质”囊括了东、西方哲学，让西方哲学自苏格拉底、柏拉图、亚里士多德以来建立起来的理性分析，与东方哲学的“不可说”结合了起来。真是条条大路通罗马……</p>
+<p>&emsp;&emsp;《禅与摩托车维修艺术》这本书才IT圈也比较有名。之所以这样，个人认为看完这本书，会让程序的创造者在一摞摞的代码中看到生机，体会到不断琱琢代码的那种成就感，让人体会到coding其实也是一种艺术。因为良质的存在，理性的代码与冰冷的机器中也能涌现出和谐的美感。</p>
+<p><strong>一些值得再读一读的摘录：</strong></p>
+<ul>
+<li><p>这些乡间小路和一般的干道迥然不同，就连沿线居住的居民的生活步调和个性也不一样。他们一直都没有离开过本地，所以可以很悠闲地和你寒暄问候、谈天说地，那感觉好极了。反而是那些早就搬到城市里的人和他们的子子孙孙迷失了，忘记了这种情怀。</p>
+</li>
+<li><p>这的确是件令人迷惘的事，就好像真理已经在敲你的门，而你却说：“走开，我正在寻找真理。”所以真理掉头就走了。</p>
+</li>
+<li><p>他并不是固执的人，心胸也不狭窄，既不懒惰也不愚蠢，所以这件事要解释起来还挺不容易的，有些神秘感，因为在没有答案的地方穷打转是很荒谬的。</p>
+</li>
+<li><p>我提醒他这件事，约翰告诉我，他换过新的皮圈但还是滴水，他说了这些就不再提了，也就是说事情到此为止。如果你试过修理水龙头，但是情况依旧，那就表示你命中注定有个会滴水的水龙头。</p>
+</li>
+<li><p>佛陀或是耶稣坐在电脑和变速器的齿轮旁边修行会像坐在山顶和莲花座上一样自在。如果情形不是如此，那无异于亵渎了佛陀–也就是亵渎了你自己。）</p>
+</li>
+<li><p>为什么会发生这种事情呢？这个问题不断在我脑海中出现，这就是我想要写这本书的原因。为什么他们的动作这样粗鲁呢？他们不像约翰和思薇雅一样害怕科技，他们都是专门人员，然而做起事来却像猩猩一样，没有真正地投入，似乎没有明显的原因。我试着回想那间修理店，就是让我做噩梦的那个地方，想要找出问题的真正答案。</p>
+</li>
+<li><p>但是让我惊讶的是，这些手册编写者的态度和这些修理人员的态度一样，竟然都是旁观者，所以它们可以被称为旁观者的手册。</p>
+</li>
+<li><p>“我的意思是，”我在他打断之前接着说，“就是地心引力定理只存在于人的心里，这也是一种鬼魂！对于别人所相信的鬼魂，我们很容易无知而且自负地就进行攻击，但是对于我们自己心中的鬼魂，我们却非常无知而且盲目地信仰着。”</p>
+</li>
+<li><p>他们还是看着我，所以我继续说：“自然的法则是人类发明的，就像鬼的存在一样。逻辑学、数学也都是如此，所有值得赞美的事，也都是人类的发明。这个世界也是人类所想象出来的，整体来说也就是一种灵界的存在。在古代，我们所居住的这个美妙的世界就被如此视之，它由鬼神所统领，我们之所以能看到这个世界，就是因为鬼神让我们看见，他们是摩西、耶稣基督、释迦牟尼、柏拉图、卢梭、杰弗逊、林肯等等，牛顿是非常好的一位，可算其中最好的一位，所以我们的常识就是由过去成百上千的鬼神所构成的，他们企图在人的生命当中找到他们的地位。”</p>
+</li>
+<li><p>自然的法则是人类发明的，就像鬼的存在一样。</p>
+<blockquote>
+<p>精神永存</p>
+</blockquote>
+</li>
+<li><p>现在把它们放在桌上，即使天气不冷，它们也没有办法平平地躺着。它们似乎有属于自己的往事。</p>
+<blockquote>
+<p>手套的往事</p>
+</blockquote>
+</li>
+<li><p>我相信大部分的骑手都会同意，一旦一辆车陪伴过你许多时光，那么对你来说它就是独一无二的，是别的车子无法取代的。</p>
+<blockquote>
+<p>我们周围的事物同时成就了我们</p>
+</blockquote>
+</li>
+<li><p>你会发现车子已经拥有了属于它自己的声音和节奏，与我的完全不同–不是不如我的，而是不同。</p>
+</li>
+<li><p>培养这种车子的个性正是维修保养的真正目的。</p>
+</li>
+<li><p>如果有人不懂心存感激，而你当面告诉他，那么你就等于是在骂他，这样你什么事都解决不了。</p>
+</li>
+<li><p>他说：“这是天底下最难拍的了。你需要一个三百六十度的广角镜头，你看着这样一片风景，然后看看地上的草，一切都妙不可言。但是一旦你用框子框住，美感就都不见了。”</p>
+</li>
+<li><p>过了一会儿，他说：“这是天底下最难拍的了。你需要一个三百六十度的广角镜头，你看着这样一片风景，然后看看地上的草，一切都妙不可言。但是一旦你用框子框住，美感就都不见了。” 我说：“我想这就是你在汽车里面所见不到的吧！”</p>
+</li>
+<li><p>他对事情的表象比较感兴趣，对于内涵就不然了。这一点很重要，因为这就是他看事情的方法。</p>
+</li>
+<li><p>我是从内涵着手，而他却是从物的表象开始。我看到的是这个铝片的意义，而他看到的却是这个铝片的外观。</p>
+<blockquote>
+<p>解决bug 也是如此</p>
+</blockquote>
+</li>
+<li><p>有些东西你忽略是因为它们非常细微，但有些却是因为它们过于庞大。</p>
+</li>
+<li><p>他们诊断后认为是精神疾病的征兆。</p>
+<blockquote>
+<p>每个人都或多或少的有精神疾病</p>
+</blockquote>
+</li>
+<li><p>我也不知道，因果似乎无法解释他的状况。因果逻辑是思想上的产物，我认为精神疾病先于人的思想。”</p>
+</li>
+<li><p>古典的认知认为这个世界是由一些基本形式组成的，而浪漫的认知则是从它的表象来观察。</p>
+</li>
+<li><p>就我所知，目前还没有人可以真正融合两者，因为这两者之间根本就找不到交会点。</p>
+</li>
+<li><p>从这些观察当中，我们必须加以选择，而我们所选择的和所观察到的，永远不一样，因为经由选择而产生了变化。我们从所观察到的事物当中选出一把沙子，然后称这把沙子为世界。</p>
+</li>
+<li><p>现在有一件很重要的事，就是如何把这两者融合为一，却不伤害到彼此，这种认知法不会拒绝分类，也不会拒绝不分类。这种认知法就是直接把重点放在沙子的来源，也就是无穷的景致之中，这就是我们这位悲惨的博士斐德洛想做的。</p>
+</li>
+<li><p>他所探索的就是隐身在一切科技的背后，在所有现代科学、所有西方思想背后的鬼魂–也就是理性本身。</p>
+</li>
+<li><p>认为人生最终的目的，活着，是一件不可能的事，然而毕竟活着就是人生最终的目的。</p>
+</li>
+<li><p>我想他之所以会这样热切追求理性，是因为他想要在理性身上泄恨，是因为他觉得自己就是由理性塑造出来的。他想要把自己从这样的形象当中解放出来，因此他要把理性给毁了。他用很奇怪的方式达到了他的目标。</p>
+</li>
+<li><p>所以最基本的就是要了解这种理念。约翰看到摩托车的时候，只看到各种不同的结构，于是就厌恶它，然后拒绝进一步的接触。但是在我的眼睛里，我却看到设计者的理念。约翰认为我接触的是各种零件，实际我接触的是各种观念。</p>
+</li>
+<li><p>如果把整个工厂拆毁了，而架构它的理性仍然存在，那么靠着这个理性很容易就可以建造另一座工厂。如果革命能够摧毁一个政府，但是政府背后的理性仍然完整地保存着，那么很快地又可以再建立同样的政府。</p>
+</li>
+<li><p>在这里要提到逻辑的两种方法，归纳法和演绎法。</p>
+</li>
+<li><p>因为一个实验并不会因为没有达到预期的结果就被称为失败了，只有它的结果无法测出假设的真假时才会被称为失败了。</p>
+</li>
+<li><p>一名没有受过训练的旁观者只看到修理人员所付出的劳力，就以为他最主要的工作在于劳力。事实上，这正是他最轻松也是工作上最小的一部分，他最重要的工作就在于仔细观察和精确思考，这就是为什么技术人员往往显得沉默寡言，甚至在做实验的时候有些畏缩。</p>
+</li>
+<li><p>在科学的殿堂里有许多深宅大院……有各种人住在其中，而他们住在这儿的动机也是形形色色，五花八门。</p>
+</li>
+<li><p>是什么把他们带进殿堂里的……答案不一而足……逃避平凡生活的芜杂和无可救药的厌倦；逃离自己欲望的束缚。一个脾气好的人想要逃离喧闹、令人紧张的环境，而来到寂静的高山，在这里你极目远眺，透过静谧清新的空气，愉快地描摹永恒宁静的山色。</p>
+</li>
+<li><p>如果科学方法的目的就是要从一大堆的假设当中选出正确的，然而假设出现的速度远远超过实验所能处理的速度，那么很明显地就来不及证明所有的假设。如果不能够证明所有的假设，那么任何实验的结果都变得很不可靠。这样一来，整个科学的方法就缺乏建立实证知识的目标。</p>
+</li>
+<li><p>运用科学方法的目的，就是要从许多假设当中找出正确的一个，这就是科学的目的。然而我们从科学的历史来看，事实恰恰相反。各种资料、史料、理论和假设不断大量地增加，科学把人从唯一绝对的真理，引向多元、摇摆不定、相对的世界，是造成社会混乱、思想价值混淆的主要元凶。而这一切现象原本是科学要消灭的。</p>
+</li>
+<li><p>但是对现在大部分的人来说，这些基本的需要不再是主要的问题，因而从古代流传下来的理性结构已经不符合所需，从而显露出它真正的面目–在情感上是空虚的，在美学上没有任何表现，而在灵性上更是一片空白。</p>
+</li>
+<li><p>斐德洛不理解这种态度，也不知道该怎么办。由于他研究科学并不是为了个人或是实用的目的，所以这使他完全停顿了下来。这就如同他在观赏爱因斯坦曾经描述过的那座澄静的山，突然在山与山之间裂开了一道沟，里面什么也没有。然后你得慢慢地、十分困难地解释它的由来。起初这些山岭看起来好像会永远存在，其实却可能变成别的东西……很可能只是他自己的幻想，所以他停下来了。</p>
+</li>
+<li><p>我们可以感觉到，虽然我们在谈论其他的事情，山依然存在。我很高兴再来到这里，但也有一点哀伤。有的时候到达目的地还不如在旅途中。</p>
+</li>
+<li><p>最后思考的结果是他想回到学校里去读哲学，他飘荡不定的时期结束了，他现在很积极地追寻着某个目标。</p>
+<blockquote>
+<p>这也代表着菲德洛进入另一个时期</p>
+</blockquote>
+</li>
+<li><p>他才发现他曾经一度认为的世界上唯一的知识–科学，其实只是哲学的一支，哲学比科学宽广许多，甚至更基本。他所问的有关无限假设的问题科学家并不感兴趣，因为这不是科学问题。科学没有办法在研究科学方法的时候不落入会摧毁它所有答案的陷阱。所以他问的问题比科学的层次还要高。于是，斐德洛在哲学当中发现了引领他走向科学那个问题的自然延伸。</p>
+</li>
+<li><p>所以他问的问题比科学的层次还要高。于是，斐德洛在哲学当中发现了引领他走向科学那个问题的自然延伸。</p>
+</li>
+<li><p>如果人类所有已知的知识是一个巨大的体系，那么心灵的高山地带就出现在这个体系的最高处，它是所有思想当中最抽象也是最普遍的。 很少有人到此一游，因为你不能从这一趟旅程当中获得任何实质上的利益。但是就像我们周遭的这一片高山区，它有它自己庄严的美感，所以对某些人来说，即使费尽九牛二虎之力到此一游也是值得的。</p>
+</li>
+<li><p>我通过直觉所了解到的摩托车，就像我存在银行里面的钱。如果我到银行要求看我的钱，他们一定会很奇怪地看着我。因为我的钱并没放在他们的抽屉里，他们没法拿出来给我看，我的钱其实只是电脑存档里面的一个数字。但是这样就够了，因为我相信如果我需要钱的时候，银行会通过他们的系统让我取到钱。同样的，即使我的感官并没有看到真正的钱，但是我仍然有能力感受到我的钱在那儿，随时可以取用。康德的《纯粹理性批判》就是探讨我们如何得到这种直觉的知识，以及如何运用它。</p>
+</li>
+<li><p>他回到美国的中西部念了一个实用的新闻学位，结了婚，先后住在内华达州和新墨西哥州，做一些奇怪的工作，比如记者、科学作家以及工业广告的撰稿人。他有两个孩子，买了一个农场、一匹马、两辆车，然后逐渐地步入中年，身体开始发胖。他对理性的追求似乎已放弃了，这点非常重要，一定要了解，他放弃了。</p>
+</li>
+<li><p>文章一开始就先提到报纸上的一篇文章，说到乡间有一座教堂在入口处挂了一幅电动的啤酒招牌，因为教堂已经卖给人开酒吧。你可以想像得到，这个时候有人笑了起来。这所大学素以举行饮酒派对而闻名，因此两者的形象有些隐隐相合。报上说，有一些人向教会当局抱怨此事。这是一间天主教教堂，奉命处理这些抱怨的神父对整件事情颇为不耐。对他来说，这些人对于教会的本质无知到了令人咋舌的地步。难道他们认为那些砖墙和彩色玻璃就代表教会了 吗？还是屋顶的形状代表教会呢？这种虚伪的虔诚正是教会大力反对的物质主义。这幢建筑本身并非圣地，既然移作他用就算结束了作为一间教堂的任务。 所以电动啤酒招牌是挂在一间酒吧前，而不是教堂前。因此没有办法察觉这种差异的人，只是表现出了他们自己的无知罢了。</p>
+</li>
+<li><p>真正的大学并没有特定的地点，也没有校产；既不支付薪水，也不接受物质的报酬。真正的大学是心灵的世界，是多少世纪以来流传给我们的理性思想，它不存在于任何特定的建筑物之内。这种心灵的世界，许多世纪以来都是 通过一 群所谓的教 授所传递的，而教授这个头衔并不属于真正大学的一部分，大学的本质在于流传下来的 理性的自身。</p>
+</li>
+<li><p>斐德洛认为，理性教会追求的最主要目标，就是苏格拉底一向认为的真理。</p>
+</li>
+<li><p>真正的神职人员在这时就应当表现出他们没有听到这些威胁，因为他们的目标并不是把服务大众放在第一，他们最主要的是要服事真理。 这个就是他所谓的理性教会。毫无疑问这是他长久以来发自内心的感想。</p>
+</li>
+<li><p>如果你对事情有完全的信心，就不太可能产生狂热的态度。就拿太阳来说 吧，没有人会为了它明天会升起而兴奋不已，因为这是必然的现象。如果有人对政治或是宗教狂热，那是因为他对这些目标或是教义没有完全的信心。</p>
+</li>
+<li><p>他希望我批评的是其中缺乏艺术性的连贯，这一向是工程人员最忽视的东西。它和其他与科技相关的事物一样，经常出现在古典和浪漫的对立中。</p>
+</li>
+<li><p>机器没有感受力，除了人施加给它们的东西。要想测验机器的好坏，就看它给你的感受，没有别的测验方法。</p>
+</li>
+<li><p>狄威斯问我：”你的意思是，当我在组合烤肉架的时候，实际上我是在雕刻它？””没错，就是这样。”他想了一想，脸上的笑意愈来愈深。</p>
+</li>
+<li><p>而他真正的想法是，这些规则是作品写好之后才找出来的，作者不是依照这些原则来写作。</p>
+</li>
+<li><p>有一些学生的作品由于事先经过周密的思考，注意是否符合修辞学，因此读起来很乏味，仿佛其中的确有点蜜汁，但却无法汹涌而出。但是你又如何教学生那些无法事先周密策划的东西呢？这似乎是不可能达到的要求。</p>
+</li>
+<li><p>大部分人望着灵性的高峰，但是一生从来不曾攀上过，只是听听别人的经验就已经很满足，而自己不愿意花费任何心血。有一些人则是靠着有经验的向导，他们知道最安全的路，因而能够很顺利地到达他们的目的地。 但是还有另外一批人，不但没有经验，而且不太相信别人的经验，想要走出自己的路。其中很少有人能成功，但是总有一些靠着自己的意志、运气还有上天的恩典而做到了。 那些成功的人要比别人更明白，其实登山并没有惟一或是固定的路线，有多少这样的人物就有多少条路。</p>
+</li>
+<li><p>每件事都有无穷的假设，你观察得愈多你看到得就愈多。</p>
+</li>
+<li><p>她之所以写不出有关波斯曼的事，是因为她想不出波斯曼有什么值得重复写下来的地方。</p>
+</li>
+<li><p>她之所以写不出有关波斯曼的事，是因为她想不出波斯曼有什么值得重复写下来的地方。很奇怪，她竟然不知道自己可以从不同的角度观察，而不要在乎别人说过什么。而把题材缩减到一块砖就突破了她的瓶颈。因为很明显地，她必须直接地、不受任何阻碍地观察这块砖。</p>
+<blockquote>
+<p>学位和评分保证了最低标准而不是野蛮生长</p>
+</blockquote>
+</li>
+<li><p>而在大学里，情况就复杂多了，你必须要让老师觉得，虽然你实际是在模仿，但是表面上并没有模仿。你就是吸收老师指示的重点，然后再走自己的路。这样你就能得到高分。而原创的学生则可能从最高分到最低分都有，整个学校的价值评估都反对创意。 他曾经和住在隔壁的心理学教授讨论这个问题。他是一位非常有想像力的老师，他说：”没错，你只有把整个教育的学位和评分制度取消，才能得到真正的教育。”</p>
+</li>
+<li><p>愈聪明愈认真的学生愈不需要分数，很可能是因为他们对学问的本身比较感兴趣。而愈懒惰愈愚笨的学生则愈需要分数，因为可以让他们知道自己是否及格了。</p>
+</li>
+<li><p>一篇优秀的作品不需要任何规则，不需要任何理论，然而他指向了某种东西，非常真实，他们无法否认它的存在。</p>
+<blockquote>
+<p>这种东西能直抵人心</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>这个世界缺少它仍然能运作，但是生命变得非常呆滞，几乎不值得活下去。事实上的确是不值得活下去的。 “值得”就是一种良质的字眼，因为生命不再有价值或是目标。</p>
+</li>
+<li><p>他们的世界以知识为主，但是不仅如此，他们假设这个世界的运行要倚靠法则–理性–人类的进步就在于发现这些法则，之后为了满足自我的欲望，而应用这些法则。这就是他们的世界观。</p>
+</li>
+<li><p>根据斐德洛的见解，这个世界是由三种事物所组成的，就是心、物和良质。</p>
+</li>
+<li><p>周围的宁静可以让你把事情做得很漂亮。</p>
+<blockquote>
+<p>内心的宁静也一样</p>
+</blockquote>
+</li>
+<li><p>任何经由思想所意识到的总是存在于过去，因而都不真实。所以真实总是存在于你所看到的那一刹那，且在你还没有意识到之前。</p>
+</li>
+<li><p>人们对于良质有不同的看法，并不是因为良质本身有差异，而是每一个人的经验背景不同。</p>
+</li>
+<li><p>换句话说，几何学的公理不过是化装过的定义。 然后，既已认同了几何学公理的本质，他转而考虑这个问题，欧几里得几何学是真的还是黎曼几何学是真的？他回答：这问题毫无意义。 这好像我们这么问：是否英尺制是对的而常衡制是错的？是否笛卡儿坐标是对的而极坐标是错的？一个几何学不可能比另一个更正确；它只可能是更方便。几何学不是真实的，它只是更先进的。</p>
+</li>
+<li><p>彭加列清楚地说明，他不是在谈浪漫美，震撼感官的外表美。他是在谈古 典美，它从部分的和谐秩序中所生，是一种可以把握的纯粹智慧；</p>
+</li>
+<li><p>像约翰夫妇这种对待科技的态度，是于事无益的。因为你不能单单靠着情绪活着，你还需要了解宇宙运行的方式，了解自然的法则。</p>
+</li>
+<li><p>内心的宁静会产生正确的价值观，正确的价值观就会产生正确的思想，正确的思想就会产生正确的行动，而采取了正确行动的工作，便可使别人从中看到做事人内心的宁静。</p>
+</li>
+<li><p>如果想要改造世界，就要先从一个人的心灵、头脑和手开始改造，然后由它们向外发展。有的人可以谈论如何改变人类的命运，我却只想讨论如何维修一部摩托车，我认为我必须说的这些更具有长远的价值。</p>
+</li>
+<li><p>我希望我知道要和他说些什么，或者问些什么。有的时候他似乎和我如此亲近，而这种亲近和我说什么问什么无关。有的时候他又似乎离我好远，站在一个有利的位置观察我，而我却没摸清状况。有的时候他又很幼稚，那个时候就和我完全无关了。</p>
+</li>
+<li><p>进取心的陷阱可以定义为，因无法意识到良质，从而使人丧失做事的热忱。</p>
+</li>
+<li><p>陷阱主要有两种：第一 种是因外在的环境使你放弃了良质，我称之为挫折。第二种是你内在的因素引起的，我还没有一个确切的称呼，姑且称之为忧虑。</p>
+</li>
+<li><p>现 在我们要谈谈内心因素导致的陷阱。 这一部分有三个陷阱。第一个陷阱会限制情感理解，称之为”价值的陷阱”；第二个则会阻碍认知理解，称之为”真理的陷阱 “；第三个会阻碍精神运动行为，称之为”肌肉的陷阱”。其中价值的陷阱最严重也最危险。</p>
+</li>
+<li><p>如果你自视甚高，那么你观察新事物的能力就会降低。</p>
+</li>
+<li><p>焦虑是另外一个陷阱。</p>
+</li>
+<li><p>枯燥是我想到的下一个陷阱。</p>
+</li>
+<li><p>“无”不是表示一无所有，”无”只是说没有等级，不是”一”，不是”零”，不是”是”也不是”非”。它表示在回答一个问题的时候，超越了”是”与”非” 的等级，</p>
+</li>
+<li><p>“爸爸？””什么事？””我们为什么要这样做呢？””做什么？””一直骑摩托车。””只是来看看乡野的风景。度假啊！”这个回答似乎不能令他满意，可是他也说不上有什么不对。 突然他觉得有点失望，我没有和他说真话，这就是症结所在。</p>
+</li>
+<li><p>所以良质不是方法，而是方法所追求的目标。</p>
+</li>
+<li><p>是良质酝酿了神话的诞生。那就对了。那就是他所谓的”良质是持续不断的刺激，让我们创造出目前的世界，所有的世界，世界上的每一样事物”。宗教不是由人发明的，人是由宗教发明的。</p>
+</li>
+<li><p>许久前我曾经提到，斐德洛在追求理性的鬼魂。这就是我的意思。理性和良质分家了，而且互相对立，良质被迫屈居于理性之下。</p>
+</li>
+<li><p>我记得是柯勒律治曾经说过：”一个人如果不是柏拉图的信徒，就是亚里士多德的信徒。”不能忍受亚里士多德永无止尽的分析，必然会喜好柏拉图天马行空的概念。不能忍受柏拉图高远的理想主义，必然欢迎亚里士多德的实际。柏拉图认为得道非常重要，每一代都不断有这样的人出现，殚精竭虑地寻找宇宙存在的源头。而亚里士多德则代表了维修摩托车的技术人员，他喜欢世间万象。</p>
+</li>
+<li><p>你可以很明显地从这些对话当中看见，苏格拉底如何运用分析的刀把高尔吉亚的艺术劈成碎片。而更重要的是你可以看到，这些碎片就是亚里士多德修辞学的基础。</p>
+</li>
+<li><p>“人是衡量一切的标准。”的确，这就是他所说的良质。</p>
+</li>
+<li><p>现在很少有学校愿意继续教授古典伦理学，于是学生们便追随着亚里士多德和柏拉图，永无止尽地提出古代希腊人永远不需要问的问题：”善究竟是什么呢？我们如何去界定呢？由于每一个人都有不同的定义，我们如何才知道哪里才有善呢？有人认为善存在于快乐之中，但我们又怎么知道快乐是什么呢？而快乐又该如何界定呢？快乐和善不是客观事物。我们无法用科学的方法研究它们。它们不是客观的存在，只能存在于你心中。所以如果你想要快乐，只需要改变你的心意。哈哈，哈哈。”这就是亚里士多德式的伦理学，亚里士多德式的定义，亚里士多德式的逻辑，亚里士多德式的形式，亚里士多德式的本质，亚里士多德式的修辞学，亚里士多德式的笑声……哈哈哈哈。 而智者学派人的尸骨早已化为尘土，他们所说的也和他们一样烟消云散。 于是这些尘土被埋在毁灭的雅典瓦堆之中，而雅典也消失在覆灭的马其顿帝国当中。紧接而来的是古罗马帝国和拜占庭帝国的灭亡，然后接着是奥斯曼帝国，接着就是现代国家–他们被埋得这样深，而且被蒙上了一层礼法、虚伪之情和邪恶，以至于只有很多个世纪之后出现的这个狂人，才发现了可以将他们出土的线索，同时恐怖地看清了前人的所作所为……路上一片漆黑，我必须打开头灯才能顺利地在雨雾中行驶。</p>
+</li>
+<li><p>印度的一元思想和希腊的一元思想是一样的，如果不一样，那就是二元了。而一元论之间所产生的差异主要在于”这一位”的特性，而非”这一位”的本质。由于”这一位”是万物的源头，包含了一切，所以它不可能用这些事物来定义，因为不论你用什么去定义它，你所用来定义的事物都无法达到”这一位”的层次。”</p>
+</li>
+<li><p>斐德洛想，他不应该打断的。如果他是真正追寻真理的人，而不是专门宣传某一种观点，就不应该打断他的话。</p>
+</li>
+<li><p>“写作的好坏我们需要向吕西亚请教，或是向任何一位诗人和演说家请教吗？”什么是善，斐德洛，什么又是恶–我们需要别人来告诉我们答案吗？这就是几个月前他在蒙大拿州的教室里说的，这是自柏拉图之后的每一位辩证学家所忽略的。他们每一个人都想从知识的角度去界定良质，但是现在他发现自己和良质的距离非常遥远，因为他也在做同样的事。他原来的目标是不要让良质被界定，但是在和辩证学家对抗的过程中，他提出了许多论点，每一个论点都是他在良质旁边建立的砖墙。 一旦想通过系统的思考去界定良质，就会破坏它最原始的目标，所以他所做的实在是一桩愚不可及的事。</p>
+</li>
+<li><p>他走过了这一段死荫的幽谷，走出神话，仿佛像从梦境中走出来。他整个的意识就像是一场梦，不是别人的梦而是他自己的梦，是他现在必须独自支撑的梦。然后他自己也消失了，只剩下他的梦和在梦中的他。</p>
+</li>
+<li><p>他说：”我就知道。”这句话不断出现在我的脑海里，好像鱼钩上有东西上钩了，想引起我的注意。</p>
+</li>
+</ul>
+<p><strong>书中一段《道德经》英译:</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">道可道，非常道。名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙，常有欲以观其徼。此两者同出而异名。同谓之玄，玄之又玄，众妙之门。</span><br><span class="line">道冲而用之或不盈，渊兮似万物之宗。挫其锐，解其纷，和其光，同其尘，湛兮似或存。</span><br><span class="line">吾不知谁之子，象帝之先。  </span><br><span class="line">……根绵绵若存，用之不勤。……</span><br><span class="line">视之不见名曰夷，听之不闻名曰希，搏之不得名曰微，此三者不可致诘，故混而为一。其上不皎，其下不昧。绳绳不可名，复归于无物。是谓无状之状，无物之象，是谓惚恍。迎之不见其首，随之不见其后。执古之道，以御今之有，能知古始，是谓道纪。</span><br><span class="line"></span><br><span class="line">The quality that can be define is not the Absolute Quality.</span><br><span class="line">The names that can be define are not Absolute names.</span><br><span class="line">It is the origin of heaven and earth.</span><br><span class="line">When named it is the mother of  all things...</span><br><span class="line">Quality  (romantic Quality) and its manifestations (classic Quality) are in their nature the same. It is given different names (subjects and objects) when it becomes classically manifest.</span><br><span class="line">Romantic quality and classic quality together may be called the &quot;mystic&quot;.</span><br><span class="line">Reaching from mystery into deeper mystery, it is the gate to the secret of all life.</span><br><span class="line">Quality is all pervading.</span><br><span class="line">And its use is inexhaustible!</span><br><span class="line">Fathomless!</span><br><span class="line">Like the fountainhead of all things...</span><br><span class="line">Yet crystal clear like water it seems to remain.</span><br><span class="line">I do not know who&#x27;s Son it is.</span><br><span class="line">An image of what existed before God.</span><br><span class="line">...Continuously, continuously it seems to remain. Draw upon it and it serves you with ease...</span><br><span class="line">Looked at but cannot be seen...listened to but cannot be heard...grasped at but cannot touched...these three elude all our inquiries and hence blend and become one.</span><br><span class="line">Not by its rising is there light,</span><br><span class="line">Bot by its sinking is there darkness</span><br><span class="line">Unceasing, continuous</span><br><span class="line">It cannot be defined</span><br><span class="line">And reverts again into the realm of nothingness</span><br><span class="line">That is why it is called the form of the formless</span><br><span class="line">The image of nothingness</span><br><span class="line">That is why it is called elusive</span><br><span class="line">Meet it and you do not see its face</span><br><span class="line">Follow it and you do not see its back</span><br><span class="line">He who holds fast to the quality of old</span><br><span class="line">Is able to know the primeval beginnings</span><br><span class="line">Which are the continuity of quality.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/21/%E8%AF%BB%E3%80%8A%E7%A6%85%E4%B8%8E%E6%91%A9%E6%89%98%E8%BD%A6%E7%BB%B4%E4%BF%AE%E8%89%BA%E6%9C%AF%E3%80%8B/" data-id="cm5tqeeuz004xwayp46xu18by" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Markdown转HTML" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/18/Markdown%E8%BD%ACHTML/" class="article-date">
+  <time datetime="2017-01-18T09:28:33.000Z" itemprop="datePublished">2017-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/FrontEnd/">FrontEnd</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/18/Markdown%E8%BD%ACHTML/">Markdown转HTML</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;目前，产品中所有前端组件的API文档均由Markdown编写，之前的处理方式为在Atom中写好，然后另存为html的方式放到产品的在线样例库中，最近越来越觉得这种方式太麻烦，不易于管理。考虑砍掉另存为html的步骤，直接在webstorm中写文档，然后在运行时动态把markdown编译成html文档，跟目前的很多在线的Markdown文本编辑器的原理类似。</p>
+<p>&emsp;&emsp;经过调研，可以后端转，也可以前端转。最终，采用前端JS来把Markdown转换为HTML。采用<a target="_blank" rel="noopener" href="https://github.com/showdownjs/showdown">showdown</a>来实现。</p>
+<p>&emsp;&emsp;从showdown的github主页上看到过程挺简单，引入js文件，然后按照下面的语法转换即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> converter = <span class="keyword">new</span> showdown.Converter(),</span><br><span class="line">    text      = <span class="string">&#x27;#hello, markdown!&#x27;</span>,</span><br><span class="line">    html      = converter.makeHtml(text);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;经过验证，发现默认是不对表格做转换的。查看<a target="_blank" rel="noopener" href="http://showdownjs.github.io/demo/">官方DEMO</a>,发现在官方DEMO上一切正常，接着发现原来需要做一些配置项。懒得去一个个看API配置，直接在官方的Demo中加个断点，通过<code>getOptions</code>方法拿到DEMO样例的配置项，结果如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//docurl即xxx.md文件，这里也可以使用jquery来加载指定url的markdown文件</span></span><br><span class="line"><span class="built_in">require</span>([ <span class="string">&quot;text!&quot;</span> + docUrl ], <span class="function"><span class="keyword">function</span>(<span class="params">doc</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> converter = <span class="keyword">new</span> showdown.Converter(&#123;</span><br><span class="line">        <span class="string">&quot;omitExtraWLInCodeBlocks&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;noHeaderId&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;prefixHeaderId&quot;</span>:<span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ghCompatibleHeaderId&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;headerLevelStart&quot;</span>:<span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;parseImgDimensions&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;simplifiedAutoLink&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;excludeTrailingPunctuationFromURLs&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;literalMidWordUnderscores&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;strikethrough&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;tables&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;tablesHeaderId&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ghCodeBlocks&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;tasklists&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;smoothLivePreview&quot;</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;smartIndentationFix&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;disableForced4SpacesIndentedSublists&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;simpleLineBreaks&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;requireSpaceBeforeHeadingText&quot;</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ghMentions&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;extensions&quot;</span>:[],<span class="string">&quot;sanitize&quot;</span>:<span class="literal">false</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">var</span> html = converter.makeHtml(doc);</span><br><span class="line">    <span class="comment">//接着把html放到DOM上即可</span></span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">    <span class="comment">//我这里是弹出一个侧边栏，在侧边栏上显示markdown所写的API内容</span></span><br><span class="line">    Util.slidebar(&#123;</span><br><span class="line">        body : html,</span><br><span class="line">        width : slideWidth || <span class="string">&quot;800px&quot;</span>,</span><br><span class="line">        afterLoad : <span class="function"><span class="keyword">function</span>(<span class="params">$elem</span>)</span>&#123;</span><br><span class="line">            <span class="comment">//容器的跟节点上加上class，解决markdown转换为html后样式不对的问题</span></span><br><span class="line">            $elem.addClass(<span class="string">&quot;markdown-body&quot;</span>);</span><br><span class="line">            $elem.find(<span class="string">&quot;table&quot;</span>).addClass(<span class="string">&quot;table table-bordered table-hover&quot;</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;通过上述代码，能够正常把markdown转换为html。但是，发现样式有问题，表格没有边框。从上面也看到了，额外增加了样式。</p>
+<p>&emsp;&emsp;最后，把样式文件<code>markdown.css</code>也分享出来。当然，如果想结果跟showdown的DEMO样例一样，也可以去把DEMO的样式扒下来。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.markdown-body</span> &#123;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">&quot;Helvetica Neue&quot;</span>, Helvetica, <span class="string">&quot;Segoe UI&quot;</span>, Arial, freesans, sans-serif;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">14px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.6</span>;</span><br><span class="line">    <span class="attribute">word-wrap</span>: break-word</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ol</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: decimal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: square</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> &gt; *<span class="selector-pseudo">:first</span>-child &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">0</span> <span class="meta">!important</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> &gt; *<span class="selector-pseudo">:last-child</span> &#123;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">0</span> <span class="meta">!important</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">a</span><span class="selector-pseudo">:not</span>(<span class="selector-attr">[href]</span>) &#123;</span><br><span class="line">    <span class="attribute">color</span>: inherit;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.absent</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#c00</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">6px</span>;</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">30px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.anchor</span><span class="selector-pseudo">:focus</span> &#123;</span><br><span class="line">    <span class="attribute">outline</span>: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">16px</span>;</span><br><span class="line">    <span class="attribute">font-weight</span>: bold;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span> <span class="selector-class">.octicon-link</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#000</span>;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">8px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> <span class="selector-class">.octicon-link</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.anchor</span> <span class="selector-class">.octicon-link</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span> tt, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span> <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span> tt, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span> <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span> tt, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span> <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span> tt, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span> <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span> tt, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span> <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span> tt, <span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span> <span class="selector-tag">code</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: inherit</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">0.3em</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">2.25em</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.2</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#eee</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h1</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span> &#123;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">0.3em</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1.75em</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.225</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#eee</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h2</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1.5em</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.43</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h3</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1.25em</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h4</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1em</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h5</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#777</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">h6</span> <span class="selector-class">.anchor</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">p</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">blockquote</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ol</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">dl</span>, <span class="selector-class">.markdown-body</span> pre &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">16px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> hr &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">4px</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">16px</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#e7e7e7</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">0</span> none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ol</span> &#123;</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">2em</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span><span class="selector-class">.no-list</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ol</span><span class="selector-class">.no-list</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">list-style-type</span>: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span> <span class="selector-tag">ul</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span> <span class="selector-tag">ol</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ol</span> <span class="selector-tag">ol</span>, <span class="selector-class">.markdown-body</span> <span class="selector-tag">ol</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">li</span> &gt; <span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">16px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">dl</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">dl</span> <span class="selector-tag">dt</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">16px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">font-style</span>: italic;</span><br><span class="line">    <span class="attribute">font-weight</span>: bold</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">dl</span> <span class="selector-tag">dd</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">16px</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">16px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">blockquote</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#777</span>;</span><br><span class="line">    <span class="attribute">border-left</span>: <span class="number">4px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">14px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">blockquote</span> &gt; <span class="selector-pseudo">:first</span>-child &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">blockquote</span> &gt; <span class="selector-pseudo">:last-child</span> &#123;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.table-bordered</span>&gt;<span class="selector-tag">thead</span>&gt;<span class="selector-tag">tr</span>&gt;<span class="selector-tag">th</span>&#123;</span><br><span class="line">    <span class="attribute">border-bottom-width</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*.markdown-body table &#123;</span></span><br><span class="line"><span class="comment">display: block;</span></span><br><span class="line"><span class="comment">width: 100%;</span></span><br><span class="line"><span class="comment">overflow: auto;</span></span><br><span class="line"><span class="comment">word-break: normal;</span></span><br><span class="line"><span class="comment">word-break: keep-all</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">.markdown-body table th &#123;</span></span><br><span class="line"><span class="comment">font-weight: bold</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">.markdown-body table th, .markdown-body table td &#123;</span></span><br><span class="line"><span class="comment">padding: 6px 13px;</span></span><br><span class="line"><span class="comment">border: 1px solid #ddd</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">.markdown-body table tr &#123;</span></span><br><span class="line"><span class="comment">background-color: #fff;</span></span><br><span class="line"><span class="comment">border-top: 1px solid #ccc</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">.markdown-body table tr:nth-child(2n) &#123;</span></span><br><span class="line"><span class="comment">background-color: #f8f8f8</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.emoji</span> &#123;</span><br><span class="line">    <span class="attribute">max-width</span>: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.frame</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.frame</span> &gt; <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">float</span>: left;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">7px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">13px</span> <span class="number">0</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.frame</span> <span class="selector-tag">span</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">float</span>: left</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.frame</span> <span class="selector-tag">span</span> <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">0</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">clear</span>: both;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#333</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.align-center</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">clear</span>: both</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.align-center</span> &gt; <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">13px</span> auto <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">text-align</span>: center</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.align-center</span> <span class="selector-tag">span</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">    <span class="attribute">text-align</span>: center</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.align-right</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">clear</span>: both</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.align-right</span> &gt; <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">13px</span> <span class="number">0</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">text-align</span>: right</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.align-right</span> <span class="selector-tag">span</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: right</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.float-left</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">float</span>: left;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">13px</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.float-left</span> <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">13px</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.float-right</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">float</span>: right;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">13px</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">span</span><span class="selector-class">.float-right</span> &gt; <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">13px</span> auto <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">text-align</span>: right</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> tt &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">0.2em</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">0.2em</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">85%</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.04</span>);</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">3px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">code</span>:before, .markdown-body code:after, .markdown-body tt:before, .markdown-body tt:after &#123;</span><br><span class="line">    letter-spacing: -<span class="number">0.2em</span>;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;\00a0&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">code</span> br, <span class="selector-class">.markdown-body</span> tt br &#123;</span><br><span class="line">    <span class="attribute">display</span>: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">del</span> <span class="selector-tag">code</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: inherit</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> pre &gt; <span class="selector-tag">code</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">word-break</span>: normal;</span><br><span class="line">    <span class="attribute">white-space</span>: pre;</span><br><span class="line">    <span class="attribute">background</span>: transparent;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.highlight</span> &#123;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">16px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.highlight</span> pre, <span class="selector-class">.markdown-body</span> pre &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">16px</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: auto;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">85%</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.45</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#f7f7f7</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">3px</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-class">.highlight</span> pre &#123;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">word-break</span>: normal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> pre &#123;</span><br><span class="line">    <span class="attribute">word-wrap</span>: normal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> pre <span class="selector-tag">code</span>, <span class="selector-class">.markdown-body</span> pre tt &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline;</span><br><span class="line">    <span class="attribute">max-width</span>: initial;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: initial;</span><br><span class="line">    <span class="attribute">line-height</span>: inherit;</span><br><span class="line">    <span class="attribute">word-wrap</span>: normal;</span><br><span class="line">    <span class="attribute">background-color</span>: transparent;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> pre <span class="selector-tag">code</span>:before, .markdown-body pre code:after, .markdown-body pre tt:before, .markdown-body pre tt:after &#123;</span><br><span class="line">    content: normal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">kbd</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">3px</span> <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">11px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#555</span>;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#fcfcfc</span>;</span><br><span class="line">    <span class="attribute">border</span>: solid <span class="number">1px</span> <span class="number">#ccc</span>;</span><br><span class="line">    <span class="attribute">border-bottom-color</span>: <span class="number">#bbb</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">box-shadow</span>: inset <span class="number">0</span> -<span class="number">1px</span> <span class="number">0</span> <span class="number">#bbb</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: disc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.markdown-body</span> <span class="selector-tag">ul</span> <span class="selector-tag">ul</span>, markdown-<span class="selector-tag">body</span> <span class="selector-tag">ol</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: circle</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/18/Markdown%E8%BD%ACHTML/" data-id="cm5tqeeuy004uwayp0txe7ml8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Tomcat环境下设置HTTP强缓存" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/14/Tomcat%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%AE%BE%E7%BD%AEHTTP%E5%BC%BA%E7%BC%93%E5%AD%98/" class="article-date">
+  <time datetime="2017-01-14T10:54:44.000Z" itemprop="datePublished">2017-01-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/14/Tomcat%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%AE%BE%E7%BD%AEHTTP%E5%BC%BA%E7%BC%93%E5%AD%98/">Tomcat环境下设置HTTP强缓存</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;在之前的一篇文章<a href="http://muchstudy.com/2016/08/18/HTTP%E7%BC%93%E5%AD%98%E8%AF%A6%E8%A7%A3/">《HTTP缓存详解》</a>中详细的整理了关于HTTP缓存的知识点，这一篇通过实践，具体验证如何设置HTTP的强缓存，让客户端直接从本地缓存中拿资源，而不发起网络请求。</p>
+<h2 id="一、设置HTTP强缓存"><a href="#一、设置HTTP强缓存" class="headerlink" title="一、设置HTTP强缓存"></a>一、设置HTTP强缓存</h2><p>&emsp;&emsp;可通过<code>Expires</code>与<code>Cache-Control</code>控制资源何时过期。<code>Expires</code>通过设置一个具体过期日期来控制，<code>Cache-Control</code>是设置一个距离第一次请求之后多久的时间段来控制。</p>
+<h3 id="1-自定义Filter"><a href="#1-自定义Filter" class="headerlink" title="1.自定义Filter"></a>1.自定义Filter</h3><p>过滤器代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterCache</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response,FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">            HttpServletResponse res = (HttpServletResponse) response;  </span><br><span class="line">            <span class="comment">//res.setDateHeader(&quot;expries&quot;, new Date().getTime()+60*60*24*1000);	//- 设置一天失效，经测试Chrome下不生效</span></span><br><span class="line">            res.setHeader(<span class="string">&quot;Cache-Control&quot;</span>, <span class="string">&quot;max-age=10&quot;</span>);  					<span class="comment">//- 这里的单位为秒，10代表第一次请求10s后过期</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>web.xml配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 过滤所有的js文件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>FilterCache<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.demo.cache.FilterCache<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>FilterCache<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.js<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用容器的Filter"><a href="#2-使用容器的Filter" class="headerlink" title="2.使用容器的Filter"></a>2.使用容器的Filter</h3><p>&emsp;&emsp;tomcat容器提供自有的过滤器来设置HTTP缓存，只需在web.xml中进行配置即可，相信其它服务器也有相关的配置项，例如Nginx、WebLogic等。</p>
+<p>配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>ExpiresFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.ExpiresFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ExpiresByType image<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>access plus 10 days<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ExpiresByType text/css<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>access plus 10 days<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ExpiresByType application/javascript<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>access plus 10 days<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>ExpiresFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dispatcher</span>&gt;</span>REQUEST<span class="tag">&lt;/<span class="name">dispatcher</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>官方文档：</p>
+<ul>
+<li>tomcat7:<a target="_blank" rel="noopener" href="http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Expires_Filter">http://tomcat.apache.org/tomcat-7.0-doc/config/filter.html#Expires_Filter</a></li>
+<li>tomcat8:<a target="_blank" rel="noopener" href="http://tomcat.apache.org/tomcat-8.0-doc/config/filter.html#Expires_Filter">http://tomcat.apache.org/tomcat-8.0-doc/config/filter.html#Expires_Filter</a></li>
+</ul>
+<h2 id="二、特别说明"><a href="#二、特别说明" class="headerlink" title="二、特别说明"></a>二、特别说明</h2><h3 id="1-客户端环境准备"><a href="#1-客户端环境准备" class="headerlink" title="1.客户端环境准备"></a>1.客户端环境准备</h3><p>在Chrome下，需进行如下设置（F12接着按F1即可打开settings面板）：</p>
+<img src="/2017/01/14/Tomcat%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%AE%BE%E7%BD%AEHTTP%E5%BC%BA%E7%BC%93%E5%AD%98/DisableCache.jpg" class="">
+
+
+<h3 id="2-刷新浏览器方式"><a href="#2-刷新浏览器方式" class="headerlink" title="2.刷新浏览器方式"></a>2.刷新浏览器方式</h3><p>&emsp;&emsp;经过测试，只有通过浏览器地址栏回车的方式强缓存才会生效；以F5、浏览器刷新按钮、Ctrl+R方式刷新页面均会发起HTTP网络请求，即使缓存未过期。</p>
+<h2 id="三、结果"><a href="#三、结果" class="headerlink" title="三、结果"></a>三、结果</h2><p>在Chrome下测试结果如下：</p>
+<img src="/2017/01/14/Tomcat%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%AE%BE%E7%BD%AEHTTP%E5%BC%BA%E7%BC%93%E5%AD%98/chrome.jpg" class="">
+
+<p>&emsp;&emsp;设置<code>Cache-Control</code>的过期时间为10s，第一次请求返回200，在size栏下显示文件大小；第二次刷新页面，size栏显示<code>from memory cache</code>,即证明浏览器未发起网路请求，直接从本地缓存中获取资源。在IE下会显示<code>来自缓存</code>，Firefox下显示<code>已缓存</code>。</p>
+<p>&emsp;&emsp;经测试，使用<code>Cache-Control</code>设置缓存在Chrome、Firefox、Edge、IE11下均有效，使用<code>Expires</code>只在IE11与Edge下生效。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/14/Tomcat%E7%8E%AF%E5%A2%83%E4%B8%8B%E8%AE%BE%E7%BD%AEHTTP%E5%BC%BA%E7%BC%93%E5%AD%98/" data-id="cm5tqeeuy004swayp31ju0y42" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-产品研发记录04：关于技术选型的总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2017-01-08T06:48:50.000Z" itemprop="datePublished">2017-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">产品研发记录04：关于开源组件选择与技术方案选择的总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;在<a href="http://muchstudy.com/2017/01/02/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/">基础开发框架产品</a>构建当中，由于人力成本等其它原因，无法做到所有的代码都自己实现。所以，在技术部分就包含开源组件选择与选择合适的技术方案自己实现两部分。</p>
+<h2 id="一、开源组件选择"><a href="#一、开源组件选择" class="headerlink" title="一、开源组件选择"></a>一、开源组件选择</h2><p>&emsp;&emsp;对于开源组件的选择应当考虑如下几个方面：</p>
+<ul>
+<li>是否已经经过了时间的考验。例如Jquery之类组件。</li>
+<li>是否有完善的生态环境。如果一款开源组件长时间没人管，没人用，圈子不活跃，建议不要选择。</li>
+<li>如果是小团队，还需要考虑团队人员的技术栈。大团队，需考虑新组件的推广成本。例如React、Angular、Vue。</li>
+<li>文档是否完善。</li>
+</ul>
+<h2 id="二、技术方案选择"><a href="#二、技术方案选择" class="headerlink" title="二、技术方案选择"></a>二、技术方案选择</h2><ul>
+<li>首先筛选出做一件事都有哪些技术方案能实现。</li>
+<li>通过Demo样例来判断每种方案的实现难易程度，判断每条路走下去分别会有哪些坑。</li>
+<li>市面上是否已有成熟的、已用于真实环境的技术解决方案。</li>
+<li>预估业务增长的速度，是否能支撑起增长变化后的需求。</li>
+<li>性能考量，实现复杂度考量。</li>
+</ul>
+<h2 id="三、其它"><a href="#三、其它" class="headerlink" title="三、其它"></a>三、其它</h2><ul>
+<li>不管什么组件，什么技术方案，首要需考虑的是是否能够很好的契合目前需要解决的问题。</li>
+<li>如果所选的会使用在核心部分，那么需考虑在3-5年后是否会过时。</li>
+<li>做好对比分析，最好仔细列出优缺点，折衷考虑。</li>
+<li>拿不定主意，不好评估的可先行小范围试用。如果不行，可快速切换；如果不错，再推广开。</li>
+<li>新组件，新技术未经过充分验证不可推进太快，就跟车速太快不好调头一个道理。</li>
+</ul>
+<p>&emsp;&emsp;总的来说，随着时间的推移与业务的变更，技术也应当随之改变。不管是开源组件的选择还是技术方案的选择，<strong>只能保证在那么一段时间内是最优的选择。</strong>技术人员必须时刻保持敏锐的嗅觉，跟上技术的步伐。如果一直停止不前，不管是对于一款产品也好，对于产品的研发人员也好，迎面而来的只有被淘汰的命运。</p>
+<p>&emsp;&emsp;在本文的最后，还想多说两句。<strong>所有的东西都不可能是一成不变的。</strong>产品没有随着新技术的提升与业务的变更而跟着做相应的调整，几年过后，就会变得越来越难用；技术人员安于呆在温水中，个人能力没有随着工作年限的增加而增加，几年之后会觉得越来越尴尬；</p>
+<p>&emsp;&emsp;在知乎上有这么一个问题：”<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/41167695">有哪些一开始觉得离自己很遥远的事，真的发生在自己身上时措手不及？</a>“。其中有一个简短而有力的答案，这个答案是：<strong>“平凡”。</strong></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/">产品研发记录03：关于技术债务的思考</a><br>下一篇：<a href="http://muchstudy.com/2017/02/10/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9505%EF%BC%9A%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E4%BA%BA%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E6%9C%89%E7%9A%84%E7%89%B9%E8%B4%A8/">产品研发记录05：产品研发人员应当具备的特质</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/" data-id="cm5tqeeuw004pwayp3nvz8skl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-产品研发记录03：关于技术债务的思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2017-01-07T15:17:57.000Z" itemprop="datePublished">2017-01-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/">产品研发记录03：关于技术债务的思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、何谓技术债务"><a href="#一、何谓技术债务" class="headerlink" title="一、何谓技术债务"></a>一、何谓技术债务</h2><p>&emsp;&emsp;技术债务就是传说中的各种坑，这些坑有大有小，不外乎如下几种类型：</p>
+<ul>
+<li><p>代码的坑。</p>
+<blockquote>
+<p>&emsp;&emsp;无注释、无排版、各种冗余、各种难以维护的代码；绕来绕去很难看懂的代码；明显性能问题的代码；甚至还有逻辑混乱然后还能跑起来的神级代码。碰到这样的代码坑，给人的统一印象就是<strong>很难保持淡定。</strong></p>
+</blockquote>
+</li>
+<li><p>业务的坑。</p>
+<blockquote>
+<p>&emsp;&emsp;业务一而再再而三的变，变得面目全非，甚至变得代码需要重新写。</p>
+</blockquote>
+</li>
+<li><p>设计的坑。</p>
+<blockquote>
+<p>&emsp;&emsp;架构设计，功能设计，API接口设计不合理。造成后续使用困难，扩展困难，跟不上业务的快速增长。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="二、产生的原因"><a href="#二、产生的原因" class="headerlink" title="二、产生的原因"></a>二、产生的原因</h2><p>&emsp;&emsp;技术债务产生的原因不外乎如下几个：</p>
+<ul>
+<li><p>时间不够。</p>
+<blockquote>
+<p>&emsp;&emsp;很难见到有时间充裕的项目，大多数项目都有一个deadline。比如双十一活动，那么对于苦逼的程序员，就必须得保证在这一天之前把所有的活动页面做出来。在时间紧迫的情况下，做出东西为首要目标，具体过程就是八仙过海各显神通了。在这种情况下，当然就是怎么快怎么来，而不会过多的考虑代码的整体结构、扩展、性能等要素。</p>
+</blockquote>
+</li>
+<li><p>能力不够。</p>
+<blockquote>
+<p>&emsp;&emsp;技术人员的能力不够，经验不够丰富，此种情况下即使给予充裕的时间可能也不会得到满意的结果。在做出优秀设计，写出优秀的代码这件事上无速成可言。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>不可控。<blockquote>
+<p>&emsp;&emsp;不可控是指自己无法控制，各种身不由己。比如：强势客户、强势领导非要让你这么干；前期框架就这样，即使知道有问题，还是得按照之前的套路走；</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="三、如何面对技术债务"><a href="#三、如何面对技术债务" class="headerlink" title="三、如何面对技术债务"></a>三、如何面对技术债务</h2><ul>
+<li><p>淡定。</p>
+<blockquote>
+<p>&emsp;&emsp;这是首先要做的事情。畏难情绪一起来，工作效率随之降低。只有保持清醒的头脑，面对技术债务时才能做出正确的决定。</p>
+</blockquote>
+</li>
+<li><p>填坑。</p>
+<blockquote>
+<p>&emsp;&emsp;填坑得赶紧。从个人经验上来看，一些关键坑如果不赶紧填，坑就会越来越大，越到后面越难填，越让人头疼。</p>
+</blockquote>
+</li>
+<li><p>总结。</p>
+<blockquote>
+<p>&emsp;&emsp;总结为什么会有这个坑，避免今后再挖相同的坑。</p>
+</blockquote>
+</li>
+</ul>
+<p>上一篇：<a href="http://muchstudy.com/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/">产品研发记录02：基础开发框架产品的设计哲学</a><br>下一篇：<a href="http://muchstudy.com/2017/01/08/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9504%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E6%80%BB%E7%BB%93/">产品研发记录04：关于开源组件选择与技术方案选择的总结</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/" data-id="cm5tqeeuu004nwaypc28s7y1i" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-产品研发记录02：基础开发框架产品的设计理念与哲学" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/" class="article-date">
+  <time datetime="2017-01-04T13:49:41.000Z" itemprop="datePublished">2017-01-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/">产品研发记录02：基础开发框架产品的设计哲学</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;一款产品从0到1必然会耗费设计人员的一番心血。如果只是单纯的功能堆叠，而没有灌注其中的一致设计理念与哲学，面对这样的产品，你会明显感觉到混乱与混沌，缺少气质与灵魂。</p>
+<p>&emsp;&emsp;而基础开发框架产品相对于其它传统意义上的产品而言有他的特殊之处，特殊之处在于该产品的使用者为公司的项目开发人员而不是最终用户。所以，在基础开发框架的设计上必然会向开发人员侧重。</p>
+<p>&emsp;&emsp;下面就来说说目前所负责的一款基础开发框架产品的设计理念与哲学。</p>
+<h2 id="一、实在"><a href="#一、实在" class="headerlink" title="一、实在"></a>一、实在</h2><p>&emsp;&emsp;对于实在的含义可以解读为如下几点：</p>
+<h3 id="1-实实在在的解决问题"><a href="#1-实实在在的解决问题" class="headerlink" title="1. 实实在在的解决问题"></a>1. 实实在在的解决问题</h3><p>&emsp;&emsp;解决问题意为着产品的设计实现要以解决实际问题为导向，<strong>不针对于实际问题的设计都是耍流氓。</strong></p>
+<p>&emsp;&emsp;另外，<strong>不对新技术过度追求</strong>。用力过猛使得不稳定因素增加。多大问题用多大刀，技术与问题能很好契合才是最优选。</p>
+<h3 id="2-实实在在的带来便利"><a href="#2-实实在在的带来便利" class="headerlink" title="2. 实实在在的带来便利"></a>2. 实实在在的带来便利</h3><p>&emsp;&emsp;当开发人员使用基础开发框架来进行项目开发时，的确能明显提升工作效率。一个虽然解决了实际问题，但是开发人员使用过程中感觉蹩手蹩脚的设计不是一个好设计。</p>
+<p>&emsp;&emsp;这里的便利不仅指开发时的便利，还包括后期运行维护时的便利。可以通过一些手段引导开发人员朝着一个良好的开发模式靠拢。比如框架层面的限制、目录规范、代码规范校验等。</p>
+<h3 id="3-不能太实在"><a href="#3-不能太实在" class="headerlink" title="3. 不能太实在"></a>3. 不能太实在</h3><p>&emsp;&emsp;首先，<strong>不重复造轮子。</strong>对于这一点，千万不要实实在在的来一个问题就造一个轮子。如果市面上已经有匹配度很好的轮子为什么不借为己用？自己不间断的无脑造轮子会有如下风险：</p>
+<ul>
+<li>花大力气造的轮子没有已有的轮子优秀</li>
+<li>后续需投入大量人力做问题处理与升级维护</li>
+<li>需负责提供完善的文档以及负责对开发人员的指导培训，而已有轮子这些东西开发人员可以从网络获取</li>
+</ul>
+<p>&emsp;&emsp;另外，<strong>别一味想着用技术去解决问题。</strong>有些时候通过一些开发准则，技术使用规范，业务逻辑重新梳理能更好的解决问题。有些问题当陷入技术的漩涡后，反而会让问题变得越来越庞大，越来越难以控制。</p>
+<h2 id="二、开放"><a href="#二、开放" class="headerlink" title="二、开放"></a>二、开放</h2><p>&emsp;&emsp;在过往的经验当中，见过太多太多的产品越做越封闭，越做越臃肿。当产品越来越封闭后，开发人员彻底变成调包侠，更不利于个人成长。产品研发人员疲于应付各种BUG与技术支持，而无暇思考产品的迭代蜕变。</p>
+<p>&emsp;&emsp;这里的开放意味着基础开发框架需要保持一定的Open程度。当遇到刁钻需求时开发人员只要对产品有一定了解，自己也能解决，鼓励开发人员多折腾。这样不仅有利于开发人员的技术成长，而且有助于使得产品研发人员从不断的技术支持中解脱出来。</p>
+<h2 id="三、分享"><a href="#三、分享" class="headerlink" title="三、分享"></a>三、分享</h2><p>&emsp;&emsp;作为基础开发框架的研发人员，在解决核心问题的同时还有义务与责任带领框架的使用人员不断的提高自身的技术水平。他们水平的提高才能对产品提出更高水平的建议。开发者与使用者之间应当建立起良好的沟通交流机制，相互分享各自的经验心得，共同使得基础开发框架产品更上一个台阶。</p>
+<p>&emsp;&emsp;<strong>基础框架产品与使用人员的关系其实是一个相互成就的关系。</strong> 使用者不断分享出使用经验，提出宝贵意见，让产品不断优化，同时反过来让使用人员用起来更加得心应手。</p>
+<h2 id="四、最后"><a href="#四、最后" class="headerlink" title="四、最后"></a>四、最后</h2><p>&emsp;&emsp;在职业生涯中，见过太多太多的项目，再简单的也能做砸，再难的也能做成功。同时，跟公司产品的优劣好像关系也不大。</p>
+<p>&emsp;&emsp;一队什么样的人来做这个项目很大程度上决定这个项目的成败。</p>
+<p>&emsp;&emsp;所以，<strong>没有银弹，唯一的银弹是人。</strong></p>
+<p>上一篇：<a href="http://muchstudy.com/2017/01/02/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9501%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81/">产品研发记录01：为什么需要基础开发框架产品</a><br>下一篇：<a href="http://muchstudy.com/2017/01/07/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9503%EF%BC%9A%E5%85%B3%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E6%80%9D%E8%80%83/">产品研发记录03：关于技术债务的思考</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muchstudy.com/2017/01/04/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91%E8%AE%B0%E5%BD%9502%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BA%A7%E5%93%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E5%93%B2%E5%AD%A6/" data-id="cm5tqeeuu004lwaypa75y3j0h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/11/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/13/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DBMS/">DBMS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programmer/">Programmer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/">产品研发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%89%E5%85%A8/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E5%AE%89%E5%85%A8/" rel="tag">HTTP安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" rel="tag">HTTP状态码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" rel="tag">HTTP连接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Life/" rel="tag">Life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/" rel="tag">RSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nexus/" rel="tag">nexus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restfull/" rel="tag">restfull</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlmap/" rel="tag">sqlmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" rel="tag">团队管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" rel="tag">工作思考</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag">工具类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTTP%E5%AE%89%E5%85%A8/" style="font-size: 10px;">HTTP安全</a> <a href="/tags/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 10px;">HTTP状态码</a> <a href="/tags/HTTP%E8%BF%9E%E6%8E%A5/" style="font-size: 10px;">HTTP连接</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Life/" style="font-size: 10px;">Life</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/nexus/" style="font-size: 10px;">nexus</a> <a href="/tags/restfull/" style="font-size: 10px;">restfull</a> <a href="/tags/sqlmap/" style="font-size: 10px;">sqlmap</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%93%B2%E5%AD%A6/" style="font-size: 10px;">哲学</a> <a href="/tags/%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86/" style="font-size: 10px;">团队管理</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%9D%E8%80%83/" style="font-size: 20px;">工作思考</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/" style="font-size: 12px;">工具类</a> <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" style="font-size: 10px;">排序算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 14px;">缓存</a> <a href="/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 12px;">读书</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 18px;">读书笔记</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E4%BA%BA%E7%94%9F%E4%B8%AD%E5%94%AF%E4%B8%80%E7%9A%842024/">人生中唯一的2024</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/27/%E3%80%8A%E5%BE%B7%E7%B1%B3%E5%AE%89%EF%BC%9A%E5%BD%B7%E5%BE%A8%E5%B0%91%E5%B9%B4%E6%97%B6%E3%80%8B/">《德米安：彷徨少年时》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/26/%E3%80%8A%E5%AE%9D%E8%B4%B5%E7%9A%84%E4%BA%BA%E7%94%9F%E5%BB%BA%E8%AE%AE%E3%80%8B/">《宝贵的人生建议》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/%E3%80%8A%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E8%B7%B5%E3%80%8B/">《管理的实践》</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/24/%E3%80%8A%E5%8D%93%E6%9C%89%E6%88%90%E6%95%88%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85%E3%80%8B/">《卓有成效的管理者》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2025 YiYing<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
